@@ -27,3 +27,13 @@
     background-color: #008cff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
 }
+
+/* ————————————————————————————表格区———————————————————————————————— */
+.articlesBox table {
+    border: 1px solid #ccc;
+    width: 100%;
+}
+
+.articlesBox table td {
+    text-align: center;
+}

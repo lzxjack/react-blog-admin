@@ -66,6 +66,9 @@ const AddArticle = props => {
                 url: `https://lzxjack.top/${inputEng.current.value}`,
             })
             .then(() => {
+                // 清空所有内容
+                // 转到草稿页
+                // 提示消息
                 notification.open({
                     message: '草稿保存成功！',
                     placement: 'bottomLeft',
@@ -87,6 +90,9 @@ const AddArticle = props => {
                 url: `https://lzxjack.top/${inputEng.current.value}`,
             })
             .then(() => {
+                // 清空所有内容
+                // 回到文章页
+                // 提示消息
                 notification.open({
                     message: '文章发布成功！',
                     placement: 'bottomLeft',
