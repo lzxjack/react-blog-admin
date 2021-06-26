@@ -1,3 +1,4 @@
+import { connect } from 'react-redux';
 import { useState, useEffect, useRef } from 'react';
 import { Select, Popconfirm, notification } from 'antd';
 import { CarryOutOutlined, FileDoneOutlined } from '@ant-design/icons';
@@ -8,52 +9,22 @@ import hljs from 'highlight.js';
 import './github-dark.css';
 import './index.css';
 
-const { Option } = Select;
-
-const AddArticle = () => {
+const AddArticle = props => {
     // —————————————————————————标题相关————————————————————————————
     const inputTitle = useRef();
     const inputEng = useRef();
 
     // —————————————————————————标签相关————————————————————————————
-    // 所有标签
-    const [allTags, setAllTags] = useState([]);
     // 已选的标签
     const [selectTags, setSelectTags] = useState([]);
-    useEffect(() => {
-        // 从数据库获取所有标签，存入state
-        db.collection('tags')
-            .get()
-            .then(res => {
-                // 处理返回的数据为相应格式，并放入state
-                const Tags = res.data.map(item => (
-                    <Option key={item.content}>{item.content}</Option>
-                ));
-                setAllTags(Tags);
-            });
-    }, []);
     // 标签内容改变时触发的函数
     const tagsChange = value => {
         setSelectTags(value);
     };
 
     // —————————————————————————分类相关————————————————————————————
-    // 所有分类
-    const [allClasses, setAllClasses] = useState([]);
     // 已选的分类
     const [selectClasses, setSelectClasses] = useState('');
-    useEffect(() => {
-        // 从数据库获取所有分类，存入state
-        db.collection('classes')
-            .get()
-            .then(res => {
-                // 处理返回的数据为相应格式，并放入state
-                const classes = res.data.map(item => (
-                    <Option key={item.content}>{item.content}</Option>
-                ));
-                setAllClasses(classes);
-            });
-    }, []);
     const classChange = value => {
         setSelectClasses(value);
     };
@@ -163,7 +134,7 @@ const AddArticle = () => {
                         placeholder="请选择文章分类"
                         onChange={classChange}
                     >
-                        {allClasses}
+                        {props.classes}
                     </Select>
                 </div>
                 {/* 标签 */}
@@ -177,7 +148,7 @@ const AddArticle = () => {
                         placeholder="请选择文章标签"
                         onChange={tagsChange}
                     >
-                        {allTags}
+                        {props.tags}
                     </Select>
                 </div>
             </div>
@@ -199,4 +170,10 @@ const AddArticle = () => {
     );
 };
 
-export default AddArticle;
+export default connect(
+    state => ({
+        tags: state.tags,
+        classes: state.classes,
+    }),
+    {}
+)(AddArticle);

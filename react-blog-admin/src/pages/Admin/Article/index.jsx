@@ -4,23 +4,23 @@ import './index.css';
 const Article = props => {
     const columns = [
         {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
+            title: '标题',
+            dataIndex: 'title',
+            key: 'title',
             render: text => <a>{text}</a>,
         },
         {
-            title: 'Age',
+            title: '发布日期',
             dataIndex: 'age',
             key: 'age',
         },
         {
-            title: 'Address',
+            title: '分类',
             dataIndex: 'address',
             key: 'address',
         },
         {
-            title: 'Tags',
+            title: '标签',
             key: 'tags',
             dataIndex: 'tags',
             render: tags => (
@@ -40,12 +40,18 @@ const Article = props => {
             ),
         },
         {
-            title: 'Action',
+            title: 'URL',
+            dataIndex: 'address',
+            key: 'address',
+        },
+        {
+            title: '操作',
             key: 'action',
             render: (text, record) => (
                 <Space size="middle">
-                    <a>Invite {record.name}</a>
-                    <a>Delete</a>
+                    <a>查看</a>
+                    <a>修改 {record.name}</a>
+                    <a>删除</a>
                 </Space>
             ),
         },
@@ -53,21 +59,21 @@ const Article = props => {
     const data = [
         {
             key: '1',
-            name: 'John Brown',
+            title: 'John Brown',
             age: 32,
             address: 'New York No. 1 Lake Park',
             tags: ['nice', 'developer'],
         },
         {
             key: '2',
-            name: 'Jim Green',
+            title: 'Jim Green',
             age: 42,
             address: 'London No. 1 Lake Park',
             tags: ['loser'],
         },
         {
             key: '3',
-            name: 'Joe Black',
+            title: 'Joe Black',
             age: 32,
             address: 'Sidney No. 1 Lake Park',
             tags: ['cool', 'teacher'],

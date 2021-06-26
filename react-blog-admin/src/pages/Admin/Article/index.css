@@ -2,7 +2,7 @@
 .searchBox {
     position: relative;
     height: 50px;
-    background-color: rgb(208, 241, 57);
+    background-color: #a6aeb4;
 }
 
 .addArticleBtn {
@@ -11,6 +11,7 @@
     position: absolute;
     top: 50%;
     left: 10px;
+    font-weight: 700;
     transform: translate(0, -50%);
     background-color: #40a9ff;
     border-radius: 12px;
