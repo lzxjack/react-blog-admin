@@ -1,0 +1,101 @@
+/* 登录页面大盒子 */
+.loginBox {
+    height: 100%;
+    background-color: rgb(67, 236, 222);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 登录居中框 */
+.loginCenter {
+    position: relative;
+    width: 400px;
+    height: 300px;
+    background-color: rgb(56, 217, 238);
+    border-radius: 30px;
+    box-shadow: 0 0 16px rgba(0, 0, 0, 0.8);
+}
+
+/* 头像 */
+.avatar {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 120px;
+    width: 120px;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+}
+
+/* 邮箱盒子 */
+.EmailBox {
+    top: 80px;
+}
+
+/* 密码盒子 */
+.pwdBox {
+    top: 150px;
+}
+
+/* 邮箱盒子和密码盒子 */
+.EmailBox,
+.pwdBox {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+    height: 50px;
+    width: 320px;
+    background-color: #fff;
+    border-radius: 30px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    transition: all 0.2s;
+}
+
+/* 邮箱字、密码字 */
+.Email,
+.pwd {
+    height: 100%;
+    width: 70px;
+    user-select: none;
+    background-color: rgb(145, 255, 0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+}
+
+/* 邮箱输入框、密码输入框 */
+.inputEmail,
+.inputpwd {
+    width: 250px;
+    padding: 0 20px;
+    font-size: 20px;
+}
+
+/* 登录按钮 */
+.loginBtn {
+    position: absolute;
+    top: 220px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 100px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(145, 255, 0);
+    border-radius: 30px;
+    font-size: 20px;
+    user-select: none;
+    transition: all 0.2s;
+}
+
+/* 加入鼠标悬浮时阴影 */
+.EmailBox:hover,
+.pwdBox:hover,
+.loginBtn:hover {
+    box-shadow: 0 0 14px rgba(0, 0, 0, 0.6);
+}

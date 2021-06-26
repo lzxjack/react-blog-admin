@@ -1,0 +1,9 @@
+.AdminBox {
+    display: flex;
+    flex-direction: row;
+}
+
+/* nav占位box */
+.navBack {
+    width: 160px;
+}

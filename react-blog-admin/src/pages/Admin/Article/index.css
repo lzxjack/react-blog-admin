@@ -1,0 +1,28 @@
+/* 上方搜索框框 */
+.searchBox {
+    position: relative;
+    height: 50px;
+    background-color: rgb(208, 241, 57);
+}
+
+.addArticleBtn {
+    width: 54px;
+    height: 36px;
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translate(0, -50%);
+    background-color: #40a9ff;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    user-select: none;
+    transition: all 0.2s;
+}
+
+.addArticleBtn:hover {
+    background-color: #008cff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+}

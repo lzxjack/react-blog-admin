@@ -1,0 +1,67 @@
+/* 上方标题盒子 */
+.titleBox {
+    height: 50px;
+    background-color: #70a7da;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    /* border-radius: 12px; */
+}
+
+/* 标题输入框 */
+.inputTitle {
+    height: 36px;
+    padding: 0 20px;
+    font-size: 22px;
+    font-weight: 700;
+    background-color: #fff;
+    margin: 0 10px;
+    border-radius: 12px;
+    flex: 1;
+}
+
+/* 草稿、发布按钮 */
+.draftBtn,
+.pubBtn {
+    height: 36px;
+    width: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 12px;
+    font-size: 16px;
+    user-select: none;
+    font-weight: 700;
+    margin-right: 10px;
+    background-color: #63e95f;
+    transition: all 0.2s;
+}
+
+.draftBtn:hover,
+.pubBtn:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+    background-color: rgb(40, 81, 216);
+    color: #fff;
+}
+
+/* 内容区大盒子 */
+.contentBox {
+    display: flex;
+    flex-direction: row;
+}
+
+/* 编辑/显示区 */
+.inputRegion,
+.showRegion {
+    min-height: calc(100vh - 184px);
+    width: 50%;
+    background-color: #fff;
+    padding: 20px;
+    font-size: 18px;
+}
+
+.inputRegion {
+    background-color: #ddd;
+    outline: none;
+    word-wrap: break-word;
+}
