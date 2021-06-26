@@ -30,7 +30,7 @@
 
 /* ————————————————————————————表格区———————————————————————————————— */
 .articlesBox table {
-    border: 1px solid #ccc;
+    /* border: 1px solid #ccc; */
     width: 100%;
 }
 

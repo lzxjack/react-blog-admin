@@ -1,40 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Table } from 'antd';
+// import { Table } from 'antd';
 import moment from 'moment';
 import { db } from '../../../utils/cloudBase';
 import './index.css';
 
 const Article = props => {
-    const columns = [
-        {
-            title: '标题',
-            dataIndex: 'title',
-            key: 'id',
-        },
-        {
-            title: '发布日期',
-            dataIndex: 'date',
-            key: 'id',
-        },
-        {
-            title: '分类',
-            dataIndex: 'class',
-            key: 'id',
-        },
-        {
-            title: '标签',
-            dataIndex: 'tags',
-            key: 'id',
-        },
-        {
-            title: 'URL',
-            dataIndex: 'url',
-            key: 'id',
-        },
-        {
-            title: '操作',
-        },
-    ];
     const turnAddPage = () => {
         // 转到新建文章页面
         props.history.push('/admin/addArticle');
@@ -65,8 +35,33 @@ const Article = props => {
                     写文章
                 </div>
             </div>
-            <div className="articlesBox">
-                <Table columns={columns} dataSource={articles} bordered></Table>
+            <div className="articlesBox" border="1">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>标题</th>
+                            <th>发布日期</th>
+                            <th>分类</th>
+                            <th>标签</th>
+                            <th>URL</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {articles.map(item => {
+                            return (
+                                <tr key={item.id}>
+                                    <td>{item.title}</td>
+                                    <td>{item.date}</td>
+                                    <td>{item.class}</td>
+                                    <td>{item.tags}</td>
+                                    <td>{item.url}</td>
+                                    <td></td>
+                                </tr>
+                            );
+                        })}
+                    </tbody>
+                </table>
             </div>
         </>
     );
