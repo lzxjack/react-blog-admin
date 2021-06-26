@@ -39,3 +39,10 @@ a:active,
 a:focus {
     text-decoration: none !important;
 }
+
+@font-face {
+    font-family: 'FiraCode';
+    src: url(./FiraCode-Regular.ttf);
+    font-weight: normal;
+    font-style: normal;
+}

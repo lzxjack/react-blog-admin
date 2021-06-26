@@ -1,8 +1,7 @@
 .MainBox {
     margin: 20px 20px 0 20px;
-    min-height: calc(100vh - 134px);
-    /* 154=footer60 + Header54 + margin20 */
-    /* background-color: #fff; */
+    /* footer60 Header54 margin-top20 */
+    min-height: calc(100vh - 60px - 54px - 20px);
     /* overflow: hidden; */
     /* border-radius: 12px; */
 }
