@@ -22,7 +22,7 @@ const AddArticle = props => {
         // 判断是编辑页面再继续操作
         if (props.location.search !== '') {
             // console.log(props);
-            console.log('编辑状态');
+            // console.log('编辑状态');
             // 获取文章ID
             const id = props.location.search.split('?id=')[1];
             // 向数据库获取文章详情
@@ -50,8 +50,6 @@ const AddArticle = props => {
                     // 已有的正文存储到state
                     setText(mainContent);
                 });
-        } else {
-            console.log('新建文章');
         }
     }, [props.location.search]);
 
@@ -98,8 +96,8 @@ const AddArticle = props => {
         setText(e.target.innerText);
     };
 
-    // 存为草稿
-    const turnDraft = () => {
+    // 发布新草稿的函数
+    const pubToDraft = () => {
         db.collection('drafts')
             .add({
                 title: inputTitle.current.value,
@@ -111,8 +109,8 @@ const AddArticle = props => {
                 url: `https://lzxjack.top/${inputEng.current.value}`,
             })
             .then(() => {
-                // 清空所有内容
                 // 转到草稿页
+                props.history.replace('/admin/draft');
                 // 提示消息
                 notification.open({
                     message: '草稿保存成功！',
@@ -122,11 +120,21 @@ const AddArticle = props => {
                 });
             });
     };
+    // 存为草稿
+    const turnDraft = () => {
+        if (props.location.search !== '') {
+            // 已发布的文章转为草稿
+            // 1. 将文章从已发布的数据库中删除
+            const id = props.location.search.split('?id=')[1];
+            db.collection('articles').doc(id).remove();
+        }
+        // 发布新草稿
+        pubToDraft();
+    };
     // 发布文章
     const pubArticle = () => {
         if (props.location.search !== '') {
             // 更新旧文章
-            // 获取文章ID
             const id = props.location.search.split('?id=')[1];
             db.collection('articles')
                 .doc(id)
