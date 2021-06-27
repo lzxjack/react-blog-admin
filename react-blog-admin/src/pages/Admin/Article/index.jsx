@@ -149,6 +149,7 @@ const Article = props => {
                     size="middle"
                     className="Table"
                     bordered
+                    pagination={{ position: ['bottomCenter'], defaultPageSize: 11 }}
                     onHeaderCell={() => ({ style: { textAlign: 'center', fontWeoght: '700' } })}
                     columns={columns}
                     dataSource={articles}
