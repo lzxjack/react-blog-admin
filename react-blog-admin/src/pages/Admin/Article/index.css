@@ -1,8 +1,8 @@
-/* 上方搜索框框 */
+/* ————————————————————————————上方搜索框框———————————————————————————— */
 .searchBox {
     position: relative;
     height: 50px;
-    background-color: #a6aeb4;
+    background-color: #d1d1d1;
 }
 
 .addArticleBtn {
@@ -29,11 +29,12 @@
 }
 
 /* ————————————————————————————表格区———————————————————————————————— */
-.articlesBox table {
-    /* border: 1px solid #ccc; */
-    width: 100%;
+.ant-table-thead .ant-table-cell {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
 }
 
-.articlesBox table td {
+.ant-table-tbody .ant-table-cell {
     text-align: center;
 }

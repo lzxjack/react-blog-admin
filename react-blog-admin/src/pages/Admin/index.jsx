@@ -22,6 +22,7 @@ const Admin = props => {
                 ));
                 props.getTags(newTags);
             });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     useEffect(() => {
         // 向数据库获取所有分类
@@ -34,6 +35,7 @@ const Admin = props => {
                 ));
                 props.getClasses(newClasses);
             });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
