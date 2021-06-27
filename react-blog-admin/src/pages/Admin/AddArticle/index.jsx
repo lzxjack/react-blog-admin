@@ -43,6 +43,12 @@ const AddArticle = props => {
                     };
                     // 文章详情存储到state中
                     setArticleDetail(articleInfo);
+                    // 已有的标签存储到state
+                    setSelectTags(tags);
+                    // 已有的分类存储到state
+                    setSelectClasses(classes);
+                    // 已有的正文存储到state
+                    setText(mainContent);
                 });
         } else {
             console.log('新建文章');
@@ -118,27 +124,56 @@ const AddArticle = props => {
     };
     // 发布文章
     const pubArticle = () => {
-        db.collection('articles')
-            .add({
-                title: inputTitle.current.value,
-                titleEng: inputEng.current.value,
-                mainContent: text,
-                tags: selectTags,
-                classes: selectClasses,
-                date: new Date().getTime(),
-                url: `https://lzxjack.top/${inputEng.current.value}`,
-            })
-            .then(() => {
-                // 回到文章页
-                props.history.replace('/admin/article');
-                // 提示消息
-                notification.open({
-                    message: '文章发布成功！',
-                    placement: 'bottomLeft',
-                    icon: <CarryOutOutlined style={{ color: 'blue' }} />,
-                    duration: 3,
+        if (props.location.search !== '') {
+            // 更新旧文章
+            // 获取文章ID
+            const id = props.location.search.split('?id=')[1];
+            db.collection('articles')
+                .doc(id)
+                .update({
+                    title: inputTitle.current.value,
+                    titleEng: inputEng.current.value,
+                    mainContent: text,
+                    tags: selectTags,
+                    classes: selectClasses,
+                    date: new Date().getTime(),
+                    url: `https://lzxjack.top/${inputEng.current.value}`,
+                })
+                .then(() => {
+                    // 回到文章页
+                    props.history.replace('/admin/article');
+                    // 提示消息
+                    notification.open({
+                        message: '文章更新成功！',
+                        placement: 'bottomLeft',
+                        icon: <CarryOutOutlined style={{ color: 'blue' }} />,
+                        duration: 3,
+                    });
                 });
-            });
+        } else {
+            // 发布新文章
+            db.collection('articles')
+                .add({
+                    title: inputTitle.current.value,
+                    titleEng: inputEng.current.value,
+                    mainContent: text,
+                    tags: selectTags,
+                    classes: selectClasses,
+                    date: new Date().getTime(),
+                    url: `https://lzxjack.top/${inputEng.current.value}`,
+                })
+                .then(() => {
+                    // 回到文章页
+                    props.history.replace('/admin/article');
+                    // 提示消息
+                    notification.open({
+                        message: '文章发布成功！',
+                        placement: 'bottomLeft',
+                        icon: <CarryOutOutlined style={{ color: 'blue' }} />,
+                        duration: 3,
+                    });
+                });
+        }
     };
     return (
         <>
@@ -169,12 +204,12 @@ const AddArticle = props => {
                 <Popconfirm
                     className="pubBtn"
                     placement="bottomRight"
-                    title="确定发布文章吗？"
+                    title={`确定${props.location.search !== '' ? '更新' : '发布'}文章吗？`}
                     onConfirm={pubArticle}
                     okText="Yes"
                     cancelText="No"
                 >
-                    发布文章
+                    {props.location.search !== '' ? '更新' : '发布'}文章
                 </Popconfirm>
             </div>
 
@@ -187,7 +222,8 @@ const AddArticle = props => {
                         showSearch
                         style={{ width: '300px' }}
                         placeholder="请选择文章分类"
-                        value={props.location.search !== '' ? articleDetail.classes : ''}
+                        key={props.location.search !== '' ? articleDetail.classes : ''}
+                        defaultValue={props.location.search !== '' ? articleDetail.classes : ''}
                         onChange={classChange}
                     >
                         {props.classes}
@@ -200,9 +236,10 @@ const AddArticle = props => {
                         mode="multiple"
                         showSearch
                         showArrow
-                        style={{ width: '500px' }}
+                        style={{ width: '600px' }}
                         placeholder="请选择文章标签"
-                        value={props.location.search !== '' ? articleDetail.tags : []}
+                        key={props.location.search !== '' ? articleDetail.tags : []}
+                        defaultValue={props.location.search !== '' ? articleDetail.tags : []}
                         onChange={tagsChange}
                     >
                         {props.tags}
