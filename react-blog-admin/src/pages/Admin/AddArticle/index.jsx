@@ -10,6 +10,45 @@ import './github-dark.css';
 import './index.css';
 
 const AddArticle = props => {
+    // ——————————————————是否是编辑状态的flag————————————————————
+    // const [isEdit, setIsEdit] = useState(false);
+    // useEffect(() => {
+    //     setIsEdit(props.location.search ? true : false);
+    // }, [props.location.search]);
+
+    // ——————————————————编辑时，根据文章ID获取文章详情————————————————————
+    const [articleDetail, setArticleDetail] = useState({});
+    useEffect(() => {
+        // 判断是编辑页面再继续操作
+        if (props.location.search !== '') {
+            // console.log(props);
+            console.log('编辑状态');
+            // 获取文章ID
+            const id = props.location.search.split('?id=')[1];
+            // 向数据库获取文章详情
+            db.collection('articles')
+                .doc(id)
+                .get()
+                .then(res => {
+                    // 从res.data中解构赋值
+                    const { title, titleEng, mainContent, tags, classes } = res.data[0];
+                    // console.log(tags);
+                    const articleInfo = {
+                        id,
+                        title,
+                        titleEng,
+                        mainContent,
+                        tags,
+                        classes,
+                    };
+                    // 文章详情存储到state中
+                    setArticleDetail(articleInfo);
+                });
+        } else {
+            console.log('新建文章');
+        }
+    }, [props.location.search]);
+
     // —————————————————————————标题相关————————————————————————————
     const inputTitle = useRef();
     const inputEng = useRef();
@@ -90,8 +129,8 @@ const AddArticle = props => {
                 url: `https://lzxjack.top/${inputEng.current.value}`,
             })
             .then(() => {
-                // 清空所有内容
                 // 回到文章页
+                props.history.replace('/admin/article');
                 // 提示消息
                 notification.open({
                     message: '文章发布成功！',
@@ -105,8 +144,18 @@ const AddArticle = props => {
         <>
             {/* 标题输入区 */}
             <div className="titleBox">
-                <input className="inputTitle" ref={inputTitle} placeholder="请输入文章标题..." />
-                <input className="inputEng" ref={inputEng} placeholder="请输入英文标题..." />
+                <input
+                    className="inputTitle"
+                    ref={inputTitle}
+                    placeholder="请输入文章标题..."
+                    defaultValue={props.location.search !== '' ? articleDetail.title : ''}
+                />
+                <input
+                    className="inputEng"
+                    ref={inputEng}
+                    placeholder="请输入英文标题..."
+                    defaultValue={props.location.search !== '' ? articleDetail.titleEng : ''}
+                />
                 <Popconfirm
                     className="draftBtn"
                     placement="bottomRight"
@@ -138,6 +187,7 @@ const AddArticle = props => {
                         showSearch
                         style={{ width: '300px' }}
                         placeholder="请选择文章分类"
+                        value={props.location.search !== '' ? articleDetail.classes : ''}
                         onChange={classChange}
                     >
                         {props.classes}
@@ -152,6 +202,7 @@ const AddArticle = props => {
                         showArrow
                         style={{ width: '500px' }}
                         placeholder="请选择文章标签"
+                        value={props.location.search !== '' ? articleDetail.tags : []}
                         onChange={tagsChange}
                     >
                         {props.tags}
@@ -164,7 +215,10 @@ const AddArticle = props => {
                     className="inputRegion"
                     onInput={textChange}
                     contentEditable="plaintext-only"
-                ></div>
+                    suppressContentEditableWarning
+                >
+                    {props.location.search !== '' ? articleDetail.mainContent : ''}
+                </div>
                 <div
                     className="showRegion"
                     dangerouslySetInnerHTML={{

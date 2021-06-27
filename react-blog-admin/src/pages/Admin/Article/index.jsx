@@ -72,7 +72,10 @@ const Article = props => {
             key: 'id',
             render: record => (
                 <Space size="middle">
-                    <Button type="primary">修改</Button>
+                    <Button type="primary" onClick={() => editArticle(record.id)}>
+                        修改
+                    </Button>
+
                     <Popconfirm
                         placement="topRight"
                         title="确定要删除该文章吗？"
@@ -127,6 +130,12 @@ const Article = props => {
                 // 获取最新文章数据
                 getNewArticles();
             });
+    };
+    // 修改文章
+    const editArticle = id => {
+        // console.log(id);
+        // 跳转到添加文章页面，并传入该文章id
+        props.history.replace(`/admin/addArticle/?id=${id}`);
     };
     return (
         <>
