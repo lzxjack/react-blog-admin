@@ -232,12 +232,21 @@ const AddArticle = props => {
                 <Popconfirm
                     className="pubBtn"
                     placement="bottomRight"
-                    title={`确定${props.location.search !== '' ? '更新' : '发布'}文章吗？`}
+                    title={`确定${
+                        props.location.search !== '' &&
+                        !qs.parse(props.location.search.slice(1)).isDraft
+                            ? '更新'
+                            : '发布'
+                    }文章吗？`}
                     onConfirm={turnArticle}
                     okText="Yes"
                     cancelText="No"
                 >
-                    {props.location.search !== '' ? '更新' : '发布'}文章
+                    {props.location.search !== '' &&
+                    !qs.parse(props.location.search.slice(1)).isDraft
+                        ? '更新'
+                        : '发布'}
+                    文章
                 </Popconfirm>
             </div>
 

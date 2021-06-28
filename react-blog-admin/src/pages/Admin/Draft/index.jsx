@@ -8,6 +8,7 @@ import './index.css';
 const Draft = props => {
     // 标识组件是否挂载的state
     const [isMounted, setIsMounted] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const [drafts, setDrafts] = useState([]);
 
     useEffect(() => {
@@ -29,6 +30,10 @@ const Draft = props => {
             title: '保存日期',
             dataIndex: 'date',
             key: 'id',
+            sorter: (a, b) => a.date - b.date,
+            render: text => <>{moment(text).format('YYYY-MM-DD HH:mm:ss')}</>,
+            sortDirections: ['descend'],
+            defaultSortOrder: ['ascend'],
         },
         {
             title: '分类',
@@ -93,6 +98,7 @@ const Draft = props => {
     ];
     // 获取所有最新草稿，并保存到state
     const getNewDrafts = () => {
+        setIsLoading(true);
         db.collection('drafts')
             .get()
             .then(res => {
@@ -100,13 +106,15 @@ const Draft = props => {
                     return {
                         id: item._id,
                         class: item.classes,
-                        date: moment(item.date).format('YYYY-MM-DD HH:mm:ss'),
+                        // date: moment(item.date).format('YYYY-MM-DD HH:mm:ss'),
+                        date: item.date,
                         tags: item.tags,
                         title: item.title,
                         url: item.url,
                     };
                 });
                 setDrafts(newDrafts);
+                setIsLoading(false);
             });
     };
     // 编辑草稿
@@ -137,11 +145,13 @@ const Draft = props => {
                 size="middle"
                 className="Table"
                 bordered
+                loading={isLoading}
                 pagination={{ position: ['bottomCenter'], defaultPageSize: 11 }}
                 onHeaderCell={() => ({ style: { textAlign: 'center', fontWeoght: '700' } })}
                 columns={columns}
                 dataSource={drafts}
                 rowKey={columns => columns.id}
+                showSorterTooltip={false}
             />
         </>
     );

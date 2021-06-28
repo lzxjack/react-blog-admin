@@ -8,6 +8,7 @@ import './index.css';
 const Article = props => {
     // 标识组件是否挂载的state
     const [isMounted, setIsMounted] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const [articles, setArticles] = useState([]);
 
     useEffect(() => {
@@ -29,6 +30,10 @@ const Article = props => {
             title: '发布日期',
             dataIndex: 'date',
             key: 'id',
+            sorter: (a, b) => a.date - b.date,
+            render: text => <>{moment(text).format('YYYY-MM-DD HH:mm:ss')}</>,
+            sortDirections: ['descend'],
+            defaultSortOrder: ['ascend'],
         },
         {
             title: '分类',
@@ -93,6 +98,7 @@ const Article = props => {
     ];
     // 获取最新所有文章，并放入state
     const getNewArticles = () => {
+        setIsLoading(true);
         db.collection('articles')
             .get()
             .then(res => {
@@ -100,13 +106,15 @@ const Article = props => {
                     return {
                         id: item._id,
                         class: item.classes,
-                        date: moment(item.date).format('YYYY-MM-DD HH:mm:ss'),
+                        // date: moment(item.date).format('YYYY-MM-DD HH:mm:ss'),
+                        date: item.date,
                         tags: item.tags,
                         title: item.title,
                         url: item.url,
                     };
                 });
                 setArticles(newArticles);
+                setIsLoading(false);
             });
     };
     // 新建文章
@@ -147,11 +155,13 @@ const Article = props => {
                 size="middle"
                 className="Table"
                 bordered
+                loading={isLoading}
                 pagination={{ position: ['bottomCenter'], defaultPageSize: 11 }}
                 onHeaderCell={() => ({ style: { textAlign: 'center', fontWeoght: '700' } })}
                 columns={columns}
                 dataSource={articles}
                 rowKey={columns => columns.id}
+                showSorterTooltip={false}
             />
         </>
     );
