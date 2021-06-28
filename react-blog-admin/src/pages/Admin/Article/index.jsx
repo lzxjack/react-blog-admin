@@ -133,9 +133,8 @@ const Article = props => {
     };
     // 修改文章
     const editArticle = id => {
-        // console.log(id);
         // 跳转到添加文章页面，并传入该文章id
-        props.history.replace(`/admin/addArticle/?id=${id}`);
+        props.history.replace(`/admin/addArticle/?id=${id}&isDraft=`);
     };
     return (
         <>
@@ -144,18 +143,16 @@ const Article = props => {
                     写文章
                 </div>
             </div>
-            <div className="articlesBox" border="1">
-                <Table
-                    size="middle"
-                    className="Table"
-                    bordered
-                    pagination={{ position: ['bottomCenter'], defaultPageSize: 11 }}
-                    onHeaderCell={() => ({ style: { textAlign: 'center', fontWeoght: '700' } })}
-                    columns={columns}
-                    dataSource={articles}
-                    rowKey={columns => columns.id}
-                />
-            </div>
+            <Table
+                size="middle"
+                className="Table"
+                bordered
+                pagination={{ position: ['bottomCenter'], defaultPageSize: 11 }}
+                onHeaderCell={() => ({ style: { textAlign: 'center', fontWeoght: '700' } })}
+                columns={columns}
+                dataSource={articles}
+                rowKey={columns => columns.id}
+            />
         </>
     );
 };

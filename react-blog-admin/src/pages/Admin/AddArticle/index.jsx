@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { useState, useEffect, useRef } from 'react';
 import { Select, Popconfirm, notification } from 'antd';
 import { CarryOutOutlined, FileDoneOutlined } from '@ant-design/icons';
+import qs from 'qs';
 import marked from 'marked';
 import { db } from '../../../utils/cloudBase';
 import hljs from 'highlight.js';
@@ -10,46 +11,45 @@ import './github-dark.css';
 import './index.css';
 
 const AddArticle = props => {
-    // ——————————————————是否是编辑状态的flag————————————————————
-    // const [isEdit, setIsEdit] = useState(false);
-    // useEffect(() => {
-    //     setIsEdit(props.location.search ? true : false);
-    // }, [props.location.search]);
-
     // ——————————————————编辑时，根据文章ID获取文章详情————————————————————
     const [articleDetail, setArticleDetail] = useState({});
+    // 从数据库获取文章/草稿详情的函数，参数：数据库名称、文章/草稿ID
+    const getDetailFromDB = (dbName, id) => {
+        db.collection(dbName)
+            .doc(id)
+            .get()
+            .then(res => {
+                // 从res.data中解构赋值
+                const { title, titleEng, mainContent, tags, classes } = res.data[0];
+                const articleInfo = {
+                    title,
+                    titleEng,
+                    mainContent,
+                    tags,
+                    classes,
+                };
+                // 文章详情存储到state中
+                setArticleDetail(articleInfo);
+                // 已有的标签存储到state
+                setSelectTags(tags);
+                // 已有的分类存储到state
+                setSelectClasses(classes);
+                // 已有的正文存储到state
+                setText(mainContent);
+            });
+    };
     useEffect(() => {
         // 判断是编辑页面再继续操作
         if (props.location.search !== '') {
-            // console.log(props);
-            // console.log('编辑状态');
-            // 获取文章ID
-            const id = props.location.search.split('?id=')[1];
-            // 向数据库获取文章详情
-            db.collection('articles')
-                .doc(id)
-                .get()
-                .then(res => {
-                    // 从res.data中解构赋值
-                    const { title, titleEng, mainContent, tags, classes } = res.data[0];
-                    // console.log(tags);
-                    const articleInfo = {
-                        id,
-                        title,
-                        titleEng,
-                        mainContent,
-                        tags,
-                        classes,
-                    };
-                    // 文章详情存储到state中
-                    setArticleDetail(articleInfo);
-                    // 已有的标签存储到state
-                    setSelectTags(tags);
-                    // 已有的分类存储到state
-                    setSelectClasses(classes);
-                    // 已有的正文存储到state
-                    setText(mainContent);
-                });
+            const params = qs.parse(props.location.search.slice(1));
+            const { id, isDraft } = params;
+            if (!isDraft) {
+                // 向数据库获取文章详情
+                getDetailFromDB('articles', id);
+            } else {
+                // 向数据库获取草稿详情
+                getDetailFromDB('drafts', id);
+            }
         }
     }, [props.location.search]);
 
@@ -72,7 +72,7 @@ const AddArticle = props => {
         setSelectClasses(value);
     };
 
-    // —————————————————————————内容相关————————————————————————————
+    // —————————————————————————正文相关————————————————————————————
     // 编辑区文字
     const [text, setText] = useState('');
     useEffect(() => {
@@ -95,10 +95,18 @@ const AddArticle = props => {
     const textChange = e => {
         setText(e.target.innerText);
     };
-
-    // 发布新草稿的函数
-    const pubToDraft = () => {
-        db.collection('drafts')
+    // ——————————————————————关羽两个按钮的函数——————————————————————
+    // 添加到文章数据库/草稿数据库的函数，参数：数据库名
+    const addToDB = dbName => {
+        const page = dbName === 'articles' ? '/admin/article' : '/admin/draft';
+        const message = dbName === 'articles' ? '文章发布成功！' : '草稿保存成功！';
+        const icon =
+            dbName === 'articles' ? (
+                <CarryOutOutlined style={{ color: 'blue' }} />
+            ) : (
+                <FileDoneOutlined style={{ color: 'blue' }} />
+            );
+        db.collection(dbName)
             .add({
                 title: inputTitle.current.value,
                 titleEng: inputEng.current.value,
@@ -109,78 +117,90 @@ const AddArticle = props => {
                 url: `https://lzxjack.top/${inputEng.current.value}`,
             })
             .then(() => {
-                // 转到草稿页
-                props.history.replace('/admin/draft');
+                // 转到草稿页/文章页
+                props.history.replace(page);
                 // 提示消息
                 notification.open({
-                    message: '草稿保存成功！',
+                    message,
                     placement: 'bottomLeft',
-                    icon: <FileDoneOutlined style={{ color: 'blue' }} />,
+                    icon,
                     duration: 3,
                 });
             });
     };
-    // 存为草稿
-    const turnDraft = () => {
-        if (props.location.search !== '') {
-            // 已发布的文章转为草稿
-            // 1. 将文章从已发布的数据库中删除
-            const id = props.location.search.split('?id=')[1];
-            db.collection('articles').doc(id).remove();
-        }
-        // 发布新草稿
-        pubToDraft();
+    // 从文章数据库/草稿数据库删除的函数，参数：数据库名、文章id
+    const removeFromDB = (dbName, id) => {
+        db.collection(dbName).doc(id).remove();
     };
-    // 发布文章
-    const pubArticle = () => {
-        if (props.location.search !== '') {
-            // 更新旧文章
-            const id = props.location.search.split('?id=')[1];
-            db.collection('articles')
-                .doc(id)
-                .update({
-                    title: inputTitle.current.value,
-                    titleEng: inputEng.current.value,
-                    mainContent: text,
-                    tags: selectTags,
-                    classes: selectClasses,
-                    date: new Date().getTime(),
-                    url: `https://lzxjack.top/${inputEng.current.value}`,
-                })
-                .then(() => {
-                    // 回到文章页
-                    props.history.replace('/admin/article');
-                    // 提示消息
-                    notification.open({
-                        message: '文章更新成功！',
-                        placement: 'bottomLeft',
-                        icon: <CarryOutOutlined style={{ color: 'blue' }} />,
-                        duration: 3,
-                    });
+    // 从文章数据库/草稿数据库更新的函数，参数：数据库名、文章id
+    const updateFromDB = (dbName, id) => {
+        const page = dbName === 'articles' ? '/admin/article' : '/admin/draft';
+        const message = dbName === 'articles' ? '文章更新成功！' : '草稿保存成功！';
+        const icon =
+            dbName === 'articles' ? (
+                <CarryOutOutlined style={{ color: 'blue' }} />
+            ) : (
+                <FileDoneOutlined style={{ color: 'blue' }} />
+            );
+        db.collection(dbName)
+            .doc(id)
+            .update({
+                title: inputTitle.current.value,
+                titleEng: inputEng.current.value,
+                mainContent: text,
+                tags: selectTags,
+                classes: selectClasses,
+                date: new Date().getTime(),
+                url: `https://lzxjack.top/${inputEng.current.value}`,
+            })
+            .then(() => {
+                // 回到文章页
+                props.history.replace(page);
+                // 提示消息
+                notification.open({
+                    message,
+                    placement: 'bottomLeft',
+                    icon,
+                    duration: 3,
                 });
+            });
+    };
+    // 存为草稿 按钮1
+    const turnDraft = () => {
+        if (props.location.search === '') {
+            // 新建文章按钮进来的
+            addToDB('drafts');
         } else {
-            // 发布新文章
-            db.collection('articles')
-                .add({
-                    title: inputTitle.current.value,
-                    titleEng: inputEng.current.value,
-                    mainContent: text,
-                    tags: selectTags,
-                    classes: selectClasses,
-                    date: new Date().getTime(),
-                    url: `https://lzxjack.top/${inputEng.current.value}`,
-                })
-                .then(() => {
-                    // 回到文章页
-                    props.history.replace('/admin/article');
-                    // 提示消息
-                    notification.open({
-                        message: '文章发布成功！',
-                        placement: 'bottomLeft',
-                        icon: <CarryOutOutlined style={{ color: 'blue' }} />,
-                        duration: 3,
-                    });
-                });
+            // 修改按钮进来的
+            const params = qs.parse(props.location.search.slice(1));
+            const { id, isDraft } = params;
+            if (isDraft) {
+                // 草稿页的修改按钮
+                updateFromDB('drafts', id);
+            } else {
+                // 文章页的修改按钮
+                removeFromDB('articles', id);
+                addToDB('drafts');
+            }
+        }
+    };
+    // 发布文章 按钮2
+    const turnArticle = () => {
+        if (props.location.search === '') {
+            // 新建文章按钮进来的
+            addToDB('articles');
+        } else {
+            // 修改按钮进来的
+            const params = qs.parse(props.location.search.slice(1));
+            const { id, isDraft } = params;
+            if (isDraft) {
+                // 草稿页的修改按钮
+                removeFromDB('drafts', id);
+                addToDB('articles');
+            } else {
+                // 文章页的修改按钮
+                updateFromDB('articles', id);
+            }
         }
     };
     return (
@@ -213,7 +233,7 @@ const AddArticle = props => {
                     className="pubBtn"
                     placement="bottomRight"
                     title={`确定${props.location.search !== '' ? '更新' : '发布'}文章吗？`}
-                    onConfirm={pubArticle}
+                    onConfirm={turnArticle}
                     okText="Yes"
                     cancelText="No"
                 >
