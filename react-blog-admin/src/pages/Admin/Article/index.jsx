@@ -1,21 +1,42 @@
-import { useState, useEffect } from 'react';
-import { Table, Tag, Space, Button, Popconfirm, notification, Input } from 'antd';
-import { DeleteOutlined, AudioOutlined } from '@ant-design/icons';
+import { useState, useEffect, useRef } from 'react';
+import { Table, Tag, Space, Button, Popconfirm, notification, message } from 'antd';
+import { DeleteOutlined, SearchOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { db } from '../../../utils/cloudBase';
 import './index.css';
 
 const Article = props => {
-    // ——————————————————————搜索框——————————————————————
-    const { Search } = Input;
-    const onPressEnter = () => {
-        console.log(111111111);
-    };
+    // 需要展示文章的state
+    const [articlesShow, setArticlesShow] = useState([]);
+    // 存放所有文章的state
+    const [articles, setArticles] = useState([]);
 
+    // ——————————————————————搜索框——————————————————————
+    const searchText = useRef();
+    const searchKeyUp = e => {
+        if (e.keyCode === 13) search();
+    };
+    const search = () => {
+        // 获取输入的搜索关键字
+        const keyWords = searchText.current.value;
+        if (!keyWords) {
+            message.info('请输入文章标题！');
+            return;
+        }
+        // 过滤出搜索到的文章
+        const newArticlesShow = articles.filter(item => item.title.indexOf(keyWords) !== -1);
+        // 显示
+        setArticlesShow(newArticlesShow);
+    };
+    // 输入框变化的回调
+    const clearKeyWords = () => {
+        const keyWords = searchText.current.value;
+        // 如果输入框内容为空，则展示所有文章
+        if (!keyWords) setArticlesShow(articles);
+    };
     // 标识组件是否挂载的state
     const [isMounted, setIsMounted] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
-    const [articles, setArticles] = useState([]);
 
     useEffect(() => {
         isMounted && getNewArticles();
@@ -119,6 +140,9 @@ const Article = props => {
                         url: item.url,
                     };
                 });
+                // 用作展示的state
+                setArticlesShow(newArticles);
+                // 存放所有文章的state
                 setArticles(newArticles);
                 setIsLoading(false);
             });
@@ -148,15 +172,17 @@ const Article = props => {
     return (
         <>
             <div className="searchBox">
-                <Search
+                <input
+                    type="text"
                     className="Search"
+                    ref={searchText}
                     placeholder="输入文章标题..."
-                    size="large"
-                    enterButton
-                    onPressEnter={onPressEnter}
-                    onSearch={onPressEnter}
-                    style={{ width: 500 }}
+                    onKeyUp={searchKeyUp}
+                    onChange={clearKeyWords}
                 />
+                <div className="searchBtn" onClick={search}>
+                    <SearchOutlined />
+                </div>
             </div>
             <Table
                 size="middle"
@@ -172,7 +198,7 @@ const Article = props => {
                 }}
                 onHeaderCell={() => ({ style: { textAlign: 'center', fontWeoght: '700' } })}
                 columns={columns}
-                dataSource={articles}
+                dataSource={articlesShow}
                 rowKey={columns => columns.id}
                 showSorterTooltip={false}
             />

@@ -6,10 +6,39 @@
 }
 
 .Search {
+    background-color: #fff;
     position: absolute;
     top: 50%;
     left: 6px;
     transform: translate(0, -50%);
+    width: 500px;
+    height: 40px;
+    font-size: 16px;
+    padding: 0 10px;
+    transition: all 0.3s;
+}
+.Search:hover {
+    box-shadow: 0 0 8px #1890ff;
+}
+.searchBtn {
+    width: 50px;
+    height: 40px;
+    background-color: #1890ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    color: #fff;
+    position: absolute;
+    top: 50%;
+    left: 506px;
+    transform: translate(0, -50%);
+    transition: all 0.3s;
+    user-select: none;
+}
+.searchBtn:hover {
+    background-color: #40a9ff;
+    box-shadow: 0 0 4px #1890ff;
 }
 
 /* ————————————————————————————表格区———————————————————————————————— */

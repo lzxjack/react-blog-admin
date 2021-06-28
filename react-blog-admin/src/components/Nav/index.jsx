@@ -10,7 +10,7 @@ const Nav = props => {
     return (
         <>
             <div className="NavBox">
-                <div className="appName">飞鸟</div>
+                <div className="appName">博客管理系统</div>
                 <div className="newArticleBtn" onClick={turnAddPage}>
                     写文章
                 </div>
