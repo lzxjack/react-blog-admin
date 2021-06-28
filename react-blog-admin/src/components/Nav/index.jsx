@@ -1,11 +1,19 @@
 import MyNavLink from '../MyNavLink';
+import { withRouter } from 'react-router-dom';
 import './index.css';
 
-const Nav = () => {
+const Nav = props => {
+    const turnAddPage = () => {
+        // 转到新建文章页面
+        props.history.push('/admin/addArticle');
+    };
     return (
         <>
             <div className="NavBox">
                 <div className="appName">飞鸟</div>
+                <div className="newArticleBtn" onClick={turnAddPage}>
+                    写文章
+                </div>
                 <ul className="funcBtns">
                     <li>
                         <MyNavLink to="/admin/home" className="funcLi">
@@ -63,4 +71,4 @@ const Nav = () => {
     );
 };
 
-export default Nav;
+export default withRouter(Nav);

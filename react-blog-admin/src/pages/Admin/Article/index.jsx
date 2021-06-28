@@ -1,11 +1,17 @@
 import { useState, useEffect } from 'react';
-import { Table, Tag, Space, Button, Popconfirm, notification } from 'antd';
-import { DeleteOutlined } from '@ant-design/icons';
+import { Table, Tag, Space, Button, Popconfirm, notification, Input } from 'antd';
+import { DeleteOutlined, AudioOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { db } from '../../../utils/cloudBase';
 import './index.css';
 
 const Article = props => {
+    // ——————————————————————搜索框——————————————————————
+    const { Search } = Input;
+    const onPressEnter = () => {
+        console.log(111111111);
+    };
+
     // 标识组件是否挂载的state
     const [isMounted, setIsMounted] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
@@ -117,11 +123,6 @@ const Article = props => {
                 setIsLoading(false);
             });
     };
-    // 新建文章
-    const turnAddPage = () => {
-        // 转到新建文章页面
-        props.history.push('/admin/addArticle');
-    };
     // 删除文章
     const deleteArticle = id => {
         db.collection('articles')
@@ -147,16 +148,28 @@ const Article = props => {
     return (
         <>
             <div className="searchBox">
-                <div className="addArticleBtn" onClick={turnAddPage}>
-                    写文章
-                </div>
+                <Search
+                    className="Search"
+                    placeholder="输入文章标题..."
+                    size="large"
+                    enterButton
+                    onPressEnter={onPressEnter}
+                    onSearch={onPressEnter}
+                    style={{ width: 500 }}
+                />
             </div>
             <Table
                 size="middle"
                 className="Table"
                 bordered
                 loading={isLoading}
-                pagination={{ position: ['bottomCenter'], defaultPageSize: 11 }}
+                pagination={{
+                    position: ['bottomCenter'],
+                    defaultPageSize: 11,
+                    hideOnSinglePage: true,
+                    showTitle: false,
+                    size: ['small'],
+                }}
                 onHeaderCell={() => ({ style: { textAlign: 'center', fontWeoght: '700' } })}
                 columns={columns}
                 dataSource={articles}

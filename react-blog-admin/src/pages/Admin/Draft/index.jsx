@@ -3,7 +3,6 @@ import { Table, Tag, Space, Button, Popconfirm, notification } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { db } from '../../../utils/cloudBase';
-import './index.css';
 
 const Draft = props => {
     // 标识组件是否挂载的state
@@ -146,7 +145,13 @@ const Draft = props => {
                 className="Table"
                 bordered
                 loading={isLoading}
-                pagination={{ position: ['bottomCenter'], defaultPageSize: 11 }}
+                pagination={{
+                    position: ['bottomCenter'],
+                    defaultPageSize: 11,
+                    hideOnSinglePage: true,
+                    showTitle: false,
+                    size: ['small'],
+                }}
                 onHeaderCell={() => ({ style: { textAlign: 'center', fontWeoght: '700' } })}
                 columns={columns}
                 dataSource={drafts}

@@ -5,7 +5,7 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    /* border-radius: 12px; */
+    /*  */
 }
 
 /* 标题输入框 */
@@ -16,7 +16,6 @@
     font-size: 22px;
     font-weight: 700;
     background-color: #fff;
-    border-radius: 12px;
 }
 
 .inputTitle {
@@ -36,7 +35,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 12px;
+
     font-size: 16px;
     user-select: none;
     font-weight: 700;
@@ -128,7 +127,7 @@
     display: block;
     max-width: 100%;
     margin: 14px auto;
-    border-radius: 12px;
+
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
 }
 
