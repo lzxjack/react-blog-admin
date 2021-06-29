@@ -153,6 +153,8 @@ const Article = props => {
             .doc(id)
             .remove()
             .then(() => {
+                // 获取最新文章数据
+                getNewArticles();
                 // 删除成功，提示消息
                 notification.open({
                     message: '删除成功',
@@ -160,8 +162,6 @@ const Article = props => {
                     placement: 'bottomLeft',
                     duration: 2,
                 });
-                // 获取最新文章数据
-                getNewArticles();
             });
     };
     // 修改文章
@@ -169,9 +169,16 @@ const Article = props => {
         // 跳转到添加文章页面，并传入该文章id
         props.history.replace(`/admin/addArticle/?id=${id}&isDraft=`);
     };
+    // 添加文章：转到新建文章页面
+    const turnAddPage = () => {
+        props.history.push('/admin/addArticle');
+    };
     return (
         <>
             <div className="searchBox">
+                <div type="primary" className="addArticleBtn" size="large" onClick={turnAddPage}>
+                    写文章
+                </div>
                 <input
                     type="text"
                     className="Search"
@@ -196,7 +203,6 @@ const Article = props => {
                     showTitle: false,
                     size: ['small'],
                 }}
-                onHeaderCell={() => ({ style: { textAlign: 'center', fontWeoght: '700' } })}
                 columns={columns}
                 dataSource={articlesShow}
                 rowKey={columns => columns.id}

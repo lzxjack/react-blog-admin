@@ -15,38 +15,17 @@
     transform: translate(-50%, 0);
     height: 40px;
     width: 80%;
-    /* background-color: #334454; */
+    background-color: #334454;
     line-height: 40px;
     text-align: center;
     font-size: 18px;
     user-select: none;
 }
 
-.newArticleBtn {
-    position: absolute;
-    top: 68px;
-    left: 50%;
-    transform: translate(-50%, 0);
-    height: 40px;
-    width: 80%;
-    background-color: #0068bd;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 16px;
-    user-select: none;
-    transition: all 0.2s;
-}
-
-.newArticleBtn:hover {
-    box-shadow: 0 0 14px rgba(255, 255, 255, 0.6);
-    background-color: #008cff;
-}
-
 /* ul */
 .funcBtns {
     position: absolute;
-    top: 122px;
+    top: 68px;
     width: 100%;
     padding: 0;
 }

@@ -105,7 +105,6 @@ const Draft = props => {
                     return {
                         id: item._id,
                         class: item.classes,
-                        // date: moment(item.date).format('YYYY-MM-DD HH:mm:ss'),
                         date: item.date,
                         tags: item.tags,
                         title: item.title,
@@ -152,7 +151,6 @@ const Draft = props => {
                     showTitle: false,
                     size: ['small'],
                 }}
-                onHeaderCell={() => ({ style: { textAlign: 'center', fontWeoght: '700' } })}
                 columns={columns}
                 dataSource={drafts}
                 rowKey={columns => columns.id}

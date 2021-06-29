@@ -5,11 +5,30 @@
     background-color: #b9dfff;
 }
 
+.addArticleBtn {
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    transform: translate(0, -50%);
+    height: 40px;
+    width: 70px;
+    background-color: #1890ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    user-select: none;
+    transition: all 0.2s;
+    transition: all 0.3s;
+    user-select: none;
+    color: #fff;
+}
+
 .Search {
     background-color: #fff;
     position: absolute;
     top: 50%;
-    left: 6px;
+    left: 80px;
     transform: translate(0, -50%);
     width: 500px;
     height: 40px;
@@ -31,12 +50,13 @@
     color: #fff;
     position: absolute;
     top: 50%;
-    left: 506px;
+    left: 580px;
     transform: translate(0, -50%);
     transition: all 0.3s;
     user-select: none;
 }
-.searchBtn:hover {
+.searchBtn:hover,
+.addArticleBtn:hover {
     background-color: #40a9ff;
     box-shadow: 0 0 4px #1890ff;
 }
