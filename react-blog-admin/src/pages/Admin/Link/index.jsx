@@ -202,7 +202,7 @@ const Link = () => {
     return (
         <>
             <div className="searchBox">
-                <div type="primary" className="addLinkBtn" size="large" onClick={showAddLink}>
+                <div type="primary" className="addLinkBtn" onClick={showAddLink}>
                     添加友链
                 </div>
                 <Modal
@@ -212,10 +212,10 @@ const Link = () => {
                     onCancel={addLinkCancel}
                 >
                     <div className="linkInputBox">
-                        <div className="linkName">
-                            <div className="linkText">name：</div>
+                        <div className="modalInputBox">
+                            <div className="modalInputKey">name：</div>
                             <input
-                                className="linkInput"
+                                className="modalInputValue"
                                 type="text"
                                 value={name}
                                 onChange={e => {
@@ -223,10 +223,10 @@ const Link = () => {
                                 }}
                             />
                         </div>
-                        <div className="linkLink">
-                            <div className="linkText">link：</div>
+                        <div className="modalInputBox">
+                            <div className="modalInputKey">link：</div>
                             <input
-                                className="linkInput"
+                                className="modalInputValue"
                                 type="text"
                                 value={link}
                                 onChange={e => {
@@ -234,10 +234,10 @@ const Link = () => {
                                 }}
                             />
                         </div>
-                        <div className="linkAvatar">
-                            <div className="linkText">avatar：</div>
+                        <div className="modalInputBox">
+                            <div className="modalInputKey">avatar：</div>
                             <input
-                                className="linkInput"
+                                className="modalInputValue"
                                 type="text"
                                 value={avatar}
                                 onChange={e => {
@@ -245,10 +245,10 @@ const Link = () => {
                                 }}
                             />
                         </div>
-                        <div className="linkDescr">
-                            <div className="linkText">descr：</div>
+                        <div className="modalInputBox">
+                            <div className="modalInputKey">descr：</div>
                             <input
-                                className="linkInput"
+                                className="modalInputValue"
                                 type="text"
                                 value={descr}
                                 onChange={e => {

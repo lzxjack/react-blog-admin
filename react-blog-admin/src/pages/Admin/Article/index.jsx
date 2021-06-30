@@ -174,7 +174,7 @@ const Article = props => {
     return (
         <>
             <div className="searchBox">
-                <div type="primary" className="addArticleBtn" size="large" onClick={turnAddPage}>
+                <div type="primary" className="addArticleBtn" onClick={turnAddPage}>
                     写文章
                 </div>
                 <input

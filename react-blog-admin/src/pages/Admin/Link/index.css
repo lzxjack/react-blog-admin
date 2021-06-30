@@ -27,13 +27,10 @@
     height: 160px;
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: space-around;
 }
 
-.linkName,
-.linkLink,
-.linkAvatar,
-.linkDescr {
+.modalInputBox {
     display: flex;
     height: 30px;
 }
@@ -41,7 +38,7 @@
     font-size: 18px;
     font-weight: 700;
 }
-.linkText {
+.modalInputKey {
     width: 70px;
     height: 30px;
     line-height: 30px;
@@ -51,15 +48,14 @@
 }
 
 /* 添加友链对话框的输入框 */
-.linkInput {
+.modalInputValue {
     flex: 1;
     border: 1px solid #ccc;
-    width: 100px;
     height: 30px;
     font-size: 16px;
     padding: 0 10px;
     transition: all 0.3s;
 }
-.linkInput:hover {
+.modalInputValue:hover {
     box-shadow: 0 0 8px #1890ff;
 }
