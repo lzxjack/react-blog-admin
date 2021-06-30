@@ -11,9 +11,9 @@ import './github-dark.css';
 import './index.css';
 
 const AddArticle = props => {
-    // ——————————————————编辑时，根据文章ID获取文章详情————————————————————
+    // —————————————————————编辑时，获取文章详情———————————————————————
     const [articleDetail, setArticleDetail] = useState({});
-    // 从数据库获取文章/草稿详情的函数，参数：数据库名称、文章/草稿ID
+    // 从数据库获取文章/草稿详情，参数：数据库名称、文章/草稿ID
     const getDetailFromDB = (dbName, id) => {
         db.collection(dbName)
             .doc(id)
@@ -38,6 +38,7 @@ const AddArticle = props => {
                 setText(mainContent);
             });
     };
+    // 编辑时，组件挂载，自动填入文章详情
     useEffect(() => {
         // 判断是编辑页面再继续操作
         if (props.location.search !== '') {
@@ -52,27 +53,31 @@ const AddArticle = props => {
             }
         }
     }, [props.location.search]);
+    // —————————————————————编辑时，获取文章详情end———————————————————————
 
-    // —————————————————————————标题相关————————————————————————————
+    // ———————————标题———————————————
     const inputTitle = useRef();
     const inputEng = useRef();
+    // ———————————标题end———————————————
 
-    // —————————————————————————标签相关————————————————————————————
+    // ——————————标签end————————————
     // 已选的标签
     const [selectTags, setSelectTags] = useState([]);
     // 标签内容改变时触发的函数
     const tagsChange = value => {
         setSelectTags(value);
     };
+    // ——————————标签end————————————
 
-    // —————————————————————————分类相关————————————————————————————
+    // ——————————分类————————————
     // 已选的分类
     const [selectClasses, setSelectClasses] = useState('');
     const classChange = value => {
         setSelectClasses(value);
     };
+    // ——————————分类end————————————
 
-    // —————————————————————————正文相关————————————————————————————
+    // ————————————正文———————————
     // 编辑区文字
     const [text, setText] = useState('');
     useEffect(() => {
@@ -95,8 +100,10 @@ const AddArticle = props => {
     const textChange = e => {
         setText(e.target.innerText);
     };
-    // ——————————————————————关羽两个按钮的函数——————————————————————
-    // 添加到文章数据库/草稿数据库的函数，参数：数据库名
+    // ————————————正文end———————————
+
+    // ——————————————————————两个按钮——————————————————————
+    // 添加到文章数据库/草稿数据库，参数：数据库名
     const addToDB = dbName => {
         const page = dbName === 'articles' ? '/admin/article' : '/admin/draft';
         const message = dbName === 'articles' ? '文章发布成功！' : '草稿保存成功！';
@@ -128,11 +135,11 @@ const AddArticle = props => {
                 });
             });
     };
-    // 从文章数据库/草稿数据库删除的函数，参数：数据库名、文章id
+    // 从文章数据库/草稿数据库删除，参数：数据库名、文章id
     const removeFromDB = (dbName, id) => {
         db.collection(dbName).doc(id).remove();
     };
-    // 从文章数据库/草稿数据库更新的函数，参数：数据库名、文章id
+    // 从文章数据库/草稿数据库更新，参数：数据库名、文章id
     const updateFromDB = (dbName, id) => {
         const page = dbName === 'articles' ? '/admin/article' : '/admin/draft';
         const message = dbName === 'articles' ? '文章更新成功！' : '草稿保存成功！';
@@ -203,6 +210,8 @@ const AddArticle = props => {
             }
         }
     };
+    // ——————————————————————两个按钮end——————————————————————
+
     return (
         <>
             {/* 标题输入区 */}

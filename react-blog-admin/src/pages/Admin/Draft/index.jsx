@@ -5,30 +5,23 @@ import moment from 'moment';
 import { db } from '../../../utils/cloudBase';
 
 const Draft = props => {
+    // ——————————————————————渲染草稿表格——————————————————————
     // 标识组件是否挂载的state
     const [isMounted, setIsMounted] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
     const [drafts, setDrafts] = useState([]);
-
-    useEffect(() => {
-        isMounted && getNewDrafts();
-        return () => {
-            setIsMounted(false);
-        };
-    }, [isMounted]);
-
     // 表头
     const columns = [
         {
             title: '标题',
             dataIndex: 'title',
-            key: 'id',
+            key: '_id',
             render: text => <strong>{text}</strong>,
         },
         {
             title: '保存日期',
             dataIndex: 'date',
-            key: 'id',
+            key: '_id',
             sorter: (a, b) => a.date - b.date,
             render: text => <>{moment(text).format('YYYY-MM-DD HH:mm:ss')}</>,
             sortDirections: ['descend'],
@@ -36,8 +29,8 @@ const Draft = props => {
         },
         {
             title: '分类',
-            dataIndex: 'class',
-            key: 'id',
+            dataIndex: 'classes',
+            key: '_id',
             render: text => (
                 <>
                     <Tag color="#2db7f5">{text}</Tag>
@@ -47,7 +40,7 @@ const Draft = props => {
         {
             title: '标签',
             dataIndex: 'tags',
-            key: 'id',
+            key: '_id',
             render: tags => (
                 <>
                     {tags.map(tag => {
@@ -64,7 +57,7 @@ const Draft = props => {
         {
             title: 'URL',
             dataIndex: 'url',
-            key: 'id',
+            key: '_id',
             render: text => (
                 <a href={text} target="_blank" rel="noreferrer">
                     {text}
@@ -73,17 +66,17 @@ const Draft = props => {
         },
         {
             title: '操作',
-            key: 'id',
+            key: '_id',
             render: record => (
                 <Space size="middle">
-                    <Button type="primary" onClick={() => editDraft(record.id)}>
+                    <Button type="primary" onClick={() => editDraft(record._id)}>
                         修改
                     </Button>
 
                     <Popconfirm
                         placement="topRight"
                         title="确定要删除该文章吗？"
-                        onConfirm={() => deleteDraft(record.id)}
+                        onConfirm={() => deleteDraft(record._id)}
                         okText="Yes"
                         cancelText="No"
                     >
@@ -101,20 +94,19 @@ const Draft = props => {
         db.collection('drafts')
             .get()
             .then(res => {
-                const newDrafts = res.data.map(item => {
-                    return {
-                        id: item._id,
-                        class: item.classes,
-                        date: item.date,
-                        tags: item.tags,
-                        title: item.title,
-                        url: item.url,
-                    };
-                });
-                setDrafts(newDrafts);
+                setDrafts(res.data);
                 setIsLoading(false);
             });
     };
+    useEffect(() => {
+        isMounted && getNewDrafts();
+        return () => {
+            setIsMounted(false);
+        };
+    }, [isMounted]);
+    // ——————————————————————渲染草稿表格end——————————————————————
+
+    // ——————————————————————对草稿的操作——————————————————————
     // 编辑草稿
     const editDraft = id => {
         // 跳转到添加文章页面，并传入该文章id
@@ -137,6 +129,8 @@ const Draft = props => {
                 getNewDrafts();
             });
     };
+    // ——————————————————————对草稿的操作end——————————————————————
+
     return (
         <>
             <Table
@@ -153,7 +147,7 @@ const Draft = props => {
                 }}
                 columns={columns}
                 dataSource={drafts}
-                rowKey={columns => columns.id}
+                rowKey={columns => columns._id}
                 showSorterTooltip={false}
             />
         </>

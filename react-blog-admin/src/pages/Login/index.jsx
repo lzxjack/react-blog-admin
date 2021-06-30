@@ -7,37 +7,41 @@ import { CloseOutlined, CheckOutlined } from '@ant-design/icons';
 import './index.css';
 
 const Login = props => {
-    const inputEmail = useRef(),
-        inputpwd = useRef();
+    const inputEmail = useRef();
+    const inputpwd = useRef();
 
-    const openLoginError = () => {
+    // 提示消息的函数
+    // true登录成功/false登录失败
+    const openLoginNoti = state => {
+        const message = state ? '登录成功' : '登录失败';
+        const description = state
+            ? '欢迎进入博客后台管理系统！'
+            : '用户名或密码不正确，请重新登录！';
+        const icon = state ? (
+            <CheckOutlined style={{ color: 'blue' }} />
+        ) : (
+            <CloseOutlined style={{ color: 'red' }} />
+        );
         notification.open({
-            message: '登录失败',
-            description: '用户名或密码不正确，请重新登录！',
-            icon: <CloseOutlined style={{ color: 'red' }} />,
+            message,
+            description,
+            icon,
             placement: 'bottomLeft',
             duration: 2,
         });
     };
 
-    const openLoginSuccess = () => {
-        notification.open({
-            message: '登录成功',
-            description: '欢迎进入博客后台管理系统！',
-            icon: <CheckOutlined style={{ color: 'blue' }} />,
-            placement: 'bottomLeft',
-            duration: 2,
-        });
-    };
-
+    // 登录
     const login = () => {
         auth.signInWithEmailAndPassword(inputEmail.current.value, inputpwd.current.value)
             .then(() => {
                 props.login();
-                openLoginSuccess();
+                // 登录成功
+                openLoginNoti(true);
             })
             .catch(() => {
-                openLoginError();
+                // 登录失败
+                openLoginNoti(false);
             });
     };
 

@@ -6,16 +6,13 @@ import { db } from '../../../utils/cloudBase';
 import './index.css';
 
 const Article = props => {
-    // 需要展示文章的state
-    const [articlesShow, setArticlesShow] = useState([]);
-    // 存放所有文章的state
-    const [articles, setArticles] = useState([]);
-
     // ——————————————————————搜索框——————————————————————
     const searchText = useRef();
+    // 判断是否按下回车的函数
     const searchKeyUp = e => {
         if (e.keyCode === 13) search();
     };
+    // 搜索
     const search = () => {
         // 获取输入的搜索关键字
         const keyWords = searchText.current.value;
@@ -25,7 +22,7 @@ const Article = props => {
         }
         // 过滤出搜索到的文章
         const newArticlesShow = articles.filter(item => item.title.indexOf(keyWords) !== -1);
-        // 显示
+        // 将搜索到的文章，放入要显示的state
         setArticlesShow(newArticlesShow);
     };
     // 输入框变化的回调
@@ -34,29 +31,29 @@ const Article = props => {
         // 如果输入框内容为空，则展示所有文章
         if (!keyWords) setArticlesShow(articles);
     };
+    // ————————————————————搜索框end————————————————————————
+
+    // ——————————————————————渲染文章表格——————————————————————
     // 标识组件是否挂载的state
     const [isMounted, setIsMounted] = useState(true);
+    // 是否正在加载的state
     const [isLoading, setIsLoading] = useState(false);
-
-    useEffect(() => {
-        isMounted && getNewArticles();
-        return () => {
-            setIsMounted(false);
-        };
-    }, [isMounted]);
-
+    // 需要展示文章的state
+    const [articlesShow, setArticlesShow] = useState([]);
+    // 存放所有文章的state
+    const [articles, setArticles] = useState([]);
     // 表头
     const columns = [
         {
             title: '标题',
             dataIndex: 'title',
-            key: 'id',
+            key: '_id',
             render: text => <strong>{text}</strong>,
         },
         {
             title: '发布日期',
             dataIndex: 'date',
-            key: 'id',
+            key: '_id',
             sorter: (a, b) => a.date - b.date,
             render: text => <>{moment(text).format('YYYY-MM-DD HH:mm:ss')}</>,
             sortDirections: ['descend'],
@@ -64,8 +61,8 @@ const Article = props => {
         },
         {
             title: '分类',
-            dataIndex: 'class',
-            key: 'id',
+            dataIndex: 'classes',
+            key: '_id',
             render: text => (
                 <>
                     <Tag color="#2db7f5">{text}</Tag>
@@ -75,7 +72,7 @@ const Article = props => {
         {
             title: '标签',
             dataIndex: 'tags',
-            key: 'id',
+            key: '_id',
             render: tags => (
                 <>
                     {tags.map(tag => {
@@ -92,7 +89,7 @@ const Article = props => {
         {
             title: 'URL',
             dataIndex: 'url',
-            key: 'id',
+            key: '_id',
             render: text => (
                 <a href={text} target="_blank" rel="noreferrer">
                     {text}
@@ -101,17 +98,17 @@ const Article = props => {
         },
         {
             title: '操作',
-            key: 'id',
+            key: '_id',
             render: record => (
                 <Space size="middle">
-                    <Button type="primary" onClick={() => editArticle(record.id)}>
+                    <Button type="primary" onClick={() => editArticle(record._id)}>
                         修改
                     </Button>
 
                     <Popconfirm
                         placement="topRight"
                         title="确定要删除该文章吗？"
-                        onConfirm={() => deleteArticle(record.id)}
+                        onConfirm={() => deleteArticle(record._id)}
                         okText="Yes"
                         cancelText="No"
                     >
@@ -129,24 +126,23 @@ const Article = props => {
         db.collection('articles')
             .get()
             .then(res => {
-                const newArticles = res.data.map(item => {
-                    return {
-                        id: item._id,
-                        class: item.classes,
-                        // date: moment(item.date).format('YYYY-MM-DD HH:mm:ss'),
-                        date: item.date,
-                        tags: item.tags,
-                        title: item.title,
-                        url: item.url,
-                    };
-                });
                 // 用作展示的state
-                setArticlesShow(newArticles);
+                setArticlesShow(res.data);
                 // 存放所有文章的state
-                setArticles(newArticles);
+                setArticles(res.data);
                 setIsLoading(false);
             });
     };
+    // 组件挂载完毕，获得所有文章
+    useEffect(() => {
+        isMounted && getNewArticles();
+        return () => {
+            setIsMounted(false);
+        };
+    }, [isMounted]);
+    // ————————————————————渲染文章表格end——————————————————————————
+
+    // ——————————————————————对文章的操作——————————————————————
     // 删除文章
     const deleteArticle = id => {
         db.collection('articles')
@@ -173,6 +169,8 @@ const Article = props => {
     const turnAddPage = () => {
         props.history.push('/admin/addArticle');
     };
+    // ———————————————————————对文章的操作end—————————————————————————
+
     return (
         <>
             <div className="searchBox">
@@ -205,7 +203,7 @@ const Article = props => {
                 }}
                 columns={columns}
                 dataSource={articlesShow}
-                rowKey={columns => columns.id}
+                rowKey={columns => columns._id}
                 showSorterTooltip={false}
             />
         </>

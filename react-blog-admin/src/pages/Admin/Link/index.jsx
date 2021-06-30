@@ -5,20 +5,29 @@ import { db } from '../../../utils/cloudBase';
 import './index.css';
 
 const Link = () => {
-    // ————————————————————————————添加友链功能————————————————————————————
+    // ————————————————————————————添加/编辑友链对话框————————————————————————————
+    // 是否显示对话框
     const [addLinkVisible, setAddLinkVisible] = useState(false);
+    // 是否是编辑状态
+    const [isEdit, setIsEdit] = useState(false);
+    // 友链的详细数据
+    const [id, setId] = useState('');
+    const [name, setName] = useState('');
+    const [link, setLink] = useState('');
+    const [avatar, setAvatar] = useState('');
+    const [descr, setDescr] = useState('');
     // 展示添加友链的页面
     const showAddLink = () => {
         setAddLinkVisible(true);
     };
-    // 处理对话框取消的函数
+    // 对话框取消
     const addLinkCancel = () => {
         setAddLinkVisible(false);
         // 清空输入框
         clearLinkInput();
         setIsEdit(false);
     };
-    // 处理对话框确认的函数
+    // 对话框确认
     const addLinkOK = () => {
         if (!name || !link || !avatar || !descr) {
             message.info('请输入完整友链信息！');
@@ -80,64 +89,12 @@ const Link = () => {
         setAvatar('');
         setDescr('');
     };
+    // ————————————————————————————添加/编辑友链对话框end————————————————————————————
 
-    // ————————————————————————————渲染友链表格————————————————————————————
+    // ——————————————————————————————渲染友链表格————————————————————————————
     const [linkData, setLinkData] = useState([]);
     const [isMounted, setIsMounted] = useState(true);
     const [tableLoading, setTableLoading] = useState(false);
-    const [isEdit, setIsEdit] = useState(false);
-    const [id, setId] = useState('');
-    const [name, setName] = useState('');
-    const [link, setLink] = useState('');
-    const [avatar, setAvatar] = useState('');
-    const [descr, setDescr] = useState('');
-    useEffect(() => {
-        isMounted && getLinksData();
-        return () => {
-            setIsMounted(false);
-        };
-    }, [isMounted]);
-    // 获取所有友链数据，放入state
-    const getLinksData = () => {
-        setTableLoading(true);
-        db.collection('links')
-            .get()
-            .then(res => {
-                setLinkData(res.data);
-                setTableLoading(false);
-            });
-    };
-    // 删除友链
-    const deleteLink = id => {
-        db.collection('links')
-            .doc(id)
-            .remove()
-            .then(() => {
-                getLinksData();
-                notification.open({
-                    message: '删除友链成功',
-                    icon: <DeleteOutlined style={{ color: 'blue' }} />,
-                    placement: 'bottomLeft',
-                    duration: 2,
-                });
-            });
-    };
-    // 编辑友链
-    const editLink = id => {
-        setIsEdit(true);
-        setAddLinkVisible(true);
-        db.collection('links')
-            .doc(id)
-            .get()
-            .then(res => {
-                // setTheEditLink(res.data[0]);
-                setId(res.data[0]._id);
-                setName(res.data[0].name);
-                setLink(res.data[0].link);
-                setAvatar(res.data[0].avatar);
-                setDescr(res.data[0].descr);
-            });
-    };
     // 表头
     const columns = [
         {
@@ -190,6 +147,57 @@ const Link = () => {
             ),
         },
     ];
+    // 获取所有友链数据，放入state
+    const getLinksData = () => {
+        setTableLoading(true);
+        db.collection('links')
+            .get()
+            .then(res => {
+                setLinkData(res.data);
+                setTableLoading(false);
+            });
+    };
+    useEffect(() => {
+        isMounted && getLinksData();
+        return () => {
+            setIsMounted(false);
+        };
+    }, [isMounted]);
+    // ——————————————————————————————渲染友链表格end————————————————————————————
+
+    // ——————————————————————————————对友链的操作————————————————————————————
+    // 编辑友链
+    const editLink = id => {
+        setIsEdit(true);
+        setAddLinkVisible(true);
+        db.collection('links')
+            .doc(id)
+            .get()
+            .then(res => {
+                // setTheEditLink(res.data[0]);
+                setId(res.data[0]._id);
+                setName(res.data[0].name);
+                setLink(res.data[0].link);
+                setAvatar(res.data[0].avatar);
+                setDescr(res.data[0].descr);
+            });
+    };
+    // 删除友链
+    const deleteLink = id => {
+        db.collection('links')
+            .doc(id)
+            .remove()
+            .then(() => {
+                getLinksData();
+                notification.open({
+                    message: '删除友链成功',
+                    icon: <DeleteOutlined style={{ color: 'blue' }} />,
+                    placement: 'bottomLeft',
+                    duration: 2,
+                });
+            });
+    };
+    // ——————————————————————————————对友链的操作end————————————————————————————
 
     return (
         <>
