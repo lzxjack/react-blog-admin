@@ -54,7 +54,7 @@ const Link = () => {
                         message: '修改友链成功',
                         icon: <UserSwitchOutlined style={{ color: 'blue' }} />,
                         placement: 'bottomLeft',
-                        duration: 2,
+                        duration: 1.5,
                     });
                 });
         } else {
@@ -77,7 +77,7 @@ const Link = () => {
                         message: '添加友链成功',
                         icon: <UserOutlined style={{ color: 'blue' }} />,
                         placement: 'bottomLeft',
-                        duration: 2,
+                        duration: 1.5,
                     });
                 });
         }
@@ -193,7 +193,7 @@ const Link = () => {
                     message: '删除友链成功',
                     icon: <DeleteOutlined style={{ color: 'blue' }} />,
                     placement: 'bottomLeft',
-                    duration: 2,
+                    duration: 1.5,
                 });
             });
     };

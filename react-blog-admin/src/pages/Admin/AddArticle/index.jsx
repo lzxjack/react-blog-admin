@@ -131,7 +131,7 @@ const AddArticle = props => {
                     message,
                     placement: 'bottomLeft',
                     icon,
-                    duration: 3,
+                    duration: 1.5,
                 });
             });
     };
@@ -161,14 +161,14 @@ const AddArticle = props => {
                 url: `https://lzxjack.top/${inputEng.current.value}`,
             })
             .then(() => {
-                // 回到文章页
+                // 回到文章页/草稿页
                 props.history.replace(page);
                 // 提示消息
                 notification.open({
                     message,
                     placement: 'bottomLeft',
                     icon,
-                    duration: 3,
+                    duration: 1.5,
                 });
             });
     };

@@ -27,7 +27,7 @@ const Login = props => {
             description,
             icon,
             placement: 'bottomLeft',
-            duration: 2,
+            duration: 1.5,
         });
     };
 

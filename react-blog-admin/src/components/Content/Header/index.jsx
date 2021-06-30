@@ -12,7 +12,7 @@ const Header = props => {
             description: '期待再次使用！',
             icon: <EnterOutlined style={{ color: 'blue' }} />,
             placement: 'bottomLeft',
-            duration: 2,
+            duration: 1.5,
         });
     };
     const turnLogout = () => {

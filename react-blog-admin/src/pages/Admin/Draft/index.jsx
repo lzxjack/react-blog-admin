@@ -123,7 +123,7 @@ const Draft = props => {
                     message: '删除成功',
                     icon: <DeleteOutlined style={{ color: 'blue' }} />,
                     placement: 'bottomLeft',
-                    duration: 2,
+                    duration: 1.5,
                 });
                 // 获取最新草稿数据
                 getNewDrafts();
