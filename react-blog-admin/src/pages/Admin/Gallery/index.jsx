@@ -28,9 +28,7 @@ const Gallery = () => {
     const [cover, setCover] = useState('');
     const [pics, setPics] = useState('');
 
-    const showAddGallery = () => {
-        setGalleryVisible(true);
-    };
+    // 对话框确认
     const galleryOK = () => {
         if (!title || !descr || !cover || !pics) {
             message.info('请输入完整相册信息！');
@@ -65,11 +63,13 @@ const Gallery = () => {
                 });
         }
     };
+    // 对话框取消
     const galleryCancel = () => {
         clearGalleryInput();
         setGalleryVisible(false);
         setIsEdit(false);
     };
+    // 清楚对话框的输入框
     const clearGalleryInput = () => {
         setTitle('');
         setDescr('');
@@ -79,7 +79,13 @@ const Gallery = () => {
     return (
         <>
             <div className="addGalleryBox">
-                <div type="primary" className="addGalleryBtn" onClick={showAddGallery}>
+                <div
+                    type="primary"
+                    className="addGalleryBtn"
+                    onClick={() => {
+                        setGalleryVisible(true);
+                    }}
+                >
                     添加相册
                 </div>
                 <Modal
@@ -150,6 +156,15 @@ const Gallery = () => {
                             </li>
                         );
                     })}
+                    <li>
+                        <div className="galleryTitleBox">
+                            <span>123123123</span>
+                        </div>
+                        <div className="galleryDescr">
+                            1231231231231231231231231231231231231231232222222222222222222222222222
+                        </div>
+                        <div className="galleryMask"></div>
+                    </li>
                 </ul>
             </div>
         </>

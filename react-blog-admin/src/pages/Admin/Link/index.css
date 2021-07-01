@@ -24,7 +24,7 @@
 
 .linkInputBox {
     /* background-color: rgb(96, 221, 230); */
-    height: 160px;
+    height: 200px;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -39,7 +39,7 @@
     font-weight: 700;
 }
 .modalInputKey {
-    width: 70px;
+    width: 64px;
     height: 30px;
     line-height: 30px;
     text-align: right;

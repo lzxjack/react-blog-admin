@@ -1,7 +1,249 @@
+import { useState, useEffect } from 'react';
+import { Modal, message, notification, Popconfirm } from 'antd';
+import { PictureOutlined, FormOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { db } from '../../../utils/cloudBase';
 import './index.css';
 
 const Show = () => {
-    return <>Show</>;
+    const [shows, setShows] = useState([]);
+    const [isMounted, setIsMounted] = useState(true);
+    // 获得所有作品信息
+    const getAllShows = () => {
+        db.collection('shows')
+            .get()
+            .then(res => {
+                setShows(res.data);
+            });
+    };
+    // 组件挂载，获得作品信息
+    useEffect(() => {
+        isMounted && getAllShows();
+        return () => {
+            setIsMounted(false);
+        };
+    }, [isMounted]);
+
+    const [showVisible, setShowVisible] = useState(false);
+    const [isEdit, setIsEdit] = useState(false);
+    const [id, setId] = useState('');
+    const [name, setName] = useState('');
+    const [descr, setDescr] = useState('');
+    const [cover, setCover] = useState('');
+    const [link, setLink] = useState('');
+
+    // 编辑/添加成功后的操作
+    const updateSth = isEdit => {
+        // 获取所有相册
+        getAllShows();
+        // 关闭对话框
+        setShowVisible(false);
+        // 编辑状态false
+        setIsEdit(false);
+        // 清空输入框
+        clearShowInput();
+        const message = isEdit ? '修改作品成功' : '添加作品成功';
+        const icon = isEdit ? (
+            <EditOutlined style={{ color: 'blue' }} />
+        ) : (
+            <PictureOutlined style={{ color: 'blue' }} />
+        );
+        notification.open({
+            message,
+            icon,
+            placement: 'bottomLeft',
+            duration: 1.5,
+        });
+    };
+    // 对话框确认
+    const galleryOK = () => {
+        if (!name || !descr || !cover || !link) {
+            message.info('请输入完整作品信息！');
+            return;
+        }
+        if (isEdit) {
+            // 编辑
+            db.collection('shows')
+                .doc(id)
+                .update({
+                    name,
+                    descr,
+                    cover,
+                    link,
+                })
+                .then(() => {
+                    updateSth(isEdit);
+                });
+        } else {
+            // 添加
+            db.collection('shows')
+                .add({
+                    name,
+                    descr,
+                    cover,
+                    link,
+                })
+                .then(() => {
+                    updateSth(isEdit);
+                });
+        }
+    };
+    // 对话框取消
+    const galleryCancel = () => {
+        clearShowInput();
+        setShowVisible(false);
+        setIsEdit(false);
+    };
+    // 清除对话框的输入框
+    const clearShowInput = () => {
+        setName('');
+        setDescr('');
+        setCover('');
+        setLink('');
+    };
+    // 编辑作品
+    const editShow = id => {
+        // 打开对话框
+        setShowVisible(true);
+        // 打开编辑状态
+        setIsEdit(true);
+        // 根据id获取相应作品的详情
+        db.collection('shows')
+            .doc(id)
+            .get()
+            .then(res => {
+                const { _id, name, descr, cover, link } = res.data[0];
+                setId(_id);
+                setName(name);
+                setDescr(descr);
+                setCover(cover);
+                setLink(link);
+            });
+    };
+    // 删除作品
+    const deleteShow = id => {
+        db.collection('shows')
+            .doc(id)
+            .remove()
+            .then(() => {
+                // 获取所有相册
+                getAllShows();
+                notification.open({
+                    message: '删除作品成功',
+                    icon: <DeleteOutlined style={{ color: 'blue' }} />,
+                    placement: 'bottomLeft',
+                    duration: 1.5,
+                });
+            });
+    };
+    return (
+        <>
+            <div className="addGalleryBox">
+                <div
+                    type="primary"
+                    className="addGalleryBtn"
+                    onClick={() => {
+                        setShowVisible(true);
+                    }}
+                >
+                    添加作品
+                </div>
+                <Modal
+                    title="添加作品"
+                    visible={showVisible}
+                    onOk={galleryOK}
+                    onCancel={galleryCancel}
+                >
+                    <div className="linkInputBox">
+                        <div className="modalInputBox">
+                            <div className="modalInputKey showInputKey">名称：</div>
+                            <input
+                                className="modalInputValue"
+                                type="text"
+                                value={name}
+                                onChange={e => {
+                                    setName(e.target.value);
+                                }}
+                            />
+                        </div>
+                        <div className="modalInputBox">
+                            <div className="modalInputKey showInputKey">描述：</div>
+                            <input
+                                className="modalInputValue"
+                                type="text"
+                                value={descr}
+                                onChange={e => {
+                                    setDescr(e.target.value);
+                                }}
+                            />
+                        </div>
+                        <div className="modalInputBox">
+                            <div className="modalInputKey showInputKey">封面：</div>
+                            <input
+                                className="modalInputValue"
+                                type="text"
+                                value={cover}
+                                onChange={e => {
+                                    setCover(e.target.value);
+                                }}
+                            />
+                        </div>
+                        <div className="modalInputBox">
+                            <div className="modalInputKey showInputKey">链接：</div>
+                            <input
+                                className="modalInputValue"
+                                type="text"
+                                value={link}
+                                onChange={e => {
+                                    setLink(e.target.value);
+                                }}
+                            />
+                        </div>
+                    </div>
+                </Modal>
+            </div>
+            <div className="galleryBox">
+                <ul className="galleryUl">
+                    {shows.map(item => {
+                        return (
+                            <li key={item._id} style={{ backgroundImage: `url(${item.cover})` }}>
+                                <div className="galleryTitleBox">
+                                    <span>
+                                        <a
+                                            href={item.link}
+                                            rel="noreferrer"
+                                            target="_blank"
+                                            className="showLink"
+                                        >
+                                            {item.name}
+                                        </a>
+                                    </span>
+                                </div>
+                                <div className="galleryDescr">{item.descr}</div>
+                                <div className="galleryMask"></div>
+                                <FormOutlined
+                                    className="showEditBtn"
+                                    onClick={() => {
+                                        editShow(item._id);
+                                    }}
+                                />
+                                <Popconfirm
+                                    placement="topRight"
+                                    title="确定要删除该作品吗？"
+                                    onConfirm={() => {
+                                        deleteShow(item._id);
+                                    }}
+                                    okText="Yes"
+                                    cancelText="No"
+                                >
+                                    <DeleteOutlined className="showDeleteBtn" />
+                                </Popconfirm>
+                            </li>
+                        );
+                    })}
+                </ul>
+            </div>
+        </>
+    );
 };
 
 export default Show;
