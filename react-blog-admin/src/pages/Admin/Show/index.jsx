@@ -139,7 +139,6 @@ const Show = () => {
         <>
             <div className="addGalleryBox">
                 <div
-                    type="primary"
                     className="addGalleryBtn"
                     onClick={() => {
                         setShowVisible(true);
@@ -203,43 +202,41 @@ const Show = () => {
             </div>
             <div className="galleryBox">
                 <ul className="galleryUl">
-                    {shows.map(item => {
-                        return (
-                            <li key={item._id} style={{ backgroundImage: `url(${item.cover})` }}>
-                                <div className="galleryTitleBox">
-                                    <span>
-                                        <a
-                                            href={item.link}
-                                            rel="noreferrer"
-                                            target="_blank"
-                                            className="showLink"
-                                        >
-                                            {item.name}
-                                        </a>
-                                    </span>
-                                </div>
-                                <div className="galleryDescr">{item.descr}</div>
-                                <div className="galleryMask"></div>
-                                <FormOutlined
-                                    className="showEditBtn"
-                                    onClick={() => {
-                                        editShow(item._id);
-                                    }}
-                                />
-                                <Popconfirm
-                                    placement="topRight"
-                                    title="确定要删除该作品吗？"
-                                    onConfirm={() => {
-                                        deleteShow(item._id);
-                                    }}
-                                    okText="Yes"
-                                    cancelText="No"
-                                >
-                                    <DeleteOutlined className="showDeleteBtn" />
-                                </Popconfirm>
-                            </li>
-                        );
-                    })}
+                    {shows.map(item => (
+                        <li key={item._id} style={{ backgroundImage: `url(${item.cover})` }}>
+                            <div className="galleryTitleBox">
+                                <span>
+                                    <a
+                                        href={item.link}
+                                        rel="noreferrer"
+                                        target="_blank"
+                                        className="showLink"
+                                    >
+                                        {item.name}
+                                    </a>
+                                </span>
+                            </div>
+                            <div className="galleryDescr">{item.descr}</div>
+                            <div className="galleryMask"></div>
+                            <FormOutlined
+                                className="showEditBtn"
+                                onClick={() => {
+                                    editShow(item._id);
+                                }}
+                            />
+                            <Popconfirm
+                                placement="topRight"
+                                title="确定要删除该作品吗？"
+                                onConfirm={() => {
+                                    deleteShow(item._id);
+                                }}
+                                okText="Yes"
+                                cancelText="No"
+                            >
+                                <DeleteOutlined className="showDeleteBtn" />
+                            </Popconfirm>
+                        </li>
+                    ))}
                 </ul>
             </div>
         </>

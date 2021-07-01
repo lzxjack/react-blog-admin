@@ -23,8 +23,7 @@
 }
 
 .linkInputBox {
-    /* background-color: rgb(96, 221, 230); */
-    height: 200px;
+    height: 240px;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -32,7 +31,7 @@
 
 .modalInputBox {
     display: flex;
-    height: 30px;
+    height: 40px;
 }
 .ant-modal-title {
     font-size: 18px;
@@ -40,8 +39,8 @@
 }
 .modalInputKey {
     width: 64px;
-    height: 30px;
-    line-height: 30px;
+    height: 40px;
+    line-height: 40px;
     text-align: right;
     font-size: 16px;
     font-weight: 700;
@@ -51,7 +50,7 @@
 .modalInputValue {
     flex: 1;
     border: 1px solid #ccc;
-    height: 30px;
+    height: 40px;
     font-size: 16px;
     padding: 0 10px;
     transition: all 0.3s;

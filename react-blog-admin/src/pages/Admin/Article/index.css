@@ -11,7 +11,7 @@
     left: 5px;
     transform: translate(0, -50%);
     height: 40px;
-    width: 70px;
+    width: 86px;
     background-color: #1890ff;
     display: flex;
     justify-content: center;
@@ -28,7 +28,7 @@
     background-color: #fff;
     position: absolute;
     top: 50%;
-    left: 80px;
+    left: 96px;
     transform: translate(0, -50%);
     width: 500px;
     height: 40px;
@@ -50,7 +50,7 @@
     color: #fff;
     position: absolute;
     top: 50%;
-    left: 580px;
+    left: 596px;
     transform: translate(0, -50%);
     transition: all 0.3s;
     user-select: none;

@@ -34,52 +34,11 @@ const Link = () => {
             return;
         }
         if (isEdit) {
-            // 修改友链
-            db.collection('links')
-                .doc(id)
-                .update({
-                    name,
-                    link,
-                    avatar,
-                    descr,
-                })
-                .then(() => {
-                    // 获取所有友链
-                    getLinksData();
-                    setAddLinkVisible(false);
-                    // 清空输入框
-                    clearLinkInput();
-                    setIsEdit(false);
-                    notification.open({
-                        message: '修改友链成功',
-                        icon: <UserSwitchOutlined style={{ color: 'blue' }} />,
-                        placement: 'bottomLeft',
-                        duration: 1.5,
-                    });
-                });
+            // 更新友链
+            updateLink();
         } else {
             // 添加友链
-            db.collection('links')
-                .add({
-                    name,
-                    link,
-                    avatar,
-                    descr,
-                })
-                .then(() => {
-                    // 获取所有友链
-                    getLinksData();
-                    setAddLinkVisible(false);
-                    // 清空输入框
-                    clearLinkInput();
-                    setIsEdit(false);
-                    notification.open({
-                        message: '添加友链成功',
-                        icon: <UserOutlined style={{ color: 'blue' }} />,
-                        placement: 'bottomLeft',
-                        duration: 1.5,
-                    });
-                });
+            addLink();
         }
     };
     // 清空所有输入框
@@ -166,7 +125,58 @@ const Link = () => {
     // ——————————————————————————————渲染友链表格end————————————————————————————
 
     // ——————————————————————————————对友链的操作————————————————————————————
-    // 编辑友链
+
+    // 友链添加或更新后的操作
+    const afterLinkChange = isEdit => {
+        const message = isEdit ? '更新友链成功' : '添加友链成功';
+        const icon = isEdit ? (
+            <UserSwitchOutlined style={{ color: 'blue' }} />
+        ) : (
+            <UserOutlined style={{ color: 'blue' }} />
+        );
+        // 获取所有友链
+        getLinksData();
+        setAddLinkVisible(false);
+        // 清空输入框
+        clearLinkInput();
+        setIsEdit(false);
+        notification.open({
+            message,
+            icon,
+            placement: 'bottomLeft',
+            duration: 1.5,
+        });
+    };
+    // 发送添加友链请求
+    const addLink = () => {
+        // 添加友链
+        db.collection('links')
+            .add({
+                name,
+                link,
+                avatar,
+                descr,
+            })
+            .then(() => {
+                afterLinkChange(0);
+            });
+    };
+    // 发送更新友链请求
+    const updateLink = () => {
+        // 修改友链
+        db.collection('links')
+            .doc(id)
+            .update({
+                name,
+                link,
+                avatar,
+                descr,
+            })
+            .then(() => {
+                afterLinkChange(1);
+            });
+    };
+    // 点击编辑友链，获取该友链信息
     const editLink = id => {
         setIsEdit(true);
         setAddLinkVisible(true);
@@ -174,7 +184,6 @@ const Link = () => {
             .doc(id)
             .get()
             .then(res => {
-                // setTheEditLink(res.data[0]);
                 setId(res.data[0]._id);
                 setName(res.data[0].name);
                 setLink(res.data[0].link);

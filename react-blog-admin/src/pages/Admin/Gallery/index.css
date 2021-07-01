@@ -3,6 +3,7 @@
     position: relative;
     height: 50px;
     background-color: #b9dfff;
+    overflow: hidden;
 }
 
 .addGalleryBtn {
@@ -26,51 +27,6 @@
 .addGalleryBtn:hover {
     background-color: #40a9ff;
     box-shadow: 0 0 4px #1890ff;
-}
-
-/* 对话框 */
-.galleryInputBox {
-    height: 700px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-}
-
-.galleryInputKey {
-    width: 50px;
-    height: 40px;
-    line-height: 40px;
-    text-align: right;
-    font-size: 16px;
-    font-weight: 700;
-}
-/* 添加相册对话框的输入框 */
-.galleryInputValue {
-    flex: 1;
-    border: 1px solid #ccc;
-    height: 40px;
-    font-size: 16px;
-    padding: 0 10px;
-    transition: all 0.3s;
-}
-.galleryInputValue:hover,
-.galleryTextValue:hover {
-    box-shadow: 0 0 8px #1890ff;
-}
-
-.modalTextBox {
-    display: flex;
-}
-/* 多行输入框 */
-.galleryTextValue {
-    flex: 1;
-    height: 500px;
-    outline: none;
-    border: 1px solid #ccc;
-    font-size: 16px;
-    padding: 10px;
-    transition: all 0.3s;
-    resize: none;
 }
 
 /* 下方相册展示区 */

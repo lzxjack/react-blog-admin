@@ -9,7 +9,9 @@ import Say from '../../../pages/Admin/Say';
 import Show from '../../../pages/Admin/Show';
 import Home from '../../../pages/Admin/Home';
 import AddArticle from '../../../pages/Admin/AddArticle';
+import AddGallery from '../../../pages/Admin/AddGallery';
 import Draft from '../../../pages/Admin/Draft';
+
 import './index.css';
 
 const Main = () => {
@@ -25,8 +27,9 @@ const Main = () => {
                 <Route path="/admin/show" component={Show} />
                 <Route path="/admin/about" component={About} />
                 <Route path="/admin/log" component={Log} />
-                <Route path="/admin/addArticle" component={AddArticle} />
                 <Route path="/admin/draft" component={Draft} />
+                <Route path="/admin/addArticle" component={AddArticle} />
+                <Route path="/admin/addGallery" component={AddGallery} />
                 <Redirect to="/admin/home" />
             </Switch>
         </div>

@@ -82,7 +82,8 @@
 .showRegion {
     /* footer60 Header54 margin-top20 titleBox tagClassBox */
     min-height: calc(100vh - 60px - 54px - 20px - 58px - 44px);
-    width: 50%;
+    /* width: 50%; */
+    flex: 1;
     background-color: #fff;
     padding: 20px;
     font-size: 18px;
