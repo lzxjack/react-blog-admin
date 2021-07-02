@@ -2,7 +2,7 @@ import { LoginOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import { logout } from '../../../redux/actions/loginState';
 import { notification, Popconfirm } from 'antd';
-import { EnterOutlined, FireOutlined } from '@ant-design/icons';
+import { EnterOutlined } from '@ant-design/icons';
 import './index.css';
 
 const Header = props => {
@@ -35,9 +35,6 @@ const Header = props => {
             >
                 <LoginOutlined />
             </Popconfirm>
-            <div className="darkBtn">
-                <FireOutlined />
-            </div>
         </div>
     );
 };

@@ -5,9 +5,9 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
 }
 
-.logoutBtn,
-.darkBtn {
+.logoutBtn {
     position: absolute;
+    right: 20px;
     top: 50%;
     transform: translate(0, -50%);
     width: 50px;
@@ -15,24 +15,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    /* background-color: #ccc; */
     border-radius: 10px;
     font-size: 22px;
     transition: all 0.2s;
 }
-
-/* 退出按钮 */
-.logoutBtn {
-    right: 20px;
-}
-
-/* 黑暗模式按钮 */
-.darkBtn {
-    right: 90px;
-}
-
-.logoutBtn:hover,
-.darkBtn:hover {
+.logoutBtn:hover {
     background-color: rgb(231, 231, 231);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
 }
