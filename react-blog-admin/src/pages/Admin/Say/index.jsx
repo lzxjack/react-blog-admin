@@ -1,32 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Modal, notification, Table, Space, Button, Popconfirm, message, Popover } from 'antd';
+import { FormOutlined, MessageOutlined, DeleteOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { db } from '../../../utils/cloudBase';
 import './index.css';
 
 const Say = () => {
-    // const { Panel } = Collapse;
-    const [isMounted, setIsMounted] = useState(true);
-    const [addSayVisible, setAddSayVisible] = useState(false);
-    const [tableLoading, setTableLoading] = useState(false);
-    const [isEdit, setIsEdit] = useState(false);
-    const [content, setContent] = useState('');
+    // ————————————————————渲染说说表格————————————————————
     const [says, setSays] = useState([]);
-
-    const getAllSays = () => {
-        db.collection('says')
-            .get()
-            .then(res => {
-                setSays(res.data);
-            });
-    };
-    useEffect(() => {
-        isMounted && getAllSays();
-        return () => {
-            setIsMounted(false);
-        };
-    }, [isMounted]);
-
+    const [isMounted, setIsMounted] = useState(true);
+    const [tableLoading, setTableLoading] = useState(false);
     // 表头
     const columns = [
         {
@@ -50,14 +33,14 @@ const Say = () => {
             key: '_id',
             render: record => (
                 <Space size="middle">
-                    <Button type="primary" onClick={() => {}}>
+                    <Button type="primary" onClick={() => editSay(record._id)}>
                         修改
                     </Button>
 
                     <Popconfirm
                         placement="topRight"
-                        title="确定要删除该友链吗？"
-                        onConfirm={() => {}}
+                        title="确定要删除该说说吗？"
+                        onConfirm={() => deleteSay(record._id)}
                         okText="Yes"
                         cancelText="No"
                     >
@@ -69,34 +52,155 @@ const Say = () => {
             ),
         },
     ];
+    // 获得所有说说
+    const getAllSays = () => {
+        setTableLoading(true);
+        db.collection('says')
+            .get()
+            .then(res => {
+                setSays(res.data);
+                setTableLoading(false);
+            });
+    };
+    // 组件挂载，获得所有说说
+    useEffect(() => {
+        isMounted && getAllSays();
+        return () => {
+            setIsMounted(false);
+        };
+    }, [isMounted]);
+    // ————————————————————渲染说说表格end————————————————————
 
+    // ————————————————————————————添加/编辑说说对话框————————————————————————————
+    const [addSayVisible, setAddSayVisible] = useState(false);
+    const [isEdit, setIsEdit] = useState(false);
+    // 某条说说的详细数据
+    const [id, setId] = useState('');
+    const [date, setDate] = useState('');
+    const [content, setContent] = useState('');
+    // 显示对话框
     const showAddSay = () => {
         setAddSayVisible(true);
     };
+    // 清空输入框
+    const clearSayInput = () => {
+        setContent('');
+    };
+    // 对话框确认
     const addSayOK = () => {
+        if (!content) {
+            message.info('请说点啥再发表！');
+            return;
+        }
+        if (isEdit) {
+            // 更新说说
+            updateSay();
+        } else {
+            // 添加说说
+            addSay();
+        }
+    };
+    // 对话框取消
+    const addSayCancel = () => {
+        setAddSayVisible(false);
+        clearSayInput();
+        setIsEdit(false);
+        setId('');
+        setDate('');
+    };
+    // ————————————————————————————添加/编辑说说对话框end————————————————————————————
+
+    // ——————————————————————————————对说说的操作————————————————————————————
+    // 说说添加或更新后的操作
+    const afterSayChange = isEdit => {
+        const message = isEdit ? '更新说说成功' : '发表说说成功';
+        const icon = isEdit ? (
+            <FormOutlined style={{ color: 'blue' }} />
+        ) : (
+            <MessageOutlined style={{ color: 'blue' }} />
+        );
+        // 获取所有说说
+        getAllSays();
+        setAddSayVisible(false);
+        // 清空输入框
+        clearSayInput();
+        setIsEdit(false);
+        setId('');
+        notification.open({
+            message,
+            icon,
+            placement: 'bottomLeft',
+            duration: 1.5,
+        });
+    };
+    // 发送添加说说请求
+    const addSay = () => {
         db.collection('says')
             .add({
                 content,
                 date: new Date().getTime(),
             })
-            .then(res => {
-                console.log(res);
+            .then(() => {
+                // 添加后的操作
+                afterSayChange(0);
             });
     };
-    const addSayCancel = () => {
-        setAddSayVisible(false);
+    // 发送更新说说请求
+    const updateSay = () => {
+        db.collection('says')
+            .doc(id)
+            .update({
+                content,
+                date,
+            })
+            .then(() => {
+                // 更新后的操作
+                afterSayChange(1);
+                setDate('');
+            });
     };
+    // 点击编辑，根据ID获得说说详情
+    const editSay = id => {
+        setId(id);
+        setIsEdit(true);
+        setAddSayVisible(true);
+        db.collection('says')
+            .doc(id)
+            .get()
+            .then(res => {
+                setContent(res.data[0].content);
+                setDate(res.data[0].date);
+            });
+    };
+    // 删除说说
+    const deleteSay = id => {
+        db.collection('says')
+            .doc(id)
+            .remove()
+            .then(() => {
+                getAllSays();
+                notification.open({
+                    message: '删除说说成功',
+                    icon: <DeleteOutlined style={{ color: 'blue' }} />,
+                    placement: 'bottomLeft',
+                    duration: 1.5,
+                });
+            });
+    };
+    // ——————————————————————————————对说说的操作end————————————————————————————
 
+    // 表情数据
     const emojiPeople =
-        '😄 😆 😊 😃 😏 😍 😘 😚 😳 😌 😆 😁 😉 😜 😝 😀 😗 😙 😛 😴 😟 😦 😧 😮 😬 😕 😯 😑 😒 😅 😓 😥 😩 😔 😞 😖 😨 😰 😣 😢 😭 😂 😲 😱 😫 😠 😡 😤 😪 😋 😷 😎 😵 👿 😈 😐 😶 😇 👽 💛 💙 💜 ❤️ 💚 💔 💓 💗 💕 💞 💘 💖 ✨ ⭐ 🌟 💫 💥 💥 💢 ❗ ❓ ❕ ❔ 💤 💨 💦 🎶 🎵 🔥 💩 💩 💩 👍 👍 👎 👎 👌 👊 👊 ✊ ✌️ 👋 ✋ ✋ 👐 ☝️ 👇 👈 👉 🙌 🙏 👆 👏 💪 🤘 🖕 🏃 🏃 👫 👪 👬 👭 💃 👯 🙆‍♀️ 🙅 💁 🙋 👰 🙇 💏 💑 💆 💇 💅 👦 👧 👩 👨 👶 👵 👴 👲 👳‍♂️ 👷 👮 👼 👸 😺 😸 😻 😽 😼 🙀 😿 😹 😾 👹 👺 🙈 🙉 🙊 💂‍♂️ 💀 🐾 👄 💋 💧 👂 👀 👃 👅 💌 👤 👥 💬 💭';
+        '😄😆😊😃😏😍😘😚😳😌😆😁😉😜😝😀😗😙😛😴😟😦😧😮😬😕😯😑😒😅😓😥😩😔😞😖😨😰😣😢😭😂😲😱😫😠😡😤😪😋😷😎😵👿😈😐😶😇👽💛💙💜❤️💚💔💓💗💕💞💘💖✨⭐🌟💫💥💥💢❗❓❕❔💤💨💦🎶🎵🔥💩💩💩👍👍👎👎👌👊👊✊✌️👋✋✋👐☝️👇👈👉🙌🙏👆👏💪🤘🖕🏃🏃👫👪👬👭💃👯🙆‍♀️🙅💁🙋👰🙇💏💑💆💇💅👦👧👩👨👶👵👴👲👳‍♂️👷👮👼👸😺😸😻😽😼🙀😿😹😾👹👺🙈🙉🙊💂‍♂️💀🐾👄💋💧👂👀👃👅💌👤👥💬💭';
     const emojiNature =
-        '☀️ ☔ ☁️ ❄️ ⛄ ⚡ 🌀 🌁 🌊 🐱 🐶 🐭 🐹 🐰 🐺 🐸 🐯 🐨 🐻 🐷 🐽 🐮 🐗 🐵 🐒 🐴 🐎 🐫 🐑 🐘 🐼 🐍 🐦 🐤 🐥 🐣 🐔 🐧 🐢 🐛 🐝 🐜 🐞 🐌 🐙 🐠 🐟 🐳 🐋 🐬 🐄 🐏 🐀 🐃 🐅 🐇 🐉 🐐 🐓 🐕 🐖 🐁 🐂 🐲 🐡 🐊 🐪 🐆 🐈 🐩 🐾 💐 🌸 🌷 🍀 🌹 🌻 🌺 🍁 🍃 🍂 🌿 🍄 🌵 🌴 🌲 🌳 🌰 🌱 🌼 🌾 🐚 🌐 🌞 🌝 🌚 🌑 🌒 🌓 🌔 🌕 🌖 🌗 🌘 🌜 🌛 🌙 🌍 🌎 🌏 🌋 🌌 ⛅';
+        '☀️☔☁️❄️⛄⚡🌀🌁🌊🐱🐶🐭🐹🐰🐺🐸🐯🐨🐻🐷🐽🐮🐗🐵🐒🐴🐎🐫🐑🐘🐼🐍🐦🐤🐥🐣🐔🐧🐢🐛🐝🐜🐞🐌🐙🐠🐟🐳🐋🐬🐄🐏🐀🐃🐅🐇🐉🐐🐓🐕🐖🐁🐂🐲🐡🐊🐪🐆🐈🐩🐾💐🌸🌷🍀🌹🌻🌺🍁🍃🍂🌿🍄🌵🌴🌲🌳🌰🌱🌼🌾🐚🌐🌞🌝🌚🌑🌒🌓🌔🌕🌖🌗🌘🌜🌛🌙🌍🌎🌏🌋🌌⛅';
     const emojiObj =
-        '🎍 💝 🎎 🎒 🎓 🎏 🎆 🎇 🎐 🎑 🎃 👻 🎅 🎄 🎁 🔔 🔕 🎋 🎉 🎊 🎈 🔮 💿 📀 💾 📷 📹 🎥 💻 📺 📱 ☎️ ☎️ 📞 📟 📠 💽 📼 🔉 🔈 🔇 📢 📣 ⌛ ⏳ ⏰ ⌚ 📻 📡 ➿ 🔍 🔎 🔓 🔒 🔏 🔐 🔑 💡 🔦 🔆 🔅 🔌 🔋 📲 ✉️ 📫 📮 🛀 🛁 🚿 🚽 🔧 🔩 🔨 💺 💰 💴 💵 💷 💶 💳 💸 📧 📥 📤 ✉️ 📨 📯 📪 📬 📭 📦 🚪 🚬 💣 🔫 🔪 💊 💉 📄 📃 📑 📊 📈 📉 📜 📋 📆 📅 📇 📁 📂 ✂️ 📌 📎 ✒️ ✏️ 📏 📐 📕 📗 📘 📙 📓 📔 📒 📚 🔖 📛 🔬 🔭 📰 🏈 🏀 ⚽ ⚾ 🎾 🎱 🎱 🏉 🎳 ⛳ 🚵 🚴 🏇 🏂 🏊 🏄 🎿 ♠️ ♥️ ♣️ ♦️ 💎 💍 🏆 🎼 🎹 🎻 👾 🎮 🃏 🎴 🎲 🎯 🀄 🎬 📝 📝 📖 🎨 🎤 🎧 🎺 🎷 🎸 👞 👡 👠 💄 👢 👕 👕 👔 👚 👗 🎽 👖 👘 👙 🎀 🎩 👑 👒 👞 🌂 💼 👜 👝 👛 👓 🎣 ☕ 🍵 🍶 🍼 🍺 🍻 🍸 🍹 🍷 🍴 🍕 🍔 🍟 🍗 🍖 🍝 🍛 🍤 🍱 🍣 🍥 🍙 🍘 🍚 🍜 🍲 🍢 🍡 🥚 🍞 🍩 🍮 🍦 🍨 🍧 🎂 🍰 🍪 🍫 🍬 🍭 🍯 🍎 🍏 🍊 🍋 🍒 🍇 🍉 🍓 🍑 🍈 🍌 🍐 🍍 🍠 🍆 🍅 🌽';
+        '🎍💝🎎🎒🎓🎏🎆🎇🎐🎑🎃👻🎅🎄🎁🔔🔕🎋🎉🎊🎈🔮💿📀💾📷📹🎥💻📺📱☎️☎️📞📟📠💽📼🔉🔈🔇📢📣⌛⏳⏰⌚📻📡➿🔍🔎🔓🔒🔏🔐🔑💡🔦🔆🔅🔌🔋📲✉️📫📮🛀🛁🚿🚽🔧🔩🔨💺💰💴💵💷💶💳💸📧📥📤✉️📨📯📪📬📭📦🚪🚬💣🔫🔪💊💉📄📃📑📊📈📉📜📋📆📅📇📁📂✂️📌📎✒️✏️📏📐📕📗📘📙📓📔📒📚🔖📛🔬🔭📰🏈🏀⚽⚾🎾🎱🎱🏉🎳⛳🚵🚴🏇🏂🏊🏄🎿♠️♥️♣️♦️💎💍🏆🎼🎹🎻👾🎮🃏🎴🎲🎯🀄🎬📝📝📖🎨🎤🎧🎺🎷🎸👞👡👠💄👢👕👕👔👚👗🎽👖👘👙🎀🎩👑👒👞🌂💼👜👝👛👓🎣☕🍵🍶🍼🍺🍻🍸🍹🍷🍴🍕🍔🍟🍗🍖🍝🍛🍤🍱🍣🍥🍙🍘🍚🍜🍲🍢🍡🥚🍞🍩🍮🍦🍨🍧🎂🍰🍪🍫🍬🍭🍯🍎🍏🍊🍋🍒🍇🍉🍓🍑🍈🍌🍐🍍🍠🍆🍅🌽';
     const emojiPlace =
-        '🏠 🏡 🏫 🏢 🏣 🏥 🏦 🏪 🏩 🏨 💒 ⛪ 🏬 🏤 🌇 🌆 🏯 🏰 ⛺ 🏭 🗼 🗾 🗻 🌄 🌅 🌠 🗽 🌉 🎠 🌈 🎡 ⛲ 🎢 🚢 🚤 ⛵ ⛵ 🚣 ⚓ 🚀 ✈️ 🚁 🚂 🚊 🚞 🚲 🚡 🚟 🚠 🚜 🚙 🚘 🚗 🚗 🚕 🚖 🚛 🚌 🚍 🚨 🚓 🚔 🚒 🚑 🚐 🚚 🚋 🚉 🚆 🚅 🚄 🚈 🚝 🚃 🚎 🎫 ⛽ 🚦 🚥 ⚠️ 🚧 🔰 🏧 🎰 🚏 💈 ♨️ 🏁 🎌 🏮 🗿 🎪 🎭 📍 🚩';
+        '🏠🏡🏫🏢🏣🏥🏦🏪🏩🏨💒⛪🏬🏤🌇🌆🏯🏰⛺🏭🗼🗾🗻🌄🌅🌠🗽🌉🎠🌈🎡⛲🎢🚢🚤⛵⛵🚣⚓🚀✈️🚁🚂🚊🚞🚲🚡🚟🚠🚜🚙🚘🚗🚗🚕🚖🚛🚌🚍🚨🚓🚔🚒🚑🚐🚚🚋🚉🚆🚅🚄🚈🚝🚃🚎🎫⛽🚦🚥⚠️🚧🔰🏧🎰🚏💈♨️🏁🎌🏮🗿🎪🎭📍🚩';
     const emojiSymbol =
-        '◀️ ⬇️ ▶️ ⬅️ 🔠 🔡 🔤 ➡️ ⬆️ ⏬ ⏫ 🔽 ⤵️ ⤴️ ↩️ ↪️ 🔼 🔃 🔄 ⏪ ⏩ ℹ️ 🆗 🔀 🔁 🔂 🆕 🔝 🆙 🆒 🆓 🆖 🎦 🈁 📶 🈹 🈴 🈺 🈯 🈷️ 🈶 🈵 🈚 🈸 🈳 🈲 🈂️ 🚻 🚹 🚺 🚼 🚭 🅿️ ♿ 🚇 🛄 🉑 🚾 🚰 🚮 ㊙️ ㊗️ Ⓜ️ 🛂 🛅 🛃 🉐 🆑 🆘 🆔 🚫 🔞 📵 🚯 🚱 🚳 🚷 🚸 ⛔ ✳️ ❇️ ✴️ 💟 🆚 📳 📴 💹 💱 ♈ ♉ ♊ ♋ ♌ ♍ ♎ ♏ ♐ ♑ ♒ ♓ ⛎ 🔯 ❎ 🅰️ 🅱️ 🆎 🅾️ 💠 ♻️ 🔚 🔙 🔛 🔜 🕐 🕜 🕙 🕥 🕚 🕦 🕛 🕧 🕑 🕝 🕒 🕞 🕓 🕟 🕔 🕠 🕕 🕡 🕖 🕢 🕗 🕣 🕘 🕤 💲 ❌ ❗ ⁉️ ⭕ ✖️ ➕ ➖ ➗ 💮 💯 ✔️ ☑️ 🔘 🔗 ➰ 🔱 ▪️ ▫️ ◾ ◽ ◼️ ◻️ ⬛ ⬜ ✅ 🔲 🔳 ⚫ ⚪ 🔴 🔵 🔷 🔶 🔹 🔸 🔺 🔻';
+        '◀️⬇️▶️⬅️🔠🔡🔤➡️⬆️⏬⏫🔽⤵️⤴️↩️↪️🔼🔃🔄⏪⏩ℹ️🆗🔀🔁🔂🆕🔝🆙🆒🆓🆖🎦🈁📶🈹🈴🈺🈯🈷️🈶🈵🈚🈸🈳🈲🈂️🚻🚹🚺🚼🚭🅿️♿🚇🛄🉑🚾🚰🚮㊙️㊗️Ⓜ️🛂🛅🛃🉐🆑🆘🆔🚫🔞📵🚯🚱🚳🚷🚸⛔✳️❇️✴️💟🆚📳📴💹💱♈♉♊♋♌♍♎♏♐♑♒♓⛎🔯❎🅰️🅱️🆎🅾️💠♻️🔚🔙🔛🔜🕐🕜🕙🕥🕚🕦🕛🕧🕑🕝🕒🕞🕓🕟🕔🕠🕕🕡🕖🕢🕗🕣🕘🕤💲❌❗⁉️⭕✖️➕➖➗💮💯✔️☑️🔘🔗➰🔱▪️▫️◾◽◼️◻️⬛⬜✅🔲🔳⚫⚪🔴🔵🔷🔶🔹🔸🔺🔻';
+
     return (
         <>
             <div className="searchBox">
@@ -122,6 +226,7 @@ const Say = () => {
                         />
                         <Popover
                             className="emojiBtn"
+                            overlayClassName="emojiContent"
                             placement="bottom"
                             content={emojiPeople}
                             trigger="click"
@@ -130,6 +235,7 @@ const Say = () => {
                         </Popover>
                         <Popover
                             className="emojiBtn"
+                            overlayClassName="emojiContent"
                             placement="bottom"
                             content={emojiNature}
                             trigger="click"
@@ -138,6 +244,7 @@ const Say = () => {
                         </Popover>
                         <Popover
                             className="emojiBtn"
+                            overlayClassName="emojiContent"
                             placement="bottom"
                             content={emojiObj}
                             trigger="click"
@@ -146,6 +253,7 @@ const Say = () => {
                         </Popover>
                         <Popover
                             className="emojiBtn"
+                            overlayClassName="emojiContent"
                             placement="bottom"
                             content={emojiPlace}
                             trigger="click"
@@ -154,6 +262,7 @@ const Say = () => {
                         </Popover>
                         <Popover
                             className="emojiBtn"
+                            overlayClassName="emojiContent"
                             placement="bottom"
                             content={emojiSymbol}
                             trigger="click"

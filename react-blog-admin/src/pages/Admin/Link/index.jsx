@@ -5,51 +5,6 @@ import { db } from '../../../utils/cloudBase';
 import './index.css';
 
 const Link = () => {
-    // ————————————————————————————添加/编辑友链对话框————————————————————————————
-    // 是否显示对话框
-    const [addLinkVisible, setAddLinkVisible] = useState(false);
-    // 是否是编辑状态
-    const [isEdit, setIsEdit] = useState(false);
-    // 友链的详细数据
-    const [id, setId] = useState('');
-    const [name, setName] = useState('');
-    const [link, setLink] = useState('');
-    const [avatar, setAvatar] = useState('');
-    const [descr, setDescr] = useState('');
-    // 展示添加友链的页面
-    const showAddLink = () => {
-        setAddLinkVisible(true);
-    };
-    // 对话框取消
-    const addLinkCancel = () => {
-        setAddLinkVisible(false);
-        // 清空输入框
-        clearLinkInput();
-        setIsEdit(false);
-    };
-    // 对话框确认
-    const addLinkOK = () => {
-        if (!name || !link || !avatar || !descr) {
-            message.info('请输入完整友链信息！');
-            return;
-        }
-        if (isEdit) {
-            // 更新友链
-            updateLink();
-        } else {
-            // 添加友链
-            addLink();
-        }
-    };
-    // 清空所有输入框
-    const clearLinkInput = () => {
-        setName('');
-        setLink('');
-        setAvatar('');
-        setDescr('');
-    };
-    // ————————————————————————————添加/编辑友链对话框end————————————————————————————
-
     // ——————————————————————————————渲染友链表格————————————————————————————
     const [linkData, setLinkData] = useState([]);
     const [isMounted, setIsMounted] = useState(true);
@@ -116,6 +71,7 @@ const Link = () => {
                 setTableLoading(false);
             });
     };
+    // 组件挂载，获得所有友链
     useEffect(() => {
         isMounted && getLinksData();
         return () => {
@@ -123,6 +79,50 @@ const Link = () => {
         };
     }, [isMounted]);
     // ——————————————————————————————渲染友链表格end————————————————————————————
+
+    // ————————————————————————————添加/编辑友链对话框————————————————————————————
+    const [addLinkVisible, setAddLinkVisible] = useState(false);
+    const [isEdit, setIsEdit] = useState(false);
+    // 某条友链的详细数据
+    const [id, setId] = useState('');
+    const [name, setName] = useState('');
+    const [link, setLink] = useState('');
+    const [avatar, setAvatar] = useState('');
+    const [descr, setDescr] = useState('');
+    // 展示添加友链的页面
+    const showAddLink = () => {
+        setAddLinkVisible(true);
+    };
+    // 对话框取消
+    const addLinkCancel = () => {
+        setAddLinkVisible(false);
+        // 清空输入框
+        clearLinkInput();
+        setIsEdit(false);
+        setId('');
+    };
+    // 对话框确认
+    const addLinkOK = () => {
+        if (!name || !link || !avatar || !descr) {
+            message.info('请输入完整友链信息！');
+            return;
+        }
+        if (isEdit) {
+            // 更新友链
+            updateLink();
+        } else {
+            // 添加友链
+            addLink();
+        }
+    };
+    // 清空所有输入框
+    const clearLinkInput = () => {
+        setName('');
+        setLink('');
+        setAvatar('');
+        setDescr('');
+    };
+    // ————————————————————————————添加/编辑友链对话框end————————————————————————————
 
     // ——————————————————————————————对友链的操作————————————————————————————
 
@@ -140,6 +140,7 @@ const Link = () => {
         // 清空输入框
         clearLinkInput();
         setIsEdit(false);
+        setId('');
         notification.open({
             message,
             icon,
@@ -178,13 +179,13 @@ const Link = () => {
     };
     // 点击编辑友链，获取该友链信息
     const editLink = id => {
+        setId(id);
         setIsEdit(true);
         setAddLinkVisible(true);
         db.collection('links')
             .doc(id)
             .get()
             .then(res => {
-                setId(res.data[0]._id);
                 setName(res.data[0].name);
                 setLink(res.data[0].link);
                 setAvatar(res.data[0].avatar);
