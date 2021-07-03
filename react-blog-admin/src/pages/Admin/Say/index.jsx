@@ -3,6 +3,13 @@ import { Modal, notification, Table, Space, Button, Popconfirm, message, Popover
 import { FormOutlined, MessageOutlined, DeleteOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { db } from '../../../utils/cloudBase';
+import {
+    emojiPeople,
+    emojiNature,
+    emojiObj,
+    emojiPlace,
+    emojiSymbol,
+} from '../../../utils/constant';
 import './index.css';
 
 const Say = () => {
@@ -84,6 +91,8 @@ const Say = () => {
     };
     // 清空输入框
     const clearSayInput = () => {
+        setId('');
+        setDate('');
         setContent('');
     };
     // 对话框确认
@@ -105,8 +114,6 @@ const Say = () => {
         setAddSayVisible(false);
         clearSayInput();
         setIsEdit(false);
-        setId('');
-        setDate('');
     };
     // ————————————————————————————添加/编辑说说对话框end————————————————————————————
 
@@ -121,11 +128,7 @@ const Say = () => {
         );
         // 获取所有说说
         getAllSays();
-        setAddSayVisible(false);
-        // 清空输入框
-        clearSayInput();
-        setIsEdit(false);
-        setId('');
+        addSayCancel();
         notification.open({
             message,
             icon,
@@ -156,7 +159,6 @@ const Say = () => {
             .then(() => {
                 // 更新后的操作
                 afterSayChange(1);
-                setDate('');
             });
     };
     // 点击编辑，根据ID获得说说详情
@@ -188,18 +190,6 @@ const Say = () => {
             });
     };
     // ——————————————————————————————对说说的操作end————————————————————————————
-
-    // 表情数据
-    const emojiPeople =
-        '😄😆😊😃😏😍😘😚😳😌😆😁😉😜😝😀😗😙😛😴😟😦😧😮😬😕😯😑😒😅😓😥😩😔😞😖😨😰😣😢😭😂😲😱😫😠😡😤😪😋😷😎😵👿😈😐😶😇👽💛💙💜❤️💚💔💓💗💕💞💘💖✨⭐🌟💫💥💥💢❗❓❕❔💤💨💦🎶🎵🔥💩💩💩👍👍👎👎👌👊👊✊✌️👋✋✋👐☝️👇👈👉🙌🙏👆👏💪🤘🖕🏃🏃👫👪👬👭💃👯🙆‍♀️🙅💁🙋👰🙇💏💑💆💇💅👦👧👩👨👶👵👴👲👳‍♂️👷👮👼👸😺😸😻😽😼🙀😿😹😾👹👺🙈🙉🙊💂‍♂️💀🐾👄💋💧👂👀👃👅💌👤👥💬💭';
-    const emojiNature =
-        '☀️☔☁️❄️⛄⚡🌀🌁🌊🐱🐶🐭🐹🐰🐺🐸🐯🐨🐻🐷🐽🐮🐗🐵🐒🐴🐎🐫🐑🐘🐼🐍🐦🐤🐥🐣🐔🐧🐢🐛🐝🐜🐞🐌🐙🐠🐟🐳🐋🐬🐄🐏🐀🐃🐅🐇🐉🐐🐓🐕🐖🐁🐂🐲🐡🐊🐪🐆🐈🐩🐾💐🌸🌷🍀🌹🌻🌺🍁🍃🍂🌿🍄🌵🌴🌲🌳🌰🌱🌼🌾🐚🌐🌞🌝🌚🌑🌒🌓🌔🌕🌖🌗🌘🌜🌛🌙🌍🌎🌏🌋🌌⛅';
-    const emojiObj =
-        '🎍💝🎎🎒🎓🎏🎆🎇🎐🎑🎃👻🎅🎄🎁🔔🔕🎋🎉🎊🎈🔮💿📀💾📷📹🎥💻📺📱☎️☎️📞📟📠💽📼🔉🔈🔇📢📣⌛⏳⏰⌚📻📡➿🔍🔎🔓🔒🔏🔐🔑💡🔦🔆🔅🔌🔋📲✉️📫📮🛀🛁🚿🚽🔧🔩🔨💺💰💴💵💷💶💳💸📧📥📤✉️📨📯📪📬📭📦🚪🚬💣🔫🔪💊💉📄📃📑📊📈📉📜📋📆📅📇📁📂✂️📌📎✒️✏️📏📐📕📗📘📙📓📔📒📚🔖📛🔬🔭📰🏈🏀⚽⚾🎾🎱🎱🏉🎳⛳🚵🚴🏇🏂🏊🏄🎿♠️♥️♣️♦️💎💍🏆🎼🎹🎻👾🎮🃏🎴🎲🎯🀄🎬📝📝📖🎨🎤🎧🎺🎷🎸👞👡👠💄👢👕👕👔👚👗🎽👖👘👙🎀🎩👑👒👞🌂💼👜👝👛👓🎣☕🍵🍶🍼🍺🍻🍸🍹🍷🍴🍕🍔🍟🍗🍖🍝🍛🍤🍱🍣🍥🍙🍘🍚🍜🍲🍢🍡🥚🍞🍩🍮🍦🍨🍧🎂🍰🍪🍫🍬🍭🍯🍎🍏🍊🍋🍒🍇🍉🍓🍑🍈🍌🍐🍍🍠🍆🍅🌽';
-    const emojiPlace =
-        '🏠🏡🏫🏢🏣🏥🏦🏪🏩🏨💒⛪🏬🏤🌇🌆🏯🏰⛺🏭🗼🗾🗻🌄🌅🌠🗽🌉🎠🌈🎡⛲🎢🚢🚤⛵⛵🚣⚓🚀✈️🚁🚂🚊🚞🚲🚡🚟🚠🚜🚙🚘🚗🚗🚕🚖🚛🚌🚍🚨🚓🚔🚒🚑🚐🚚🚋🚉🚆🚅🚄🚈🚝🚃🚎🎫⛽🚦🚥⚠️🚧🔰🏧🎰🚏💈♨️🏁🎌🏮🗿🎪🎭📍🚩';
-    const emojiSymbol =
-        '◀️⬇️▶️⬅️🔠🔡🔤➡️⬆️⏬⏫🔽⤵️⤴️↩️↪️🔼🔃🔄⏪⏩ℹ️🆗🔀🔁🔂🆕🔝🆙🆒🆓🆖🎦🈁📶🈹🈴🈺🈯🈷️🈶🈵🈚🈸🈳🈲🈂️🚻🚹🚺🚼🚭🅿️♿🚇🛄🉑🚾🚰🚮㊙️㊗️Ⓜ️🛂🛅🛃🉐🆑🆘🆔🚫🔞📵🚯🚱🚳🚷🚸⛔✳️❇️✴️💟🆚📳📴💹💱♈♉♊♋♌♍♎♏♐♑♒♓⛎🔯❎🅰️🅱️🆎🅾️💠♻️🔚🔙🔛🔜🕐🕜🕙🕥🕚🕦🕛🕧🕑🕝🕒🕞🕓🕟🕔🕠🕕🕡🕖🕢🕗🕣🕘🕤💲❌❗⁉️⭕✖️➕➖➗💮💯✔️☑️🔘🔗➰🔱▪️▫️◾◽◼️◻️⬛⬜✅🔲🔳⚫⚪🔴🔵🔷🔶🔹🔸🔺🔻';
 
     return (
         <>

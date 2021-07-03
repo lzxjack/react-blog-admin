@@ -32,15 +32,10 @@ const Show = () => {
     const [link, setLink] = useState('');
 
     // 编辑/添加成功后的操作
-    const updateSth = isEdit => {
+    const afterShowChange = isEdit => {
         // 获取所有相册
         getAllShows();
-        // 关闭对话框
-        setShowVisible(false);
-        // 编辑状态false
-        setIsEdit(false);
-        // 清空输入框
-        clearShowInput();
+        galleryCancel();
         const message = isEdit ? '修改作品成功' : '添加作品成功';
         const icon = isEdit ? (
             <EditOutlined style={{ color: 'blue' }} />
@@ -71,7 +66,7 @@ const Show = () => {
                     link,
                 })
                 .then(() => {
-                    updateSth(isEdit);
+                    afterShowChange(1);
                 });
         } else {
             // 添加
@@ -83,7 +78,7 @@ const Show = () => {
                     link,
                 })
                 .then(() => {
-                    updateSth(isEdit);
+                    afterShowChange(0);
                 });
         }
     };
@@ -95,6 +90,7 @@ const Show = () => {
     };
     // 清除对话框的输入框
     const clearShowInput = () => {
+        setId('');
         setName('');
         setDescr('');
         setCover('');

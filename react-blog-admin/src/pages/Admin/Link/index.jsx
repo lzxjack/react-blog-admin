@@ -93,14 +93,7 @@ const Link = () => {
     const showAddLink = () => {
         setAddLinkVisible(true);
     };
-    // 对话框取消
-    const addLinkCancel = () => {
-        setAddLinkVisible(false);
-        // 清空输入框
-        clearLinkInput();
-        setIsEdit(false);
-        setId('');
-    };
+
     // 对话框确认
     const addLinkOK = () => {
         if (!name || !link || !avatar || !descr) {
@@ -117,10 +110,17 @@ const Link = () => {
     };
     // 清空所有输入框
     const clearLinkInput = () => {
+        setId('');
         setName('');
         setLink('');
         setAvatar('');
         setDescr('');
+    };
+    // 对话框取消
+    const addLinkCancel = () => {
+        setAddLinkVisible(false);
+        clearLinkInput();
+        setIsEdit(false);
     };
     // ————————————————————————————添加/编辑友链对话框end————————————————————————————
 
@@ -136,11 +136,7 @@ const Link = () => {
         );
         // 获取所有友链
         getLinksData();
-        setAddLinkVisible(false);
-        // 清空输入框
-        clearLinkInput();
-        setIsEdit(false);
-        setId('');
+        addLinkCancel();
         notification.open({
             message,
             icon,

@@ -159,17 +159,6 @@ const AddGallery = props => {
                             }}
                         />
                     </div>
-                    {/* <div className="addGalleryTextBox">
-                        <div className="galleryInputKey">图片：</div>
-                        <div
-                            className="galleryTextValue"
-                            onInput={e => {
-                                setPics(e.target.innerText.split(`\n`));
-                            }}
-                            contentEditable="plaintext-only"
-                            suppressContentEditableWarning
-                        ></div>
-                    </div> */}
                     <div className="addGalleryTextBox">
                         <div className="galleryInputKey">图片：</div>
                         <textarea
