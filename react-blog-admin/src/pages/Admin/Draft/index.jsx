@@ -110,7 +110,7 @@ const Draft = props => {
     // 编辑草稿
     const editDraft = id => {
         // 跳转到添加文章页面，并传入该文章id
-        props.history.replace(`/admin/addArticle/?id=${id}&isDraft=1`);
+        props.history.replace(`/admin/addArticle?id=${id}&isDraft=1`);
     };
     // 删除草稿
     const deleteDraft = id => {

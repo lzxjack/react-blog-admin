@@ -85,7 +85,7 @@
     /* width: 50%; */
     flex: 1;
     background-color: #fff;
-    padding: 20px;
+    padding: 30px;
     font-size: 18px;
 }
 
@@ -97,38 +97,37 @@
 
 /* ——————————————————————————————显示区markdown样式—————————————————————————————— */
 /* 表格 */
-.showRegion table {
+.markdownStyle table {
     border: 1px solid #000;
     border-spacing: 0; /*去掉单元格间隙*/
 }
-.showRegion table th,
-.showRegion table td {
+.markdownStyle table th,
+.markdownStyle table td {
     padding: 6px 14px;
     border: 1px solid #000;
 }
 /* h1 h2 h3 h4 h5 h6 p */
-.showRegion h1,
-.showRegion h2,
-.showRegion h3,
-.showRegion h4,
-.showRegion h5,
-.showRegion h6,
-.showRegion p {
+/* .markdownStyle h1,
+.markdownStyle h2,
+.markdownStyle h3,
+.markdownStyle h4,
+.markdownStyle h5,
+.markdownStyle h6,
+.markdownStyle p {
     margin: 0.3em;
-}
+} */
 /* 行内代码 */
-.showRegion code {
+.markdownStyle code {
     color: red;
     background-color: #f9f2f4;
     padding: 0 4px;
 }
 
 /* 图片 */
-.showRegion p img {
+.markdownStyle p img {
     display: block;
     max-width: 100%;
     margin: 14px auto;
-
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
 }
 

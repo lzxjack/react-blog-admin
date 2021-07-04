@@ -11,6 +11,7 @@ import Home from '../../../pages/Admin/Home';
 import AddArticle from '../../../pages/Admin/AddArticle';
 import AddGallery from '../../../pages/Admin/AddGallery';
 import Draft from '../../../pages/Admin/Draft';
+import AboutEdit from '../../../pages/Admin/AboutEdit';
 
 import './index.css';
 
@@ -30,6 +31,7 @@ const Main = () => {
                 <Route path="/admin/draft" component={Draft} />
                 <Route path="/admin/addArticle" component={AddArticle} />
                 <Route path="/admin/addGallery" component={AddGallery} />
+                <Route path="/admin/aboutEdit" component={AboutEdit} />
                 <Redirect to="/admin/home" />
             </Switch>
         </div>

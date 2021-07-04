@@ -1,0 +1,56 @@
+.aboutBox {
+    display: flex;
+    flex-direction: row;
+}
+
+.about {
+    flex: 1;
+}
+
+.aboutHeader {
+    position: relative;
+    height: 50px;
+    background-color: #b9dfff;
+}
+.aboutHeaderSite {
+    background-color: #a3d5ff;
+}
+
+.editAboutBtn {
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    transform: translate(0, -50%);
+    height: 40px;
+    width: 60px;
+    background-color: #1890ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    user-select: none;
+    transition: all 0.2s;
+    color: #fff;
+}
+.editAboutBtn:hover {
+    background-color: #40a9ff;
+    box-shadow: 0 0 4px #1890ff;
+}
+
+.aboutTitle {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+}
+
+.aboutBody {
+    padding: 30px;
+    font-size: 18px;
+    background-color: rgb(200, 243, 253);
+    min-height: calc(100vh - 60px - 54px - 20px - 50px);
+}
+.aboutBodySite {
+    background-color: rgb(180, 240, 253);
+}

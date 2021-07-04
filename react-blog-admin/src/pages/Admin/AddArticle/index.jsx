@@ -43,6 +43,7 @@ const AddArticle = props => {
         // 判断是编辑页面再继续操作
         if (props.location.search !== '') {
             const params = qs.parse(props.location.search.slice(1));
+            // console.log(params.isDraft ? true : false);
             const { id, isDraft } = params;
             if (!isDraft) {
                 // 向数据库获取文章详情
@@ -303,7 +304,7 @@ const AddArticle = props => {
                     {props.location.search !== '' ? articleDetail.mainContent : ''}
                 </div>
                 <div
-                    className="showRegion"
+                    className="showRegion markdownStyle"
                     dangerouslySetInnerHTML={{
                         __html: marked(text).replace(/<pre>/g, "<pre id='hljs'>"),
                     }}

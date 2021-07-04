@@ -1,6 +1,4 @@
 import { useState, useEffect } from 'react';
-// import { message, notification } from 'antd';
-// import { PictureOutlined } from '@ant-design/icons';
 import { db } from '../../../utils/cloudBase';
 import './index.css';
 
@@ -22,7 +20,7 @@ const Gallery = props => {
     }, [isMounted]);
 
     const editGallery = id => {
-        props.history.push(`/admin/addGallery/?id=${id}`);
+        props.history.push(`/admin/addGallery?id=${id}`);
     };
     return (
         <>
