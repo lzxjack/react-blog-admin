@@ -5,6 +5,7 @@ import { CarryOutOutlined, FileDoneOutlined } from '@ant-design/icons';
 import qs from 'qs';
 import marked from 'marked';
 import { db } from '../../../utils/cloudBase';
+import moment from 'moment';
 import hljs from 'highlight.js';
 // 代码高亮的主题
 import './github-dark.css';
@@ -22,8 +23,8 @@ const AddArticle = props => {
             // 如果是编辑模式，获得id，并判断是否是草稿
             const params = qs.parse(props.location.search.slice(1));
             const { id, isDraft } = params;
-            setId(id);
             const Draft = isDraft ? true : false;
+            setId(id);
             setIsDraft(Draft);
         }
         setIsEdit(Edit);
@@ -38,7 +39,7 @@ const AddArticle = props => {
             .get()
             .then(res => {
                 // 从res.data中解构赋值
-                const { title, titleEng, mainContent, tags, classes } = res.data[0];
+                const { title, titleEng, mainContent, tags, classes, date } = res.data[0];
                 setTitle(title);
                 setTitleEng(titleEng);
                 // 已有的标签存储到state
@@ -47,14 +48,18 @@ const AddArticle = props => {
                 setSelectClasses(classes);
                 // 已有的正文存储到state
                 setMainContent(mainContent);
+                setDate(moment(date).format('YYYY-MM-DD HH:mm:ss').replace(/ /g, ' '));
             });
     };
     // 编辑时，组件挂载，自动填入文章详情
     useEffect(() => {
         // 还没有判断完成，直接返回
         if (!isJudged) return;
-        //若不是编辑页面，直接返回
-        if (!isEdit) return;
+        //若不是编辑页面，填入当前时间后，返回
+        if (!isEdit) {
+            setDate(moment().format('YYYY-MM-DD HH:mm:ss').replace(/ /g, ' '));
+            return;
+        }
         if (!isDraft) {
             // 向数据库获取文章详情
             getDetailFromDB('articles');
@@ -66,9 +71,10 @@ const AddArticle = props => {
     }, [isEdit, isJudged, isDraft]);
     // —————————————————————编辑时，获取文章详情end———————————————————————
 
-    // ———————————标题———————————————
+    // ———————————标题、时间———————————————
     const [title, setTitle] = useState('');
     const [titleEng, setTitleEng] = useState('');
+    const [date, setDate] = useState('');
 
     // ———————————标题end———————————————
 
@@ -129,7 +135,7 @@ const AddArticle = props => {
                 mainContent,
                 tags: selectTags,
                 classes: selectClasses,
-                date: new Date().getTime(),
+                date: new Date(date).getTime(),
                 url: `https://lzxjack.top/${titleEng}`,
             })
             .then(() => {
@@ -166,7 +172,7 @@ const AddArticle = props => {
                 mainContent,
                 tags: selectTags,
                 classes: selectClasses,
-                date: new Date().getTime(),
+                date: new Date(date).getTime(),
                 url: `https://lzxjack.top/${titleEng}`,
             })
             .then(() => {
@@ -267,7 +273,7 @@ const AddArticle = props => {
                     文章分类：
                     <Select
                         showSearch
-                        style={{ width: '300px' }}
+                        style={{ width: '330px' }}
                         placeholder="请选择文章分类"
                         key={selectClasses}
                         defaultValue={selectClasses}
@@ -283,7 +289,7 @@ const AddArticle = props => {
                         mode="multiple"
                         showSearch
                         showArrow
-                        style={{ width: '600px' }}
+                        style={{ width: '740px' }}
                         placeholder="请选择文章标签"
                         key={selectTags}
                         defaultValue={selectTags}
@@ -291,6 +297,18 @@ const AddArticle = props => {
                     >
                         {props.tags}
                     </Select>
+                </div>
+                {/* 时间 */}
+                <div className="timeBox">
+                    时间：
+                    <input
+                        className="timeInput"
+                        type="text"
+                        value={date}
+                        onChange={e => {
+                            setDate(e.target.value);
+                        }}
+                    />
                 </div>
             </div>
             {/* 内容编辑区 */}

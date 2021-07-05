@@ -53,22 +53,27 @@
 
 /* ———————————————————————————标签、分类大盒子———————————————————————————— */
 .tagClassBox {
-    position: relative;
+    /* position: relative; */
     height: 44px;
     background-color: #a6aeb4;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
 }
 .classBox,
-.tagBox {
-    position: absolute;
-    top: 0px;
+.tagBox,
+.timeBox {
+    /* position: absolute; */
+    /* top: 0px; */
     font-weight: 700;
     font-size: 16px;
 }
-.classBox {
-    left: 20px;
-}
-.tagBox {
-    left: 420px;
+.timeInput {
+    padding: 0 20px;
+    height: 32px;
+    background-color: #fff;
+    width: 300px;
+    font-size: 18px;
 }
 
 /* ———————————————————————————编辑区大盒子——————————————————————————— */
