@@ -3,6 +3,7 @@ import { nanoid } from 'nanoid';
 import { Modal, notification, Table, Space, Button, Popconfirm, message, Popover } from 'antd';
 import { FormOutlined, MessageOutlined, DeleteOutlined } from '@ant-design/icons';
 import { db } from '../../../utils/cloudBase';
+import moment from 'moment';
 import {
     emojiPeople,
     emojiNature,
@@ -20,17 +21,13 @@ const Log = () => {
     // 表头
     const columns = [
         {
-            title: '序号',
-            dataIndex: 'order',
-            key: '_id',
-            sorter: (a, b) => Number(b.order) - Number(a.order),
-            sortDirections: ['descend'],
-            defaultSortOrder: ['ascend'],
-        },
-        {
-            title: '添加日期',
+            title: '日期',
             dataIndex: 'date',
             key: '_id',
+            sorter: (a, b) => a.date - b.date,
+            render: text => <>{moment(text).format('YYYY-MM-DD')}</>,
+            sortDirections: ['descend'],
+            defaultSortOrder: ['ascend'],
         },
         {
             title: '事件内容',
@@ -93,27 +90,22 @@ const Log = () => {
     const [addLogVisible, setAddLogVisible] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
     // 某条事件的详细数据
-    const [order, setOrder] = useState(0);
     const [id, setId] = useState('');
     const [date, setDate] = useState('');
     const [logContent, setLogContent] = useState([]);
     // 显示对话框
     const showAddLog = () => {
+        setDate(moment().format('YYYY-MM-DD'));
         setAddLogVisible(true);
     };
     // 清空输入框
     const clearLogInput = () => {
         setId('');
         setLogContent([]);
-        setOrder(0);
         setDate('');
     };
     // 对话框确认
     const addLogOK = () => {
-        if (!order) {
-            message.info('请输入正确的序号！');
-            return;
-        }
         if (!date) {
             message.info('请输入时间！');
             return;
@@ -162,9 +154,8 @@ const Log = () => {
     const addLog = () => {
         db.collection('logs')
             .add({
-                order,
+                date: new Date(date).getTime(),
                 logContent,
-                date,
             })
             .then(() => {
                 // 添加后的操作
@@ -176,9 +167,8 @@ const Log = () => {
         db.collection('logs')
             .doc(id)
             .update({
-                order,
+                date: new Date(date).getTime(),
                 logContent,
-                date,
             })
             .then(() => {
                 // 更新后的操作
@@ -194,9 +184,9 @@ const Log = () => {
             .doc(id)
             .get()
             .then(res => {
-                setOrder(res.data[0].order);
-                setDate(res.data[0].date);
-                setLogContent(res.data[0].logContent);
+                const { date, logContent } = res.data[0];
+                setDate(moment(date).format('YYYY-MM-DD HH:mm:ss').replace(/ /g, ' '));
+                setLogContent(logContent);
             });
     };
     // 删除事件
@@ -230,17 +220,6 @@ const Log = () => {
                 >
                     <div className="logInputBox">
                         <div className="modalInputBox marginBottom">
-                            <div className="modalInputKey logInputKey">序号：</div>
-                            <input
-                                className="modalInputValue"
-                                type="text"
-                                value={order}
-                                onChange={e => {
-                                    setOrder(e.target.value);
-                                }}
-                            />
-                        </div>
-                        <div className="modalInputBox marginBottom">
                             <div className="modalInputKey logInputKey">时间：</div>
                             <input
                                 className="modalInputValue"
@@ -257,6 +236,7 @@ const Log = () => {
                                 <textarea
                                     className="logContent"
                                     type="text"
+                                    placeholder="请输入事件，回车分隔"
                                     value={logContent.join(`\n`)}
                                     onChange={e => {
                                         setLogContent(e.target.value.split(`\n`));
