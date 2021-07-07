@@ -9,5 +9,5 @@ export const emojiPlace =
 export const emojiSymbol =
     '◀️⬇️▶️⬅️🔠🔡🔤➡️⬆️⏬⏫🔽⤵️⤴️↩️↪️🔼🔃🔄⏪⏩ℹ️🆗🔀🔁🔂🆕🔝🆙🆒🆓🆖🎦🈁📶🈹🈴🈺🈯🈷️🈶🈵🈚🈸🈳🈲🈂️🚻🚹🚺🚼🚭🅿️♿🚇🛄🉑🚾🚰🚮㊙️㊗️Ⓜ️🛂🛅🛃🉐🆑🆘🆔🚫🔞📵🚯🚱🚳🚷🚸⛔✳️❇️✴️💟🆚📳📴💹💱♈♉♊♋♌♍♎♏♐♑♒♓⛎🔯❎🅰️🅱️🆎🅾️💠♻️🔚🔙🔛🔜🕐🕜🕙🕥🕚🕦🕛🕧🕑🕝🕒🕞🕓🕟🕔🕠🕕🕡🕖🕢🕗🕣🕘🕤💲❌❗⁉️⭕✖️➕➖➗💮💯✔️☑️🔘🔗➰🔱▪️▫️◾◽◼️◻️⬛⬜✅🔲🔳⚫⚪🔴🔵🔷🔶🔹🔸🔺🔻';
 
-// 评论的云开发环境ID
-export const twikooID = 'comments-8gzkmsthc7e33704';
+export const twikooUrl = 'https://jack-img.oss-cn-hangzhou.aliyuncs.com/js/twikoo.all.min.js';
+export const twikooConfigUrl = 'https://jack-img.oss-cn-hangzhou.aliyuncs.com/js/twikooConfig.js';
