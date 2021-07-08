@@ -11,6 +11,7 @@ import hljs from 'highlight.js';
 import './github-dark.css';
 import './index.css';
 
+const { Option } = Select;
 const AddArticle = props => {
     // ————————————————————判断是否是编辑模式、是否是草稿————————————————————————————
     const [isEdit, setIsEdit] = useState(false);
@@ -280,7 +281,9 @@ const AddArticle = props => {
                             setSelectClasses(value);
                         }}
                     >
-                        {props.classes}
+                        {props.classes.map(item => (
+                            <Option key={item}>{item}</Option>
+                        ))}
                     </Select>
                 </div>
                 {/* 标签 */}
@@ -298,7 +301,9 @@ const AddArticle = props => {
                             setSelectTags(value);
                         }}
                     >
-                        {props.tags}
+                        {props.tags.map(item => (
+                            <Option key={item}>{item}</Option>
+                        ))}
                     </Select>
                 </div>
                 {/* 时间 */}

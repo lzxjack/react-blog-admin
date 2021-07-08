@@ -16,10 +16,7 @@ const Admin = props => {
         db.collection('tags')
             .get()
             .then(res => {
-                // 处理返回的数据为相应格式，并放入state
-                const newTags = res.data.map(item => (
-                    <Option key={item.content}>{item.content}</Option>
-                ));
+                const newTags = res.data.map(item => item.content);
                 props.getTags(newTags);
             });
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -29,10 +26,7 @@ const Admin = props => {
         db.collection('classes')
             .get()
             .then(res => {
-                // 处理返回的数据为相应格式，并放入state
-                const newClasses = res.data.map(item => (
-                    <Option key={item.content}>{item.content}</Option>
-                ));
+                const newClasses = res.data.map(item => item.content);
                 props.getClasses(newClasses);
             });
         // eslint-disable-next-line react-hooks/exhaustive-deps

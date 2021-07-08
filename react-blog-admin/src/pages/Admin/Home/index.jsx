@@ -1,6 +1,9 @@
-import { useState, useEffect } from 'react';
+// import { useState, useEffect } from 'react';
 import Welcome from '../../../components/Content/Main/Welcome';
 import Statistic from '../../../components/Content/Main/Statistic';
+import Chart from '../../../components/Content/Main/Chart';
+import Class from '../../../components/Content/Main/Class';
+import MyTag from '../../../components/Content/Main/MyTag';
 import MyNavLink from '../../../components/MyNavLink';
 import './index.css';
 
@@ -13,7 +16,7 @@ const Home = () => {
                     <Statistic type={'articles'} />
                 </MyNavLink>
                 <MyNavLink to="/admin/draft" className="homeLink">
-                    <Statistic type={'drafts'} />{' '}
+                    <Statistic type={'drafts'} />
                 </MyNavLink>
                 <MyNavLink to="/admin/link" className="homeLink">
                     <Statistic type={'links'} />
@@ -24,6 +27,11 @@ const Home = () => {
                 <MyNavLink to="/admin/say" className="homeLink">
                     <Statistic isRight={true} type={'says'} />
                 </MyNavLink>
+            </div>
+            <div className="chart-class-tag">
+                <Chart />
+                <Class />
+                <MyTag />
             </div>
         </>
     );

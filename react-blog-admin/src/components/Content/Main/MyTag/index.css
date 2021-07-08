@@ -1,0 +1,16 @@
+.MyTagBox {
+    flex: 1;
+    height: 100%;
+    background-color: #fff;
+    position: relative;
+}
+.theTag {
+    display: inline-block;
+    margin: 30px;
+    padding: 0 10px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    font-size: 16px;
+    background-color: rgb(218, 158, 158);
+}

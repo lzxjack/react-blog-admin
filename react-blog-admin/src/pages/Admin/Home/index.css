@@ -15,3 +15,10 @@
     height: 100%;
     cursor: default;
 }
+
+.chart-class-tag {
+    margin-top: 20px;
+    width: 100%;
+    height: calc(100vh - 54px - 20px - 140px - 20px - 140px - 20px - 60px);
+    display: flex;
+}
