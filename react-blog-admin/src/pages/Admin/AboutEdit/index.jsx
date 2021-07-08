@@ -8,6 +8,7 @@ import hljs from 'highlight.js';
 import './index.css';
 
 const AboutEdit = props => {
+    const [defaultContent, setDefaultContent] = useState('');
     const [content, setContent] = useState('');
     const [id, setId] = useState('');
     const [isMe, setIsMe] = useState(true);
@@ -30,6 +31,7 @@ const AboutEdit = props => {
                 const { content, _id: id } = aboutObj;
                 setId(id);
                 setContent(content);
+                setDefaultContent(content);
             });
     }, [isJudged, isMe]);
     // 配制marked和highlight
@@ -93,13 +95,16 @@ const AboutEdit = props => {
                 </div>
             </div>
             <div className="editBox">
-                <textarea
+                <div
                     className="inputRegion aboutInput"
-                    value={content}
-                    onChange={e => {
-                        setContent(e.target.value);
+                    contentEditable="plaintext-only"
+                    suppressContentEditableWarning
+                    onInput={e => {
+                        setContent(e.target.innerText);
                     }}
-                />
+                >
+                    {defaultContent}
+                </div>
 
                 <div
                     className="showRegion aboutShow markdownStyle"

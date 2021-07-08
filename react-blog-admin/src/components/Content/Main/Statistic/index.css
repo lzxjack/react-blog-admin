@@ -1,0 +1,36 @@
+.numberBox {
+    flex: 1;
+    position: relative;
+    height: 100%;
+    background-color: #fff;
+    margin-right: 20px;
+    transition: all 0.2s;
+    user-select: none;
+}
+.numberBox:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+.marginRight {
+    margin-right: 0px;
+}
+
+.type {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    font-size: 20px;
+    color: #000;
+}
+.number {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 80px;
+    color: #1890ff;
+}
+
+.numberBox:hover .number {
+    color: red;
+}

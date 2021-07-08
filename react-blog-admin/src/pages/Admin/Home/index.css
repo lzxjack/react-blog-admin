@@ -1,0 +1,17 @@
+.statisticRegion {
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    width: 100%;
+    height: 140px;
+}
+
+.marginRight {
+    margin-right: 0;
+}
+
+.homeLink {
+    width: 100%;
+    height: 100%;
+    cursor: default;
+}

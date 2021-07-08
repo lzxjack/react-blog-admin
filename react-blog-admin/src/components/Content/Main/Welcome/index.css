@@ -1,0 +1,10 @@
+.WelcomeBox {
+    width: 100%;
+    height: 140px;
+    background-color: #fff;
+    transition: all 0.2s;
+}
+
+.WelcomeBox:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}

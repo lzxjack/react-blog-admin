@@ -44,9 +44,9 @@ const About = props => {
         props.history.push(`/admin/aboutEdit?isMe=${isMe}`);
     };
     return (
-        <div className="aboutBox">
-            <div className="about">
-                <div className="aboutHeader">
+        <>
+            <div className="aboutType">
+                <div className="meType">
                     <div
                         className="editAboutBtn"
                         onClick={() => {
@@ -57,15 +57,7 @@ const About = props => {
                     </div>
                     <span className="aboutTitle">关于我</span>
                 </div>
-                <div
-                    className="aboutBody markdownStyle"
-                    dangerouslySetInnerHTML={{
-                        __html: marked(aboutMe).replace(/<pre>/g, "<pre id='hljs'>"),
-                    }}
-                ></div>
-            </div>
-            <div className="about">
-                <div className="aboutHeader aboutHeaderSite">
+                <div className="siteType">
                     <div
                         className="editAboutBtn"
                         onClick={() => {
@@ -76,14 +68,22 @@ const About = props => {
                     </div>
                     <span className="aboutTitle">关于本站</span>
                 </div>
+            </div>
+            <div className="aboutContent">
                 <div
-                    className="aboutBody aboutBodySite markdownStyle"
+                    className="meContent markdownStyle"
+                    dangerouslySetInnerHTML={{
+                        __html: marked(aboutMe).replace(/<pre>/g, "<pre id='hljs'>"),
+                    }}
+                ></div>
+                <div
+                    className="siteContent markdownStyle"
                     dangerouslySetInnerHTML={{
                         __html: marked(aboutSite).replace(/<pre>/g, "<pre id='hljs'>"),
                     }}
                 ></div>
             </div>
-        </div>
+        </>
     );
 };
 

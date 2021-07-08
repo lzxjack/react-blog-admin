@@ -39,15 +39,18 @@ const AddArticle = props => {
             .get()
             .then(res => {
                 // 从res.data中解构赋值
-                const { title, titleEng, mainContent, tags, classes, date } = res.data[0];
+                const { title, titleEng, content, tags, classes, date } = res.data[0];
                 setTitle(title);
                 setTitleEng(titleEng);
                 // 已有的标签存储到state
                 setSelectTags(tags);
+                setDefaultTags(tags);
                 // 已有的分类存储到state
                 setSelectClasses(classes);
+                setDefaultClasses(classes);
                 // 已有的正文存储到state
-                setMainContent(mainContent);
+                setContent(content);
+                setDefaultContent(content);
                 setDate(moment(date).format('YYYY-MM-DD HH:mm:ss').replace(/ /g, ' '));
             });
     };
@@ -81,23 +84,19 @@ const AddArticle = props => {
     // ——————————标签————————————
     // 已选的标签
     const [selectTags, setSelectTags] = useState([]);
-    // 标签内容改变时触发的函数
-    const tagsChange = value => {
-        setSelectTags(value);
-    };
+    const [defaultTags, setDefaultTags] = useState([]);
     // ——————————标签end————————————
 
     // ——————————分类————————————
     // 已选的分类
     const [selectClasses, setSelectClasses] = useState('');
-    const classChange = value => {
-        setSelectClasses(value);
-    };
+    const [defaultClasses, setDefaultClasses] = useState('');
     // ——————————分类end————————————
 
     // ————————————正文———————————
     // 编辑区文字
-    const [mainContent, setMainContent] = useState('');
+    const [defaultContent, setDefaultContent] = useState('');
+    const [content, setContent] = useState('');
     // 配置markdown渲染
     useEffect(() => {
         // 配置highlight
@@ -132,7 +131,7 @@ const AddArticle = props => {
             .add({
                 title,
                 titleEng,
-                mainContent,
+                content,
                 tags: selectTags,
                 classes: selectClasses,
                 date: new Date(date).getTime(),
@@ -169,7 +168,7 @@ const AddArticle = props => {
             .update({
                 title,
                 titleEng,
-                mainContent,
+                content,
                 tags: selectTags,
                 classes: selectClasses,
                 date: new Date(date).getTime(),
@@ -275,9 +274,11 @@ const AddArticle = props => {
                         showSearch
                         style={{ width: '330px' }}
                         placeholder="请选择文章分类"
-                        key={selectClasses}
-                        defaultValue={selectClasses}
-                        onChange={classChange}
+                        key={defaultClasses}
+                        defaultValue={defaultClasses}
+                        onChange={value => {
+                            setSelectClasses(value);
+                        }}
                     >
                         {props.classes}
                     </Select>
@@ -291,9 +292,11 @@ const AddArticle = props => {
                         showArrow
                         style={{ width: '740px' }}
                         placeholder="请选择文章标签"
-                        key={selectTags}
-                        defaultValue={selectTags}
-                        onChange={tagsChange}
+                        key={defaultTags}
+                        defaultValue={defaultTags}
+                        onChange={value => {
+                            setSelectTags(value);
+                        }}
                     >
                         {props.tags}
                     </Select>
@@ -316,17 +319,18 @@ const AddArticle = props => {
                 <div
                     className="inputRegion"
                     onInput={e => {
-                        setMainContent(e.target.innerText);
+                        setContent(e.target.innerText);
                     }}
                     contentEditable="plaintext-only"
                     suppressContentEditableWarning
                 >
-                    {mainContent}
+                    {defaultContent}
                 </div>
+
                 <div
                     className="showRegion markdownStyle"
                     dangerouslySetInnerHTML={{
-                        __html: marked(mainContent).replace(/<pre>/g, "<pre id='hljs'>"),
+                        __html: marked(content).replace(/<pre>/g, "<pre id='hljs'>"),
                     }}
                 ></div>
             </div>

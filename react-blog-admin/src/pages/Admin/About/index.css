@@ -1,18 +1,17 @@
-.aboutBox {
+.aboutType {
     display: flex;
-    flex-direction: row;
-}
-
-.about {
-    flex: 1;
-}
-
-.aboutHeader {
-    position: relative;
     height: 50px;
-    background-color: #b9dfff;
+    user-select: none;
 }
-.aboutHeaderSite {
+
+.meType,
+.siteType {
+    flex: 1;
+    height: 100%;
+    background-color: #b9dfff;
+    position: relative;
+}
+.siteType {
     background-color: #a3d5ff;
 }
 
@@ -45,12 +44,19 @@
     font-size: 24px;
 }
 
-.aboutBody {
+.aboutContent {
+    display: flex;
+}
+
+.meContent,
+.siteContent {
+    flex: 1;
+    min-height: calc(100vh - 60px - 54px - 20px - 50px);
+    background-color: rgb(200, 243, 253);
     padding: 30px;
     font-size: 18px;
-    background-color: rgb(200, 243, 253);
-    min-height: calc(100vh - 60px - 54px - 20px - 50px);
 }
-.aboutBodySite {
+
+.siteContent {
     background-color: rgb(180, 240, 253);
 }

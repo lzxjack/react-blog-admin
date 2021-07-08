@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { login } from '../../redux/actions/loginState';
 import { notification } from 'antd';
 import { CloseOutlined, CheckOutlined } from '@ant-design/icons';
+import { avatarUrl } from '../../utils/constant';
 import './index.css';
 
 const Login = props => {
@@ -48,7 +49,7 @@ const Login = props => {
     return (
         <div className="loginBox">
             <div className="loginCenter">
-                <img src="/Jack.jpg" className="avatar" alt="avatar" />
+                <img src={avatarUrl} className="avatar" alt="avatar" />
                 <div className="EmailBox">
                     <div className="Email">邮箱</div>
                     <input type="text" className="inputEmail" ref={inputEmail} />
