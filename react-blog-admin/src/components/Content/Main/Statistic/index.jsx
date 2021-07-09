@@ -30,9 +30,9 @@ const ArticleNum = props => {
         }
 
         db.collection(props.type)
-            .get()
+            .count()
             .then(res => {
-                setNum(res.data.length);
+                setNum(res.total);
             });
     }, []);
     return (

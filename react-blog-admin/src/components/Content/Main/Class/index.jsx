@@ -11,6 +11,7 @@ const Class = props => {
     const [classInput, setClassInput] = useState('');
     const [classEditInput, setClassEditInput] = useState('');
     const [classId, setClassId] = useState('');
+    const [oldClass, setOldClass] = useState('');
 
     // 向数据库获取所有分类
     const getAllClasses = () => {
@@ -49,7 +50,8 @@ const Class = props => {
             });
     };
     // 删除分类
-    const deleteClass = id => {
+    const deleteClass = (id, theClass) => {
+        // 从分类数据库中删除该分类
         db.collection('classes')
             .doc(id)
             .remove()
@@ -57,14 +59,28 @@ const Class = props => {
                 message.success('删除分类成功！');
                 getAllClasses();
             });
+        // 删除该分类下所有文章的分类属性
+        db.collection('articles')
+            .where({ classes: theClass })
+            .update({
+                classes: '',
+            })
+            .then(() => {
+                message.success('更新文章分类成功！');
+            });
+    };
+    // 清空ID、编辑输入框、旧分类名
+    const clearAllState = () => {
+        setClassEditInput('');
+        setOldClass('');
+        setClassId('');
     };
     // 对话框取消
     const classEditCancel = () => {
         setClassEditVisible(false);
-        setClassInput('');
-        setClassId('');
+        clearAllState();
     };
-    // 编辑分类
+    // 对话框确认：编辑分类
     const editClass = async () => {
         // 判断是否存在
         let isExist = true;
@@ -77,12 +93,12 @@ const Class = props => {
             .then(res => {
                 isExist = res.data.length ? true : false;
             });
-        console.log(isExist);
         // 如果分类存在，直接返回
         if (isExist) {
             message.warning('该分类已存在！');
             return;
         }
+        // 修改分类数据库中的数据
         db.collection('classes')
             .doc(classId)
             .update({
@@ -92,12 +108,22 @@ const Class = props => {
                 message.success('修改分类成功！');
                 setClassEditVisible(false);
                 getAllClasses();
-                setClassId('');
+                clearAllState();
+            });
+        // 修改该分类下所有文章的分类名
+        db.collection('articles')
+            .where({ classes: oldClass })
+            .update({
+                classes: classEditInput,
+            })
+            .then(() => {
+                message.success('更新文章分类成功！');
             });
     };
     // 打开分类对话框
-    const openEditModal = (id, oldClass) => {
-        setClassEditInput(oldClass);
+    const openEditModal = (id, oldClassName) => {
+        setClassEditInput(oldClassName);
+        setOldClass(oldClassName);
         setClassId(id);
         setClassEditVisible(true);
     };
@@ -154,7 +180,7 @@ const Class = props => {
                             <Popconfirm
                                 placement="top"
                                 title="确定要删除该分类吗？"
-                                onConfirm={() => deleteClass(item._id)}
+                                onConfirm={() => deleteClass(item._id, item.class)}
                                 okText="Yes"
                                 cancelText="No"
                             >

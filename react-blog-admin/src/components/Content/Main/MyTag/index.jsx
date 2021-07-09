@@ -32,11 +32,10 @@ const MyTag = props => {
         '#108ee9',
     ];
     const colorLen = tagColor.length;
-    // const [isMounted, setIsMounted] = useState(true);
-    // const [tags, setTags] = useState([]);
     const [tagEditVisible, setTagEditVisible] = useState(false);
     const [tagInput, setTagInput] = useState('');
     const [tagEditInput, setTagEditInput] = useState('');
+    const [oldTag, setOldTag] = useState('');
     const [tagId, setTagId] = useState('');
 
     // 数据库获取所有标签
@@ -47,13 +46,12 @@ const MyTag = props => {
                 props.getTags(res.data);
             });
     };
-    // 组件挂载，获取一次所有标签
-    // useEffect(() => {
-    //     isMounted && getAllTags();
-    //     return () => {
-    //         setIsMounted(false);
-    //     };
-    // }, [isMounted]);
+    // 清空ID、编辑输入框、旧标签名
+    const clearAllState = () => {
+        setTagEditInput('');
+        setOldTag('');
+        setTagId('');
+    };
     // 添加标签
     const addTag = async () => {
         // 判断是否存在
@@ -83,7 +81,8 @@ const MyTag = props => {
             });
     };
     // 删除标签
-    const deleteTag = id => {
+    const deleteTag = (id, theTag) => {
+        // 删除标签数据库中的标签
         db.collection('tags')
             .doc(id)
             .remove()
@@ -91,8 +90,20 @@ const MyTag = props => {
                 message.success('删除标签成功！');
                 getAllTags();
             });
+        // 删除该标签下所有文章的相应标签
+        // console.log(theTag);
+        db.collection('articles')
+            .where({
+                tags: _.all([theTag]),
+            })
+            .update({
+                tags: _.pull(theTag),
+            })
+            .then(() => {
+                message.success('更新文章标签成功！');
+            });
     };
-    // 编辑标签
+    // 对话框确认：编辑标签
     const editTag = async () => {
         // 判断是否存在
         let isExist = true;
@@ -110,6 +121,7 @@ const MyTag = props => {
             message.warning('该标签已存在！');
             return;
         }
+        // 修改标签数据库中的标签
         db.collection('tags')
             .doc(tagId)
             .update({
@@ -119,20 +131,41 @@ const MyTag = props => {
                 message.success('修改标签成功！');
                 setTagEditVisible(false);
                 getAllTags();
-                setTagId('');
+                clearAllState();
+            });
+        // 修改该标签下所有文章的相应标签,分两步:
+        // （1）在有该便签的所有文章下，添加修改后的标签
+        await db
+            .collection('articles')
+            .where({
+                tags: _.all([oldTag]),
+            })
+            .update({
+                tags: _.addToSet(tagEditInput),
+            });
+        // （2）在有该便签的所有文章下，删除该标签
+        db.collection('articles')
+            .where({
+                tags: _.all([oldTag]),
+            })
+            .update({
+                tags: _.pull(oldTag),
+            })
+            .then(() => {
+                message.success('更新文章分类成功！');
             });
     };
     // 双击标签，打开标签对话框
-    const openEditModal = (id, oldTag) => {
-        setTagEditInput(oldTag);
+    const openEditModal = (id, theTag) => {
+        setTagEditInput(theTag);
+        setOldTag(theTag);
         setTagId(id);
         setTagEditVisible(true);
     };
     // 对话框取消
     const tagEditCancel = () => {
         setTagEditVisible(false);
-        setTagEditInput('');
-        setTagId('');
+        clearAllState();
     };
     return (
         <div className="MyTagBox">
@@ -186,7 +219,7 @@ const MyTag = props => {
                         <Popconfirm
                             placement="top"
                             title="确定要删除该标签吗？"
-                            onConfirm={() => deleteTag(item._id)}
+                            onConfirm={() => deleteTag(item._id, item.tag)}
                             okText="Yes"
                             cancelText="No"
                         >
