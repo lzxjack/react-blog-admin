@@ -55,8 +55,8 @@
     right: 0;
     top: 92px;
     bottom: 0;
-    overflow-y: auto;
     overflow-x: hidden;
+    overflow-y: auto;
 }
 
 /* 设置滚动条的样式 */

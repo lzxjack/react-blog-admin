@@ -4,9 +4,12 @@
     background-color: #fff;
     position: relative;
 }
+.tagsList {
+    padding: 10px;
+}
+
 .theTag {
     display: inline-block;
-    /* margin: 0 10px 10px 10px; */
     margin: 0 0 10px 10px;
     padding: 0 10px;
     height: 30px;
@@ -20,7 +23,7 @@
 
 .theTag:hover {
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
-    transform: scale(1.2);
+    transform: scale(1.1);
 }
 
 .deleteTagBtn {

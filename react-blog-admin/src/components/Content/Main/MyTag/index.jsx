@@ -120,7 +120,7 @@ const MyTag = () => {
                     新建
                 </div>
             </div>
-            <div className="classesList">
+            <div className="classesList tagsList">
                 <Modal
                     title="修改标签"
                     centered
