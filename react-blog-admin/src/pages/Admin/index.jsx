@@ -34,6 +34,7 @@ const Admin = props => {
         return () => {
             setIsMounted(false);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isMounted]);
 
     return (

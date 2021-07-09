@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Popconfirm, Modal, message } from 'antd';
 import { connect } from 'react-redux';
 import { CloseOutlined } from '@ant-design/icons';
@@ -91,7 +91,6 @@ const MyTag = props => {
                 getAllTags();
             });
         // 删除该标签下所有文章的相应标签
-        // console.log(theTag);
         db.collection('articles')
             .where({
                 tags: _.all([theTag]),

@@ -10,7 +10,6 @@ import hljs from 'highlight.js';
 // 代码高亮的主题
 import './github-dark.css';
 import './index.css';
-import { logDOM } from '@testing-library/react';
 
 const { Option } = Select;
 const AddArticle = props => {

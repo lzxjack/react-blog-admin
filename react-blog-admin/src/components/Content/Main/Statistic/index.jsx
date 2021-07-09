@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { db, dbTwikoo } from '../../../../utils/cloudBase';
+import { db } from '../../../../utils/cloudBase';
 import './index.css';
 
 const ArticleNum = props => {
@@ -27,6 +27,9 @@ const ArticleNum = props => {
                 setType('说说');
                 break;
             }
+            default: {
+                setType('');
+            }
         }
 
         db.collection(props.type)
@@ -34,7 +37,7 @@ const ArticleNum = props => {
             .then(res => {
                 setNum(res.total);
             });
-    }, []);
+    }, [props.type]);
     return (
         <div className={props.isRight ? 'numberBox marginRight' : 'numberBox'}>
             <span className="type">{type}数</span>
