@@ -3,7 +3,7 @@ import { Popconfirm, Modal, message } from 'antd';
 import { connect } from 'react-redux';
 import { CloseOutlined } from '@ant-design/icons';
 import { getTags } from '../../../../redux/actions/tags';
-import { db } from '../../../../utils/cloudBase';
+import { db, _ } from '../../../../utils/cloudBase';
 import './index.css';
 
 const MyTag = props => {
@@ -32,8 +32,8 @@ const MyTag = props => {
         '#108ee9',
     ];
     const colorLen = tagColor.length;
-    const [isMounted, setIsMounted] = useState(true);
-    const [tags, setTags] = useState([]);
+    // const [isMounted, setIsMounted] = useState(true);
+    // const [tags, setTags] = useState([]);
     const [tagEditVisible, setTagEditVisible] = useState(false);
     const [tagInput, setTagInput] = useState('');
     const [tagEditInput, setTagEditInput] = useState('');
@@ -44,18 +44,34 @@ const MyTag = props => {
         db.collection('tags')
             .get()
             .then(res => {
-                setTags(res.data);
+                props.getTags(res.data);
             });
     };
     // 组件挂载，获取一次所有标签
-    useEffect(() => {
-        isMounted && getAllTags();
-        return () => {
-            setIsMounted(false);
-        };
-    }, [isMounted]);
+    // useEffect(() => {
+    //     isMounted && getAllTags();
+    //     return () => {
+    //         setIsMounted(false);
+    //     };
+    // }, [isMounted]);
     // 添加标签
-    const addTag = () => {
+    const addTag = async () => {
+        // 判断是否存在
+        let isExist = true;
+        await db
+            .collection('tags')
+            .where({
+                tag: _.eq(tagInput),
+            })
+            .get()
+            .then(res => {
+                isExist = res.data.length ? true : false;
+            });
+        // 如果标签存在，直接返回
+        if (isExist) {
+            message.warning('该标签已存在！');
+            return;
+        }
         db.collection('tags')
             .add({
                 tag: tagInput,
@@ -77,7 +93,23 @@ const MyTag = props => {
             });
     };
     // 编辑标签
-    const editTag = () => {
+    const editTag = async () => {
+        // 判断是否存在
+        let isExist = true;
+        await db
+            .collection('tags')
+            .where({
+                tag: _.eq(tagEditInput),
+            })
+            .get()
+            .then(res => {
+                isExist = res.data.length ? true : false;
+            });
+        // 如果标签存在，直接返回
+        if (isExist) {
+            message.warning('该标签已存在！');
+            return;
+        }
         db.collection('tags')
             .doc(tagId)
             .update({
@@ -143,7 +175,7 @@ const MyTag = props => {
                         }}
                     />
                 </Modal>
-                {tags.map((item, index) => (
+                {props.tags.map((item, index) => (
                     <span
                         className="theTag"
                         style={{ backgroundColor: tagColor[(index + 1) % colorLen] }}

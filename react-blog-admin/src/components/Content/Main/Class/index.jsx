@@ -3,7 +3,7 @@ import { List, Modal, message, Popconfirm } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import { getClasses } from '../../../../redux/actions/classes';
-import { db } from '../../../../utils/cloudBase';
+import { db, _ } from '../../../../utils/cloudBase';
 import './index.css';
 
 const Class = props => {
@@ -20,16 +20,31 @@ const Class = props => {
                 props.getClasses(res.data);
             });
     };
-
     // 添加分类
-    const addClass = () => {
+    const addClass = async () => {
+        // 判断是否存在
+        let isExist = true;
+        await db
+            .collection('classes')
+            .where({
+                class: _.eq(classInput),
+            })
+            .get()
+            .then(res => {
+                isExist = res.data.length ? true : false;
+            });
+        // 如果分类存在，直接返回
+        if (isExist) {
+            message.warning('该分类已存在！');
+            return;
+        }
         db.collection('classes')
             .add({
                 class: classInput,
             })
             .then(() => {
                 setClassInput('');
-                message.success('添加标签成功！');
+                message.success('添加分类成功！');
                 getAllClasses();
             });
     };
@@ -50,7 +65,24 @@ const Class = props => {
         setClassId('');
     };
     // 编辑分类
-    const editClass = () => {
+    const editClass = async () => {
+        // 判断是否存在
+        let isExist = true;
+        await db
+            .collection('classes')
+            .where({
+                class: _.eq(classEditInput),
+            })
+            .get()
+            .then(res => {
+                isExist = res.data.length ? true : false;
+            });
+        console.log(isExist);
+        // 如果分类存在，直接返回
+        if (isExist) {
+            message.warning('该分类已存在！');
+            return;
+        }
         db.collection('classes')
             .doc(classId)
             .update({
@@ -63,7 +95,7 @@ const Class = props => {
                 setClassId('');
             });
     };
-    // 双击标签，打开标签对话框
+    // 打开分类对话框
     const openEditModal = (id, oldClass) => {
         setClassEditInput(oldClass);
         setClassId(id);

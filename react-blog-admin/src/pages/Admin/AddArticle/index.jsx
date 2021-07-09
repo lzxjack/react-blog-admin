@@ -10,6 +10,7 @@ import hljs from 'highlight.js';
 // 代码高亮的主题
 import './github-dark.css';
 import './index.css';
+import { logDOM } from '@testing-library/react';
 
 const { Option } = Select;
 const AddArticle = props => {
@@ -277,12 +278,12 @@ const AddArticle = props => {
                         placeholder="请选择文章分类"
                         key={defaultClasses}
                         defaultValue={defaultClasses}
-                        onChange={value => {
-                            setSelectClasses(value);
+                        onChange={(_, classesObj) => {
+                            setSelectClasses(classesObj.children);
                         }}
                     >
                         {props.classes.map(item => (
-                            <Option key={item._id}>{item.class}</Option>
+                            <Option key={item.class}>{item.class}</Option>
                         ))}
                     </Select>
                 </div>
@@ -297,12 +298,13 @@ const AddArticle = props => {
                         placeholder="请选择文章标签"
                         key={defaultTags}
                         defaultValue={defaultTags}
-                        onChange={value => {
-                            setSelectTags(value);
+                        onChange={(_, nodeArr) => {
+                            const tagsArr = nodeArr.map(item => item.children);
+                            setSelectTags(tagsArr);
                         }}
                     >
                         {props.tags.map(item => (
-                            <Option key={item._id}>{item.tag}</Option>
+                            <Option key={item.tag}>{item.tag}</Option>
                         ))}
                     </Select>
                 </div>
