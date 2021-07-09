@@ -1,19 +1,28 @@
 import { useState, useEffect, useRef } from 'react';
-import { Table, Tag, Space, Button, Popconfirm, notification, message } from 'antd';
+import { connect } from 'react-redux';
+import { Table, Tag, Space, Button, Popconfirm, notification, message, Select } from 'antd';
 import { DeleteOutlined, SearchOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { db } from '../../../utils/cloudBase';
 import './index.css';
 
+const { Option } = Select;
 const Article = props => {
     // ——————————————————————搜索框——————————————————————
     const searchText = useRef();
+    const [searchClass, setSearchClass] = useState('');
     // 判断是否按下回车的函数
     const searchKeyUp = e => {
-        if (e.keyCode === 13) search();
+        if (e.keyCode === 13) searchByWords();
     };
-    // 搜索
-    const search = () => {
+    // 输入框变化的回调
+    const clearKeyWords = () => {
+        const keyWords = searchText.current.value;
+        // 如果输入框内容为空，则展示所有文章
+        if (!keyWords) setArticlesShow(articles);
+    };
+    // 通过输入文字搜索
+    const searchByWords = () => {
         // 获取输入的搜索关键字
         const keyWords = searchText.current.value;
         if (!keyWords) {
@@ -25,12 +34,19 @@ const Article = props => {
         // 将搜索到的文章，放入要显示的state
         setArticlesShow(newArticlesShow);
     };
-    // 输入框变化的回调
-    const clearKeyWords = () => {
-        const keyWords = searchText.current.value;
-        // 如果输入框内容为空，则展示所有文章
-        if (!keyWords) setArticlesShow(articles);
+    // 通过选择分类搜索
+    const searchByClass = (_, classesObj) => {
+        if (classesObj) {
+            const newArticlesShow = articles.filter(item => item.classes === classesObj.children);
+            setArticlesShow(newArticlesShow);
+        } else {
+            setArticlesShow(articles);
+        }
     };
+
+    // 通过选择标签搜索
+    const searchByTag = () => {};
+
     // ————————————————————搜索框end————————————————————————
 
     // ——————————————————————渲染文章表格——————————————————————
@@ -185,9 +201,24 @@ const Article = props => {
                     onKeyUp={searchKeyUp}
                     onChange={clearKeyWords}
                 />
-                <div className="searchBtn" onClick={search}>
+                <div className="searchBtn" onClick={searchByWords}>
                     <SearchOutlined />
                 </div>
+                <Select
+                    showSearch
+                    size="large"
+                    allowClear
+                    style={{ width: '360px' }}
+                    placeholder="请选择文章分类"
+                    // key={defaultClasses}
+                    // defaultValue={defaultClasses}
+                    className="searchClass"
+                    onChange={(_, classesObj) => searchByClass(_, classesObj)}
+                >
+                    {props.classes.map(item => (
+                        <Option key={item.class}>{item.class}</Option>
+                    ))}
+                </Select>
             </div>
             <Table
                 size="middle"
@@ -210,4 +241,10 @@ const Article = props => {
     );
 };
 
-export default Article;
+export default connect(
+    state => ({
+        tags: state.tags,
+        classes: state.classes,
+    }),
+    {}
+)(Article);

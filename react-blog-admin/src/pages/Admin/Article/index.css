@@ -59,6 +59,13 @@
     box-shadow: 0 0 4px #1890ff;
 }
 
+.searchClass {
+    position: absolute;
+    top: 50%;
+    left: 700px;
+    transform: translate(0, -50%);
+}
+
 /* ————————————————————————————表格区———————————————————————————————— */
 .ant-table-thead .ant-table-cell {
     text-align: center;
