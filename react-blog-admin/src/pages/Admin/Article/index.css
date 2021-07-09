@@ -62,7 +62,14 @@
 .searchClass {
     position: absolute;
     top: 50%;
-    left: 700px;
+    right: 510px;
+    transform: translate(0, -50%);
+}
+
+.searchTag {
+    position: absolute;
+    top: 50%;
+    right: 5px;
     transform: translate(0, -50%);
 }
 

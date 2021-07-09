@@ -45,7 +45,17 @@ const Article = props => {
     };
 
     // 通过选择标签搜索
-    const searchByTag = () => {};
+    const searchByTag = (_, nodeArr) => {
+        const tagsArr = nodeArr.map(item => item.children);
+        const [articlesLen, tagsLen] = [articles.length, tagsArr.length];
+        const resArr = [];
+        for (let i = 0; i < articlesLen; i++) {
+            for (let j = 0; j < tagsLen; j++) {
+                // if(!tagsArr.includes())
+            }
+        }
+        console.log(tagsArr);
+    };
 
     // ————————————————————搜索框end————————————————————————
 
@@ -217,6 +227,23 @@ const Article = props => {
                 >
                     {props.classes.map(item => (
                         <Option key={item.class}>{item.class}</Option>
+                    ))}
+                </Select>
+                <Select
+                    mode="multiple"
+                    showSearch
+                    showArrow
+                    size="large"
+                    allowClear
+                    style={{ width: '500px' }}
+                    placeholder="请选择文章标签"
+                    // key={defaultTags}
+                    // defaultValue={defaultTags}
+                    className="searchTag"
+                    onChange={(_, nodeArr) => searchByTag(_, nodeArr)}
+                >
+                    {props.tags.map(item => (
+                        <Option key={item.tag}>{item.tag}</Option>
                     ))}
                 </Select>
             </div>
