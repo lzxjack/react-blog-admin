@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { Select } from 'antd';
 import Nav from '../../components/Nav';
 import Content from '../../components/Content';
 import { connect } from 'react-redux';
@@ -7,8 +6,6 @@ import { getClasses } from '../../redux/actions/classes';
 import { getTags } from '../../redux/actions/tags';
 import { db } from '../../utils/cloudBase';
 import './index.css';
-
-const { Option } = Select;
 
 const Admin = props => {
     useEffect(() => {
