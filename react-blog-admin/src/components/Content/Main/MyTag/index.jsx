@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Popconfirm, Modal, message } from 'antd';
+import { connect } from 'react-redux';
 import { CloseOutlined } from '@ant-design/icons';
+import { getTags } from '../../../../redux/actions/tags';
 import { db } from '../../../../utils/cloudBase';
 import './index.css';
 
-const MyTag = () => {
+const MyTag = props => {
     const tagColor = [
         'rgb(236, 17, 17)',
         'rgb(236, 141, 17)',
@@ -165,4 +167,11 @@ const MyTag = () => {
     );
 };
 
-export default MyTag;
+export default connect(
+    state => ({
+        tags: state.tags,
+    }),
+    {
+        getTags,
+    }
+)(MyTag);

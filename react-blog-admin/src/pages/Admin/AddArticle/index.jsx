@@ -282,7 +282,7 @@ const AddArticle = props => {
                         }}
                     >
                         {props.classes.map(item => (
-                            <Option key={item}>{item}</Option>
+                            <Option key={item._id}>{item.class}</Option>
                         ))}
                     </Select>
                 </div>
@@ -302,7 +302,7 @@ const AddArticle = props => {
                         }}
                     >
                         {props.tags.map(item => (
-                            <Option key={item}>{item}</Option>
+                            <Option key={item._id}>{item.tag}</Option>
                         ))}
                     </Select>
                 </div>

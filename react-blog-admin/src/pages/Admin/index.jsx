@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Nav from '../../components/Nav';
 import Content from '../../components/Content';
 import { connect } from 'react-redux';
@@ -8,26 +8,33 @@ import { db } from '../../utils/cloudBase';
 import './index.css';
 
 const Admin = props => {
-    useEffect(() => {
-        // 向数据库获取所有标签
+    const [isMounted, setIsMounted] = useState(true);
+    // 向数据库获取所有标签
+    const getAllTags = () => {
         db.collection('tags')
             .get()
             .then(res => {
-                const newTags = res.data.map(item => item.content);
-                props.getTags(newTags);
+                props.getTags(res.data);
             });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-    useEffect(() => {
-        // 向数据库获取所有分类
+    };
+    // 向数据库获取所有分类
+    const getAllClasses = () => {
         db.collection('classes')
             .get()
             .then(res => {
-                const newClasses = res.data.map(item => item.content);
-                props.getClasses(newClasses);
+                props.getClasses(res.data);
             });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    };
+    // 组件挂载，获取一次所有标签和分类
+    useEffect(() => {
+        if (isMounted) {
+            getAllTags();
+            getAllClasses();
+        }
+        return () => {
+            setIsMounted(false);
+        };
+    }, [isMounted]);
 
     return (
         <div className="AdminBox">
@@ -38,13 +45,7 @@ const Admin = props => {
     );
 };
 
-export default connect(
-    state => ({
-        tags: state.tags,
-        classes: state.classes,
-    }),
-    {
-        getClasses,
-        getTags,
-    }
-)(Admin);
+export default connect(() => ({}), {
+    getClasses,
+    getTags,
+})(Admin);
