@@ -42,11 +42,23 @@ const Class = props => {
         db.collection('classes')
             .add({
                 class: classInput,
+                count: 0,
             })
             .then(() => {
                 setClassInput('');
                 message.success('添加分类成功！');
                 getAllClasses();
+            });
+    };
+    const deleteClassFrom = (dbName, theClass) => {
+        const text = dbName === 'articles' ? '文章' : '草稿';
+        db.collection(dbName)
+            .where({ classes: theClass })
+            .update({
+                classes: '',
+            })
+            .then(() => {
+                message.success(`更新${text}分类成功！`);
             });
     };
     // 删除分类
@@ -60,14 +72,9 @@ const Class = props => {
                 getAllClasses();
             });
         // 删除该分类下所有文章的分类属性
-        db.collection('articles')
-            .where({ classes: theClass })
-            .update({
-                classes: '',
-            })
-            .then(() => {
-                message.success('更新文章分类成功！');
-            });
+        deleteClassFrom('articles', theClass);
+        // 删除该分类下所有草稿的分类属性
+        deleteClassFrom('drafts', theClass);
     };
     // 清空ID、编辑输入框、旧分类名
     const clearAllState = () => {
@@ -79,6 +86,17 @@ const Class = props => {
     const classEditCancel = () => {
         setClassEditVisible(false);
         clearAllState();
+    };
+    const editClassFrom = dbName => {
+        const text = dbName === 'articles' ? '文章' : '草稿';
+        db.collection(dbName)
+            .where({ classes: oldClass })
+            .update({
+                classes: classEditInput,
+            })
+            .then(() => {
+                message.success(`更新${text}分类成功！`);
+            });
     };
     // 对话框确认：编辑分类
     const editClass = async () => {
@@ -111,14 +129,9 @@ const Class = props => {
                 clearAllState();
             });
         // 修改该分类下所有文章的分类名
-        db.collection('articles')
-            .where({ classes: oldClass })
-            .update({
-                classes: classEditInput,
-            })
-            .then(() => {
-                message.success('更新文章分类成功！');
-            });
+        editClassFrom('articles');
+        // 修改该分类下所有草稿的分类名
+        editClassFrom('drafts');
     };
     // 打开分类对话框
     const openEditModal = (id, oldClassName) => {

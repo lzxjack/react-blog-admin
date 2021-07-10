@@ -45,10 +45,10 @@ const AddArticle = props => {
                 setTitleEng(titleEng);
                 // 已有的标签存储到state
                 setSelectTags(tags);
-                setDefaultTags(tags);
+                // setDefaultTags(tags);
                 // 已有的分类存储到state
                 setSelectClasses(classes);
-                setDefaultClasses(classes);
+                // setDefaultClasses(classes);
                 // 已有的正文存储到state
                 setContent(content);
                 setDefaultContent(content);
@@ -85,13 +85,13 @@ const AddArticle = props => {
     // ——————————标签————————————
     // 已选的标签
     const [selectTags, setSelectTags] = useState([]);
-    const [defaultTags, setDefaultTags] = useState([]);
+    // const [defaultTags, setDefaultTags] = useState([]);
     // ——————————标签end————————————
 
     // ——————————分类————————————
     // 已选的分类
     const [selectClasses, setSelectClasses] = useState('');
-    const [defaultClasses, setDefaultClasses] = useState('');
+    // const [defaultClasses, setDefaultClasses] = useState('');
     // ——————————分类end————————————
 
     // ————————————正文———————————
@@ -273,13 +273,11 @@ const AddArticle = props => {
                     文章分类：
                     <Select
                         showSearch
+                        allowClear
                         style={{ width: '330px' }}
                         placeholder="请选择文章分类"
-                        key={defaultClasses}
-                        defaultValue={defaultClasses}
-                        onChange={(_, classesObj) => {
-                            setSelectClasses(classesObj.children);
-                        }}
+                        value={selectClasses}
+                        onChange={value => setSelectClasses(value ? value : '')}
                     >
                         {props.classes.map(item => (
                             <Option key={item.class}>{item.class}</Option>
@@ -293,14 +291,11 @@ const AddArticle = props => {
                         mode="multiple"
                         showSearch
                         showArrow
+                        allowClear
                         style={{ width: '740px' }}
                         placeholder="请选择文章标签"
-                        key={defaultTags}
-                        defaultValue={defaultTags}
-                        onChange={(_, nodeArr) => {
-                            const tagsArr = nodeArr.map(item => item.children);
-                            setSelectTags(tagsArr);
-                        }}
+                        value={selectTags}
+                        onChange={value => setSelectTags(value)}
                     >
                         {props.tags.map(item => (
                             <Option key={item.tag}>{item.tag}</Option>

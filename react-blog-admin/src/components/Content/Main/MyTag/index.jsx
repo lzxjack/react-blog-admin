@@ -73,11 +73,25 @@ const MyTag = props => {
         db.collection('tags')
             .add({
                 tag: tagInput,
+                count: 0,
             })
             .then(() => {
                 setTagInput('');
                 message.success('添加标签成功！');
                 getAllTags();
+            });
+    };
+    const deleteTagFrom = (dbName, theTag) => {
+        const text = dbName === 'articles' ? '文章' : '草稿';
+        db.collection(dbName)
+            .where({
+                tags: _.all([theTag]),
+            })
+            .update({
+                tags: _.pull(theTag),
+            })
+            .then(() => {
+                message.success(`更新${text}标签成功！`);
             });
     };
     // 删除标签
@@ -91,15 +105,32 @@ const MyTag = props => {
                 getAllTags();
             });
         // 删除该标签下所有文章的相应标签
-        db.collection('articles')
+        deleteTagFrom('articles', theTag);
+        // 删除该标签下所有草稿的相应标签
+        deleteTagFrom('drafts', theTag);
+    };
+    const editTagFrom = async dbName => {
+        // 修改该标签下所有文章的相应标签,分两步:
+        // （1）在有该便签的所有文章下，添加修改后的标签
+        const text = dbName === 'articles' ? '文章' : '草稿';
+        await db
+            .collection(dbName)
             .where({
-                tags: _.all([theTag]),
+                tags: _.all([oldTag]),
             })
             .update({
-                tags: _.pull(theTag),
+                tags: _.addToSet(tagEditInput),
+            });
+        // （2）在有该便签的所有文章下，删除该标签
+        db.collection(dbName)
+            .where({
+                tags: _.all([oldTag]),
+            })
+            .update({
+                tags: _.pull(oldTag),
             })
             .then(() => {
-                message.success('更新文章标签成功！');
+                message.success(`更新${text}分类成功！`);
             });
     };
     // 对话框确认：编辑标签
@@ -132,27 +163,8 @@ const MyTag = props => {
                 getAllTags();
                 clearAllState();
             });
-        // 修改该标签下所有文章的相应标签,分两步:
-        // （1）在有该便签的所有文章下，添加修改后的标签
-        await db
-            .collection('articles')
-            .where({
-                tags: _.all([oldTag]),
-            })
-            .update({
-                tags: _.addToSet(tagEditInput),
-            });
-        // （2）在有该便签的所有文章下，删除该标签
-        db.collection('articles')
-            .where({
-                tags: _.all([oldTag]),
-            })
-            .update({
-                tags: _.pull(oldTag),
-            })
-            .then(() => {
-                message.success('更新文章分类成功！');
-            });
+        editTagFrom('articles');
+        editTagFrom('drafts');
     };
     // 双击标签，打开标签对话框
     const openEditModal = (id, theTag) => {
