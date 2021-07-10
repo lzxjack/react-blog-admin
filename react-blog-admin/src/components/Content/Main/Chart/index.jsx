@@ -7,7 +7,6 @@ import './index.css';
 const Chart = props => {
     const [classData, setClassData] = useState([]);
     const pieConfig = {
-        // padding: 'auto',
         appendPadding: 30,
         autoFit: true,
         data: classData,
