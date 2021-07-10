@@ -3,8 +3,19 @@
     height: 140px;
     background-color: #fff;
     transition: all 0.2s;
+    position: relative;
 }
 
 .WelcomeBox:hover {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+.home-avatar {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translate(0, -50%);
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
 }
