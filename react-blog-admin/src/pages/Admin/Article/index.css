@@ -37,7 +37,7 @@
 .Search:hover {
     box-shadow: 0 0 8px #1890ff;
 }
-.searchBtn {
+.resetBtn {
     width: 50px;
     height: 40px;
     background-color: #1890ff;
@@ -48,12 +48,12 @@
     color: #fff;
     position: absolute;
     top: 50%;
-    left: 596px;
+    left: 1471px;
     transform: translate(0, -50%);
     transition: all 0.3s;
     user-select: none;
 }
-.searchBtn:hover,
+.resetBtn:hover,
 .addArticleBtn:hover {
     background-color: #40a9ff;
     box-shadow: 0 0 4px #1890ff;
@@ -62,14 +62,14 @@
 .searchClass {
     position: absolute;
     top: 50%;
-    right: 510px;
+    left: 601px;
     transform: translate(0, -50%);
 }
 
 .searchTag {
     position: absolute;
     top: 50%;
-    right: 5px;
+    left: 966px;
     transform: translate(0, -50%);
 }
 

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { Table, Tag, Space, Button, Popconfirm, notification, message, Select } from 'antd';
-import { DeleteOutlined, SearchOutlined } from '@ant-design/icons';
+import { DeleteOutlined, RedoOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { db } from '../../../utils/cloudBase';
 import { isContained } from '../../../functions';
@@ -10,24 +10,17 @@ import './index.css';
 const { Option } = Select;
 const Article = props => {
     // ——————————————————————搜索框——————————————————————
-    const searchText = useRef();
-    const [searchClass, setSearchClass] = useState('');
-    // 判断是否按下回车的函数
-    const searchKeyUp = e => {
-        if (e.keyCode === 13) searchByWords();
-    };
-    // 文字搜索框输入变化的回调
-    const clearKeyWords = () => {
-        const keyWords = searchText.current.value;
-        // 如果输入框内容为空，则展示所有文章
-        if (!keyWords) setArticlesShow(articles);
-    };
+    const searchWords = useRef();
+    const [searchClass, setSearchClass] = useState(null);
+    const [searchTag, setSearchTag] = useState([]);
     // 通过输入文字搜索
     const searchByWords = () => {
-        // 获取输入的搜索关键字
-        const keyWords = searchText.current.value;
+        setSearchClass(null);
+        setSearchTag([]);
+        const keyWords = searchWords.current.value;
+        // 如果输入框内容为空，则展示所有文章
         if (!keyWords) {
-            message.info('请输入文章标题！');
+            setArticlesShow(articles);
             return;
         }
         // 过滤出搜索到的文章
@@ -36,17 +29,20 @@ const Article = props => {
         setArticlesShow(newArticlesShow);
     };
     // 通过选择分类搜索
-    const searchByClass = (_, classesObj) => {
-        if (!classesObj) {
+    const searchByClass = classesName => {
+        searchWords.current.value = '';
+        setSearchTag([]);
+        if (!classesName) {
             setArticlesShow(articles);
             return;
         }
-        const newArticlesShow = articles.filter(item => item.classes === classesObj.children);
+        const newArticlesShow = articles.filter(item => item.classes === classesName);
         setArticlesShow(newArticlesShow);
     };
     // 通过选择标签搜索
-    const searchByTag = (_, nodeArr) => {
-        const tagsArr = nodeArr.map(item => item.children);
+    const searchByTag = tagsArr => {
+        searchWords.current.value = '';
+        setSearchClass(null);
         if (tagsArr.length === 0) {
             setArticlesShow(articles);
             return;
@@ -59,11 +55,15 @@ const Article = props => {
                 articlesByTag.push(articles[i]);
             }
         }
-        // console.log(articlesByTag);
         setArticlesShow(articlesByTag);
-        // console.log(tagsArr);
     };
-
+    // 清空搜索内容
+    const resetSearch = () => {
+        searchWords.current.value = '';
+        setSearchClass(null);
+        setSearchTag([]);
+        setArticlesShow(articles);
+    };
     // ————————————————————搜索框end————————————————————————
 
     // ——————————————————————渲染文章表格——————————————————————
@@ -212,14 +212,13 @@ const Article = props => {
                 </div>
                 <input
                     type="text"
+                    ref={searchWords}
                     className="Search"
-                    ref={searchText}
                     placeholder="输入文章标题..."
-                    onKeyUp={searchKeyUp}
-                    onChange={clearKeyWords}
+                    onChange={searchByWords}
                 />
-                <div className="searchBtn" onClick={searchByWords}>
-                    <SearchOutlined />
+                <div className="resetBtn" onClick={resetSearch}>
+                    <RedoOutlined />
                 </div>
                 <Select
                     showSearch
@@ -227,10 +226,12 @@ const Article = props => {
                     allowClear
                     style={{ width: '360px' }}
                     placeholder="请选择文章分类"
-                    // key={defaultClasses}
-                    // defaultValue={defaultClasses}
                     className="searchClass"
-                    onChange={(_, classesObj) => searchByClass(_, classesObj)}
+                    value={searchClass}
+                    onChange={value => {
+                        searchByClass(value);
+                        setSearchClass(value);
+                    }}
                 >
                     {props.classes.map(item => (
                         <Option key={item.class}>{item.class}</Option>
@@ -244,10 +245,12 @@ const Article = props => {
                     allowClear
                     style={{ width: '500px' }}
                     placeholder="请选择文章标签"
-                    // key={defaultTags}
-                    // defaultValue={defaultTags}
                     className="searchTag"
-                    onChange={(_, nodeArr) => searchByTag(_, nodeArr)}
+                    value={searchTag}
+                    onChange={value => {
+                        searchByTag(value);
+                        setSearchTag(value);
+                    }}
                 >
                     {props.tags.map(item => (
                         <Option key={item.tag}>{item.tag}</Option>
