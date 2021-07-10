@@ -3,6 +3,11 @@
     height: 100%;
     background-color: #fff;
     position: relative;
+    transition: all 0.2s;
+}
+
+.MyTagBox:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
 }
 .tagsList {
     padding: 10px;

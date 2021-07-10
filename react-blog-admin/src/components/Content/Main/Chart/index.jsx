@@ -2,12 +2,9 @@ import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Pie } from '@ant-design/charts';
 import { db } from '../../../../utils/cloudBase';
-import { getArticles } from '../../../../redux/actions/articles';
 import './index.css';
 
 const Chart = props => {
-    // const [articles, setArticles] = useState([]);
-    // const [isMounted, setIsMounted] = useState(true);
     const [classData, setClassData] = useState([]);
     const pieConfig = {
         appendPadding: 30,
@@ -31,7 +28,7 @@ const Chart = props => {
             { type: 'tooltip' },
         ],
     };
-    const getArticles = () => {
+    const getChartData = () => {
         const classMap = new Map();
         const classes = [];
         db.collection('articles')
@@ -51,7 +48,7 @@ const Chart = props => {
             });
     };
     useEffect(() => {
-        getArticles();
+        getChartData();
     }, [props.chartState]);
 
     return (
@@ -64,10 +61,6 @@ const Chart = props => {
 export default connect(
     state => ({
         chartState: state.chartState,
-        // classes: state.classes,
-        // articles: state.articles,
     }),
-    {
-        // getArticles
-    }
+    {}
 )(Chart);

@@ -3,4 +3,9 @@
     height: 100%;
     background-color: #fff;
     margin-right: 20px;
+    transition: all 0.2s;
+}
+
+.ChartBox:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
 }
