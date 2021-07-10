@@ -4,11 +4,21 @@ import Content from '../../components/Content';
 import { connect } from 'react-redux';
 import { getClasses } from '../../redux/actions/classes';
 import { getTags } from '../../redux/actions/tags';
+// import { getArticles } from '../../redux/actions/articles';
 import { db } from '../../utils/cloudBase';
 import './index.css';
 
 const Admin = props => {
     const [isMounted, setIsMounted] = useState(true);
+
+    // 获取最新所有文章
+    // const getNewArticles = () => {
+    //     db.collection('articles')
+    //         .get()
+    //         .then(res => {
+    //             props.getArticles(res.data);
+    //         });
+    // };
     // 向数据库获取所有标签
     const getAllTags = () => {
         db.collection('tags')
@@ -30,6 +40,7 @@ const Admin = props => {
         if (isMounted) {
             getAllTags();
             getAllClasses();
+            // getNewArticles();
         }
         return () => {
             setIsMounted(false);
@@ -49,4 +60,5 @@ const Admin = props => {
 export default connect(() => ({}), {
     getClasses,
     getTags,
+    // getArticles,
 })(Admin);

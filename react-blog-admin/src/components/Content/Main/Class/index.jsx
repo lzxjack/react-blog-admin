@@ -3,6 +3,8 @@ import { List, Modal, message, Popconfirm } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import { getClasses } from '../../../../redux/actions/classes';
+import { updataChart } from '../../../../redux/actions/updataChart';
+// import { getArticles } from '../../../../redux/actions/articles';
 import { db, _ } from '../../../../utils/cloudBase';
 import './index.css';
 
@@ -13,6 +15,14 @@ const Class = props => {
     const [classId, setClassId] = useState('');
     const [oldClass, setOldClass] = useState('');
 
+    // 获取最新所有文章
+    // const getNewArticles = () => {
+    //     db.collection('articles')
+    //         .get()
+    //         .then(res => {
+    //             props.getArticles(res.data);
+    //         });
+    // };
     // 向数据库获取所有分类
     const getAllClasses = () => {
         db.collection('classes')
@@ -75,6 +85,7 @@ const Class = props => {
         deleteClassFrom('articles', theClass);
         // 删除该分类下所有草稿的分类属性
         deleteClassFrom('drafts', theClass);
+        props.updataChart();
     };
     // 清空ID、编辑输入框、旧分类名
     const clearAllState = () => {
@@ -132,6 +143,7 @@ const Class = props => {
         editClassFrom('articles');
         // 修改该分类下所有草稿的分类名
         editClassFrom('drafts');
+        props.updataChart();
     };
     // 打开分类对话框
     const openEditModal = (id, oldClassName) => {
@@ -213,5 +225,6 @@ export default connect(
     }),
     {
         getClasses,
+        updataChart,
     }
 )(Class);
