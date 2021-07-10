@@ -4,6 +4,7 @@ import { Table, Tag, Space, Button, Popconfirm, notification, message, Select } 
 import { DeleteOutlined, SearchOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { db } from '../../../utils/cloudBase';
+import { isContained } from '../../../functions';
 import './index.css';
 
 const { Option } = Select;
@@ -15,7 +16,7 @@ const Article = props => {
     const searchKeyUp = e => {
         if (e.keyCode === 13) searchByWords();
     };
-    // 输入框变化的回调
+    // 文字搜索框输入变化的回调
     const clearKeyWords = () => {
         const keyWords = searchText.current.value;
         // 如果输入框内容为空，则展示所有文章
@@ -36,25 +37,31 @@ const Article = props => {
     };
     // 通过选择分类搜索
     const searchByClass = (_, classesObj) => {
-        if (classesObj) {
-            const newArticlesShow = articles.filter(item => item.classes === classesObj.children);
-            setArticlesShow(newArticlesShow);
-        } else {
+        if (!classesObj) {
             setArticlesShow(articles);
+            return;
         }
+        const newArticlesShow = articles.filter(item => item.classes === classesObj.children);
+        setArticlesShow(newArticlesShow);
     };
-
     // 通过选择标签搜索
     const searchByTag = (_, nodeArr) => {
         const tagsArr = nodeArr.map(item => item.children);
-        const [articlesLen, tagsLen] = [articles.length, tagsArr.length];
-        const resArr = [];
+        if (tagsArr.length === 0) {
+            setArticlesShow(articles);
+            return;
+        }
+        const articlesLen = articles.length;
+        const articlesByTag = [];
         for (let i = 0; i < articlesLen; i++) {
-            for (let j = 0; j < tagsLen; j++) {
-                // if(!tagsArr.includes())
+            // console.log(isContained(articles[i].tags, tagsArr));
+            if (isContained(articles[i].tags, tagsArr)) {
+                articlesByTag.push(articles[i]);
             }
         }
-        console.log(tagsArr);
+        // console.log(articlesByTag);
+        setArticlesShow(articlesByTag);
+        // console.log(tagsArr);
     };
 
     // ————————————————————搜索框end————————————————————————
