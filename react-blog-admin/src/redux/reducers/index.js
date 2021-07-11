@@ -5,6 +5,7 @@ import tags from './tags';
 import classes from './classes';
 import articles from './articles';
 import chartState from './updataChart';
+import ip from './ip';
 
 export default combineReducers({
     loginState,
@@ -12,4 +13,5 @@ export default combineReducers({
     classes,
     articles,
     chartState,
+    ip,
 });

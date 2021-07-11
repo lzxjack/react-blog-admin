@@ -43,7 +43,6 @@ const Class = props => {
         db.collection('classes')
             .add({
                 class: classInput,
-                count: 0,
             })
             .then(() => {
                 setClassInput('');

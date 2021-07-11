@@ -73,7 +73,6 @@ const MyTag = props => {
         db.collection('tags')
             .add({
                 tag: tagInput,
-                count: 0,
             })
             .then(() => {
                 setTagInput('');

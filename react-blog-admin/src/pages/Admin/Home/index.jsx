@@ -1,5 +1,6 @@
 // import { useState, useEffect } from 'react';
 import Welcome from '../../../components/Content/Main/Welcome';
+import Infor from '../../../components/Content/Main/Infor';
 import Statistic from '../../../components/Content/Main/Statistic';
 import Chart from '../../../components/Content/Main/Chart';
 import Class from '../../../components/Content/Main/Class';
@@ -10,7 +11,11 @@ import './index.css';
 const Home = () => {
     return (
         <>
-            <Welcome />
+            <div className="outlineBox">
+                <Welcome />
+                <Infor />
+            </div>
+
             <div className="statisticRegion">
                 <MyNavLink to="/admin/article" className="homeLink">
                     <Statistic type={'articles'} />

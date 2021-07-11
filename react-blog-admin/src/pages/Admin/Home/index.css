@@ -1,3 +1,17 @@
+.outlineBox {
+    width: 100%;
+    display: flex;
+}
+
+.WelcomeBox {
+    height: 140px;
+    background-color: #fff;
+    transition: all 0.2s;
+    position: relative;
+    user-select: none;
+    margin-right: 20px;
+}
+
 .statisticRegion {
     display: flex;
     flex-direction: row;
