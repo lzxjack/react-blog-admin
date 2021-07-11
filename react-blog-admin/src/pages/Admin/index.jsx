@@ -32,6 +32,7 @@ const Admin = props => {
         db.collection('classes')
             .get()
             .then(res => {
+                // console.log(res.data);
                 props.getClasses(res.data);
             });
     };
