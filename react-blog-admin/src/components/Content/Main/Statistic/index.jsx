@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { db } from '../../../../utils/cloudBase';
 import { connect } from 'react-redux';
-import { getArticlesNum } from '../../../../redux/actions/getNum';
+import { getArticlesNum } from '../../../../redux/actions';
 import './index.css';
 
 const ArticleNum = props => {

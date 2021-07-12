@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { List, Modal, message, Popconfirm } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
-import { getClasses } from '../../../../redux/actions/classes';
+import { getClasses } from '../../../../redux/actions';
 import { db, _ } from '../../../../utils/cloudBase';
 import './index.css';
 

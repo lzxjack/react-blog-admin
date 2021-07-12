@@ -1,6 +1,6 @@
 import { LoginOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
-import { login } from '../../../redux/actions/loginState';
+import { login } from '../../../redux/actions';
 import { notification, Popconfirm } from 'antd';
 import { EnterOutlined } from '@ant-design/icons';
 import './index.css';

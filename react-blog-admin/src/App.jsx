@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { auth } from '../src/utils/cloudBase';
-import { login } from '../src/redux/actions/loginState';
+import { login } from '../src/redux/actions';
 import Login from './pages/Login';
 import Admin from './pages/Admin';
 

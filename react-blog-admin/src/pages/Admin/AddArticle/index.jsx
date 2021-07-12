@@ -6,7 +6,7 @@ import qs from 'qs';
 import marked from 'marked';
 import { db, _ } from '../../../utils/cloudBase';
 import moment from 'moment';
-import { getClasses } from '../../../redux/actions/classes';
+import { getClasses } from '../../../redux/actions';
 import hljs from 'highlight.js';
 // 代码高亮的主题
 import './github-dark.css';

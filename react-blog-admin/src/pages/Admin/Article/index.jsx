@@ -5,7 +5,7 @@ import { DeleteOutlined, RedoOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { db, _ } from '../../../utils/cloudBase';
 import { isContained } from '../../../functions';
-import { getClasses } from '../../../redux/actions/classes';
+import { getClasses } from '../../../redux/actions';
 import './index.css';
 
 const { Option } = Select;

@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { auth } from '../../utils/cloudBase';
 import { connect } from 'react-redux';
-import { login } from '../../redux/actions/loginState';
+import { login } from '../../redux/actions';
 import { notification } from 'antd';
 import { CloseOutlined, CheckOutlined } from '@ant-design/icons';
 import { avatarUrl } from '../../utils/constant';
