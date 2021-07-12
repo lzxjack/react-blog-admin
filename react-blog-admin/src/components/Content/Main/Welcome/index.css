@@ -27,13 +27,13 @@
     font-weight: 700;
     position: absolute;
     left: 150px;
-    top: 20px;
+    top: 24px;
 }
 
 .poemContent {
     position: absolute;
     left: 150px;
-    top: 80px;
+    bottom: 24px;
     font-size: 18px;
 }
 

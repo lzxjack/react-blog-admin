@@ -185,9 +185,10 @@ const Class = props => {
                     dataSource={props.classes}
                     renderItem={item => (
                         <List.Item className="classesItem">
-                            <span style={{ fontSize: '16px' }}>
-                                《{item.class}》——（{item.count}）
+                            <span style={{ fontSize: '16px' }} className="className">
+                                《{item.class}》
                             </span>
+                            <div className="articlesNum">{item.count}</div>
                             <EditOutlined
                                 className="classesEdit"
                                 onClick={() => openEditModal(item._id, item.class)}
