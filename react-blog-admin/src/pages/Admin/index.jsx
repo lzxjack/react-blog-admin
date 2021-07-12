@@ -5,7 +5,9 @@ import { connect } from 'react-redux';
 import { getClasses } from '../../redux/actions/classes';
 import { getTags } from '../../redux/actions/tags';
 // import { getArticles } from '../../redux/actions/articles';
+import { getPoem } from '../../redux/actions/poem';
 import { db } from '../../utils/cloudBase';
+import moment from 'moment';
 import './index.css';
 
 const Admin = props => {
@@ -36,12 +38,25 @@ const Admin = props => {
                 props.getClasses(res.data);
             });
     };
+    // 获得每日诗句信息
+    const getDailyPoem = () => {
+        require('jinrishici').load(res => {
+            const obj = {
+                content: res.data.content,
+                title: res.data.origin.title,
+                ip: res.ipAddress,
+                date: moment().format('YYYY-MM-DD'),
+            };
+            props.getPoem(obj);
+        });
+    };
     // 组件挂载，获取一次所有标签和分类
     useEffect(() => {
         if (isMounted) {
             getAllTags();
             getAllClasses();
             // getNewArticles();
+            getDailyPoem();
         }
         return () => {
             setIsMounted(false);
@@ -62,4 +77,5 @@ export default connect(() => ({}), {
     getClasses,
     getTags,
     // getArticles,
+    getPoem,
 })(Admin);

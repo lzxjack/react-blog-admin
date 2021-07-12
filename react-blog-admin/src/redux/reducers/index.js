@@ -4,14 +4,14 @@ import loginState from './loginState';
 import tags from './tags';
 import classes from './classes';
 import articles from './articles';
-import chartState from './updataChart';
-import ip from './ip';
+import poem from './poem';
+import articlesNum from './articlesNum';
 
 export default combineReducers({
     loginState,
     tags,
     classes,
     articles,
-    chartState,
-    ip,
+    poem,
+    articlesNum,
 });

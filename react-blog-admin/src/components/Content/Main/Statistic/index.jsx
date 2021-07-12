@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { db } from '../../../../utils/cloudBase';
+import { connect } from 'react-redux';
+import { getArticlesNum } from '../../../../redux/actions/getNum';
 import './index.css';
 
 const ArticleNum = props => {
@@ -31,19 +33,27 @@ const ArticleNum = props => {
                 setType('');
             }
         }
-
         db.collection(props.type)
             .count()
             .then(res => {
-                setNum(res.total);
+                if (props.type === 'articles') {
+                    props.getArticlesNum(res.total);
+                } else {
+                    setNum(res.total);
+                }
             });
-    }, [props.type]);
+    }, []);
     return (
         <div className={props.isRight ? 'numberBox marginRight' : 'numberBox'}>
             <span className="type">{type}数</span>
-            <span className="number">{num}</span>
+            <span className="number">{props.type === 'articles' ? props.articlesNum : num}</span>
         </div>
     );
 };
 
-export default ArticleNum;
+export default connect(
+    state => ({
+        articlesNum: state.articlesNum,
+    }),
+    { getArticlesNum }
+)(ArticleNum);

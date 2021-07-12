@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import { Table, Tag, Space, Button, Popconfirm, notification, Select } from 'antd';
 import { DeleteOutlined, RedoOutlined } from '@ant-design/icons';
 import moment from 'moment';
-import { db } from '../../../utils/cloudBase';
+import { db, _ } from '../../../utils/cloudBase';
 import { isContained } from '../../../functions';
+import { getClasses } from '../../../redux/actions/classes';
 import './index.css';
 
 const { Option } = Select;
@@ -141,7 +142,10 @@ const Article = props => {
                     <Popconfirm
                         placement="topRight"
                         title="确定要删除该文章吗？"
-                        onConfirm={() => deleteArticle(record._id)}
+                        onConfirm={() => {
+                            deleteArticle(record._id);
+                            classMinOne(record.classes);
+                        }}
                         okText="Yes"
                         cancelText="No"
                     >
@@ -191,6 +195,26 @@ const Article = props => {
                     placement: 'bottomLeft',
                     duration: 1.5,
                 });
+            });
+    };
+    // 向数据库获取所有分类
+    const getAllClasses = () => {
+        db.collection('classes')
+            .get()
+            .then(res => {
+                props.getClasses(res.data);
+            });
+    };
+    // 相应分类数目-1
+    const classMinOne = oldClass => {
+        console.log(oldClass);
+        db.collection('classes')
+            .where({ class: oldClass })
+            .update({
+                count: _.inc(-1),
+            })
+            .then(() => {
+                getAllClasses();
             });
     };
     // 修改文章
@@ -283,5 +307,5 @@ export default connect(
         tags: state.tags,
         classes: state.classes,
     }),
-    {}
+    { getClasses }
 )(Article);

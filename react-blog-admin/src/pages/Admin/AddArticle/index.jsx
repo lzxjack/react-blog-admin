@@ -4,8 +4,9 @@ import { Select, Popconfirm, notification } from 'antd';
 import { CarryOutOutlined, FileDoneOutlined } from '@ant-design/icons';
 import qs from 'qs';
 import marked from 'marked';
-import { db } from '../../../utils/cloudBase';
+import { db, _ } from '../../../utils/cloudBase';
 import moment from 'moment';
+import { getClasses } from '../../../redux/actions/classes';
 import hljs from 'highlight.js';
 // 代码高亮的主题
 import './github-dark.css';
@@ -48,7 +49,7 @@ const AddArticle = props => {
                 // setDefaultTags(tags);
                 // 已有的分类存储到state
                 setSelectClasses(classes);
-                // setDefaultClasses(classes);
+                setDefaultClasses(classes);
                 // 已有的正文存储到state
                 setContent(content);
                 setDefaultContent(content);
@@ -91,7 +92,7 @@ const AddArticle = props => {
     // ——————————分类————————————
     // 已选的分类
     const [selectClasses, setSelectClasses] = useState('');
-    // const [defaultClasses, setDefaultClasses] = useState('');
+    const [defaultClasses, setDefaultClasses] = useState('');
     // ——————————分类end————————————
 
     // ————————————正文———————————
@@ -187,6 +188,36 @@ const AddArticle = props => {
                 });
             });
     };
+    // 向数据库获取所有分类
+    const getAllClasses = () => {
+        db.collection('classes')
+            .get()
+            .then(res => {
+                props.getClasses(res.data);
+            });
+    };
+    // 相应分类数目+1
+    const classAddOne = newClass => {
+        db.collection('classes')
+            .where({ class: newClass })
+            .update({
+                count: _.inc(1),
+            })
+            .then(() => {
+                getAllClasses();
+            });
+    };
+    // 相应分类数目-1
+    const classMinOne = oldClass => {
+        db.collection('classes')
+            .where({ class: oldClass })
+            .update({
+                count: _.inc(-1),
+            })
+            .then(() => {
+                getAllClasses();
+            });
+    };
     // 存为草稿 按钮1
     const turnDraft = () => {
         if (!isEdit) {
@@ -201,6 +232,8 @@ const AddArticle = props => {
                 // 文章页的修改按钮
                 removeFromDB('articles');
                 addToDB('drafts');
+                // oldCount--
+                classMinOne(defaultClasses);
             }
         }
     };
@@ -209,15 +242,26 @@ const AddArticle = props => {
         if (!isEdit) {
             // 新建文章按钮进来的
             addToDB('articles');
+            // newCount++
+            classAddOne(selectClasses);
         } else {
             // 修改按钮进来的
             if (isDraft) {
                 // 草稿页的修改按钮
                 removeFromDB('drafts');
                 addToDB('articles');
+                // newCount++
+                classAddOne(selectClasses);
             } else {
                 // 文章页的修改按钮
                 updateFromDB('articles');
+                if (selectClasses !== defaultClasses) {
+                    // 如果更换了分类
+                    // oldCount--
+                    classMinOne(defaultClasses);
+                    // newCount++
+                    classAddOne(selectClasses);
+                }
             }
         }
     };
@@ -344,5 +388,5 @@ export default connect(
         tags: state.tags,
         classes: state.classes,
     }),
-    {}
+    { getClasses }
 )(AddArticle);

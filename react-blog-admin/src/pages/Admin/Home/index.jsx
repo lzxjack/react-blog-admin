@@ -1,4 +1,3 @@
-// import { useState, useEffect } from 'react';
 import Welcome from '../../../components/Content/Main/Welcome';
 import Infor from '../../../components/Content/Main/Infor';
 import Statistic from '../../../components/Content/Main/Statistic';

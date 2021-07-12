@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Pie } from '@ant-design/charts';
-import { db } from '../../../../utils/cloudBase';
 import './index.css';
 
 const Chart = props => {
@@ -10,8 +9,8 @@ const Chart = props => {
         appendPadding: 30,
         autoFit: true,
         data: classData,
-        angleField: 'value',
-        colorField: 'type',
+        angleField: 'count',
+        colorField: 'className',
         radius: 0.8,
         legend: false,
         label: {
@@ -28,31 +27,32 @@ const Chart = props => {
             { type: 'tooltip' },
         ],
     };
-    const getChartData = () => {
-        const classMap = new Map();
-        const classes = [];
-        db.collection('articles')
-            .get()
-            .then(res => {
-                for (const item of res.data) {
-                    classMap.set(item.classes, (classMap.get(item.classes) || 0) + 1);
-                }
-                for (const item of classMap) {
-                    const obj = {
-                        type: item[0] ? item[0] : '未分类',
-                        value: item[1],
-                    };
-                    classes.push(obj);
-                }
-                setClassData(classes);
-            });
-    };
+    // 整理饼图需要的数据格式
     useEffect(() => {
-        getChartData();
-    }, [props.chartState]);
+        // classes分类的数组
+        const classes = props.classes
+            .filter(item => item.count !== 0)
+            .map(item => ({
+                className: item.class,
+                count: item.count,
+            }));
+        // 求有分类的文章的数目
+        let articleHadClass = 0;
+        const len = classes.length;
+        for (let i = 0; i < len; i++) {
+            articleHadClass += classes[i].count;
+        }
+        // 未分类的文章
+        // 类名为“未分类”，数量=文章总数-有分类的文章的数目
+        const articleNoClass = { className: '未分类', count: props.articlesNum - articleHadClass };
+        // 未分类的文章追加到数组中
+        const articlesData = [...classes, articleNoClass];
+        setClassData(articlesData);
+    }, [props.classes, props.articlesNum]);
 
     return (
         <div className="ChartBox">
+            <span className="type">文章概览</span>
             <Pie {...pieConfig} />
         </div>
     );
@@ -60,7 +60,8 @@ const Chart = props => {
 
 export default connect(
     state => ({
-        chartState: state.chartState,
+        classes: state.classes,
+        articlesNum: state.articlesNum,
     }),
     {}
 )(Chart);

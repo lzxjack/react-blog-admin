@@ -1,11 +1,11 @@
-import { LOGIN } from '../constant';
+import { GET_POEM } from '../constant';
 
-const initState = false;
+const initState = {};
 
 export default function addReducer(preState = initState, action) {
     const { type, data } = action;
     switch (type) {
-        case LOGIN:
+        case GET_POEM:
             return data;
         default:
             return preState;

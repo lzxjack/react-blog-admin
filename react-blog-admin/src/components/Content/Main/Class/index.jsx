@@ -3,7 +3,6 @@ import { List, Modal, message, Popconfirm } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import { getClasses } from '../../../../redux/actions/classes';
-import { updataChart } from '../../../../redux/actions/updataChart';
 import { db, _ } from '../../../../utils/cloudBase';
 import './index.css';
 
@@ -43,6 +42,7 @@ const Class = props => {
         db.collection('classes')
             .add({
                 class: classInput,
+                count: 0,
             })
             .then(() => {
                 setClassInput('');
@@ -58,9 +58,6 @@ const Class = props => {
                 classes: '',
             })
             .then(() => {
-                if (dbName === 'articles') {
-                    props.updataChart();
-                }
                 message.success(`更新${text}分类成功！`);
             });
     };
@@ -98,9 +95,6 @@ const Class = props => {
                 classes: classEditInput,
             })
             .then(() => {
-                if (dbName === 'articles') {
-                    props.updataChart();
-                }
                 message.success(`更新${text}分类成功！`);
             });
     };
@@ -138,7 +132,6 @@ const Class = props => {
         editClassFrom('articles');
         // 修改该分类下所有草稿的分类名
         editClassFrom('drafts');
-        props.updataChart();
     };
     // 打开分类对话框
     const openEditModal = (id, oldClassName) => {
@@ -192,7 +185,9 @@ const Class = props => {
                     dataSource={props.classes}
                     renderItem={item => (
                         <List.Item className="classesItem">
-                            <span style={{ fontSize: '16px' }}>《{item.class}》</span>
+                            <span style={{ fontSize: '16px' }}>
+                                《{item.class}》——（{item.count}）
+                            </span>
                             <EditOutlined
                                 className="classesEdit"
                                 onClick={() => openEditModal(item._id, item.class)}
@@ -220,6 +215,5 @@ export default connect(
     }),
     {
         getClasses,
-        updataChart,
     }
 )(Class);

@@ -4,6 +4,7 @@
     background-color: #fff;
     margin-right: 20px;
     transition: all 0.2s;
+    position: relative;
 }
 
 .ChartBox:hover {

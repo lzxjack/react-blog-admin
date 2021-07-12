@@ -1,6 +1,6 @@
 import { LoginOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
-import { logout } from '../../../redux/actions/loginState';
+import { login } from '../../../redux/actions/loginState';
 import { notification, Popconfirm } from 'antd';
 import { EnterOutlined } from '@ant-design/icons';
 import './index.css';
@@ -19,7 +19,7 @@ const Header = props => {
         // 清空本地数据
         localStorage.clear();
         // 改变登录状态
-        props.logout();
+        props.login(false);
         // 提示消息
         openLogout();
     };
@@ -39,4 +39,4 @@ const Header = props => {
     );
 };
 
-export default connect(() => ({}), { logout })(Header);
+export default connect(() => ({}), { login })(Header);

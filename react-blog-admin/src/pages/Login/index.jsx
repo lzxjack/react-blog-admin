@@ -36,7 +36,7 @@ const Login = props => {
     const login = () => {
         auth.signInWithEmailAndPassword(inputEmail.current.value, inputpwd.current.value)
             .then(() => {
-                props.login();
+                props.login(true);
                 // 登录成功
                 openLoginNoti(true);
             })

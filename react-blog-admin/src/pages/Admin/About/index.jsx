@@ -8,6 +8,7 @@ import './index.css';
 const About = props => {
     const [aboutMe, setAboutMe] = useState('');
     const [aboutSite, setAboutSite] = useState('');
+    const [isMounted, setIsMounted] = useState(true);
     // 获取关于详情
     const getAboutData = () => {
         db.collection('about')
@@ -20,8 +21,11 @@ const About = props => {
             });
     };
     useEffect(() => {
-        getAboutData();
-    }, []);
+        isMounted && getAboutData();
+        return () => {
+            setIsMounted(false);
+        };
+    }, [isMounted]);
     // 配制marked和highlight
     useEffect(() => {
         // 配置highlight
