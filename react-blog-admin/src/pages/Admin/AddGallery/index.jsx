@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { notification, Popconfirm } from 'antd';
 import { CameraOutlined, CopyOutlined, DeleteOutlined } from '@ant-design/icons';
+import { connect } from 'react-redux';
+import { getGalleries } from '../../../redux/actions';
 import { nanoid } from 'nanoid';
 import { db } from '../../../utils/cloudBase';
 import './index.css';
@@ -15,20 +17,25 @@ const AddGallery = props => {
     // 编辑状态，获取当前相册详情
     useEffect(() => {
         if (props.location.search !== '') {
-            const id = props.location.search.split('?id=')[1];
-            setId(id);
-            db.collection('galleries')
-                .doc(id)
-                .get()
-                .then(res => {
-                    const { title, descr, cover, pics } = res.data[0];
-                    setTitle(title);
-                    setDescr(descr);
-                    setCover(cover);
-                    setPics(pics);
-                });
+            const ID = props.location.search.split('?id=')[1];
+            setId(ID);
+            const galleryObj = props.galleries.filter(item => item._id === ID)[0];
+            const { title, descr, cover, pics } = galleryObj;
+            setTitle(title);
+            setDescr(descr);
+            setCover(cover);
+            setPics(pics);
         }
     }, [props]);
+
+    // 向数据库获取最新相册信息
+    const getNewGalleries = () => {
+        db.collection('galleries')
+            .get()
+            .then(res => {
+                props.getGalleries(res.data);
+            });
+    };
 
     // 更新/添加相册之后的操作
     const afterGalleryChange = isEdit => {
@@ -57,6 +64,7 @@ const AddGallery = props => {
                 pics,
             })
             .then(() => {
+                getNewGalleries();
                 afterGalleryChange(0);
             });
     };
@@ -72,6 +80,7 @@ const AddGallery = props => {
                 pics,
             })
             .then(() => {
+                getNewGalleries();
                 afterGalleryChange(1);
             });
     };
@@ -82,6 +91,7 @@ const AddGallery = props => {
             .doc(id)
             .remove()
             .then(() => {
+                getNewGalleries();
                 props.history.replace('/admin/gallery');
                 notification.open({
                     message: '删除相册成功',
@@ -187,4 +197,4 @@ const AddGallery = props => {
     );
 };
 
-export default AddGallery;
+export default connect(state => ({ galleries: state.galleries }), { getGalleries })(AddGallery);

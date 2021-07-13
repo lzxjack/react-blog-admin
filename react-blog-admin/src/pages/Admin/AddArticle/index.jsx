@@ -6,7 +6,7 @@ import qs from 'qs';
 import marked from 'marked';
 import { db, _ } from '../../../utils/cloudBase';
 import moment from 'moment';
-import { getClasses } from '../../../redux/actions';
+import { getClasses, getArticles, getDrafts } from '../../../redux/actions';
 import hljs from 'highlight.js';
 // 代码高亮的主题
 import './github-dark.css';
@@ -34,27 +34,25 @@ const AddArticle = props => {
     }, [props.location.search]);
 
     // —————————————————————编辑时，获取文章详情———————————————————————
-    // 从数据库获取文章/草稿详情，参数：数据库名称、文章/草稿ID
-    const getDetailFromDB = dbName => {
-        db.collection(dbName)
-            .doc(id)
-            .get()
-            .then(res => {
-                // 从res.data中解构赋值
-                const { title, titleEng, content, tags, classes, date } = res.data[0];
-                setTitle(title);
-                setTitleEng(titleEng);
-                // 已有的标签存储到state
-                setSelectTags(tags);
-                // setDefaultTags(tags);
-                // 已有的分类存储到state
-                setSelectClasses(classes);
-                setDefaultClasses(classes);
-                // 已有的正文存储到state
-                setContent(content);
-                setDefaultContent(content);
-                setDate(moment(date).format('YYYY-MM-DD HH:mm:ss').replace(/ /g, ' '));
-            });
+    // 从redux获取文章/草稿详情，参数：redux属性名称、文章/草稿ID
+    const getDetailFromRedux = isArticle => {
+        const detailObj = isArticle
+            ? props.articles.filter(item => item._id === id)[0]
+            : props.drafts.filter(item => item._id === id)[0];
+        // 解构赋值
+        const { title, titleEng, content, tags, classes, date } = detailObj;
+        setTitle(title);
+        setTitleEng(titleEng);
+        // 已有的标签存储到state
+        setSelectTags(tags);
+        // setDefaultTags(tags);
+        // 已有的分类存储到state
+        setSelectClasses(classes);
+        setDefaultClasses(classes);
+        // 已有的正文存储到state
+        setContent(content);
+        setDefaultContent(content);
+        setDate(moment(date).format('YYYY-MM-DD HH:mm:ss').replace(/ /g, ' '));
     };
     // 编辑时，组件挂载，自动填入文章详情
     useEffect(() => {
@@ -66,11 +64,11 @@ const AddArticle = props => {
             return;
         }
         if (!isDraft) {
-            // 向数据库获取文章详情
-            getDetailFromDB('articles');
+            // 向redux获取文章详情
+            getDetailFromRedux(true);
         } else {
-            // 向数据库获取草稿详情
-            getDetailFromDB('drafts');
+            // 向redux获取草稿详情
+            getDetailFromRedux(false);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isEdit, isJudged, isDraft]);
@@ -119,6 +117,18 @@ const AddArticle = props => {
     // ————————————正文end———————————
 
     // ——————————————————————两个按钮——————————————————————
+    // 获取最新所有文章/草稿
+    const getArticlesOrDrafts = dbName => {
+        db.collection(dbName)
+            .get()
+            .then(res => {
+                if (dbName === 'articles') {
+                    props.getArticles(res.data);
+                } else {
+                    props.getDrafts(res.data);
+                }
+            });
+    };
     // 添加到文章数据库/草稿数据库，参数：数据库名
     const addToDB = dbName => {
         const page = dbName === 'articles' ? '/admin/article' : '/admin/draft';
@@ -140,6 +150,7 @@ const AddArticle = props => {
                 url: `https://lzxjack.top/${titleEng}`,
             })
             .then(() => {
+                getArticlesOrDrafts(dbName);
                 // 转到草稿页/文章页
                 props.history.replace(page);
                 // 提示消息
@@ -177,6 +188,7 @@ const AddArticle = props => {
                 url: `https://lzxjack.top/${titleEng}`,
             })
             .then(() => {
+                getArticlesOrDrafts(dbName);
                 // 回到文章页/草稿页
                 props.history.replace(page);
                 // 提示消息
@@ -387,6 +399,8 @@ export default connect(
     state => ({
         tags: state.tags,
         classes: state.classes,
+        articles: state.articles,
+        drafts: state.drafts,
     }),
-    { getClasses }
+    { getClasses, getArticles, getDrafts }
 )(AddArticle);

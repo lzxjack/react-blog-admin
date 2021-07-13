@@ -1,15 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Table, Tag, Space, Button, Popconfirm, notification } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
+import { connect } from 'react-redux';
+import { getDrafts } from '../../../redux/actions';
 import moment from 'moment';
 import { db } from '../../../utils/cloudBase';
 
 const Draft = props => {
     // ——————————————————————渲染草稿表格——————————————————————
-    // 标识组件是否挂载的state
-    const [isMounted, setIsMounted] = useState(true);
-    const [isLoading, setIsLoading] = useState(false);
-    const [drafts, setDrafts] = useState([]);
+    const [tableLoading, setTableLoading] = useState(false);
     // 表头
     const columns = [
         {
@@ -88,22 +87,16 @@ const Draft = props => {
             ),
         },
     ];
-    // 获取所有最新草稿，并保存到state
+    // 获取所有最新草稿，并保存到redux
     const getNewDrafts = () => {
-        setIsLoading(true);
+        setTableLoading(true);
         db.collection('drafts')
             .get()
             .then(res => {
-                setDrafts(res.data);
-                setIsLoading(false);
+                props.getDrafts(res.data);
+                setTableLoading(false);
             });
     };
-    useEffect(() => {
-        isMounted && getNewDrafts();
-        return () => {
-            setIsMounted(false);
-        };
-    }, [isMounted]);
     // ——————————————————————渲染草稿表格end——————————————————————
 
     // ——————————————————————对草稿的操作——————————————————————
@@ -137,7 +130,7 @@ const Draft = props => {
                 size="middle"
                 className="Table"
                 bordered
-                loading={isLoading}
+                loading={tableLoading}
                 pagination={{
                     position: ['bottomCenter'],
                     defaultPageSize: 11,
@@ -146,7 +139,7 @@ const Draft = props => {
                     size: ['small'],
                 }}
                 columns={columns}
-                dataSource={drafts}
+                dataSource={props.drafts}
                 rowKey={columns => columns._id}
                 showSorterTooltip={false}
             />
@@ -154,4 +147,4 @@ const Draft = props => {
     );
 };
 
-export default Draft;
+export default connect(state => ({ drafts: state.drafts }), { getDrafts })(Draft);

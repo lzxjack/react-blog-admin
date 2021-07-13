@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { nanoid } from 'nanoid';
 import { Modal, notification, Table, Space, Button, Popconfirm, message, Popover } from 'antd';
 import { FormOutlined, MessageOutlined, DeleteOutlined } from '@ant-design/icons';
 import { db } from '../../../utils/cloudBase';
+import { connect } from 'react-redux';
+import { getLogs } from '../../../redux/actions';
 import moment from 'moment';
 import {
     emojiPeople,
@@ -13,10 +15,8 @@ import {
 } from '../../../utils/constant';
 import './index.css';
 
-const Log = () => {
+const Log = props => {
     // ————————————————————渲染事件表格————————————————————
-    const [says, setLogs] = useState([]);
-    const [isMounted, setIsMounted] = useState(true);
     const [tableLoading, setTableLoading] = useState(false);
     // 表头
     const columns = [
@@ -73,17 +73,10 @@ const Log = () => {
         db.collection('logs')
             .get()
             .then(res => {
-                setLogs(res.data);
+                props.getLogs(res.data);
                 setTableLoading(false);
             });
     };
-    // 组件挂载，获得所有事件
-    useEffect(() => {
-        isMounted && getAllLogs();
-        return () => {
-            setIsMounted(false);
-        };
-    }, [isMounted]);
     // ————————————————————渲染事件表格end————————————————————
 
     // ————————————————————————————添加/编辑事件对话框————————————————————————————
@@ -176,23 +169,19 @@ const Log = () => {
             });
     };
     // 点击编辑，根据ID获得事件详情
-    const editLog = id => {
-        setId(id);
+    const editLog = ID => {
+        setId(ID);
         setIsEdit(true);
         setAddLogVisible(true);
-        db.collection('logs')
-            .doc(id)
-            .get()
-            .then(res => {
-                const { date, logContent } = res.data[0];
-                setDate(moment(date).format('YYYY-MM-DD HH:mm:ss').replace(/ /g, ' '));
-                setLogContent(logContent);
-            });
+        const logObj = props.logs.filter(item => item._id === ID)[0];
+        const { date, logContent } = logObj;
+        setDate(moment(date).format('YYYY-MM-DD HH:mm:ss').replace(/ /g, ' '));
+        setLogContent(logContent);
     };
     // 删除事件
-    const deleteLog = id => {
+    const deleteLog = ID => {
         db.collection('logs')
-            .doc(id)
+            .doc(ID)
             .remove()
             .then(() => {
                 getAllLogs();
@@ -305,7 +294,7 @@ const Log = () => {
                     size: ['small'],
                 }}
                 columns={columns}
-                dataSource={says}
+                dataSource={props.logs}
                 rowKey={columns => columns._id}
                 showSorterTooltip={false}
             />
@@ -313,4 +302,4 @@ const Log = () => {
     );
 };
 
-export default Log;
+export default connect(state => ({ logs: state.logs }), { getLogs })(Log);

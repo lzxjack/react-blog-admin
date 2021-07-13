@@ -1,27 +1,20 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Modal, message, notification, Popconfirm } from 'antd';
 import { PictureOutlined, FormOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { connect } from 'react-redux';
+import { getShows } from '../../../redux/actions';
 import { db } from '../../../utils/cloudBase';
 import './index.css';
 
-const Show = () => {
-    const [shows, setShows] = useState([]);
-    const [isMounted, setIsMounted] = useState(true);
+const Show = props => {
     // 获得所有作品信息
     const getAllShows = () => {
         db.collection('shows')
             .get()
             .then(res => {
-                setShows(res.data);
+                props.getShows(res.data);
             });
     };
-    // 组件挂载，获得作品信息
-    useEffect(() => {
-        isMounted && getAllShows();
-        return () => {
-            setIsMounted(false);
-        };
-    }, [isMounted]);
 
     const [showVisible, setShowVisible] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
@@ -97,28 +90,23 @@ const Show = () => {
         setLink('');
     };
     // 编辑作品
-    const editShow = id => {
+    const editShow = ID => {
+        setId(ID);
         // 打开对话框
         setShowVisible(true);
         // 打开编辑状态
         setIsEdit(true);
-        // 根据id获取相应作品的详情
-        db.collection('shows')
-            .doc(id)
-            .get()
-            .then(res => {
-                const { _id, name, descr, cover, link } = res.data[0];
-                setId(_id);
-                setName(name);
-                setDescr(descr);
-                setCover(cover);
-                setLink(link);
-            });
+        const showObj = props.shows.filter(item => item._id === ID)[0];
+        const { name, descr, cover, link } = showObj;
+        setName(name);
+        setDescr(descr);
+        setCover(cover);
+        setLink(link);
     };
     // 删除作品
-    const deleteShow = id => {
+    const deleteShow = ID => {
         db.collection('shows')
-            .doc(id)
+            .doc(ID)
             .remove()
             .then(() => {
                 // 获取所有相册
@@ -198,7 +186,7 @@ const Show = () => {
             </div>
             <div className="galleryBox">
                 <ul className="galleryUl">
-                    {shows.map(item => (
+                    {props.shows.map(item => (
                         <li key={item._id} style={{ backgroundImage: `url(${item.cover})` }}>
                             <div className="galleryTitleBox">
                                 <span>
@@ -239,4 +227,4 @@ const Show = () => {
     );
 };
 
-export default Show;
+export default connect(state => ({ shows: state.shows }), { getShows })(Show);

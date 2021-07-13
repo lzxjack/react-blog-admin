@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { List, Modal, message, Popconfirm } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
-import { getClasses } from '../../../../redux/actions';
+import { getClasses, getArticles } from '../../../../redux/actions';
 import { db, _ } from '../../../../utils/cloudBase';
 import './index.css';
 
@@ -13,12 +13,21 @@ const Class = props => {
     const [classId, setClassId] = useState('');
     const [oldClass, setOldClass] = useState('');
 
+    // 获取最新所有文章，并放入redux
+    const getNewArticles = () => {
+        db.collection('articles')
+            .get()
+            .then(res => {
+                props.getArticles(res.data);
+            });
+    };
     // 向数据库获取所有分类
     const getAllClasses = () => {
         db.collection('classes')
             .get()
             .then(res => {
                 props.getClasses(res.data);
+                getNewArticles();
             });
     };
     // 添加分类
@@ -208,5 +217,6 @@ export default connect(
     }),
     {
         getClasses,
+        getArticles,
     }
 )(Class);

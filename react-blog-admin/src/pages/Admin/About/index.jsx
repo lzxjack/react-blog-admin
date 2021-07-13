@@ -1,31 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { FormOutlined } from '@ant-design/icons';
 import { db } from '../../../utils/cloudBase';
+import { connect } from 'react-redux';
 import marked from 'marked';
 import hljs from 'highlight.js';
 import './index.css';
 
 const About = props => {
-    const [aboutMe, setAboutMe] = useState('');
-    const [aboutSite, setAboutSite] = useState('');
-    const [isMounted, setIsMounted] = useState(true);
-    // 获取关于详情
-    const getAboutData = () => {
-        db.collection('about')
-            .get()
-            .then(res => {
-                const Me = res.data.filter(item => item.isMe)[0].content;
-                const Site = res.data.filter(item => !item.isMe)[0].content;
-                setAboutMe(Me);
-                setAboutSite(Site);
-            });
-    };
-    useEffect(() => {
-        isMounted && getAboutData();
-        return () => {
-            setIsMounted(false);
-        };
-    }, [isMounted]);
     // 配制marked和highlight
     useEffect(() => {
         // 配置highlight
@@ -77,13 +58,19 @@ const About = props => {
                 <div
                     className="meContent markdownStyle"
                     dangerouslySetInnerHTML={{
-                        __html: marked(aboutMe).replace(/<pre>/g, "<pre id='hljs'>"),
+                        __html: marked(props.about.filter(item => item.isMe)[0].content).replace(
+                            /<pre>/g,
+                            "<pre id='hljs'>"
+                        ),
                     }}
                 ></div>
                 <div
                     className="siteContent markdownStyle"
                     dangerouslySetInnerHTML={{
-                        __html: marked(aboutSite).replace(/<pre>/g, "<pre id='hljs'>"),
+                        __html: marked(props.about.filter(item => !item.isMe)[0].content).replace(
+                            /<pre>/g,
+                            "<pre id='hljs'>"
+                        ),
                     }}
                 ></div>
             </div>
@@ -91,4 +78,4 @@ const About = props => {
     );
 };
 
-export default About;
+export default connect(state => ({ about: state.about }), {})(About);

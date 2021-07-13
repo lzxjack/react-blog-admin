@@ -2,13 +2,14 @@ import { useState, useEffect } from 'react';
 import { db } from '../../../utils/cloudBase';
 import { notification, message } from 'antd';
 import { SkinOutlined, HomeOutlined } from '@ant-design/icons';
+import { connect } from 'react-redux';
+import { getAbout } from '../../../redux/actions';
 import qs from 'qs';
 import marked from 'marked';
 import hljs from 'highlight.js';
 import './index.css';
 
 const AboutEdit = props => {
-    const [defaultContent, setDefaultContent] = useState('');
     const [content, setContent] = useState('');
     const [id, setId] = useState('');
     const [isMe, setIsMe] = useState(true);
@@ -24,15 +25,10 @@ const AboutEdit = props => {
     // 判断完毕后，从数据库获取相应页面详情
     useEffect(() => {
         if (!isJudged) return;
-        db.collection('about')
-            .get()
-            .then(res => {
-                const aboutObj = res.data.filter(item => item.isMe === isMe)[0];
-                const { content, _id: id } = aboutObj;
-                setId(id);
-                setContent(content);
-                setDefaultContent(content);
-            });
+        const aboutObj = props.about.filter(item => item.isMe === isMe)[0];
+        const { content, _id: ID } = aboutObj;
+        setId(ID);
+        setContent(content);
     }, [isJudged, isMe]);
     // 配制marked和highlight
     useEffect(() => {
@@ -51,6 +47,15 @@ const AboutEdit = props => {
             breaks: true, //默认为false。 允许回车换行。该选项要求 gfm 为true。
         });
     }, []);
+
+    // 获取关于详情
+    const getAboutData = () => {
+        db.collection('about')
+            .get()
+            .then(res => {
+                props.getAbout(res.data);
+            });
+    };
     // 返回到"关于"页面
     const turnToAbout = () => {
         props.history.replace('/admin/about');
@@ -74,6 +79,7 @@ const AboutEdit = props => {
                 isMe,
             })
             .then(() => {
+                getAboutData();
                 turnToAbout();
                 notification.open({
                     message: messageText,
@@ -103,7 +109,7 @@ const AboutEdit = props => {
                         setContent(e.target.innerText);
                     }}
                 >
-                    {defaultContent}
+                    {props.about.filter(item => item.isMe === isMe)[0].content}
                 </div>
 
                 <div
@@ -117,4 +123,4 @@ const AboutEdit = props => {
     );
 };
 
-export default AboutEdit;
+export default connect(state => ({ about: state.about }), { getAbout })(AboutEdit);

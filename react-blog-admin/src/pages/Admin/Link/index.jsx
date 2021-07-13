@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Modal, notification, Table, Space, Button, Popconfirm, message } from 'antd';
 import { UserOutlined, DeleteOutlined, UserSwitchOutlined } from '@ant-design/icons';
+import { connect } from 'react-redux';
+import { getLinks } from '../../../redux/actions';
 import { db } from '../../../utils/cloudBase';
 import './index.css';
 
-const Link = () => {
+const Link = props => {
     // ——————————————————————————————渲染友链表格————————————————————————————
-    const [linkData, setLinkData] = useState([]);
-    const [isMounted, setIsMounted] = useState(true);
     const [tableLoading, setTableLoading] = useState(false);
     // 表头
     const columns = [
@@ -61,23 +61,16 @@ const Link = () => {
             ),
         },
     ];
-    // 获取所有友链数据，放入state
+    // 获取所有友链数据，放入redux
     const getLinksData = () => {
         setTableLoading(true);
         db.collection('links')
             .get()
             .then(res => {
-                setLinkData(res.data);
+                props.getLinks(res.data);
                 setTableLoading(false);
             });
     };
-    // 组件挂载，获得所有友链
-    useEffect(() => {
-        isMounted && getLinksData();
-        return () => {
-            setIsMounted(false);
-        };
-    }, [isMounted]);
     // ——————————————————————————————渲染友链表格end————————————————————————————
 
     // ————————————————————————————添加/编辑友链对话框————————————————————————————
@@ -93,7 +86,6 @@ const Link = () => {
     const showAddLink = () => {
         setAddLinkVisible(true);
     };
-
     // 对话框确认
     const addLinkOK = () => {
         if (!name || !link || !avatar || !descr) {
@@ -174,19 +166,16 @@ const Link = () => {
             });
     };
     // 点击编辑友链，获取该友链信息
-    const editLink = id => {
-        setId(id);
+    const editLink = ID => {
+        setId(ID);
         setIsEdit(true);
         setAddLinkVisible(true);
-        db.collection('links')
-            .doc(id)
-            .get()
-            .then(res => {
-                setName(res.data[0].name);
-                setLink(res.data[0].link);
-                setAvatar(res.data[0].avatar);
-                setDescr(res.data[0].descr);
-            });
+        const linkObj = props.links.filter(item => item._id === ID)[0];
+        const { name, link, avatar, descr } = linkObj;
+        setName(name);
+        setLink(link);
+        setAvatar(avatar);
+        setDescr(descr);
     };
     // 删除友链
     const deleteLink = id => {
@@ -278,7 +267,7 @@ const Link = () => {
                     size: ['small'],
                 }}
                 columns={columns}
-                dataSource={linkData}
+                dataSource={props.links}
                 rowKey={columns => columns._id}
                 showSorterTooltip={false}
             />
@@ -286,4 +275,4 @@ const Link = () => {
     );
 };
 
-export default Link;
+export default connect(state => ({ links: state.links }), { getLinks })(Link);

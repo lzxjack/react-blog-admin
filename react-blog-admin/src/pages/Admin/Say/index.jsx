@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { connect } from 'react-redux';
 import { Modal, notification, Table, Space, Button, Popconfirm, message, Popover } from 'antd';
 import { FormOutlined, MessageOutlined, DeleteOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { db } from '../../../utils/cloudBase';
+import { getSays } from '../../../redux/actions';
 import {
     emojiPeople,
     emojiNature,
@@ -12,10 +14,8 @@ import {
 } from '../../../utils/constant';
 import './index.css';
 
-const Say = () => {
+const Say = props => {
     // ————————————————————渲染说说表格————————————————————
-    const [says, setSays] = useState([]);
-    const [isMounted, setIsMounted] = useState(true);
     const [tableLoading, setTableLoading] = useState(false);
     // 表头
     const columns = [
@@ -65,17 +65,10 @@ const Say = () => {
         db.collection('says')
             .get()
             .then(res => {
-                setSays(res.data);
+                props.getSays(res.data);
                 setTableLoading(false);
             });
     };
-    // 组件挂载，获得所有说说
-    useEffect(() => {
-        isMounted && getAllSays();
-        return () => {
-            setIsMounted(false);
-        };
-    }, [isMounted]);
     // ————————————————————渲染说说表格end————————————————————
 
     // ————————————————————————————添加/编辑说说对话框————————————————————————————
@@ -162,22 +155,19 @@ const Say = () => {
             });
     };
     // 点击编辑，根据ID获得说说详情
-    const editSay = id => {
-        setId(id);
+    const editSay = ID => {
+        setId(ID);
         setIsEdit(true);
         setAddSayVisible(true);
-        db.collection('says')
-            .doc(id)
-            .get()
-            .then(res => {
-                setContent(res.data[0].content);
-                setDate(res.data[0].date);
-            });
+        const sayObj = props.says.filter(item => item._id === ID)[0];
+        const { content, date } = sayObj;
+        setContent(content);
+        setDate(date);
     };
     // 删除说说
-    const deleteSay = id => {
+    const deleteSay = ID => {
         db.collection('says')
-            .doc(id)
+            .doc(ID)
             .remove()
             .then(() => {
                 getAllSays();
@@ -275,7 +265,7 @@ const Say = () => {
                     size: ['small'],
                 }}
                 columns={columns}
-                dataSource={says}
+                dataSource={props.says}
                 rowKey={columns => columns._id}
                 showSorterTooltip={false}
             />
@@ -283,4 +273,4 @@ const Say = () => {
     );
 };
 
-export default Say;
+export default connect(state => ({ says: state.says }), { getSays })(Say);

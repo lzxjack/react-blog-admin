@@ -5,7 +5,7 @@ import { DeleteOutlined, RedoOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import { db, _ } from '../../../utils/cloudBase';
 import { isContained } from '../../../functions';
-import { getClasses } from '../../../redux/actions';
+import { getClasses, getArticles } from '../../../redux/actions';
 import './index.css';
 
 const { Option } = Select;
@@ -21,11 +21,11 @@ const Article = props => {
         const keyWords = searchWords.current.value;
         // 如果输入框内容为空，则展示所有文章
         if (!keyWords) {
-            setArticlesShow(articles);
+            setArticlesShow(props.articles);
             return;
         }
         // 过滤出搜索到的文章
-        const newArticlesShow = articles.filter(item => item.title.indexOf(keyWords) !== -1);
+        const newArticlesShow = props.articles.filter(item => item.title.indexOf(keyWords) !== -1);
         // 将搜索到的文章，放入要显示的state
         setArticlesShow(newArticlesShow);
     };
@@ -34,10 +34,10 @@ const Article = props => {
         searchWords.current.value = '';
         setSearchTag([]);
         if (!classesName) {
-            setArticlesShow(articles);
+            setArticlesShow(props.articles);
             return;
         }
-        const newArticlesShow = articles.filter(item => item.classes === classesName);
+        const newArticlesShow = props.articles.filter(item => item.classes === classesName);
         setArticlesShow(newArticlesShow);
     };
     // 通过选择标签搜索
@@ -45,15 +45,14 @@ const Article = props => {
         searchWords.current.value = '';
         setSearchClass(null);
         if (tagsArr.length === 0) {
-            setArticlesShow(articles);
+            setArticlesShow(props.articles);
             return;
         }
-        const articlesLen = articles.length;
+        const articlesLen = props.articles.length;
         const articlesByTag = [];
         for (let i = 0; i < articlesLen; i++) {
-            // console.log(isContained(articles[i].tags, tagsArr));
-            if (isContained(articles[i].tags, tagsArr)) {
-                articlesByTag.push(articles[i]);
+            if (isContained(props.articles[i].tags, tagsArr)) {
+                articlesByTag.push(props.articles[i]);
             }
         }
         setArticlesShow(articlesByTag);
@@ -63,19 +62,14 @@ const Article = props => {
         searchWords.current.value = '';
         setSearchClass(null);
         setSearchTag([]);
-        setArticlesShow(articles);
+        setArticlesShow(props.articles);
     };
     // ————————————————————搜索框end————————————————————————
 
     // ——————————————————————渲染文章表格——————————————————————
-    // 标识组件是否挂载的state
-    const [isMounted, setIsMounted] = useState(true);
-    // 是否正在加载的state
-    const [isLoading, setIsLoading] = useState(false);
     // 需要展示文章的state
     const [articlesShow, setArticlesShow] = useState([]);
-    // 存放所有文章的state
-    const [articles, setArticles] = useState([]);
+    const [tableLoading, setTableLoading] = useState(false);
     // 表头
     const columns = [
         {
@@ -157,26 +151,21 @@ const Article = props => {
             ),
         },
     ];
-    // 获取最新所有文章，并放入state
+    // 获取最新所有文章，并放入redux
     const getNewArticles = () => {
-        setIsLoading(true);
+        setTableLoading(true);
         db.collection('articles')
             .get()
             .then(res => {
-                // 用作展示的state
-                setArticlesShow(res.data);
-                // 存放所有文章的state
-                setArticles(res.data);
-                setIsLoading(false);
+                props.getArticles(res.data);
+                setTableLoading(false);
             });
     };
-    // 组件挂载完毕，获得所有文章
+    // redux中文章数据更新，当前页面的state更新
     useEffect(() => {
-        isMounted && getNewArticles();
-        return () => {
-            setIsMounted(false);
-        };
-    }, [isMounted]);
+        // 用作展示的state
+        setArticlesShow(props.articles);
+    }, [props.articles]);
     // ————————————————————渲染文章表格end——————————————————————————
 
     // ——————————————————————对文章的操作——————————————————————
@@ -285,7 +274,7 @@ const Article = props => {
                 size="middle"
                 className="Table"
                 bordered
-                loading={isLoading}
+                loading={tableLoading}
                 pagination={{
                     position: ['bottomCenter'],
                     defaultPageSize: 11,
@@ -306,6 +295,7 @@ export default connect(
     state => ({
         tags: state.tags,
         classes: state.classes,
+        articles: state.articles,
     }),
-    { getClasses }
+    { getClasses, getArticles }
 )(Article);

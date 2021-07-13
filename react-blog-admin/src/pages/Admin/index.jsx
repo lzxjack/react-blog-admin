@@ -2,7 +2,19 @@ import { useEffect, useState } from 'react';
 import Nav from '../../components/Nav';
 import Content from '../../components/Content';
 import { connect } from 'react-redux';
-import { getClasses, getTags, getPoem, getArticles } from '../../redux/actions';
+import {
+    getClasses,
+    getTags,
+    getPoem,
+    getArticles,
+    getDrafts,
+    getGalleries,
+    getSays,
+    getLinks,
+    getShows,
+    getAbout,
+    getLogs,
+} from '../../redux/actions';
 import { db } from '../../utils/cloudBase';
 import moment from 'moment';
 import './index.css';
@@ -10,31 +22,6 @@ import './index.css';
 const Admin = props => {
     const [isMounted, setIsMounted] = useState(true);
 
-    // 获取最新所有文章
-    const getNewArticles = () => {
-        db.collection('articles')
-            .get()
-            .then(res => {
-                props.getArticles(res.data);
-            });
-    };
-    // 向数据库获取所有标签
-    const getAllTags = () => {
-        db.collection('tags')
-            .get()
-            .then(res => {
-                props.getTags(res.data);
-            });
-    };
-    // 向数据库获取所有分类
-    const getAllClasses = () => {
-        db.collection('classes')
-            .get()
-            .then(res => {
-                // console.log(res.data);
-                props.getClasses(res.data);
-            });
-    };
     // 获得每日诗句信息
     const getDailyPoem = () => {
         require('jinrishici').load(res => {
@@ -47,13 +34,72 @@ const Admin = props => {
             props.getPoem(obj);
         });
     };
+    // 向数据库获取各类数据
+    const getDataFromDB = dbName => {
+        db.collection(dbName)
+            .get()
+            .then(res => {
+                switch (dbName) {
+                    case 'articles': {
+                        props.getArticles(res.data);
+                        break;
+                    }
+                    case 'drafts': {
+                        props.getDrafts(res.data);
+                        break;
+                    }
+                    case 'classes': {
+                        props.getClasses(res.data);
+                        break;
+                    }
+                    case 'tags': {
+                        props.getTags(res.data);
+                        break;
+                    }
+                    case 'about': {
+                        props.getAbout(res.data);
+                        break;
+                    }
+                    case 'galleries': {
+                        props.getGalleries(res.data);
+                        break;
+                    }
+                    case 'links': {
+                        props.getLinks(res.data);
+                        break;
+                    }
+                    case 'logs': {
+                        props.getLogs(res.data);
+                        break;
+                    }
+                    case 'says': {
+                        props.getSays(res.data);
+                        break;
+                    }
+                    case 'shows': {
+                        props.getShows(res.data);
+                        break;
+                    }
+                    default:
+                        break;
+                }
+            });
+    };
+
     // 组件挂载，获取一次所有标签和分类
     useEffect(() => {
         if (isMounted) {
-            getAllTags();
-            getAllClasses();
-            getNewArticles();
             getDailyPoem();
+            getDataFromDB('articles');
+            getDataFromDB('drafts');
+            getDataFromDB('classes');
+            getDataFromDB('tags');
+            getDataFromDB('about');
+            getDataFromDB('galleries');
+            getDataFromDB('links');
+            getDataFromDB('logs');
+            getDataFromDB('says');
+            getDataFromDB('shows');
         }
         return () => {
             setIsMounted(false);
@@ -74,5 +120,12 @@ export default connect(() => ({}), {
     getClasses,
     getTags,
     getArticles,
+    getDrafts,
     getPoem,
+    getGalleries,
+    getSays,
+    getLinks,
+    getShows,
+    getAbout,
+    getLogs,
 })(Admin);

@@ -1,24 +1,7 @@
-import { useState, useEffect } from 'react';
-import { db } from '../../../utils/cloudBase';
+import { connect } from 'react-redux';
 import './index.css';
 
 const Gallery = props => {
-    const [galleries, setGalleries] = useState([]);
-    const [isMounted, setIsMounted] = useState(true);
-    const getAllGalleries = () => {
-        db.collection('galleries')
-            .get()
-            .then(res => {
-                setGalleries(res.data);
-            });
-    };
-    useEffect(() => {
-        isMounted && getAllGalleries();
-        return () => {
-            setIsMounted(false);
-        };
-    }, [isMounted]);
-
     const editGallery = id => {
         props.history.push(`/admin/addGallery?id=${id}`);
     };
@@ -37,7 +20,7 @@ const Gallery = props => {
             </div>
             <div className="galleryBox">
                 <ul className="galleryUl">
-                    {galleries.map(item => (
+                    {props.galleries.map(item => (
                         <li
                             key={item._id}
                             style={{ backgroundImage: `url(${item.cover})` }}
@@ -58,4 +41,4 @@ const Gallery = props => {
     );
 };
 
-export default Gallery;
+export default connect(state => ({ galleries: state.galleries }), {})(Gallery);

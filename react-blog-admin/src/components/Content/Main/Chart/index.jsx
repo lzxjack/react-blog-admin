@@ -42,13 +42,23 @@ const Chart = props => {
         for (let i = 0; i < len; i++) {
             articleHadClass += classes[i].count;
         }
-        // 未分类的文章
-        // 类名为“未分类”，数量=文章总数-有分类的文章的数目
-        const articleNoClass = { className: '未分类', count: props.articlesNum - articleHadClass };
-        // 未分类的文章追加到数组中
-        const articlesData = [...classes, articleNoClass];
-        setClassData(articlesData);
-    }, [props.classes, props.articlesNum]);
+        // articlesNoClassNum为未分类的文章数目：文章总数-有分类的文章的数目
+        const articlesNoClassNum = props.articles.length - articleHadClass;
+        if (articlesNoClassNum !== 0) {
+            // 有未分类的文章
+            // 类名为“未分类”
+            const articleNoClass = {
+                className: '未分类',
+                count: articlesNoClassNum,
+            };
+            // 未分类的文章追加到数组中
+            const articlesData = [...classes, articleNoClass];
+            setClassData(articlesData);
+        } else {
+            // 没有未分类的文章
+            setClassData(classes);
+        }
+    }, [props.classes, props.articles]);
 
     return (
         <div className="ChartBox">
@@ -61,7 +71,7 @@ const Chart = props => {
 export default connect(
     state => ({
         classes: state.classes,
-        articlesNum: state.articlesNum,
+        articles: state.articles,
     }),
     {}
 )(Chart);
