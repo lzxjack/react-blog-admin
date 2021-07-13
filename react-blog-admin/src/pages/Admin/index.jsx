@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Nav from '../../components/Nav';
 import Content from '../../components/Content';
 import { connect } from 'react-redux';
-import { getClasses, getTags, getPoem } from '../../redux/actions';
+import { getClasses, getTags, getPoem, getArticles } from '../../redux/actions';
 import { db } from '../../utils/cloudBase';
 import moment from 'moment';
 import './index.css';
@@ -11,13 +11,13 @@ const Admin = props => {
     const [isMounted, setIsMounted] = useState(true);
 
     // 获取最新所有文章
-    // const getNewArticles = () => {
-    //     db.collection('articles')
-    //         .get()
-    //         .then(res => {
-    //             props.getArticles(res.data);
-    //         });
-    // };
+    const getNewArticles = () => {
+        db.collection('articles')
+            .get()
+            .then(res => {
+                props.getArticles(res.data);
+            });
+    };
     // 向数据库获取所有标签
     const getAllTags = () => {
         db.collection('tags')
@@ -52,7 +52,7 @@ const Admin = props => {
         if (isMounted) {
             getAllTags();
             getAllClasses();
-            // getNewArticles();
+            getNewArticles();
             getDailyPoem();
         }
         return () => {
@@ -73,6 +73,6 @@ const Admin = props => {
 export default connect(() => ({}), {
     getClasses,
     getTags,
-    // getArticles,
+    getArticles,
     getPoem,
 })(Admin);

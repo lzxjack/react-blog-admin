@@ -55,18 +55,9 @@ const MyTag = props => {
     // 添加标签
     const addTag = async () => {
         // 判断是否存在
-        let isExist = true;
-        await db
-            .collection('tags')
-            .where({
-                tag: _.eq(tagInput),
-            })
-            .get()
-            .then(res => {
-                isExist = res.data.length ? true : false;
-            });
+        const sameTagName = props.tags.filter(item => item.tag === tagInput);
         // 如果标签存在，直接返回
-        if (isExist) {
+        if (sameTagName.length !== 0) {
             message.warning('该标签已存在！');
             return;
         }
