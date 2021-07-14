@@ -1,21 +1,26 @@
 /* ———————————————————————————上方标题盒子——————————————————————————— */
 .titleBox {
     height: 58px;
-    background-color: #a6aeb4;
+    background-color: #b9dfff;
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    /*  */
 }
 
 /* 标题输入框 */
 .inputTitle,
 .inputEng {
-    height: 36px;
+    height: 40px;
     padding: 0 20px;
     font-size: 22px;
-    font-weight: 700;
+    /* font-weight: 700; */
     background-color: #fff;
+    transition: all 0.3s;
+}
+.inputTitle:hover,
+.inputEng:hover,
+.timeInput:hover {
+    box-shadow: 0 0 8px #1890ff;
 }
 
 .inputTitle {
@@ -30,50 +35,49 @@
 /* 草稿、发布按钮 */
 .draftBtn,
 .pubBtn {
-    height: 36px;
-    width: 80px;
+    margin-right: 10px;
+    height: 40px;
+    width: 86px;
+    background-color: #1890ff;
     display: flex;
     justify-content: center;
     align-items: center;
-
     font-size: 16px;
     user-select: none;
-    font-weight: 700;
-    margin-right: 10px;
-    background-color: #63e95f;
     transition: all 0.2s;
+    color: #fff;
 }
 
 .draftBtn:hover,
 .pubBtn:hover {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
-    background-color: rgb(40, 81, 216);
-    color: #fff;
+    background-color: #40a9ff;
+    box-shadow: 0 0 4px #1890ff;
 }
 
 /* ———————————————————————————标签、分类大盒子———————————————————————————— */
 .tagClassBox {
     /* position: relative; */
     height: 44px;
-    background-color: #a6aeb4;
+    background-color: #b9dfff;
     display: flex;
     justify-content: space-between;
     padding: 0 10px;
+    user-select: none;
 }
 .classBox,
 .tagBox,
 .timeBox {
-    /* position: absolute; */
-    /* top: 0px; */
     font-weight: 700;
     font-size: 16px;
 }
+
 .timeInput {
     padding: 0 20px;
     height: 32px;
     background-color: #fff;
     width: 300px;
     font-size: 18px;
+    transition: all 0.3s;
 }
 
 /* ———————————————————————————编辑区大盒子——————————————————————————— */
@@ -95,7 +99,7 @@
 }
 
 .inputRegion {
-    background-color: #ddd;
+    background-color: #d4f7ff;
     outline: none;
     overflow-y: hidden;
     border: none;

@@ -331,7 +331,6 @@ const AddArticle = props => {
                         showSearch
                         allowClear
                         style={{ width: '330px' }}
-                        placeholder="请选择文章分类"
                         value={selectClasses}
                         onChange={value => setSelectClasses(value ? value : '')}
                     >
@@ -349,7 +348,6 @@ const AddArticle = props => {
                         showArrow
                         allowClear
                         style={{ width: '740px' }}
-                        placeholder="请选择文章标签"
                         value={selectTags}
                         onChange={value => setSelectTags(value)}
                     >
