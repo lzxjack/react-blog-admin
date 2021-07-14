@@ -104,7 +104,7 @@ const Log = props => {
             return;
         }
         if (logContent.length === 0) {
-            message.info('请说点啥再添加！');
+            message.info('请写点啥再添加！');
             return;
         }
         if (isEdit) {

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { useState, useEffect } from 'react';
-import { Select, Popconfirm, notification } from 'antd';
+import { Select, Popconfirm, notification, message } from 'antd';
 import { CarryOutOutlined, FileDoneOutlined } from '@ant-design/icons';
 import qs from 'qs';
 import marked from 'marked';
@@ -232,6 +232,14 @@ const AddArticle = props => {
     };
     // 存为草稿 按钮1
     const turnDraft = () => {
+        if (!title) {
+            message.info('请输入文章标题！');
+            return;
+        }
+        if (!titleEng) {
+            message.info('请输入英文标题！');
+            return;
+        }
         if (!isEdit) {
             // 新建文章按钮进来的
             addToDB('drafts');
@@ -251,6 +259,14 @@ const AddArticle = props => {
     };
     // 发布文章 按钮2
     const turnArticle = () => {
+        if (!title) {
+            message.info('请输入文章标题！');
+            return;
+        }
+        if (!titleEng) {
+            message.info('请输入英文标题！');
+            return;
+        }
         if (!isEdit) {
             // 新建文章按钮进来的
             addToDB('articles');

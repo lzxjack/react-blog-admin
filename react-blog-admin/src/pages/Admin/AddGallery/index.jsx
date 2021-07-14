@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { notification, Popconfirm } from 'antd';
+import { notification, Popconfirm, message } from 'antd';
 import { CameraOutlined, CopyOutlined, DeleteOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import { getGalleries } from '../../../redux/actions';
@@ -27,7 +27,6 @@ const AddGallery = props => {
             setPics(pics);
         }
     }, [props]);
-
     // 向数据库获取最新相册信息
     const getNewGalleries = () => {
         db.collection('galleries')
@@ -36,7 +35,6 @@ const AddGallery = props => {
                 props.getGalleries(res.data);
             });
     };
-
     // 更新/添加相册之后的操作
     const afterGalleryChange = isEdit => {
         const message = isEdit ? '更新相册成功' : '添加相册成功';
@@ -53,9 +51,24 @@ const AddGallery = props => {
             duration: 1.5,
         });
     };
-
     // 添加相册
     const addGallery = () => {
+        if (!title) {
+            message.info('请输入相册标题！');
+            return;
+        }
+        if (!descr) {
+            message.info('请输入相册描述！');
+            return;
+        }
+        if (!cover) {
+            message.info('请输入相册封面！');
+            return;
+        }
+        if (pics.length === 0) {
+            message.info('请添加照片！');
+            return;
+        }
         db.collection('galleries')
             .add({
                 title,
@@ -71,6 +84,22 @@ const AddGallery = props => {
     // 更新相册
     const updateGallery = () => {
         if (props.location.search === '') return;
+        if (!title) {
+            message.info('请输入相册标题！');
+            return;
+        }
+        if (!descr) {
+            message.info('请输入相册描述！');
+            return;
+        }
+        if (!cover) {
+            message.info('请输入相册封面！');
+            return;
+        }
+        if (pics.length === 0) {
+            message.info('请添加照片！');
+            return;
+        }
         db.collection('galleries')
             .doc(id)
             .update({
