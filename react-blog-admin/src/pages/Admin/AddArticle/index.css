@@ -91,7 +91,8 @@
 .showRegion {
     /* footer60 Header54 margin-top20 titleBox tagClassBox */
     min-height: calc(100vh - 60px - 54px - 20px - 58px - 44px);
-    flex: 1;
+    /* flex: 1; */
+    width: 50%;
     background-color: #fff;
     padding: 30px;
     font-size: 18px;
@@ -138,6 +139,7 @@
     display: block;
     max-width: 100%;
     margin: 14px auto;
+    border-radius: 12px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
 }
 

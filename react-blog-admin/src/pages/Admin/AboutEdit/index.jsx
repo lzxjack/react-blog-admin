@@ -29,7 +29,7 @@ const AboutEdit = props => {
         const { content, _id: ID } = aboutObj;
         setId(ID);
         setContent(content);
-    }, [isJudged, isMe]);
+    }, [isJudged, isMe, props.about]);
     // 配制marked和highlight
     useEffect(() => {
         // 配置highlight

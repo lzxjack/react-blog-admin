@@ -147,7 +147,7 @@ const AddArticle = props => {
                 tags: selectTags,
                 classes: selectClasses,
                 date: new Date(date).getTime(),
-                url: `https://lzxjack.top/${titleEng}`,
+                url: `https://lzxjack.top/article/${titleEng}.html`,
             })
             .then(() => {
                 getArticlesOrDrafts(dbName);
@@ -185,7 +185,7 @@ const AddArticle = props => {
                 tags: selectTags,
                 classes: selectClasses,
                 date: new Date(date).getTime(),
-                url: `https://lzxjack.top/${titleEng}`,
+                url: `https://lzxjack.top/article/${titleEng}.html`,
             })
             .then(() => {
                 getArticlesOrDrafts(dbName);

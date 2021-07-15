@@ -1,0 +1,1 @@
+cd F:\my-blog\react-blog-admin\build&&tcb hosting deploy -e blog-5gk8ag1mcc84bf9b

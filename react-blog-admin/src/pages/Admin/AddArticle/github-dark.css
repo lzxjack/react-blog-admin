@@ -6,6 +6,21 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
 }
 
+/* 设置滚动条的样式 */
+#hljs::-webkit-scrollbar {
+    height: 12px;
+}
+/* 滚动槽 */
+#hljs::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0);
+}
+/* 滚动条滑块 */
+#hljs::-webkit-scrollbar-thumb {
+    background: #383838;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
 code {
     font-family: 'FiraCode';
 }

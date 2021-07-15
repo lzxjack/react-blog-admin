@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { FormOutlined } from '@ant-design/icons';
-import { db } from '../../../utils/cloudBase';
 import { connect } from 'react-redux';
 import marked from 'marked';
 import hljs from 'highlight.js';
