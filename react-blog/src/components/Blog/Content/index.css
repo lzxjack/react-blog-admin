@@ -1,0 +1,10 @@
+.Content-box {
+    min-height: calc(100vh - 50px - 60px);
+}
+
+.content-center {
+    height: 100%;
+    width: 1300px;
+    margin: auto;
+    background-color: rgb(189, 101, 101);
+}

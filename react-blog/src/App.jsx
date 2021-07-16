@@ -17,7 +17,6 @@ import {
 } from './redux/actions';
 import Loading from './components/Loading';
 import Blog from './components/Blog';
-import './App.css';
 
 const App = props => {
     // 匿名登录函数
@@ -106,7 +105,6 @@ const App = props => {
         getDataFromDB('shows');
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.loginState]);
-
     return <>{props.loginState ? <Blog /> : <Loading />}</>;
 };
 

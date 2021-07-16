@@ -1,0 +1,11 @@
+nav {
+    height: 50px;
+    background-color: rgb(192, 192, 192);
+}
+
+.nav-content {
+    width: 1300px;
+    height: 100%;
+    background-color: rgb(244, 247, 108);
+    margin: auto;
+}

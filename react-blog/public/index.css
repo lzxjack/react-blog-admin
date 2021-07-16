@@ -19,10 +19,6 @@ body,
     padding: 0;
 }
 
-body {
-    min-width: 1600px;
-}
-
 body::-webkit-scrollbar {
     display: none;
 }
