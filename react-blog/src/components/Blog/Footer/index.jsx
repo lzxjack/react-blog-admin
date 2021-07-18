@@ -10,6 +10,7 @@ const Footer = () => {
                     href="https://beian.miit.gov.cn/#/Integrated/index"
                     target="_blank"
                     rel="noreferrer"
+                    className="icp"
                 >
                     浙ICP备2020043821号-1
                 </a>

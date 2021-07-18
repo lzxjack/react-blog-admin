@@ -106,6 +106,7 @@ const App = props => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.loginState]);
     return <>{props.loginState ? <Blog /> : <Loading />}</>;
+    // return <>{false ? <Blog /> : <Loading />}</>;
 };
 
 export default connect(state => ({ loginState: state.loginState }), {

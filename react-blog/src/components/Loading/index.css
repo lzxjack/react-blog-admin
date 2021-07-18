@@ -1,6 +1,6 @@
 .Loading-box {
     height: 100%;
-    background-color: rgb(38, 220, 226);
+    background-color: #000;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -23,12 +23,12 @@
 }
 
 .half-circle-spinner .circle.circle-1 {
-    border-top-color: #d21dff;
+    border-top-color: #232324;
     animation: half-circle-spinner-animation 1s infinite;
 }
 
 .half-circle-spinner .circle.circle-2 {
-    border-bottom-color: #ff1d5e;
+    border-bottom-color: rgb(180, 180, 0);
     animation: half-circle-spinner-animation 1s infinite alternate;
 }
 

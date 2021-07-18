@@ -13,9 +13,6 @@ export const GET_ARTICLES = 'getArticles';
 // drafts
 export const GET_DRAFTS = 'getDrafts';
 
-// 获得文章数目
-export const GET_ARTICLES_NUM = 'getArticlesNum';
-
 // 获得每日诗句
 export const GET_POEM = 'getPoem';
 

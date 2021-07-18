@@ -50,3 +50,40 @@ a:focus {
     font-weight: normal;
     font-style: normal;
 }
+
+@font-face {
+    font-family: 'yu100';
+    src: url(./yu100.ttf);
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'yu400';
+    src: url(./yu400.ttf);
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* -------- */
+
+@font-face {
+    font-family: 'NSC';
+    src: url(./NotoSansCJK-DemiLight-4.otf);
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'STH';
+    src: url(./STHeiti-Light-3.ttc);
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'car';
+    src: url(./car.ttf);
+    font-weight: normal;
+    font-style: normal;
+}

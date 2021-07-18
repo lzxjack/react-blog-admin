@@ -1,7 +1,6 @@
 import {
     GET_ARTICLES,
     GET_CLASSES,
-    GET_ARTICLES_NUM,
     LOGIN,
     GET_POEM,
     GET_TAGS,
@@ -41,12 +40,6 @@ export const getClasses = data => ({
 // 获得所有标签
 export const getTags = data => ({
     type: GET_TAGS,
-    data,
-});
-
-// 获得文章数量
-export const getArticlesNum = data => ({
-    type: GET_ARTICLES_NUM,
     data,
 });
 

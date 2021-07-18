@@ -6,7 +6,6 @@ import classes from './classes';
 import articles from './articles';
 import drafts from './drafts';
 import poem from './poem';
-import articlesNum from './articlesNum';
 
 import galleries from './galleries';
 import links from './links';
@@ -21,7 +20,6 @@ export default combineReducers({
     classes,
     articles,
     poem,
-    articlesNum,
     drafts,
     galleries,
     links,
