@@ -11,7 +11,9 @@ import Say from '../../../pages/Say';
 import Show from '../../../pages/Show';
 import BlogCard from './BlogCard';
 import BlogData from './BlogData';
+import ContactCard from './ContactCard';
 import ClockCard from './ClockCard';
+
 import './index.css';
 
 const Content = () => {
@@ -40,6 +42,7 @@ const Content = () => {
                     {/* 侧边栏 */}
                     <div className="content-aside">
                         <BlogCard />
+                        <ContactCard />
                         <BlogData />
                         <ClockCard />
                     </div>
