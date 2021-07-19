@@ -1,0 +1,12 @@
+.SiteCard-box {
+    background-color: #232324;
+    margin: 20px;
+    border-radius: 20px;
+    transition: all 0.2s;
+    height: 220px;
+}
+
+.SiteCard-box:hover {
+    box-shadow: 4px 4px 14px rgba(0, 0, 0, 0.6);
+    transform: scale(1.04);
+}

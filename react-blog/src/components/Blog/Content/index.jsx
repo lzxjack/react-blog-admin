@@ -14,6 +14,7 @@ import BlogData from './BlogData';
 import ContactCard from './ContactCard';
 import ClockCard from './ClockCard';
 import TagCard from './TagCard';
+import SiteCard from './SiteCard';
 
 import './index.css';
 
@@ -47,6 +48,7 @@ const Content = () => {
                         <BlogData />
                         <ClockCard />
                         <TagCard />
+                        <SiteCard />
                     </div>
                 </div>
             </div>
