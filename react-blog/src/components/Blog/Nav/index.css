@@ -25,7 +25,8 @@ nav {
     cursor: default;
 }
 .nav-btn,
-.home-btn {
+.home-btn,
+.admin-btn {
     height: 36px;
     width: 70px;
     display: flex;
@@ -38,7 +39,8 @@ nav {
     transition: all 0.2s;
 }
 .nav-btn:hover,
-.home-btn:hover {
+.home-btn:hover,
+.admin-btn:hover {
     box-shadow: 0 0 10px rgba(180, 180, 0, 0.8);
     background-color: rgb(180, 180, 0);
     color: rgb(88, 88, 88);
@@ -50,10 +52,19 @@ nav {
 
 .home-btn {
     position: absolute;
-    font-size: 28px;
     top: 50%;
     left: 10px;
     transform: translate(0, -50%);
     font-size: 26px;
     width: 60px;
+}
+
+.admin-btn {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translate(0, -50%);
+    font-size: 26px;
+    width: 60px;
+    cursor: default;
 }

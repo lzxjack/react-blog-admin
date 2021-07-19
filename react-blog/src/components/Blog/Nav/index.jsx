@@ -1,6 +1,5 @@
-// import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
-import { HomeOutlined } from '@ant-design/icons';
+import { HomeOutlined, SettingOutlined } from '@ant-design/icons';
 import './index.css';
 
 const Nav = () => {
@@ -12,6 +11,15 @@ const Nav = () => {
                         <HomeOutlined />
                     </div>
                 </NavLink>
+                <a
+                    className="admin-btn"
+                    href="https://blog-5gk8ag1mcc84bf9b-1304393382.tcloudbaseapp.com"
+                    target="_blank"
+                    rel="noreferrer"
+                >
+                    <SettingOutlined />
+                </a>
+
                 <NavLink className="navlink" to="/article">
                     <div className="nav-btn">文章</div>
                 </NavLink>
