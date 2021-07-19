@@ -1,5 +1,6 @@
 .NavBox {
     position: fixed;
+    z-index: 999;
     top: 0;
     width: 160px;
     height: 100%;

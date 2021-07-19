@@ -3,14 +3,6 @@ div {
     margin: 0;
 }
 
-/* li {
-    list-style: none;
-} */
-
-/* body::-webkit-scrollbar {
-    display: none;
-} */
-
 html,
 body,
 #root {
@@ -20,12 +12,12 @@ body,
 }
 
 body {
-    min-width: 1600px;
+    min-width: 1920px;
 }
 
-body::-webkit-scrollbar {
+/* body::-webkit-scrollbar {
     display: none;
-}
+} */
 
 input {
     background: none;
