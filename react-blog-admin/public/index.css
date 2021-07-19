@@ -13,6 +13,7 @@ body,
 
 body {
     min-width: 1920px;
+    overflow-y: overlay;
 }
 
 /* body::-webkit-scrollbar {

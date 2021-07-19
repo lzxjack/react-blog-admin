@@ -84,7 +84,7 @@
 /* 多行输入框 */
 .galleryTextValue {
     flex: 1;
-    min-height: 530px;
+    min-height: 500px;
     outline: none;
     border: 1px solid #ccc;
     font-size: 16px;
