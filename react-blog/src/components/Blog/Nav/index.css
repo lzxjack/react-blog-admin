@@ -27,7 +27,7 @@ nav {
 .nav-btn,
 .home-btn,
 .admin-btn {
-    height: 36px;
+    height: 44px;
     width: 70px;
     display: flex;
     justify-content: center;
@@ -41,7 +41,7 @@ nav {
 .nav-btn:hover,
 .home-btn:hover,
 .admin-btn:hover {
-    box-shadow: 0 0 10px rgba(180, 180, 0, 0.8);
+    /* box-shadow: 0 0 10px rgba(180, 180, 0, 0.8); */
     background-color: rgb(180, 180, 0);
     color: rgb(88, 88, 88);
 }
