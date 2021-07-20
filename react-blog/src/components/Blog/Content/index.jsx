@@ -1,4 +1,4 @@
-// import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import About from '../../../pages/About';
 import Article from '../../../pages/Article';
@@ -19,6 +19,18 @@ import SiteCard from './SiteCard';
 import './index.css';
 
 const Content = () => {
+    const [isFixed, setIsFixed] = useState(false);
+    // const aside = document.getElementsByClassName('content-aside');
+    useEffect(() => {
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset >= 720) {
+                setIsFixed(true);
+                console.log(111);
+            } else {
+                setIsFixed(false);
+            }
+        });
+    });
     return (
         <>
             <div className="nav-bottm"></div>
@@ -42,7 +54,7 @@ const Content = () => {
                         </Switch>
                     </div>
                     {/* 侧边栏 */}
-                    <div className="content-aside">
+                    <div className={isFixed ? 'content-aside aside-fixed' : 'content-aside'}>
                         <BlogCard />
                         <SocialCard />
                         <BlogData />
