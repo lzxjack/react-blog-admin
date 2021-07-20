@@ -33,3 +33,6 @@ export const GET_LOGS = 'getLogs';
 
 // 访问计数
 export const GET_SITE_COUNT = 'getSiteCount';
+
+// 获得当前页码
+export const GET_CUR_PAGE = 'getCurPage';

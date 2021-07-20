@@ -20,12 +20,10 @@ import './index.css';
 
 const Content = () => {
     const [isFixed, setIsFixed] = useState(false);
-    // const aside = document.getElementsByClassName('content-aside');
     useEffect(() => {
         window.addEventListener('scroll', () => {
             if (window.pageYOffset >= 720) {
                 setIsFixed(true);
-                console.log(111);
             } else {
                 setIsFixed(false);
             }

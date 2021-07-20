@@ -14,6 +14,7 @@ import shows from './shows';
 import about from './about';
 
 import siteCount from './siteCount';
+import curPage from './curPage';
 
 export default combineReducers({
     loginState,
@@ -28,4 +29,5 @@ export default combineReducers({
     shows,
     about,
     siteCount,
+    curPage,
 });

@@ -8,3 +8,6 @@ export const count_id = '28ee4e3e60f676622c0451460e4cc29f';
 
 // 博客运行起始日
 export const time = '2020-12-16 14:00:00';
+
+// 首页每页显示多少篇文章
+export const pageSize = 10;
