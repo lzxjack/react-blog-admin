@@ -3,7 +3,7 @@ import CsdnIcon from './CsdnIcon';
 import { Popover } from 'antd';
 import './index.css';
 
-const ContactCard = () => {
+const SocialCard = () => {
     const weChat = (
         <img
             src="https://jack-img.oss-cn-hangzhou.aliyuncs.com/img/20210719213208.jpg"
@@ -19,7 +19,7 @@ const ContactCard = () => {
         />
     );
     return (
-        <div className="ContactCard-box">
+        <div className="SocialCard-box">
             <a
                 className="social-btn"
                 href="https://github.com/lzxjack"
@@ -57,4 +57,4 @@ const ContactCard = () => {
     );
 };
 
-export default ContactCard;
+export default SocialCard;

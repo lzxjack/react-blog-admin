@@ -26,7 +26,8 @@ nav {
 }
 .nav-btn,
 .home-btn,
-.admin-btn {
+.admin-btn,
+.dark-btn {
     height: 44px;
     width: 70px;
     display: flex;
@@ -40,7 +41,8 @@ nav {
 }
 .nav-btn:hover,
 .home-btn:hover,
-.admin-btn:hover {
+.admin-btn:hover,
+.dark-btn:hover {
     /* box-shadow: 0 0 10px rgba(180, 180, 0, 0.8); */
     background-color: rgb(180, 180, 0);
     color: rgb(88, 88, 88);
@@ -53,7 +55,7 @@ nav {
 .home-btn {
     position: absolute;
     top: 50%;
-    left: 10px;
+    left: 0;
     transform: translate(0, -50%);
     font-size: 26px;
     width: 60px;
@@ -62,9 +64,30 @@ nav {
 .admin-btn {
     position: absolute;
     top: 50%;
-    right: 10px;
+    right: 0;
     transform: translate(0, -50%);
     font-size: 26px;
     width: 60px;
     cursor: default;
+}
+
+.dark-btn {
+    position: absolute;
+    top: 50%;
+    right: 70px;
+    transform: translate(0, -50%);
+    width: 60px;
+}
+
+.dark-icon {
+    width: 32px;
+    height: 32px;
+}
+
+.dark-icon path {
+    fill: #fff;
+    transition: all 0.2s;
+}
+.dark-btn:hover .dark-icon path {
+    fill: rgb(88, 88, 88);
 }

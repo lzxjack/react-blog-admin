@@ -13,6 +13,8 @@ import says from './says';
 import shows from './shows';
 import about from './about';
 
+import siteCount from './siteCount';
+
 export default combineReducers({
     loginState,
     tags,
@@ -25,4 +27,5 @@ export default combineReducers({
     says,
     shows,
     about,
+    siteCount,
 });

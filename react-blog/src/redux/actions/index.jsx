@@ -10,6 +10,7 @@ import {
     GET_SHOWS,
     GET_ABOUT,
     GET_LOGS,
+    GET_SITE_COUNT,
 } from '../constant';
 
 // 登录
@@ -64,5 +65,9 @@ export const getAbout = data => ({
 });
 export const getLogs = data => ({
     type: GET_LOGS,
+    data,
+});
+export const getSiteCount = data => ({
+    type: GET_SITE_COUNT,
     data,
 });

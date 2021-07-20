@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { HomeOutlined, SettingOutlined } from '@ant-design/icons';
+import DarkBtn from './DarkBtn';
 import './index.css';
 
 const Nav = () => {
@@ -11,6 +12,9 @@ const Nav = () => {
                         <HomeOutlined />
                     </div>
                 </NavLink>
+                <div className="dark-btn">
+                    <DarkBtn />
+                </div>
                 <a
                     className="admin-btn"
                     href="https://blog-5gk8ag1mcc84bf9b-1304393382.tcloudbaseapp.com"

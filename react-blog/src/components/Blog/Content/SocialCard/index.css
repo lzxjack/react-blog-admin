@@ -1,4 +1,4 @@
-.ContactCard-box {
+.SocialCard-box {
     height: 80px;
     background-color: #232324;
     margin: 20px;
@@ -10,7 +10,7 @@
     align-items: center;
 }
 
-.ContactCard-box:hover {
+.SocialCard-box:hover {
     box-shadow: 4px 4px 14px rgba(0, 0, 0, 0.6);
     transform: scale(1.04);
 }

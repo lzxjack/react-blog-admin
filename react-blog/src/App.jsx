@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { db, auth } from './utils/cloudBase';
+import { db, auth, _ } from './utils/cloudBase';
 import moment from 'moment';
 import { login } from './redux/actions';
 import {
@@ -14,7 +14,9 @@ import {
     getShows,
     getAbout,
     getLogs,
+    getSiteCount,
 } from './redux/actions';
+import { count_id } from './utils/constant';
 import Loading from './components/Loading';
 import Blog from './components/Blog';
 
@@ -28,7 +30,13 @@ const App = props => {
     };
     // 匿名登录
     useEffect(() => {
-        anonymousLogin();
+        // 检验是否已经匿名登录
+        if (auth.hasLoginState()) {
+            props.login(true);
+        } else {
+            // 未登录，执行登录流程
+            anonymousLogin();
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     // 每日诗句
@@ -90,9 +98,25 @@ const App = props => {
                 }
             });
     };
+    const getSiteCountFromDB = () => {
+        db.collection('siteCount')
+            .doc(count_id)
+            .update({
+                count: _.inc(1),
+            })
+            .then(() => {
+                db.collection('siteCount')
+                    .doc(count_id)
+                    .get()
+                    .then(res => {
+                        props.getSiteCount(res.data[0].count);
+                    });
+            });
+    };
     // 获取各类数据
     useEffect(() => {
         if (!props.loginState) return;
+        getSiteCountFromDB();
         getDailyPoem();
         getDataFromDB('articles');
         getDataFromDB('classes');
@@ -121,4 +145,5 @@ export default connect(state => ({ loginState: state.loginState }), {
     getShows,
     getAbout,
     getLogs,
+    getSiteCount,
 })(App);

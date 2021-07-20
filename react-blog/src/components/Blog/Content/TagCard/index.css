@@ -4,7 +4,7 @@
     border-radius: 20px;
     transition: all 0.2s;
     user-select: none;
-    padding: 8px;
+    padding: 12px;
 }
 
 .TagCard-box:hover {

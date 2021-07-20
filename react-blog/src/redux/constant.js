@@ -30,3 +30,6 @@ export const GET_ABOUT = 'getAbout';
 
 // LOG
 export const GET_LOGS = 'getLogs';
+
+// 访问计数
+export const GET_SITE_COUNT = 'getSiteCount';
