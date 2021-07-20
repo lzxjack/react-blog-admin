@@ -3,26 +3,7 @@
 }
 
 .content-center {
-    position: relative;
     min-height: calc(100vh - 60px - 100px);
     width: 1300px;
     margin: auto;
-    display: flex;
-}
-
-.content-main {
-    width: 1000px;
-    /* flex: 1; */
-    min-height: calc(100vh - 60px - 100px);
-}
-
-.content-aside {
-    width: 300px;
-    color: #fff;
-}
-
-.aside-fixed {
-    position: fixed;
-    top: -660px;
-    right: calc((100vw - 1300px) / 2);
 }

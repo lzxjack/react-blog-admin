@@ -24,7 +24,7 @@ const Nav = () => {
                     <SettingOutlined />
                 </a>
 
-                <NavLink className="navlink" to="/article">
+                <NavLink className="navlink" to="/articles">
                     <div className="nav-btn">文章</div>
                 </NavLink>
                 <NavLink className="navlink" to="/gallery">

@@ -1,16 +1,24 @@
 // import { useState, useEffect } from 'react';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { pageSize } from '../../../utils/constant';
 import './index.css';
 
 const ArtList = props => {
+    const showOneArticle = title => {
+        props.history.push(`/article?title=${title}`);
+    };
     return (
         <>
             {props.articles
                 .slice((props.curPage - 1) * pageSize, props.curPage * pageSize)
                 .map(item => (
-                    <div className="article-item" key={item._id}>
+                    <div
+                        className="article-item"
+                        key={item._id}
+                        onClick={() => showOneArticle(item.titleEng)}
+                    >
                         <div className="article-item-title">{item.title}</div>
                         <p className="article-item-abstract">{item.content}</p>
                         <div className="article-item-info">
@@ -31,10 +39,12 @@ const ArtList = props => {
     );
 };
 
-export default connect(
-    state => ({
-        articles: state.articles,
-        curPage: state.curPage,
-    }),
-    {}
-)(ArtList);
+export default withRouter(
+    connect(
+        state => ({
+            articles: state.articles,
+            curPage: state.curPage,
+        }),
+        {}
+    )(ArtList)
+);

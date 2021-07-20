@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+// import { useState, useEffect } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import About from '../../../pages/About';
+import Articles from '../../../pages/Articles';
 import Article from '../../../pages/Article';
 import Gallery from '../../../pages/Gallery';
 import Home from '../../../pages/Home';
@@ -9,26 +10,10 @@ import Log from '../../../pages/Log';
 import Msg from '../../../pages/Msg';
 import Say from '../../../pages/Say';
 import Show from '../../../pages/Show';
-import BlogCard from './BlogCard';
-import BlogData from './BlogData';
-import SocialCard from './SocialCard';
-import ClockCard from './ClockCard';
-import TagCard from './TagCard';
-import SiteCard from './SiteCard';
 
 import './index.css';
 
 const Content = () => {
-    const [isFixed, setIsFixed] = useState(false);
-    useEffect(() => {
-        window.addEventListener('scroll', () => {
-            if (window.pageYOffset >= 720) {
-                setIsFixed(true);
-            } else {
-                setIsFixed(false);
-            }
-        });
-    });
     return (
         <>
             <div className="nav-bottm"></div>
@@ -36,30 +21,19 @@ const Content = () => {
             <div className="Content-box">
                 {/* 通栏 */}
                 <div className="content-center">
-                    {/* 主要内容区 */}
-                    <div className="content-main">
-                        <Switch>
-                            <Route path="/home" component={Home} />
-                            <Route path="/article" component={Article} />
-                            <Route path="/gallery" component={Gallery} />
-                            <Route path="/say" component={Say} />
-                            <Route path="/msg" component={Msg} />
-                            <Route path="/link" component={Link} />
-                            <Route path="/show" component={Show} />
-                            <Route path="/about" component={About} />
-                            <Route path="/log" component={Log} />
-                            <Redirect to="/home" />
-                        </Switch>
-                    </div>
-                    {/* 侧边栏 */}
-                    <div className={isFixed ? 'content-aside aside-fixed' : 'content-aside'}>
-                        <BlogCard />
-                        <SocialCard />
-                        <BlogData />
-                        <ClockCard />
-                        <TagCard />
-                        <SiteCard />
-                    </div>
+                    <Switch>
+                        <Route path="/home" component={Home} />
+                        <Route path="/articles" component={Articles} />
+                        <Route path="/article" component={Article} />
+                        <Route path="/gallery" component={Gallery} />
+                        <Route path="/say" component={Say} />
+                        <Route path="/msg" component={Msg} />
+                        <Route path="/link" component={Link} />
+                        <Route path="/show" component={Show} />
+                        <Route path="/about" component={About} />
+                        <Route path="/log" component={Log} />
+                        <Redirect to="/home" />
+                    </Switch>
                 </div>
             </div>
         </>
