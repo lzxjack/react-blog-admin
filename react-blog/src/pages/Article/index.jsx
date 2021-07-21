@@ -1,13 +1,87 @@
+import { useState, useEffect } from 'react';
+import useScript from '../../hooks/useScript';
+import { twikooUrl, twikooConfigUrl } from '../../utils/constant';
+import { connect } from 'react-redux';
+import qs from 'qs';
+import marked from 'marked';
+import hljs from 'highlight.js';
+import moment from 'moment';
+import './github-dark.css';
 import './index.css';
 
-const Article = () => (
-    <div className="Article-box">
-        <div className="standard-page-title">12312</div>
-        <div className="standard-page-body">
-            <div className="standard-page-box">Article</div>
-            <div className="standard-aside-box">Article</div>
-        </div>
-    </div>
-);
+const Article = props => {
+    useScript(twikooUrl, twikooConfigUrl);
+    // 配置highlight
+    hljs.configure({
+        tabReplace: '',
+        classPrefix: 'hljs-',
+        languages: ['CSS', 'HTML', 'JavaScript', 'Python', 'TypeScript', 'Markdown'],
+    });
+    // 配置marked
+    marked.setOptions({
+        renderer: new marked.Renderer(),
+        highlight: code => hljs.highlightAuto(code).value,
+        gfm: true, //默认为true。 允许 Git Hub标准的markdown.
+        tables: true, //默认为true。 允许支持表格语法。该选项要求 gfm 为true。
+        breaks: true, //默认为false。 允许回车换行。该选项要求 gfm 为true。
+    });
 
-export default Article;
+    const [classes, setClasses] = useState('');
+    const [date, setDate] = useState(0);
+    const [tags, setTags] = useState([]);
+    const [title, setTitle] = useState('');
+    const [content, setContent] = useState('');
+    useEffect(() => {
+        const param = qs.parse(props.location.search.slice(1)).title;
+        const theArticle = props.articles.filter(item => item.titleEng === param)[0];
+        if (theArticle) {
+            const { date, tags, title, content, classes } = theArticle;
+            setTitle(title);
+            setClasses(classes);
+            setDate(date);
+            setContent(content);
+            setTags(tags);
+        }
+    }, [props]);
+    return (
+        <div className="Article-box">
+            <div className="standard-page-title">
+                <span className="article-title">{title}</span>
+                <div className="wow bounceInDown" data-wow-duration="0.8s">
+                    <div className="article-info-box">
+                        <span className="article-class">{classes}</span>
+                        <span className="article-date">
+                            {moment(date).format('YYYY-MM-DD HH:mm:ss')}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div className="standard-page-body">
+                <div className="wow bounceInLeft" data-wow-duration="0.8s">
+                    <div className="standard-page-box">
+                        <div
+                            className="standard-page-main-content markdownStyle"
+                            dangerouslySetInnerHTML={{
+                                __html: marked(content).replace(/<pre>/g, "<pre id='hljs'>"),
+                            }}
+                        ></div>
+                        <div className="standard-page-copyright"></div>
+                        <div className="standard-page-tags"></div>
+                        <div className="standard-page-comments">
+                            <div id="tcomment"></div>
+                        </div>
+                    </div>
+                </div>
+                <div className="standard-aside-box">Article</div>
+            </div>
+        </div>
+    );
+};
+
+export default connect(
+    state => ({
+        articles: state.articles,
+    }),
+    {}
+)(Article);
