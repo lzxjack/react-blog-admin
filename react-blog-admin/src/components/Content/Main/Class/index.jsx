@@ -3,7 +3,7 @@ import { List, Modal, message, Popconfirm } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import { getClasses, getArticles } from '../../../../redux/actions';
-import { db, _ } from '../../../../utils/cloudBase';
+import { db } from '../../../../utils/cloudBase';
 import './index.css';
 
 const Class = props => {
@@ -33,10 +33,9 @@ const Class = props => {
     // 添加分类
     const addClass = async () => {
         // 判断是否存在
-        // 在redux中找出与输入的class同名的class
         const sameClassName = props.classes.filter(item => item.class === classInput);
         // 如果分类存在，直接返回
-        if (sameClassName.length !== 0) {
+        if (sameClassName.length) {
             message.warning('该分类已存在！');
             return;
         }
@@ -102,18 +101,9 @@ const Class = props => {
     // 对话框确认：编辑分类
     const editClass = async () => {
         // 判断是否存在
-        let isExist = true;
-        await db
-            .collection('classes')
-            .where({
-                class: _.eq(classEditInput),
-            })
-            .get()
-            .then(res => {
-                isExist = res.data.length ? true : false;
-            });
+        const sameClassName = props.classes.filter(item => item.class === classEditInput);
         // 如果分类存在，直接返回
-        if (isExist) {
+        if (sameClassName.length) {
             message.warning('该分类已存在！');
             return;
         }

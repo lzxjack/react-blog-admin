@@ -57,7 +57,7 @@ const MyTag = props => {
         // 判断是否存在
         const sameTagName = props.tags.filter(item => item.tag === tagInput);
         // 如果标签存在，直接返回
-        if (sameTagName.length !== 0) {
+        if (sameTagName.length) {
             message.warning('该标签已存在！');
             return;
         }
@@ -126,18 +126,9 @@ const MyTag = props => {
     // 对话框确认：编辑标签
     const editTag = async () => {
         // 判断是否存在
-        let isExist = true;
-        await db
-            .collection('tags')
-            .where({
-                tag: _.eq(tagEditInput),
-            })
-            .get()
-            .then(res => {
-                isExist = res.data.length ? true : false;
-            });
+        const sameTagName = props.tags.filter(item => item.tag === tagEditInput);
         // 如果标签存在，直接返回
-        if (isExist) {
+        if (sameTagName.length) {
             message.warning('该标签已存在！');
             return;
         }

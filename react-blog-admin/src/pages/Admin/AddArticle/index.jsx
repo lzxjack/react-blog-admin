@@ -164,7 +164,10 @@ const AddArticle = props => {
     };
     // 从文章数据库/草稿数据库删除，参数：数据库名、文章id
     const removeFromDB = dbName => {
-        db.collection(dbName).doc(id).remove();
+        db.collection(dbName)
+            .doc(id)
+            .remove()
+            .then(() => getArticlesOrDrafts(dbName));
     };
     // 从文章数据库/草稿数据库更新，参数：数据库名、文章id
     const updateFromDB = dbName => {
@@ -240,6 +243,15 @@ const AddArticle = props => {
             message.info('请输入英文标题！');
             return;
         }
+        // 判断英文标题是否存在
+        const sameEngInDrafts = props.drafts
+            .filter(item => item.titleEng === titleEng)
+            .filter(item => item._id !== id);
+        // 如果分类存在，直接返回
+        if (sameEngInDrafts.length) {
+            message.warning('英文标题已存在！');
+            return;
+        }
         if (!isEdit) {
             // 新建文章按钮进来的
             addToDB('drafts');
@@ -265,6 +277,15 @@ const AddArticle = props => {
         }
         if (!titleEng) {
             message.info('请输入英文标题！');
+            return;
+        }
+        // 判断英文标题是否存在
+        const sameEngInArticles = props.articles
+            .filter(item => item.titleEng === titleEng)
+            .filter(item => item._id !== id);
+        // 如果分类存在，直接返回
+        if (sameEngInArticles.length) {
+            message.warning('英文标题已存在！');
             return;
         }
         if (!isEdit) {
