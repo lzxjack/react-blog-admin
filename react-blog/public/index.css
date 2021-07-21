@@ -90,3 +90,7 @@ a:focus {
 .wow {
     visibility: hidden;
 }
+
+html {
+    background-color: #000;
+}

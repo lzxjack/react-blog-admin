@@ -30,26 +30,28 @@ const ClockCard = () => {
     };
 
     return (
-        <div className="ClockCard-box wow bounceInRight" data-wow-duration="0.8s">
-            <div className="dial"></div>
-            <div className="zero"></div>
-            <div className="six"></div>
-            <div className="three"></div>
-            <div className="nine"></div>
-            <div className="container">
-                <div className="dot"></div>
-                <div
-                    className="point clockMinuteLine"
-                    style={{ transform: `rotateZ(${minute}deg)` }}
-                ></div>
-                <div
-                    className="point clockHourLine"
-                    style={{ transform: `rotateZ(${hour}deg)` }}
-                ></div>
-                <div
-                    className="point clockSecondLine"
-                    style={{ transform: `rotateZ(${second}deg)` }}
-                ></div>
+        <div className="wow bounceInRight" data-wow-duration="0.8s">
+            <div className="ClockCard-box">
+                <div className="dial"></div>
+                <div className="zero"></div>
+                <div className="six"></div>
+                <div className="three"></div>
+                <div className="nine"></div>
+                <div className="container">
+                    <div className="dot"></div>
+                    <div
+                        className="point clockMinuteLine"
+                        style={{ transform: `rotateZ(${minute}deg)` }}
+                    ></div>
+                    <div
+                        className="point clockHourLine"
+                        style={{ transform: `rotateZ(${hour}deg)` }}
+                    ></div>
+                    <div
+                        className="point clockSecondLine"
+                        style={{ transform: `rotateZ(${second}deg)` }}
+                    ></div>
+                </div>
             </div>
         </div>
     );

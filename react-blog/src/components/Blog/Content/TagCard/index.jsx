@@ -28,17 +28,19 @@ const TagCard = props => {
     // ];
     // const colorLen = tagColor.length;
     return (
-        <div className="TagCard-box wow bounceInRight" data-wow-duration="0.8s">
-            {props.tags.map((item, index) => (
-                <span
-                    className="theTag"
-                    // style={{ color: tagColor[(index + 1) % colorLen] }}
-                    // onDoubleClick={() => openEditModal(item._id, item.tag)}
-                    key={item._id}
-                >
-                    {item.tag}
-                </span>
-            ))}
+        <div className="wow bounceInRight" data-wow-duration="0.8s">
+            <div className="TagCard-box">
+                {props.tags.map((item, index) => (
+                    <span
+                        className="theTag"
+                        // style={{ color: tagColor[(index + 1) % colorLen] }}
+                        // onDoubleClick={() => openEditModal(item._id, item.tag)}
+                        key={item._id}
+                    >
+                        {item.tag}
+                    </span>
+                ))}
+            </div>
         </div>
     );
 };

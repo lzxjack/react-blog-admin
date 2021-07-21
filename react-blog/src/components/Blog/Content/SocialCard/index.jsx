@@ -19,40 +19,42 @@ const SocialCard = () => {
         />
     );
     return (
-        <div className="SocialCard-box wow bounceInRight" data-wow-duration="0.8s">
-            <a
-                className="social-btn"
-                href="https://github.com/lzxjack"
-                target="_blank"
-                rel="noreferrer"
-            >
-                <GithubOutlined />
-            </a>
-            <a
-                className="social-btn csdn-btn"
-                href="https://blog.csdn.net/Jack_lzx"
-                target="_blank"
-                rel="noreferrer"
-            >
-                <CsdnIcon />
-            </a>
-            <Popover
-                className="social-btn"
-                color="rgb(180, 180, 0)"
-                content={weChat}
-                overlayClassName="social-btn-card"
-            >
-                <WechatOutlined />
-            </Popover>
+        <div className="wow bounceInRight" data-wow-duration="0.8s">
+            <div className="SocialCard-box">
+                <a
+                    className="social-btn"
+                    href="https://github.com/lzxjack"
+                    target="_blank"
+                    rel="noreferrer"
+                >
+                    <GithubOutlined />
+                </a>
+                <a
+                    className="social-btn csdn-btn"
+                    href="https://blog.csdn.net/Jack_lzx"
+                    target="_blank"
+                    rel="noreferrer"
+                >
+                    <CsdnIcon />
+                </a>
+                <Popover
+                    className="social-btn"
+                    color="rgb(180, 180, 0)"
+                    content={weChat}
+                    overlayClassName="social-btn-card"
+                >
+                    <WechatOutlined />
+                </Popover>
 
-            <Popover
-                className="social-btn"
-                color="rgb(180, 180, 0)"
-                content={QQ}
-                overlayClassName="social-btn-card"
-            >
-                <QqOutlined />
-            </Popover>
+                <Popover
+                    className="social-btn"
+                    color="rgb(180, 180, 0)"
+                    content={QQ}
+                    overlayClassName="social-btn-card"
+                >
+                    <QqOutlined />
+                </Popover>
+            </div>
         </div>
     );
 };

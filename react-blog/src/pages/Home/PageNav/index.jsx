@@ -7,7 +7,7 @@ import './index.css';
 
 const PageNav = props => {
     return (
-        <div className="PageNav-box">
+        <div className="PageNav-box wow bounceInLeft" data-wow-duration="0.8s">
             <Pagination
                 current={props.curPage}
                 total={props.articleNum}
