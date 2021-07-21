@@ -22,7 +22,7 @@ const BlogCard = () => {
         setTimeText(timeText);
     }, []);
     return (
-        <div className="BlogCard-box">
+        <div className="BlogCard-box wow bounceInRight" data-wow-duration="0.8s">
             <p className="BlogCard-text">
                 {timeText}, <br />
                 我叫<span className="blogger-name">飞鸟</span>,<br />

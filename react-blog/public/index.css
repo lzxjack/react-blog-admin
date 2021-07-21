@@ -86,3 +86,7 @@ a:focus {
     font-weight: normal;
     font-style: normal;
 }
+
+.wow {
+    visibility: hidden;
+}

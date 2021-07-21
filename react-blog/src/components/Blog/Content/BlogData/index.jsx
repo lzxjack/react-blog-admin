@@ -3,7 +3,7 @@ import './index.css';
 
 const BlogData = props => {
     return (
-        <div className="BlogData-box">
+        <div className="BlogData-box wow bounceInRight" data-wow-duration="0.8s">
             <div className="blogData">
                 <div className="type-name">文章</div>
                 <div className="type-num">{props.articleNum}</div>

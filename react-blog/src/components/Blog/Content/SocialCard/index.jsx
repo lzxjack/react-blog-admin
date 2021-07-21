@@ -19,7 +19,7 @@ const SocialCard = () => {
         />
     );
     return (
-        <div className="SocialCard-box">
+        <div className="SocialCard-box wow bounceInRight" data-wow-duration="0.8s">
             <a
                 className="social-btn"
                 href="https://github.com/lzxjack"

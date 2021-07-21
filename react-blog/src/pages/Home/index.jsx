@@ -22,7 +22,7 @@ const Home = () => {
     // });
     return (
         <div className="Home-box">
-            <div className="home-main animated bounceInLeft">
+            <div className="home-main">
                 <ArtList />
                 <PageNav />
             </div>
@@ -32,7 +32,7 @@ const Home = () => {
                 //         ? 'animated bounceInRight home-aside aside-fixed'
                 //         : 'animated bounceInRight home-aside'
                 // }
-                className="home-aside animated bounceInRight"
+                className="home-aside"
             >
                 <BlogCard />
                 <SocialCard />

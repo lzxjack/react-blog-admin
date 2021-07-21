@@ -11,3 +11,9 @@ export const time = '2020-12-16 14:00:00';
 
 // 首页每页显示多少篇文章
 export const pageSize = 8;
+
+// wow.js
+export const wowUrl = 'https://jack-img.oss-cn-hangzhou.aliyuncs.com/js/wow.min.js';
+
+// wowConfig.js
+export const wowConfigUrl = 'https://jack-img.oss-cn-hangzhou.aliyuncs.com/js/wowConfig.js';

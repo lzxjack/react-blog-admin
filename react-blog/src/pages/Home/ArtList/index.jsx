@@ -14,23 +14,21 @@ const ArtList = props => {
             {props.articles
                 .slice((props.curPage - 1) * pageSize, props.curPage * pageSize)
                 .map(item => (
-                    <div
-                        className="article-item"
-                        key={item._id}
-                        onClick={() => showOneArticle(item.titleEng)}
-                    >
-                        <div className="article-item-title">{item.title}</div>
-                        <p className="article-item-abstract">{item.content}</p>
-                        <div className="article-item-info">
-                            <span className="article-item-date">
-                                {moment(item.date).format('YYYY-MM-DD')}
-                            </span>
-                            <div className="article-item-tags">
-                                {item.tags.map(tag => (
-                                    <span className="article-item-tag" key={tag}>
-                                        {tag}
-                                    </span>
-                                ))}
+                    <div key={item._id} className="wow bounceInLeft" data-wow-duration="0.8s">
+                        <div className="article-item" onClick={() => showOneArticle(item.titleEng)}>
+                            <div className="article-item-title">{item.title}</div>
+                            <p className="article-item-abstract">{item.content}</p>
+                            <div className="article-item-info">
+                                <span className="article-item-date">
+                                    {moment(item.date).format('YYYY-MM-DD')}
+                                </span>
+                                <div className="article-item-tags">
+                                    {item.tags.map(tag => (
+                                        <span className="article-item-tag" key={tag}>
+                                            {tag}
+                                        </span>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     </div>
