@@ -11,7 +11,7 @@ const SiteCard = props => {
         const startTime = new Date(time).getTime();
         const runTime = moment(nowTime).diff(moment(startTime), 'days');
         setRunTime(runTime);
-    });
+    }, []);
 
     return (
         <div className="SiteCard-box">

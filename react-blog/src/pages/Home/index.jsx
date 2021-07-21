@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+// import { useState, useEffect } from 'react';
 import ArtList from './ArtList';
 import PageNav from './PageNav';
 import BlogCard from '../../components/Blog/Content/BlogCard';
@@ -10,23 +10,30 @@ import SiteCard from '../../components/Blog/Content/SiteCard';
 import './index.css';
 
 const Home = () => {
-    const [isFixed, setIsFixed] = useState(false);
-    useEffect(() => {
-        window.addEventListener('scroll', () => {
-            if (window.pageYOffset >= 720) {
-                setIsFixed(true);
-            } else {
-                setIsFixed(false);
-            }
-        });
-    });
+    // const [isFixed, setIsFixed] = useState(false);
+    // useEffect(() => {
+    //     window.addEventListener('scroll', () => {
+    //         if (window.pageYOffset >= 720) {
+    //             setIsFixed(true);
+    //         } else {
+    //             setIsFixed(false);
+    //         }
+    //     });
+    // });
     return (
         <div className="Home-box">
-            <div className="home-main">
+            <div className="home-main animated bounceInLeft">
                 <ArtList />
                 <PageNav />
             </div>
-            <div className={isFixed ? 'home-aside aside-fixed' : 'home-aside'}>
+            <div
+                // className={
+                //     isFixed
+                //         ? 'animated bounceInRight home-aside aside-fixed'
+                //         : 'animated bounceInRight home-aside'
+                // }
+                className="home-aside animated bounceInRight"
+            >
                 <BlogCard />
                 <SocialCard />
                 <BlogData />
