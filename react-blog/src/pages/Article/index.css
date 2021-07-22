@@ -132,8 +132,17 @@
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
+    font-family: 'yu400';
 }
 
 .copyright-title {
-    font-size: 26px;
+    font-size: 24px;
+    margin-left: 40px;
+}
+
+.copyright-url,
+.copyright-text {
+    font-size: 16px;
+    margin-left: 40px;
+    margin-top: 4px;
 }
