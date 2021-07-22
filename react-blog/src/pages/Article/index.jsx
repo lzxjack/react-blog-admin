@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import useScript from '../../hooks/useScript';
 import { twikooUrl, twikooConfigUrl } from '../../utils/constant';
 import { connect } from 'react-redux';
+import { SwapLeftOutlined } from '@ant-design/icons';
 import qs from 'qs';
 import marked from 'marked';
 import hljs from 'highlight.js';
@@ -31,21 +32,30 @@ const Article = props => {
     const [tags, setTags] = useState([]);
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
+    const [url, setUrl] = useState('');
     useEffect(() => {
         const param = qs.parse(props.location.search.slice(1)).title;
         const theArticle = props.articles.filter(item => item.titleEng === param)[0];
         if (theArticle) {
-            const { date, tags, title, content, classes } = theArticle;
+            const { date, tags, title, content, classes, url } = theArticle;
             setTitle(title);
             setClasses(classes);
             setDate(date);
             setContent(content);
             setTags(tags);
+            setUrl(url);
         }
     }, [props]);
+
     return (
         <div className="Article-box">
             <div className="standard-page-title">
+                <div
+                    className="turn-back-btn animated bounceInDown"
+                    onClick={() => window.history.go(-1)}
+                >
+                    <SwapLeftOutlined />
+                </div>
                 <span className="article-title">{title}</span>
                 <div className="wow bounceInDown" data-wow-duration="0.8s">
                     <div className="article-info-box">
@@ -66,7 +76,14 @@ const Article = props => {
                                 __html: marked(content).replace(/<pre>/g, "<pre id='hljs'>"),
                             }}
                         ></div>
-                        <div className="standard-page-copyright"></div>
+                        <div className="standard-page-copyright">
+                            <span className="copyright-title">{title}</span>
+                            <span className="copyright-url">{url}</span>
+                            <span className="copyright-text">
+                                本博客所有文章除特别声明外，均采用<span>CC BY-NC-SA 4.0</span>
+                                许可协议。转载请注明来自<span>飞鸟</span>
+                            </span>
+                        </div>
                         <div className="standard-page-tags"></div>
                         <div className="standard-page-comments">
                             <div id="tcomment"></div>
