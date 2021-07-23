@@ -3,6 +3,8 @@ import useScript from '../../hooks/useScript';
 import { twikooUrl, twikooConfigUrl } from '../../utils/constant';
 import { connect } from 'react-redux';
 import { SwapLeftOutlined } from '@ant-design/icons';
+import CopyIcon from './CopyIcon';
+import CopyrightIcon from './CopyrightIcon';
 import qs from 'qs';
 import marked from 'marked';
 import hljs from 'highlight.js';
@@ -33,6 +35,8 @@ const Article = props => {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [url, setUrl] = useState('');
+
+    const [showCopyInfo, setShowCopyInfo] = useState(false);
     useEffect(() => {
         const param = qs.parse(props.location.search.slice(1)).title;
         const theArticle = props.articles.filter(item => item.titleEng === param)[0];
@@ -47,6 +51,11 @@ const Article = props => {
         }
     }, [props]);
 
+    const copy = () => {
+        var copycode = document.getElementById('copycode');
+        copycode.select(); // 选择对象
+        document.execCommand('Copy'); // 执行浏览器复制命令
+    };
     return (
         <div className="Article-box">
             <div className="standard-page-title">
@@ -77,12 +86,38 @@ const Article = props => {
                             }}
                         ></div>
                         <div className="standard-page-copyright">
-                            <span className="copyright-title">{title}</span>
-                            <span className="copyright-url">{url}</span>
-                            <span className="copyright-text">
-                                本博客所有文章除特别声明外，均采用<span>CC BY-NC-SA 4.0</span>
-                                许可协议。转载请注明来自<span>飞鸟</span>
-                            </span>
+                            <CopyrightIcon />
+                            <div className="standard-page-copyright-center">
+                                <div className="copyright-title">{title}</div>
+                                {/* <div className="copyright-url" id="copyright-url-text"> */}
+                                <div className="copyright-url" id="copyright-url-text">
+                                    {url}
+                                    <div className="copy-icon-btn" onClick={copy}>
+                                        <CopyIcon />
+                                    </div>
+                                </div>
+                                <div className="copyright-text">
+                                    本博客所有文章除特别声明外，均采用
+                                    <a
+                                        href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
+                                        target="_blank"
+                                        className="copyright-name"
+                                        rel="noreferrer"
+                                    >
+                                        CC BY-NC-SA 4.0
+                                    </a>
+                                    许可协议，转载请注明来自
+                                    <a
+                                        href="https://lzxjack.top/"
+                                        target="_blank"
+                                        className="copyright-name"
+                                        rel="noreferrer"
+                                    >
+                                        飞鸟
+                                    </a>
+                                    。
+                                </div>
+                            </div>
                         </div>
                         <div className="standard-page-tags"></div>
                         <div className="standard-page-comments">
@@ -92,6 +127,7 @@ const Article = props => {
                 </div>
                 <div className="standard-aside-box">Article</div>
             </div>
+            <div className="copyed-info">复制成功！</div>
         </div>
     );
 };
