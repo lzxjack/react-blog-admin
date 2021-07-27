@@ -1,0 +1,26 @@
+.twikoo {
+    height: 70px;
+}
+
+.tk-admin-container {
+    min-height: calc(100vh - 60px - 54px - 20px);
+}
+
+.tk-footer,
+.tk-comments-no,
+.tk-input.el-textarea,
+.tk-row.actions {
+    display: none !important;
+}
+
+.tk-icon {
+    font-size: 30px;
+}
+
+.el-input__inner {
+    font-size: 16px !important;
+}
+
+.tk-avatar.tk-has-avatar {
+    border-radius: 0 !important;
+}

@@ -1,0 +1,138 @@
+.ClassBox {
+    flex: 1;
+    height: 100%;
+    background-color: #fff;
+    margin-right: 20px;
+    position: relative;
+    transition: all 0.2s;
+}
+
+.ClassBox:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+.homeSingleBox {
+    font-size: 20px;
+    padding: 10px 0 0 10px;
+    user-select: none;
+}
+
+.classCreateBox {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    font-size: 16px;
+}
+
+.classCreateInput {
+    flex: 1;
+    margin: 0 10px 0 10px;
+    border: 1px solid #ccc;
+    height: 36px;
+    padding: 0 10px;
+    transition: all 0.3s;
+}
+
+.classCreateInput:hover {
+    box-shadow: 0 0 4px #1890ff;
+}
+.classCreateBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+    height: 36px;
+    width: 60px;
+    background-color: #1890ff;
+    user-select: none;
+    color: #fff;
+    transition: all 0.3s;
+}
+
+.classCreateBtn:hover {
+    background-color: #40a9ff;
+    box-shadow: 0 0 4px #1890ff;
+}
+
+.classesList {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 92px;
+    bottom: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+/* 设置滚动条的样式 */
+.classesList::-webkit-scrollbar {
+    width: 6px;
+}
+/* 滚动槽 */
+.classesList::-webkit-scrollbar-track {
+    /* -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.5); */
+    background-color: rgba(0, 0, 0, 0);
+}
+/* 滚动条滑块 */
+.classesList::-webkit-scrollbar-thumb {
+    background: #1890ff;
+}
+
+.classesItem {
+    position: relative;
+}
+
+.className {
+    margin-left: 30px;
+}
+
+.articlesNum {
+    position: absolute;
+    background-color: #1890ff;
+    color: #fff;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    font-size: 16px;
+    top: 50%;
+    transform: translate(0, -50%);
+    left: 14px;
+    user-select: none;
+}
+
+.classesEdit,
+.classesDelete {
+    position: absolute;
+    right: 16px;
+    transition: all 0.2s;
+    font-size: 18px;
+}
+
+.classesEdit {
+    right: 48px;
+}
+
+.classesEdit:hover {
+    color: #1890ff;
+}
+
+.classesDelete:hover {
+    color: red;
+}
+
+.editClassInput {
+    border: 1px solid #ccc;
+    width: 100%;
+    text-align: center;
+    height: 36px;
+    font-size: 16px;
+    padding: 0 10px;
+    transition: all 0.3s;
+}
+
+.editClassInput:hover {
+    box-shadow: 0 0 4px #1890ff;
+}

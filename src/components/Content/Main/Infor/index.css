@@ -1,0 +1,29 @@
+.InforBox {
+    position: relative;
+    background-color: #fff;
+    flex: 1;
+    user-select: none;
+    transition: all 0.2s;
+}
+
+.InforBox:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+.dateText,
+.ipText {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+.dateText {
+    top: 20px;
+    font-size: 36px;
+    font-weight: 700;
+}
+
+.ipText {
+    bottom: 20px;
+    font-size: 22px;
+}

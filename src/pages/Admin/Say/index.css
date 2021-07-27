@@ -1,0 +1,27 @@
+.sayInputBox {
+    height: 140px;
+}
+
+.sayInputText {
+    height: 120px;
+    width: 100%;
+    resize: none;
+    outline: none;
+    padding: 10px;
+    border: 1px solid #ccc;
+    transition: all 0.3s;
+    font-size: 16px;
+}
+
+.sayInputText:hover {
+    box-shadow: 0 0 10px #1890ff;
+}
+
+.emojiBtn {
+    margin-right: 8px;
+}
+
+.emojiContent {
+    width: 500px;
+    word-break: break-all;
+}

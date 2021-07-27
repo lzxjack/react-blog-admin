@@ -1,0 +1,60 @@
+/* ————————————————————————添加友链按钮———————————————————————— */
+.addLinkBtn {
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    transform: translate(0, -50%);
+    height: 40px;
+    width: 86px;
+    background-color: #1890ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    user-select: none;
+    transition: all 0.2s;
+    transition: all 0.3s;
+    user-select: none;
+    color: #fff;
+}
+.addLinkBtn:hover {
+    background-color: #40a9ff;
+    box-shadow: 0 0 4px #1890ff;
+}
+
+.linkInputBox {
+    height: 240px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.modalInputBox {
+    display: flex;
+    height: 40px;
+}
+.ant-modal-title {
+    font-size: 20px;
+    font-weight: 700;
+}
+.modalInputKey {
+    width: 64px;
+    height: 40px;
+    line-height: 40px;
+    text-align: right;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+/* 添加友链对话框的输入框 */
+.modalInputValue {
+    flex: 1;
+    border: 1px solid #ccc;
+    height: 40px;
+    font-size: 16px;
+    padding: 0 10px;
+    transition: all 0.3s;
+}
+.modalInputValue:hover {
+    box-shadow: 0 0 8px #1890ff;
+}

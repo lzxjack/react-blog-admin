@@ -1,0 +1,5 @@
+.ContentBox {
+    flex: 1;
+    width: calc(100vw - 160px);
+    background-color: #f0f2f5;
+}
