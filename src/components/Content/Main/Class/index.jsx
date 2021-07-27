@@ -32,6 +32,10 @@ const Class = props => {
     };
     // 添加分类
     const addClass = async () => {
+        if (!classInput.length) {
+            message.info('分类名不能为空！');
+            return;
+        }
         // 判断是否存在
         const sameClassName = props.classes.filter(item => item.class === classInput);
         // 如果分类存在，直接返回

@@ -54,6 +54,10 @@ const MyTag = props => {
     };
     // 添加标签
     const addTag = async () => {
+        if (!tagInput.length) {
+            message.info('标签名不能为空！');
+            return;
+        }
         // 判断是否存在
         const sameTagName = props.tags.filter(item => item.tag === tagInput);
         // 如果标签存在，直接返回

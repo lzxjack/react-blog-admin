@@ -76,7 +76,6 @@ const AboutEdit = props => {
             .doc(id)
             .update({
                 content,
-                isMe,
             })
             .then(() => {
                 getAboutData();
