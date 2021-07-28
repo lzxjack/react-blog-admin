@@ -58,6 +58,7 @@
     align-items: center;
     font-size: 20px;
     color: #fff;
+    transition: all 0.2s;
 }
 
 /* 邮箱输入框、密码输入框 */

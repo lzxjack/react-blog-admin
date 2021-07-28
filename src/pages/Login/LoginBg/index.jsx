@@ -5,9 +5,9 @@ const LoginBg = () => {
     useEffect(() => {
         // 可调参数
         const BACKGROUND_COLOR = 'rgb(0,43,54)'; // 背景颜色
-        const POINT_NUM = 60; // 星星数目
-        const POINT_COLOR = 'rgba(255,255,255)'; // 点的颜色
-        const LINE_LENGTH = 12000; // 点之间连线长度(的平方)
+        const POINT_NUM = 80; // 星星数目
+        const POINT_COLOR = 'rgb(255,255,255)'; // 点的颜色
+        const LINE_LENGTH = 10000; // 点之间连线长度(的平方)
 
         // 创建背景画布
         const cvs = document.createElement('canvas');
