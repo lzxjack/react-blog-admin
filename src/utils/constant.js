@@ -13,7 +13,7 @@ export const emojiSymbol =
     '◀️⬇️▶️⬅️🔠🔡🔤➡️⬆️⏬⏫🔽⤵️⤴️↩️↪️🔼🔃🔄⏪⏩ℹ️🆗🔀🔁🔂🆕🔝🆙🆒🆓🆖🎦🈁📶🈹🈴🈺🈯🈷️🈶🈵🈚🈸🈳🈲🈂️🚻🚹🚺🚼🚭🅿️♿🚇🛄🉑🚾🚰🚮㊙️㊗️Ⓜ️🛂🛅🛃🉐🆑🆘🆔🚫🔞📵🚯🚱🚳🚷🚸⛔✳️❇️✴️💟🆚📳📴💹💱♈♉♊♋♌♍♎♏♐♑♒♓⛎🔯❎🅰️🅱️🆎🅾️💠♻️🔚🔙🔛🔜🕐🕜🕙🕥🕚🕦🕛🕧🕑🕝🕒🕞🕓🕟🕔🕠🕕🕡🕖🕢🕗🕣🕘🕤💲❌❗⁉️⭕✖️➕➖➗💮💯✔️☑️🔘🔗➰🔱▪️▫️◾◽◼️◻️⬛⬜✅🔲🔳⚫⚪🔴🔵🔷🔶🔹🔸🔺🔻';
 
 // 评论模块和配置
-export const twikooUrl = 'https://jack-img.oss-cn-hangzhou.aliyuncs.com/js/twikoo.all.min.1.4.1.js';
-export const twikooConfigUrl = 'https://jack-img.oss-cn-hangzhou.aliyuncs.com/js/twikooConfig2.js';
+export const twikooUrl = 'https://cdn.jsdelivr.net/gh/lzxjack/cdn@1.0.0/js/twikoo.js';
+export const twikooConfigUrl = 'https://cdn.jsdelivr.net/gh/lzxjack/cdn@1.0.0/js/twikoo-config.js';
 
 export const avatarUrl = 'https://jack-img.oss-cn-hangzhou.aliyuncs.com/img/20201204121004.jpg';
