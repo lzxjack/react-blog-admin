@@ -129,7 +129,7 @@
 /* 行内代码 */
 .markdownStyle code {
     color: red;
-    background-color: #f9f2f4;
+    background-color: #eeeeee;
     padding: 0 4px;
 }
 
@@ -142,4 +142,18 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
 }
 
+.markdownStyle blockquote {
+    background-color: #dfdfdf;
+    padding: 14px 40px;
+    font-size: 18px;
+    border-radius: 20px;
+    border: 2px rgb(105, 105, 105) dashed;
+}
+.markdownStyle strong {
+    text-decoration: underline;
+}
+
+.markdownStyle blockquote p {
+    margin: 0;
+}
 /* ———————————————————————————————————————————————————————————— */
