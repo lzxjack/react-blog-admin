@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Popconfirm, Modal, message } from 'antd';
 import { connect } from 'react-redux';
 import { CloseOutlined } from '@ant-design/icons';
-import { getTags } from '../../../../redux/actions';
+import { getTags, getArticles, getDrafts } from '../../../../redux/actions';
 import { db, _ } from '../../../../utils/cloudBase';
 import './index.css';
 
@@ -46,6 +46,19 @@ const MyTag = props => {
                 props.getTags(res.data);
             });
     };
+    const getAllArticles = dbName => {
+        db.collection(dbName)
+            .get()
+            .then(res => {
+                if (dbName === 'articles') {
+                    props.getArticles(res.data);
+                    message.success('更新文章标签成功！');
+                } else {
+                    props.getDrafts(res.data);
+                    message.success('更新草稿标签成功！');
+                }
+            });
+    };
     // 清空ID、编辑输入框、旧标签名
     const clearAllState = () => {
         setTagEditInput('');
@@ -76,7 +89,7 @@ const MyTag = props => {
             });
     };
     const deleteTagFrom = (dbName, theTag) => {
-        const text = dbName === 'articles' ? '文章' : '草稿';
+        // const text = dbName === 'articles' ? '文章' : '草稿';
         db.collection(dbName)
             .where({
                 tags: _.all([theTag]),
@@ -85,7 +98,8 @@ const MyTag = props => {
                 tags: _.pull(theTag),
             })
             .then(() => {
-                message.success(`更新${text}标签成功！`);
+                // message.success(`更新${text}标签成功！`);
+                getAllArticles(dbName);
             });
     };
     // 删除标签
@@ -106,7 +120,7 @@ const MyTag = props => {
     const editTagFrom = async dbName => {
         // 修改该标签下所有文章的相应标签,分两步:
         // （1）在有该便签的所有文章下，添加修改后的标签
-        const text = dbName === 'articles' ? '文章' : '草稿';
+        // const text = dbName === 'articles' ? '文章' : '草稿';
         await db
             .collection(dbName)
             .where({
@@ -124,7 +138,8 @@ const MyTag = props => {
                 tags: _.pull(oldTag),
             })
             .then(() => {
-                message.success(`更新${text}分类成功！`);
+                // message.success(`更新${text}标签成功！`);
+                getAllArticles(dbName);
             });
     };
     // 对话框确认：编辑标签
@@ -234,5 +249,7 @@ export default connect(
     }),
     {
         getTags,
+        getArticles,
+        getDrafts,
     }
 )(MyTag);
