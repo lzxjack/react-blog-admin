@@ -33,3 +33,6 @@ export const GET_ABOUT = 'getAbout';
 
 // LOG
 export const GET_LOGS = 'getLogs';
+
+// 留言
+export const GET_MSGS = 'getMsgs';

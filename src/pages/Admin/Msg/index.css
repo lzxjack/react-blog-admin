@@ -24,3 +24,8 @@
 .tk-avatar.tk-has-avatar {
     border-radius: 0 !important;
 }
+
+.detail-link {
+    width: 100%;
+    height: 100%;
+}

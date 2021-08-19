@@ -14,6 +14,8 @@ import says from './says';
 import shows from './shows';
 import about from './about';
 
+import msgs from './msgs';
+
 export default combineReducers({
     loginState,
     tags,
@@ -27,4 +29,5 @@ export default combineReducers({
     says,
     shows,
     about,
+    msgs,
 });

@@ -11,6 +11,7 @@ import {
     GET_SHOWS,
     GET_ABOUT,
     GET_LOGS,
+    GET_MSGS,
 } from '../constant';
 
 // 登录
@@ -71,5 +72,10 @@ export const getAbout = data => ({
 });
 export const getLogs = data => ({
     type: GET_LOGS,
+    data,
+});
+
+export const getMsgs = data => ({
+    type: GET_MSGS,
     data,
 });

@@ -14,6 +14,7 @@ import {
     getShows,
     getAbout,
     getLogs,
+    getMsgs,
 } from '../../redux/actions';
 import { db } from '../../utils/cloudBase';
 import moment from 'moment';
@@ -80,6 +81,10 @@ const Admin = props => {
                         props.getShows(res.data);
                         break;
                     }
+                    case 'allComments': {
+                        props.getMsgs(res.data);
+                        break;
+                    }
                     default:
                         break;
                 }
@@ -100,6 +105,7 @@ const Admin = props => {
             getDataFromDB('logs');
             getDataFromDB('says');
             getDataFromDB('shows');
+            getDataFromDB('allComments');
         }
         return () => {
             setIsMounted(false);
@@ -128,4 +134,5 @@ export default connect(() => ({}), {
     getShows,
     getAbout,
     getLogs,
+    getMsgs,
 })(Admin);
