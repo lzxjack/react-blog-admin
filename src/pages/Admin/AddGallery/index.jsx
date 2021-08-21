@@ -43,7 +43,7 @@ const AddGallery = props => {
         ) : (
             <CameraOutlined style={{ color: 'blue' }} />
         );
-        props.history.replace('/admin/gallery');
+        props.history.push('/admin/gallery');
         notification.open({
             message,
             icon,
@@ -121,7 +121,7 @@ const AddGallery = props => {
             .remove()
             .then(() => {
                 getNewGalleries();
-                props.history.replace('/admin/gallery');
+                props.history.push('/admin/gallery');
                 notification.open({
                     message: '删除相册成功',
                     icon: <DeleteOutlined style={{ color: 'blue' }} />,
@@ -136,7 +136,7 @@ const AddGallery = props => {
                 <div
                     className="addGalleryBtn"
                     onClick={() => {
-                        props.history.replace('/admin/gallery');
+                        props.history.push('/admin/gallery');
                     }}
                 >
                     返回

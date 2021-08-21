@@ -209,7 +209,7 @@ const Article = props => {
     // 修改文章
     const editArticle = id => {
         // 跳转到添加文章页面，并传入该文章id
-        props.history.replace(`/admin/addArticle?id=${id}&isDraft=`);
+        props.history.push(`/admin/addArticle?id=${id}&isDraft=`);
     };
     // 添加文章：转到新建文章页面
     const turnAddPage = () => {

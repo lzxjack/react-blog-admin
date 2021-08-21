@@ -152,7 +152,7 @@ const AddArticle = props => {
             .then(() => {
                 getArticlesOrDrafts(dbName);
                 // 转到草稿页/文章页
-                props.history.replace(page);
+                props.history.push(page);
                 // 提示消息
                 notification.open({
                     message,
@@ -193,7 +193,7 @@ const AddArticle = props => {
             .then(() => {
                 getArticlesOrDrafts(dbName);
                 // 回到文章页/草稿页
-                props.history.replace(page);
+                props.history.push(page);
                 // 提示消息
                 notification.open({
                     message,

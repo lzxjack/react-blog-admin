@@ -58,7 +58,7 @@ const AboutEdit = props => {
     };
     // 返回到"关于"页面
     const turnToAbout = () => {
-        props.history.replace('/admin/about');
+        props.history.push('/admin/about');
     };
     // 更新
     const upDateAbout = () => {

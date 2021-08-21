@@ -108,8 +108,10 @@
 /* ——————————————————————————————显示区markdown样式—————————————————————————————— */
 /* 表格 */
 .markdownStyle table {
+    margin: 20px auto;
     border: 1px solid #000;
     border-spacing: 0; /*去掉单元格间隙*/
+    text-align: center;
 }
 .markdownStyle table th,
 .markdownStyle table td {
