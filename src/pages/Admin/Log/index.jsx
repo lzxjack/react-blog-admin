@@ -175,7 +175,7 @@ const Log = props => {
         setAddLogVisible(true);
         const logObj = props.logs.filter(item => item._id === ID)[0];
         const { date, logContent } = logObj;
-        setDate(moment(date).format('YYYY-MM-DD').replace(/ /g, ' '));
+        setDate(moment(date).format('YYYY-MM-DD'));
         setLogContent(logContent);
     };
     // 删除事件
