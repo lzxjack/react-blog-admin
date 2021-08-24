@@ -16,5 +16,4 @@ export const emojiSymbol =
 export const avatarUrl = 'https://jack-img.oss-cn-hangzhou.aliyuncs.com/img/20201204121004.jpg';
 
 // 博客地址
-export const blogUrl =
-    'https://blog-show-2gq15sqq499d9473-1304393382.ap-shanghai.app.tcloudbase.com';
+export const blogUrl = 'https://lzxjack.top';
