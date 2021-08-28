@@ -3,7 +3,8 @@ import { Popconfirm, Modal, message } from 'antd';
 import { connect } from 'react-redux';
 import { CloseOutlined } from '@ant-design/icons';
 import { getTags, getArticles, getDrafts } from '../../../../redux/actions';
-import { db, _ } from '../../../../utils/cloudBase';
+import { db, _, auth } from '../../../../utils/cloudBase';
+import { visitorText, adminUid } from '../../../../utils/constant';
 import './index.css';
 
 const MyTag = props => {
@@ -78,17 +79,29 @@ const MyTag = props => {
             message.warning('该标签已存在！');
             return;
         }
+        if (auth.currentUser.uid !== adminUid) {
+            message.warning(visitorText);
+            return;
+        }
         db.collection('tags')
             .add({
                 tag: tagInput,
             })
-            .then(() => {
+            .then(res => {
+                if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') {
+                    message.warning(visitorText);
+                    return;
+                }
                 setTagInput('');
                 message.success('添加标签成功！');
                 getAllTags();
             });
     };
     const deleteTagFrom = (dbName, theTag) => {
+        if (!tagInput.length) {
+            message.info('标签名不能为空！');
+            return;
+        }
         // const text = dbName === 'articles' ? '文章' : '草稿';
         db.collection(dbName)
             .where({
@@ -97,18 +110,26 @@ const MyTag = props => {
             .update({
                 tags: _.pull(theTag),
             })
-            .then(() => {
-                // message.success(`更新${text}标签成功！`);
+            .then(res => {
+                if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') return;
                 getAllArticles(dbName);
             });
     };
     // 删除标签
     const deleteTag = (id, theTag) => {
+        if (!tagInput.length) {
+            message.info('标签名不能为空！');
+            return;
+        }
         // 删除标签数据库中的标签
         db.collection('tags')
             .doc(id)
             .remove()
-            .then(() => {
+            .then(res => {
+                if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') {
+                    message.warning(visitorText);
+                    return;
+                }
                 message.success('删除标签成功！');
                 getAllTags();
             });
@@ -118,6 +139,10 @@ const MyTag = props => {
         deleteTagFrom('drafts', theTag);
     };
     const editTagFrom = async dbName => {
+        if (!tagInput.length) {
+            message.info('标签名不能为空！');
+            return;
+        }
         // 修改该标签下所有文章的相应标签,分两步:
         // （1）在有该便签的所有文章下，添加修改后的标签
         // const text = dbName === 'articles' ? '文章' : '草稿';
@@ -128,6 +153,9 @@ const MyTag = props => {
             })
             .update({
                 tags: _.addToSet(tagEditInput),
+            })
+            .then(res => {
+                if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') return;
             });
         // （2）在有该便签的所有文章下，删除该标签
         db.collection(dbName)
@@ -137,13 +165,18 @@ const MyTag = props => {
             .update({
                 tags: _.pull(oldTag),
             })
-            .then(() => {
+            .then(res => {
+                if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') return;
                 // message.success(`更新${text}标签成功！`);
                 getAllArticles(dbName);
             });
     };
     // 对话框确认：编辑标签
     const editTag = async () => {
+        if (!tagInput.length) {
+            message.info('标签名不能为空！');
+            return;
+        }
         // 判断是否存在
         const sameTagName = props.tags.filter(item => item.tag === tagEditInput);
         // 如果标签存在，直接返回
@@ -157,7 +190,11 @@ const MyTag = props => {
             .update({
                 tag: tagEditInput,
             })
-            .then(() => {
+            .then(res => {
+                if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') {
+                    message.warning(visitorText);
+                    return;
+                }
                 message.success('修改标签成功！');
                 setTagEditVisible(false);
                 getAllTags();

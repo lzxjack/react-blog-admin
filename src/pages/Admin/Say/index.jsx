@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Modal, notification, Table, Space, Button, Popconfirm, message, Popover } from 'antd';
 import { FormOutlined, MessageOutlined, DeleteOutlined } from '@ant-design/icons';
 import moment from 'moment';
-import { db } from '../../../utils/cloudBase';
+import { db, auth } from '../../../utils/cloudBase';
 import { getSays } from '../../../redux/actions';
 import {
     emojiPeople,
@@ -11,6 +11,8 @@ import {
     emojiObj,
     emojiPlace,
     emojiSymbol,
+    visitorText,
+    adminUid,
 } from '../../../utils/constant';
 import './index.css';
 
@@ -94,6 +96,10 @@ const Say = props => {
             message.info('请说点啥再发表！');
             return;
         }
+        if (auth.currentUser.uid !== adminUid) {
+            message.warning(visitorText);
+            return;
+        }
         if (isEdit) {
             // 更新说说
             updateSay();
@@ -136,7 +142,11 @@ const Say = props => {
                 content,
                 date: new Date().getTime(),
             })
-            .then(() => {
+            .then(res => {
+                if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') {
+                    message.warning(visitorText);
+                    return;
+                }
                 // 添加后的操作
                 afterSayChange(0);
             });
@@ -149,7 +159,11 @@ const Say = props => {
                 content,
                 date,
             })
-            .then(() => {
+            .then(res => {
+                if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') {
+                    message.warning(visitorText);
+                    return;
+                }
                 // 更新后的操作
                 afterSayChange(1);
             });
@@ -166,10 +180,18 @@ const Say = props => {
     };
     // 删除说说
     const deleteSay = ID => {
+        if (auth.currentUser.uid !== adminUid) {
+            message.warning(visitorText);
+            return;
+        }
         db.collection('says')
             .doc(ID)
             .remove()
-            .then(() => {
+            .then(res => {
+                if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') {
+                    message.warning(visitorText);
+                    return;
+                }
                 getAllSays();
                 notification.open({
                     message: '删除说说成功',

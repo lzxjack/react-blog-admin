@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { Table, Tag, Space, Button, Popconfirm, notification } from 'antd';
+import { message, Table, Tag, Space, Button, Popconfirm, notification } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import { getDrafts } from '../../../redux/actions';
 import moment from 'moment';
-import { db } from '../../../utils/cloudBase';
+import { db, auth } from '../../../utils/cloudBase';
+import { visitorText, adminUid } from '../../../utils/constant';
 
 const Draft = props => {
     // ——————————————————————渲染草稿表格——————————————————————
@@ -102,15 +103,27 @@ const Draft = props => {
     // ——————————————————————对草稿的操作——————————————————————
     // 编辑草稿
     const editDraft = id => {
+        if (auth.currentUser.uid !== adminUid) {
+            message.warning(visitorText);
+            return;
+        }
         // 跳转到添加文章页面，并传入该文章id
         props.history.push(`/admin/addArticle?id=${id}&isDraft=1`);
     };
     // 删除草稿
     const deleteDraft = id => {
+        if (auth.currentUser.uid !== adminUid) {
+            message.warning(visitorText);
+            return;
+        }
         db.collection('drafts')
             .doc(id)
             .remove()
-            .then(() => {
+            .then(res => {
+                if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') {
+                    message.warning(visitorText);
+                    return;
+                }
                 // 删除成功，提示消息
                 notification.open({
                     message: '删除成功',

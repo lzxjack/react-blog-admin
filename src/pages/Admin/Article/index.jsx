@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
-import { Table, Tag, Space, Button, Popconfirm, notification, Select } from 'antd';
+import { Table, Tag, Space, Button, Popconfirm, notification, Select, message } from 'antd';
 import { DeleteOutlined, RedoOutlined } from '@ant-design/icons';
 import moment from 'moment';
-import { db, _ } from '../../../utils/cloudBase';
+import { db, _, auth } from '../../../utils/cloudBase';
 import { isContained } from '../../../functions';
 import { getClasses, getArticles } from '../../../redux/actions';
+import { visitorText, adminUid } from '../../../utils/constant';
 import './index.css';
 
 const { Option } = Select;
@@ -137,6 +138,10 @@ const Article = props => {
                         placement="topRight"
                         title="确定要删除该文章吗？"
                         onConfirm={() => {
+                            if (auth.currentUser.uid !== adminUid) {
+                                message.warning(visitorText);
+                                return;
+                            }
                             deleteArticle(record._id);
                             classMinOne(record.classes);
                         }}
@@ -174,7 +179,11 @@ const Article = props => {
         db.collection('articles')
             .doc(id)
             .remove()
-            .then(() => {
+            .then(res => {
+                if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') {
+                    message.warning(visitorText);
+                    return;
+                }
                 // 获取最新文章数据
                 getNewArticles();
                 // 删除成功，提示消息
@@ -202,12 +211,17 @@ const Article = props => {
             .update({
                 count: _.inc(-1),
             })
-            .then(() => {
+            .then(res => {
+                if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') return;
                 getAllClasses();
             });
     };
     // 修改文章
     const editArticle = id => {
+        if (auth.currentUser.uid !== adminUid) {
+            message.warning(visitorText);
+            return;
+        }
         // 跳转到添加文章页面，并传入该文章id
         props.history.push(`/admin/addArticle?id=${id}&isDraft=`);
     };

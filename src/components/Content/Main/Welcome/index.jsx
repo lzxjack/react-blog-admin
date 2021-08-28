@@ -1,10 +1,19 @@
 import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { avatarUrl } from '../../../../utils/constant';
+import { avatarUrl, adminUid, visitorAvatar } from '../../../../utils/constant';
+import { auth } from '../../../../utils/cloudBase';
 import './index.css';
 
 const Welcome = props => {
+    const [name, setName] = useState('游客');
+    const [avatar, setAvatar] = useState(visitorAvatar);
+    useEffect(() => {
+        if (auth.currentUser.uid === adminUid) {
+            setName('飞鸟');
+            setAvatar(avatarUrl);
+        }
+    }, []);
     const [timeText, setTimeText] = useState('');
     useEffect(() => {
         const hour = moment().hours();
@@ -28,8 +37,10 @@ const Welcome = props => {
     }, []);
     return (
         <div className="WelcomeBox">
-            <img src={avatarUrl} alt="头像" className="home-avatar" />
-            <span className="welcomeTitle">{timeText}，飞鸟！</span>
+            <img src={avatar} alt="头像" className="home-avatar" />
+            <span className="welcomeTitle">
+                {timeText}，<span className="user-name">{name}</span>！
+            </span>
             <span className="poemContent">
                 “{props.poem.content}”
                 <span className="poemTitle">&nbsp;&nbsp;——&nbsp;&nbsp;《{props.poem.title}》</span>

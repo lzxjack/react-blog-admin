@@ -1,10 +1,11 @@
 import { connect } from 'react-redux';
 import { useState, useEffect } from 'react';
-import { Select, Popconfirm, notification, message } from 'antd';
+import { message, Select, Popconfirm, notification } from 'antd';
 import { CarryOutOutlined, FileDoneOutlined } from '@ant-design/icons';
 import qs from 'qs';
 import marked from 'marked';
-import { db, _ } from '../../../utils/cloudBase';
+import { db, _, auth } from '../../../utils/cloudBase';
+import { visitorText, adminUid } from '../../../utils/constant';
 import moment from 'moment';
 import { getClasses, getArticles, getDrafts } from '../../../redux/actions';
 import hljs from 'highlight.js';
@@ -97,23 +98,20 @@ const AddArticle = props => {
     // 编辑区文字
     const [defaultContent, setDefaultContent] = useState('');
     const [content, setContent] = useState('');
-    // 配置markdown渲染
-    useEffect(() => {
-        // 配置highlight
-        hljs.configure({
-            tabReplace: '',
-            classPrefix: 'hljs-',
-            languages: ['CSS', 'HTML', 'JavaScript', 'Python', 'TypeScript', 'Markdown'],
-        });
-        // 配置marked
-        marked.setOptions({
-            renderer: new marked.Renderer(),
-            highlight: code => hljs.highlightAuto(code).value,
-            gfm: true, //默认为true。 允许 Git Hub标准的markdown.
-            tables: true, //默认为true。 允许支持表格语法。该选项要求 gfm 为true。
-            breaks: true, //默认为false。 允许回车换行。该选项要求 gfm 为true。
-        });
-    }, []);
+    // 配置highlight
+    hljs.configure({
+        tabReplace: '',
+        classPrefix: 'hljs-',
+        languages: ['CSS', 'HTML', 'JavaScript', 'Python', 'TypeScript', 'Markdown'],
+    });
+    // 配置marked
+    marked.setOptions({
+        renderer: new marked.Renderer(),
+        highlight: code => hljs.highlightAuto(code).value,
+        gfm: true, //默认为true。 允许 Git Hub标准的markdown.
+        tables: true, //默认为true。 允许支持表格语法。该选项要求 gfm 为true。
+        breaks: true, //默认为false。 允许回车换行。该选项要求 gfm 为true。
+    });
     // ————————————正文end———————————
 
     // ——————————————————————两个按钮——————————————————————
@@ -132,7 +130,7 @@ const AddArticle = props => {
     // 添加到文章数据库/草稿数据库，参数：数据库名
     const addToDB = dbName => {
         const page = dbName === 'articles' ? '/admin/article' : '/admin/draft';
-        const message = dbName === 'articles' ? '文章发布成功！' : '草稿保存成功！';
+        const messages = dbName === 'articles' ? '文章发布成功！' : '草稿保存成功！';
         const icon =
             dbName === 'articles' ? (
                 <CarryOutOutlined style={{ color: 'blue' }} />
@@ -149,13 +147,18 @@ const AddArticle = props => {
                 date: new Date(date).getTime(),
                 url: `https://lzxjack.top/post?title=${titleEng}`,
             })
-            .then(() => {
+            .then(res => {
+                console.log(res);
+                if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') {
+                    message.warning(visitorText);
+                    return;
+                }
                 getArticlesOrDrafts(dbName);
                 // 转到草稿页/文章页
                 props.history.push(page);
                 // 提示消息
                 notification.open({
-                    message,
+                    message: messages,
                     placement: 'bottomLeft',
                     icon,
                     duration: 1.5,
@@ -167,7 +170,13 @@ const AddArticle = props => {
         db.collection(dbName)
             .doc(id)
             .remove()
-            .then(() => getArticlesOrDrafts(dbName));
+            .then(res => {
+                if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') {
+                    message.warning(visitorText);
+                    return;
+                }
+                getArticlesOrDrafts(dbName);
+            });
     };
     // 从文章数据库/草稿数据库更新，参数：数据库名、文章id
     const updateFromDB = dbName => {
@@ -190,7 +199,11 @@ const AddArticle = props => {
                 date: new Date(date).getTime(),
                 url: `https://lzxjack.top/post?title=${titleEng}`,
             })
-            .then(() => {
+            .then(res => {
+                if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') {
+                    message.warning(visitorText);
+                    return;
+                }
                 getArticlesOrDrafts(dbName);
                 // 回到文章页/草稿页
                 props.history.push(page);
@@ -218,7 +231,8 @@ const AddArticle = props => {
             .update({
                 count: _.inc(1),
             })
-            .then(() => {
+            .then(res => {
+                if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') return;
                 getAllClasses();
             });
     };
@@ -229,7 +243,11 @@ const AddArticle = props => {
             .update({
                 count: _.inc(-1),
             })
-            .then(() => {
+            .then(res => {
+                if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') {
+                    message.warning(visitorText);
+                    return;
+                }
                 getAllClasses();
             });
     };
@@ -250,6 +268,10 @@ const AddArticle = props => {
         // 如果分类存在，直接返回
         if (sameEngInDrafts.length) {
             message.warning('英文标题已存在！');
+            return;
+        }
+        if (auth.currentUser.uid !== adminUid) {
+            message.warning(visitorText);
             return;
         }
         if (!isEdit) {
@@ -286,6 +308,10 @@ const AddArticle = props => {
         // 如果分类存在，直接返回
         if (sameEngInArticles.length) {
             message.warning('英文标题已存在！');
+            return;
+        }
+        if (auth.currentUser.uid !== adminUid) {
+            message.warning(visitorText);
             return;
         }
         if (!isEdit) {

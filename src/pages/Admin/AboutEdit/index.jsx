@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { db } from '../../../utils/cloudBase';
+import { db, auth } from '../../../utils/cloudBase';
 import { notification, message } from 'antd';
 import { SkinOutlined, HomeOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import { getAbout } from '../../../redux/actions';
+import { visitorText, adminUid } from '../../../utils/constant';
 import qs from 'qs';
 import marked from 'marked';
 import hljs from 'highlight.js';
@@ -66,6 +67,10 @@ const AboutEdit = props => {
             message.info('请写点什么再更新！');
             return;
         }
+        if (auth.currentUser.uid !== adminUid) {
+            message.warning(visitorText);
+            return;
+        }
         const messageText = isMe ? '"关于我"更新成功！' : '"关于本站"更新成功！';
         const icon = isMe ? (
             <SkinOutlined style={{ color: 'blue' }} />
@@ -77,7 +82,12 @@ const AboutEdit = props => {
             .update({
                 content,
             })
-            .then(() => {
+            .then(res => {
+                if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') {
+                    message.warning(visitorText);
+                    return;
+                }
+                // console.log(res);
                 getAboutData();
                 turnToAbout();
                 notification.open({

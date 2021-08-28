@@ -3,7 +3,8 @@ import { List, Modal, message, Popconfirm } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import { getClasses, getArticles } from '../../../../redux/actions';
-import { db } from '../../../../utils/cloudBase';
+import { db, auth } from '../../../../utils/cloudBase';
+import { visitorText, adminUid } from '../../../../utils/constant';
 import './index.css';
 
 const Class = props => {
@@ -43,35 +44,53 @@ const Class = props => {
             message.warning('该分类已存在！');
             return;
         }
+        if (auth.currentUser.uid !== adminUid) {
+            message.warning(visitorText);
+            return;
+        }
         db.collection('classes')
             .add({
                 class: classInput,
                 count: 0,
             })
-            .then(() => {
+            .then(res => {
+                if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') {
+                    message.warning(visitorText);
+                    return;
+                }
                 setClassInput('');
                 message.success('添加分类成功！');
                 getAllClasses();
             });
     };
     const deleteClassFrom = (dbName, theClass) => {
+        if (auth.currentUser.uid !== adminUid) return;
         const text = dbName === 'articles' ? '文章' : '草稿';
         db.collection(dbName)
             .where({ classes: theClass })
             .update({
                 classes: '',
             })
-            .then(() => {
+            .then(res => {
+                if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') return;
                 message.success(`更新${text}分类成功！`);
             });
     };
     // 删除分类
     const deleteClass = (id, theClass) => {
+        if (auth.currentUser.uid !== adminUid) {
+            message.warning(visitorText);
+            return;
+        }
         // 从分类数据库中删除该分类
         db.collection('classes')
             .doc(id)
             .remove()
-            .then(() => {
+            .then(res => {
+                if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') {
+                    message.warning(visitorText);
+                    return;
+                }
                 message.success('删除分类成功！');
                 getAllClasses();
             });
@@ -92,13 +111,18 @@ const Class = props => {
         clearAllState();
     };
     const editClassFrom = dbName => {
+        if (auth.currentUser.uid !== adminUid) {
+            message.warning(visitorText);
+            return;
+        }
         const text = dbName === 'articles' ? '文章' : '草稿';
         db.collection(dbName)
             .where({ classes: oldClass })
             .update({
                 classes: classEditInput,
             })
-            .then(() => {
+            .then(res => {
+                if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') return;
                 message.success(`更新${text}分类成功！`);
             });
     };
@@ -111,13 +135,21 @@ const Class = props => {
             message.warning('该分类已存在！');
             return;
         }
+        if (auth.currentUser.uid !== adminUid) {
+            message.warning(visitorText);
+            return;
+        }
         // 修改分类数据库中的数据
         db.collection('classes')
             .doc(classId)
             .update({
                 class: classEditInput,
             })
-            .then(() => {
+            .then(res => {
+                if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') {
+                    message.warning(visitorText);
+                    return;
+                }
                 message.success('修改分类成功！');
                 setClassEditVisible(false);
                 getAllClasses();

@@ -17,3 +17,14 @@ export const avatarUrl = 'https://jack-img.oss-cn-hangzhou.aliyuncs.com/img/2020
 
 // 博客地址
 export const blogUrl = 'https://lzxjack.top';
+
+// 管理员信息
+export const adminUid = '9bf44da2dbb8473da1fcf4f591cb82ff';
+
+// 游客帐号信息
+export const visitorEmail = '490878306@qq.com';
+export const visitorPwd = 'asd123456';
+export const visitorAvatar = 'https://jack-img.oss-cn-hangzhou.aliyuncs.com/img/20210826221910.jpg';
+
+// 游客修改失败后的提示语句
+export const visitorText = '游客不可以修改哦~😆';

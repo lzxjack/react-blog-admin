@@ -4,12 +4,13 @@ import { connect } from 'react-redux';
 import { login } from '../../../redux/actions';
 import { notification } from 'antd';
 import { CloseOutlined, CheckOutlined } from '@ant-design/icons';
-import { avatarUrl } from '../../../utils/constant';
+import { avatarUrl, visitorEmail, visitorPwd } from '../../../utils/constant';
 import './index.css';
 
 const LoginBox = props => {
     const [email, setEmail] = useState('');
     const [pwd, setPwd] = useState('');
+    const [showVisitor, setShowVisitor] = useState(false);
 
     // 提示消息的函数
     // true登录成功/false登录失败
@@ -48,28 +49,48 @@ const LoginBox = props => {
     };
 
     return (
-        <div className="loginBox">
-            <img src={avatarUrl} className="avatar" alt="avatar" />
-            <div className="EmailBox">
-                <div className="Email">邮箱</div>
-                <input
-                    type="text"
-                    className="inputEmail"
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                />
+        <div className="Login">
+            <div className="loginBox">
+                <img src={avatarUrl} className="avatar" alt="avatar" />
+                <div className="EmailBox">
+                    <div className="Email">邮箱</div>
+                    <input
+                        type="text"
+                        className="inputEmail"
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
+                    />
+                </div>
+                <div className="pwdBox">
+                    <div className="pwd">密码</div>
+                    <input
+                        type="password"
+                        className="inputpwd"
+                        value={pwd}
+                        onChange={e => setPwd(e.target.value)}
+                    />
+                </div>
+
+                <div className="loginBtn" onClick={login}>
+                    登录
+                </div>
+                <div
+                    className="visitorBtn"
+                    onClick={() => setShowVisitor(showVisitor => !showVisitor)}
+                >
+                    游客
+                </div>
             </div>
-            <div className="pwdBox">
-                <div className="pwd">密码</div>
-                <input
-                    type="password"
-                    className="inputpwd"
-                    value={pwd}
-                    onChange={e => setPwd(e.target.value)}
-                />
-            </div>
-            <div className="loginBtn" onClick={login}>
-                登录
+            <div className={showVisitor ? 'visitorInfoBox' : 'visitorInfoBox visitorHidden'}>
+                <div className="visitorTitle">游客帐号，仅供演示使用</div>
+                <div className="visitorInfo">
+                    <span>邮箱：</span>
+                    {visitorEmail}
+                </div>
+                <div className="visitorInfo">
+                    <span>密码：</span>
+                    {visitorPwd}
+                </div>
             </div>
         </div>
     );

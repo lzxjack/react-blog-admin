@@ -3,7 +3,8 @@ import { Modal, message, notification, Popconfirm } from 'antd';
 import { PictureOutlined, FormOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import { getShows } from '../../../redux/actions';
-import { db } from '../../../utils/cloudBase';
+import { db, auth } from '../../../utils/cloudBase';
+import { visitorText, adminUid } from '../../../utils/constant';
 import './index.css';
 
 const Show = props => {
@@ -48,6 +49,10 @@ const Show = props => {
             message.info('请输入完整作品信息！');
             return;
         }
+        if (auth.currentUser.uid !== adminUid) {
+            message.warning(visitorText);
+            return;
+        }
         if (isEdit) {
             // 编辑
             db.collection('shows')
@@ -58,7 +63,11 @@ const Show = props => {
                     cover,
                     link,
                 })
-                .then(() => {
+                .then(res => {
+                    if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') {
+                        message.warning(visitorText);
+                        return;
+                    }
                     afterShowChange(1);
                 });
         } else {
@@ -70,7 +79,11 @@ const Show = props => {
                     cover,
                     link,
                 })
-                .then(() => {
+                .then(res => {
+                    if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') {
+                        message.warning(visitorText);
+                        return;
+                    }
                     afterShowChange(0);
                 });
         }
@@ -105,10 +118,18 @@ const Show = props => {
     };
     // 删除作品
     const deleteShow = ID => {
+        if (auth.currentUser.uid !== adminUid) {
+            message.warning(visitorText);
+            return;
+        }
         db.collection('shows')
             .doc(ID)
             .remove()
-            .then(() => {
+            .then(res => {
+                if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') {
+                    message.warning(visitorText);
+                    return;
+                }
                 // 获取所有相册
                 getAllShows();
                 notification.open({

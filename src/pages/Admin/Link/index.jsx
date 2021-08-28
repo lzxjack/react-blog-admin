@@ -3,7 +3,8 @@ import { Modal, notification, Table, Space, Button, Popconfirm, message } from '
 import { UserOutlined, DeleteOutlined, UserSwitchOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import { getLinks } from '../../../redux/actions';
-import { db } from '../../../utils/cloudBase';
+import { db, auth } from '../../../utils/cloudBase';
+import { visitorText, adminUid } from '../../../utils/constant';
 import './index.css';
 
 const Link = props => {
@@ -92,6 +93,10 @@ const Link = props => {
             message.info('请输入完整友链信息！');
             return;
         }
+        if (auth.currentUser.uid !== adminUid) {
+            message.warning(visitorText);
+            return;
+        }
         if (isEdit) {
             // 更新友链
             updateLink();
@@ -146,7 +151,11 @@ const Link = props => {
                 avatar,
                 descr,
             })
-            .then(() => {
+            .then(res => {
+                if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') {
+                    message.warning(visitorText);
+                    return;
+                }
                 afterLinkChange(0);
             });
     };
@@ -161,7 +170,11 @@ const Link = props => {
                 avatar,
                 descr,
             })
-            .then(() => {
+            .then(res => {
+                if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') {
+                    message.warning(visitorText);
+                    return;
+                }
                 afterLinkChange(1);
             });
     };
@@ -179,10 +192,18 @@ const Link = props => {
     };
     // 删除友链
     const deleteLink = id => {
+        if (auth.currentUser.uid !== adminUid) {
+            message.warning(visitorText);
+            return;
+        }
         db.collection('links')
             .doc(id)
             .remove()
-            .then(() => {
+            .then(res => {
+                if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') {
+                    message.warning(visitorText);
+                    return;
+                }
                 getLinksData();
                 notification.open({
                     message: '删除友链成功',

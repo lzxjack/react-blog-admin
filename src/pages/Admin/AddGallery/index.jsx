@@ -4,7 +4,8 @@ import { CameraOutlined, CopyOutlined, DeleteOutlined } from '@ant-design/icons'
 import { connect } from 'react-redux';
 import { getGalleries } from '../../../redux/actions';
 import { nanoid } from 'nanoid';
-import { db } from '../../../utils/cloudBase';
+import { db, auth } from '../../../utils/cloudBase';
+import { visitorText, adminUid } from '../../../utils/constant';
 import './index.css';
 
 const AddGallery = props => {
@@ -69,6 +70,10 @@ const AddGallery = props => {
             message.info('请添加照片！');
             return;
         }
+        if (auth.currentUser.uid !== adminUid) {
+            message.warning(visitorText);
+            return;
+        }
         db.collection('galleries')
             .add({
                 title,
@@ -76,13 +81,21 @@ const AddGallery = props => {
                 cover,
                 pics,
             })
-            .then(() => {
+            .then(res => {
+                if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') {
+                    message.warning(visitorText);
+                    return;
+                }
                 getNewGalleries();
                 afterGalleryChange(0);
             });
     };
     // 更新相册
     const updateGallery = () => {
+        if (auth.currentUser.uid !== adminUid) {
+            message.warning(visitorText);
+            return;
+        }
         if (props.location.search === '') return;
         if (!title) {
             message.info('请输入相册标题！');
@@ -108,18 +121,30 @@ const AddGallery = props => {
                 cover,
                 pics,
             })
-            .then(() => {
+            .then(res => {
+                if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') {
+                    message.warning(visitorText);
+                    return;
+                }
                 getNewGalleries();
                 afterGalleryChange(1);
             });
     };
     // 删除相册
     const deleteGallery = () => {
+        if (auth.currentUser.uid !== adminUid) {
+            message.warning(visitorText);
+            return;
+        }
         if (props.location.search === '') return;
         db.collection('galleries')
             .doc(id)
             .remove()
-            .then(() => {
+            .then(res => {
+                if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') {
+                    message.warning(visitorText);
+                    return;
+                }
                 getNewGalleries();
                 props.history.push('/admin/gallery');
                 notification.open({

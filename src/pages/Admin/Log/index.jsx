@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { nanoid } from 'nanoid';
 import { Modal, notification, Table, Space, Button, Popconfirm, message, Popover } from 'antd';
 import { FormOutlined, MessageOutlined, DeleteOutlined } from '@ant-design/icons';
-import { db } from '../../../utils/cloudBase';
+import { db, auth } from '../../../utils/cloudBase';
 import { connect } from 'react-redux';
 import { getLogs } from '../../../redux/actions';
 import moment from 'moment';
@@ -12,6 +12,8 @@ import {
     emojiObj,
     emojiPlace,
     emojiSymbol,
+    visitorText,
+    adminUid,
 } from '../../../utils/constant';
 import './index.css';
 
@@ -107,6 +109,10 @@ const Log = props => {
             message.info('请写点啥再添加！');
             return;
         }
+        if (auth.currentUser.uid !== adminUid) {
+            message.warning(visitorText);
+            return;
+        }
         if (isEdit) {
             // 更新事件
             updateLog();
@@ -150,7 +156,11 @@ const Log = props => {
                 date: new Date(date).getTime(),
                 logContent,
             })
-            .then(() => {
+            .then(res => {
+                if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') {
+                    message.warning(visitorText);
+                    return;
+                }
                 // 添加后的操作
                 afterLogChange(0);
             });
@@ -163,7 +173,11 @@ const Log = props => {
                 date: new Date(date).getTime(),
                 logContent,
             })
-            .then(() => {
+            .then(res => {
+                if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') {
+                    message.warning(visitorText);
+                    return;
+                }
                 // 更新后的操作
                 afterLogChange(1);
             });
@@ -180,10 +194,18 @@ const Log = props => {
     };
     // 删除事件
     const deleteLog = ID => {
+        if (auth.currentUser.uid !== adminUid) {
+            message.warning(visitorText);
+            return;
+        }
         db.collection('logs')
             .doc(ID)
             .remove()
-            .then(() => {
+            .then(res => {
+                if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') {
+                    message.warning(visitorText);
+                    return;
+                }
                 getAllLogs();
                 notification.open({
                     message: '删除事件成功',

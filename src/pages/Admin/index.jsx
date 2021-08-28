@@ -113,6 +113,10 @@ const Admin = props => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isMounted]);
 
+    // useEffect(() => {
+    //     console.log(auth.currentUser.uid);
+    // }, []);
+
     return (
         <div className="AdminBox">
             <div className="navBack"></div>

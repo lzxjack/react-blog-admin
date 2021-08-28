@@ -6,30 +6,31 @@ const ArticleNum = props => {
     const [type, setType] = useState('');
     const [num, setNum] = useState(0);
     useEffect(() => {
+        const { articles, drafts, links, shows, says } = props;
         switch (props.type) {
             case 'articles': {
                 setType('文章');
-                setNum(props.articles.length);
+                setNum(articles.length);
                 break;
             }
             case 'drafts': {
                 setType('草稿');
-                setNum(props.drafts.length);
+                setNum(drafts.length);
                 break;
             }
             case 'links': {
                 setType('友链');
-                setNum(props.links.length);
+                setNum(links.length);
                 break;
             }
             case 'shows': {
                 setType('作品');
-                setNum(props.shows.length);
+                setNum(shows.length);
                 break;
             }
             case 'says': {
                 setType('说说');
-                setNum(props.says.length);
+                setNum(says.length);
                 break;
             }
             default: {

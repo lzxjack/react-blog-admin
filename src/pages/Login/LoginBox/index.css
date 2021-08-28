@@ -1,11 +1,12 @@
 /* 登录居中框 */
 .loginBox {
     position: relative;
+    z-index: 1;
     width: 400px;
     height: 300px;
     /* background-color: rgb(56, 217, 238); */
     background-color: rgb(5, 56, 71);
-    box-shadow: 0 0 16px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 18px rgba(0, 0, 0, 0.5);
 }
 
 /* 头像 */
@@ -70,11 +71,12 @@
 }
 
 /* 登录按钮 */
-.loginBtn {
+.loginBtn,
+.visitorBtn {
     position: absolute;
-    top: 220px;
+    top: 224px;
     left: 50%;
-    transform: translate(-50%, 0);
+    transform: translate(20px, 0);
     width: 100px;
     height: 50px;
     display: flex;
@@ -82,21 +84,64 @@
     align-items: center;
     background-color: rgb(8, 88, 112);
     color: #fff;
-    /* border-radius: 30px; */
     font-size: 20px;
     user-select: none;
     transition: all 0.2s;
+}
+.visitorBtn {
+    transform: translate(-120px, 0);
 }
 
 /* 加入鼠标悬浮时阴影 */
 .EmailBox:hover,
 .pwdBox:hover,
-.loginBtn:hover {
+.loginBtn:hover,
+.visitorBtn:hover {
     box-shadow: 0 0 14px rgba(255, 255, 255, 0.3);
 }
 
 .loginBtn:hover,
+.visitorBtn:hover,
 .EmailBox:hover .Email,
 .pwdBox:hover .pwd {
     background-color: rgb(11, 119, 151);
+}
+
+.Login {
+    position: relative;
+}
+
+.visitorInfoBox {
+    position: absolute;
+    z-index: 0;
+    padding-top: 40px;
+    width: 300px;
+    height: 160px;
+    top: calc(300px - 40px);
+    left: 50%;
+    transform: translate(-50%, 0);
+    background-color: rgb(8, 80, 102);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s;
+}
+
+.visitorInfo {
+    font-size: 18px;
+}
+.visitorInfo span {
+    user-select: none;
+}
+.visitorTitle {
+    font-size: 16px;
+    color: rgb(22, 204, 228);
+    user-select: none;
+}
+
+.visitorHidden {
+    top: 110px;
 }

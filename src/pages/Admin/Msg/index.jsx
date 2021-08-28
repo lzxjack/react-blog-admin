@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { db } from '../../../utils/cloudBase';
+import { db, auth } from '../../../utils/cloudBase';
 import { getMsgs } from '../../../redux/actions';
-import { Table, Space, Button, Popconfirm, notification } from 'antd';
+import { message, Table, Space, Button, Popconfirm, notification } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
-import { blogUrl } from '../../../utils/constant';
+import { blogUrl, visitorText, adminUid } from '../../../utils/constant';
 import './index.css';
 
 const Msg = props => {
@@ -21,10 +21,18 @@ const Msg = props => {
             });
     };
     const deleteMsg = Id => {
+        if (auth.currentUser.uid !== adminUid) {
+            message.warning(visitorText);
+            return;
+        }
         db.collection('allComments')
             .doc(Id)
             .remove()
-            .then(() => {
+            .then(res => {
+                if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') {
+                    message.warning(visitorText);
+                    return;
+                }
                 getAllMsgs();
                 // 删除成功，提示消息
                 notification.open({
