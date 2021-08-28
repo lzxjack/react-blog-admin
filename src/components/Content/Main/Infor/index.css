@@ -4,6 +4,7 @@
     flex: 1;
     user-select: none;
     transition: all 0.2s;
+    margin-left: 20px;
 }
 
 .InforBox:hover {
@@ -25,5 +26,5 @@
 
 .ipText {
     bottom: 20px;
-    font-size: 22px;
+    font-size: 20px;
 }

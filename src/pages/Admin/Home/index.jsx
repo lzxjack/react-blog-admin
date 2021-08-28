@@ -1,5 +1,6 @@
 import Welcome from '../../../components/Content/Main/Welcome';
 import Infor from '../../../components/Content/Main/Infor';
+import MyNotice from '../../../components/Content/Main/MyNotice';
 import Statistic from '../../../components/Content/Main/Statistic';
 import Chart from '../../../components/Content/Main/Chart';
 import Class from '../../../components/Content/Main/Class';
@@ -13,6 +14,7 @@ const Home = () => {
             <div className="outlineBox">
                 <Welcome />
                 <Infor />
+                <MyNotice />
             </div>
 
             <div className="statisticRegion">

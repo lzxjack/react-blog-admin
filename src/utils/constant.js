@@ -28,3 +28,6 @@ export const visitorAvatar = 'https://jack-img.oss-cn-hangzhou.aliyuncs.com/img/
 
 // 游客修改失败后的提示语句
 export const visitorText = '游客不可以修改哦~😆';
+
+// 公告的数据ID
+export const noticeId = '2d44d6c2612a2178078ff9f553561764';

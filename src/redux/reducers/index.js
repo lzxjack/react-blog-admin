@@ -15,6 +15,7 @@ import shows from './shows';
 import about from './about';
 
 import msgs from './msgs';
+import notice from './notice';
 
 export default combineReducers({
     loginState,
@@ -30,4 +31,5 @@ export default combineReducers({
     shows,
     about,
     msgs,
+    notice,
 });

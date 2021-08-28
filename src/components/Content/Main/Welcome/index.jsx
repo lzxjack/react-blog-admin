@@ -43,7 +43,7 @@ const Welcome = props => {
             </span>
             <span className="poemContent">
                 “{props.poem.content}”
-                <span className="poemTitle">&nbsp;&nbsp;——&nbsp;&nbsp;《{props.poem.title}》</span>
+                <span className="poemTitle">&nbsp;&nbsp;——&nbsp;&nbsp;{props.poem.author}</span>
             </span>
         </div>
     );

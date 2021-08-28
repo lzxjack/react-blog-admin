@@ -36,3 +36,6 @@ export const GET_LOGS = 'getLogs';
 
 // 留言
 export const GET_MSGS = 'getMsgs';
+
+// 公告
+export const GET_NOTICE = 'getNotice';

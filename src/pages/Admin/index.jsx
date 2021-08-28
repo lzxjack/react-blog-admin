@@ -15,6 +15,7 @@ import {
     getAbout,
     getLogs,
     getMsgs,
+    getNotice,
 } from '../../redux/actions';
 import { db } from '../../utils/cloudBase';
 import moment from 'moment';
@@ -28,7 +29,7 @@ const Admin = props => {
         require('jinrishici').load(res => {
             const obj = {
                 content: res.data.content,
-                title: res.data.origin.title,
+                author: res.data.origin.author,
                 ip: res.ipAddress,
                 date: moment().format('YYYY-MM-DD'),
             };
@@ -85,6 +86,10 @@ const Admin = props => {
                         props.getMsgs(res.data);
                         break;
                     }
+                    case 'notice': {
+                        props.getNotice(res.data[0].notice);
+                        break;
+                    }
                     default:
                         break;
                 }
@@ -106,6 +111,7 @@ const Admin = props => {
             getDataFromDB('says');
             getDataFromDB('shows');
             getDataFromDB('allComments');
+            getDataFromDB('notice');
         }
         return () => {
             setIsMounted(false);
@@ -139,4 +145,5 @@ export default connect(() => ({}), {
     getAbout,
     getLogs,
     getMsgs,
+    getNotice,
 })(Admin);

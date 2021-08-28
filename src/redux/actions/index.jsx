@@ -12,6 +12,7 @@ import {
     GET_ABOUT,
     GET_LOGS,
     GET_MSGS,
+    GET_NOTICE,
 } from '../constant';
 
 // 登录
@@ -77,5 +78,10 @@ export const getLogs = data => ({
 
 export const getMsgs = data => ({
     type: GET_MSGS,
+    data,
+});
+
+export const getNotice = data => ({
+    type: GET_NOTICE,
     data,
 });

@@ -98,8 +98,8 @@ const MyTag = props => {
             });
     };
     const deleteTagFrom = (dbName, theTag) => {
-        if (!tagInput.length) {
-            message.info('标签名不能为空！');
+        if (auth.currentUser.uid !== adminUid) {
+            message.warning(visitorText);
             return;
         }
         // const text = dbName === 'articles' ? '文章' : '草稿';
@@ -139,8 +139,8 @@ const MyTag = props => {
         deleteTagFrom('drafts', theTag);
     };
     const editTagFrom = async dbName => {
-        if (!tagInput.length) {
-            message.info('标签名不能为空！');
+        if (auth.currentUser.uid !== adminUid) {
+            message.warning(visitorText);
             return;
         }
         // 修改该标签下所有文章的相应标签,分两步:
