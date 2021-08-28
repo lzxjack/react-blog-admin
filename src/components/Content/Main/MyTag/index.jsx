@@ -117,8 +117,8 @@ const MyTag = props => {
     };
     // 删除标签
     const deleteTag = (id, theTag) => {
-        if (!tagInput.length) {
-            message.info('标签名不能为空！');
+        if (auth.currentUser.uid !== adminUid) {
+            message.warning(visitorText);
             return;
         }
         // 删除标签数据库中的标签
@@ -173,15 +173,15 @@ const MyTag = props => {
     };
     // 对话框确认：编辑标签
     const editTag = async () => {
-        if (!tagInput.length) {
-            message.info('标签名不能为空！');
-            return;
-        }
         // 判断是否存在
         const sameTagName = props.tags.filter(item => item.tag === tagEditInput);
         // 如果标签存在，直接返回
         if (sameTagName.length) {
             message.warning('该标签已存在！');
+            return;
+        }
+        if (auth.currentUser.uid !== adminUid) {
+            message.warning(visitorText);
             return;
         }
         // 修改标签数据库中的标签

@@ -90,7 +90,7 @@
 .inputRegion,
 .showRegion {
     /* footer60 Header54 margin-top20 titleBox tagClassBox */
-    min-height: calc(100vh - 60px - 54px - 20px - 58px - 44px);
+    min-height: calc(100vh - 70px - 54px - 20px - 58px - 44px);
     width: 50%;
     background-color: #fff;
     padding: 30px;

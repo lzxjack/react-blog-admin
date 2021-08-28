@@ -32,7 +32,7 @@
 /* 下方相册展示区 */
 .galleryBox {
     background-color: rgb(200, 243, 253);
-    min-height: calc(100vh - 60px - 54px - 20px - 50px);
+    min-height: calc(100vh - 70px - 54px - 20px - 50px);
 }
 
 .galleryUl {

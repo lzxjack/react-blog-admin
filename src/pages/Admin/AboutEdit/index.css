@@ -58,5 +58,5 @@
 }
 .aboutInput,
 .aboutShow {
-    min-height: calc(100vh - 60px - 54px - 20px - 50px);
+    min-height: calc(100vh - 70px - 54px - 20px - 50px);
 }

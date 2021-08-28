@@ -3,7 +3,7 @@
 }
 
 .tk-admin-container {
-    min-height: calc(100vh - 60px - 54px - 20px);
+    min-height: calc(100vh - 70px - 54px - 20px);
 }
 
 .tk-footer,
