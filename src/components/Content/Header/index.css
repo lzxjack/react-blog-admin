@@ -5,7 +5,8 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
 }
 
-.logoutBtn {
+.logoutBtn,
+.blogBtn {
     position: absolute;
     right: 20px;
     top: 50%;
@@ -18,8 +19,15 @@
     border-radius: 10px;
     font-size: 22px;
     transition: all 0.2s;
+    color: #000;
 }
-.logoutBtn:hover {
+.logoutBtn:hover,
+.blogBtn:hover {
     background-color: rgb(231, 231, 231);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    color: #000;
+}
+
+.blogBtn {
+    right: 90px;
 }

@@ -2,7 +2,8 @@ import { LoginOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
 import { login } from '../../../redux/actions';
 import { notification, Popconfirm } from 'antd';
-import { EnterOutlined } from '@ant-design/icons';
+import { EnterOutlined, HomeOutlined } from '@ant-design/icons';
+import { blogUrl } from '../../../utils/constant';
 import './index.css';
 
 const Header = props => {
@@ -25,6 +26,9 @@ const Header = props => {
     };
     return (
         <div className="HeaderBox">
+            <a href={blogUrl} className="blogBtn" target="_blank" rel="noreferrer">
+                <HomeOutlined />
+            </a>
             <Popconfirm
                 className="logoutBtn"
                 placement="bottomRight"
