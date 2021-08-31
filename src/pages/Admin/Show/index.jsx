@@ -11,6 +11,7 @@ const Show = props => {
     // 获得所有作品信息
     const getAllShows = () => {
         db.collection('shows')
+            .limit(1000)
             .get()
             .then(res => {
                 props.getShows(res.data);

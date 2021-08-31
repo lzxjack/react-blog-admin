@@ -14,6 +14,7 @@ const Msg = props => {
     const getAllMsgs = () => {
         setTableLoading(true);
         db.collection('allComments')
+            .limit(1000)
             .get()
             .then(res => {
                 props.getMsgs(res.data);

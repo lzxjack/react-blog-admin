@@ -92,6 +92,7 @@ const Draft = props => {
     const getNewDrafts = () => {
         setTableLoading(true);
         db.collection('drafts')
+            .limit(1000)
             .get()
             .then(res => {
                 props.getDrafts(res.data);

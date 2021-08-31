@@ -118,6 +118,7 @@ const AddArticle = props => {
     // 获取最新所有文章/草稿
     const getArticlesOrDrafts = dbName => {
         db.collection(dbName)
+            .limit(1000)
             .get()
             .then(res => {
                 if (dbName === 'articles') {
@@ -219,6 +220,7 @@ const AddArticle = props => {
     // 向数据库获取所有分类
     const getAllClasses = () => {
         db.collection('classes')
+            .limit(1000)
             .get()
             .then(res => {
                 props.getClasses(res.data);

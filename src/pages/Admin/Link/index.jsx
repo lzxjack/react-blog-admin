@@ -66,6 +66,7 @@ const Link = props => {
     const getLinksData = () => {
         setTableLoading(true);
         db.collection('links')
+            .limit(1000)
             .get()
             .then(res => {
                 props.getLinks(res.data);

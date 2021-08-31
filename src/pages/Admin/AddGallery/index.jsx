@@ -31,6 +31,7 @@ const AddGallery = props => {
     // 向数据库获取最新相册信息
     const getNewGalleries = () => {
         db.collection('galleries')
+            .limit(1000)
             .get()
             .then(res => {
                 props.getGalleries(res.data);

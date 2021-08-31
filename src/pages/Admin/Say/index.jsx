@@ -65,6 +65,7 @@ const Say = props => {
     const getAllSays = () => {
         setTableLoading(true);
         db.collection('says')
+            .limit(1000)
             .get()
             .then(res => {
                 props.getSays(res.data);

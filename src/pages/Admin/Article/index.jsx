@@ -162,6 +162,7 @@ const Article = props => {
     const getNewArticles = () => {
         setTableLoading(true);
         db.collection('articles')
+            .limit(1000)
             .get()
             .then(res => {
                 props.getArticles(res.data);
@@ -200,6 +201,7 @@ const Article = props => {
     // 向数据库获取所有分类
     const getAllClasses = () => {
         db.collection('classes')
+            .limit(1000)
             .get()
             .then(res => {
                 props.getClasses(res.data);

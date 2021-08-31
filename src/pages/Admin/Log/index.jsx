@@ -73,6 +73,7 @@ const Log = props => {
     const getAllLogs = () => {
         setTableLoading(true);
         db.collection('logs')
+            .limit(1000)
             .get()
             .then(res => {
                 props.getLogs(res.data);

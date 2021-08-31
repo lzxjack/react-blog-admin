@@ -42,6 +42,7 @@ const MyTag = props => {
     // 数据库获取所有标签
     const getAllTags = () => {
         db.collection('tags')
+            .limit(1000)
             .get()
             .then(res => {
                 props.getTags(res.data);
@@ -49,6 +50,7 @@ const MyTag = props => {
     };
     const getAllArticles = dbName => {
         db.collection(dbName)
+            .limit(1000)
             .get()
             .then(res => {
                 if (dbName === 'articles') {
