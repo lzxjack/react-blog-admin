@@ -148,7 +148,7 @@ const AddArticle = props => {
                 url: `https://lzxjack.top/post?title=${titleEng}`,
             })
             .then(res => {
-                console.log(res);
+                // console.log(res);
                 if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') {
                     message.warning(visitorText);
                     return;

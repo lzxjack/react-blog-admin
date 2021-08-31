@@ -207,7 +207,7 @@ const Article = props => {
     };
     // 相应分类数目-1
     const classMinOne = oldClass => {
-        console.log(oldClass);
+        // console.log(oldClass);
         db.collection('classes')
             .where({ class: oldClass })
             .update({
