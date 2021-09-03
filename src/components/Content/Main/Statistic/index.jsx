@@ -6,7 +6,7 @@ const ArticleNum = props => {
     const [type, setType] = useState('');
     const [num, setNum] = useState(0);
     useEffect(() => {
-        const { articles, drafts, links, shows, says } = props;
+        const { articles, drafts, links, msgs, says } = props;
         switch (props.type) {
             case 'articles': {
                 setType('文章');
@@ -23,9 +23,9 @@ const ArticleNum = props => {
                 setNum(links.length);
                 break;
             }
-            case 'shows': {
-                setType('作品');
-                setNum(shows.length);
+            case 'msgs': {
+                setType('留言');
+                setNum(msgs.length);
                 break;
             }
             case 'says': {
@@ -52,7 +52,7 @@ export default connect(
         drafts: state.drafts,
         links: state.links,
         says: state.says,
-        shows: state.shows,
+        msgs: state.msgs,
     }),
     {}
 )(ArticleNum);
