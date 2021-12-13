@@ -12,21 +12,13 @@ const App = props => {
     }, [props]);
 
     return (
-        <>
-            <Switch>
-                {props.loginState ? (
-                    <>
-                        <Route path="/admin" component={Admin} />
-                        <Redirect to="/admin" />
-                    </>
-                ) : (
-                    <>
-                        <Route path="/login" component={Login} />
-                        <Redirect to="/login" />
-                    </>
-                )}
-            </Switch>
-        </>
+        <Switch>
+            {props.loginState ? (
+                <Route path="/admin" component={Admin} />
+            ) : (
+                <Route path="/login" component={Login} />
+            )}
+        </Switch>
     );
 };
 
