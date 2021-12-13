@@ -18,7 +18,6 @@ const Show = props => {
                 props.getShows(res.data);
             });
     };
-
     const [showVisible, setShowVisible] = useState(false);
     const [isEdit, setIsEdit] = useState(false);
     const [id, setId] = useState('');
