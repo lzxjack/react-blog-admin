@@ -14,6 +14,7 @@ const Show = props => {
             .limit(1000)
             .get()
             .then(res => {
+                res.data.sort((a, b) => a.order - b.order);
                 props.getShows(res.data);
             });
     };
@@ -25,6 +26,7 @@ const Show = props => {
     const [descr, setDescr] = useState('');
     const [cover, setCover] = useState('');
     const [link, setLink] = useState('');
+    const [order, setOrder] = useState('');
 
     // 编辑/添加成功后的操作
     const afterShowChange = isEdit => {
@@ -63,6 +65,7 @@ const Show = props => {
                     descr,
                     cover,
                     link,
+                    order,
                 })
                 .then(res => {
                     if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') {
@@ -79,6 +82,7 @@ const Show = props => {
                     descr,
                     cover,
                     link,
+                    order,
                 })
                 .then(res => {
                     if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') {
@@ -102,6 +106,7 @@ const Show = props => {
         setDescr('');
         setCover('');
         setLink('');
+        setOrder('');
     };
     // 编辑作品
     const editShow = ID => {
@@ -111,11 +116,12 @@ const Show = props => {
         // 打开编辑状态
         setIsEdit(true);
         const showObj = props.shows.filter(item => item._id === ID)[0];
-        const { name, descr, cover, link } = showObj;
+        const { name, descr, cover, link, order } = showObj;
         setName(name);
         setDescr(descr);
         setCover(cover);
         setLink(link);
+        setOrder(order);
     };
     // 删除作品
     const deleteShow = ID => {
@@ -203,6 +209,17 @@ const Show = props => {
                                 }}
                             />
                         </div>
+                        <div className="modalInputBox">
+                            <div className="modalInputKey showInputKey">序号：</div>
+                            <input
+                                className="modalInputValue"
+                                type="text"
+                                value={order}
+                                onChange={e => {
+                                    setOrder(e.target.value);
+                                }}
+                            />
+                        </div>
                     </div>
                 </Modal>
             </div>
@@ -222,6 +239,7 @@ const Show = props => {
                                     </a>
                                 </span>
                             </div>
+                            <div className="showOrder">{item.order}</div>
                             <div className="galleryDescr">{item.descr}</div>
                             <div className="galleryMask"></div>
                             <FormOutlined

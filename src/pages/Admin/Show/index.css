@@ -24,6 +24,12 @@
     opacity: 0;
     transition: all 0.3s;
 }
+.showOrder {
+    position: absolute;
+    left: 10px;
+    bottom: 0;
+    font-size: 26px;
+}
 
 .galleryUl li:hover .showEditBtn,
 .galleryUl li:hover .showDeleteBtn {

@@ -48,8 +48,8 @@ const Nav = () => {
         <div className="NavBox">
             <div className="appName">飞鸟小站</div>
             <ul className="funcBtns">
-                {router.map(item => (
-                    <li>
+                {router.map((item, index) => (
+                    <li key={index}>
                         <MyNavLink to={item.to} className="funcLi">
                             {item.content}
                         </MyNavLink>

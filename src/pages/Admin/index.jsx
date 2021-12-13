@@ -81,6 +81,7 @@ const Admin = props => {
                         break;
                     }
                     case 'shows': {
+                        res.data.sort((a, b) => a.order - b.order);
                         props.getShows(res.data);
                         break;
                     }
