@@ -95,6 +95,7 @@ const Msg = props => {
             title: '内容',
             dataIndex: 'content',
             key: '_id',
+            width: '400px',
             render: text => <p className="msgs-content">{text}</p>,
         },
         {

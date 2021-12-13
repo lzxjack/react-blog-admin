@@ -25,7 +25,8 @@ const Say = props => {
             title: '说说内容',
             dataIndex: 'content',
             key: '_id',
-            // render: text => <strong>{text}</strong>,
+            width: '1200px',
+            render: text => <p className="msgs-content">{text}</p>,
         },
         {
             title: '发布日期',
@@ -36,7 +37,6 @@ const Say = props => {
             sortDirections: ['descend'],
             defaultSortOrder: ['ascend'],
         },
-
         {
             title: '操作',
             key: '_id',
