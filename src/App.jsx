@@ -1,25 +1,16 @@
 import { useEffect } from 'react';
-import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { auth } from '../src/utils/cloudBase';
 import { login } from '../src/redux/actions';
 import Login from './pages/Login';
 import Admin from './pages/Admin';
 
-const App = props => {
+const App = ({ loginState, login }) => {
     useEffect(() => {
-        auth.hasLoginState() ? props.login(true) : props.login(false);
-    }, [props]);
+        auth.hasLoginState() ? login(true) : login(false);
+    }, [loginState]);
 
-    return (
-        <Switch>
-            {props.loginState ? (
-                <Route path="/admin" component={Admin} />
-            ) : (
-                <Route path="/login" component={Login} />
-            )}
-        </Switch>
-    );
+    return <>{loginState ? <Admin /> : <Login />}</>;
 };
 
 export default connect(

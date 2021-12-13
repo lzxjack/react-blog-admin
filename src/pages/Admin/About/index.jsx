@@ -57,19 +57,18 @@ const About = props => {
                 <div
                     className="meContent markdownStyle"
                     dangerouslySetInnerHTML={{
-                        __html: marked(props.about.filter(item => item.isMe)[0].content).replace(
-                            /<pre>/g,
-                            "<pre id='hljs'>"
-                        ),
+                        __html: marked(
+                            props.about.filter(item => item.isMe)[0]?.content || ''
+                        ).replace(/<pre>/g, "<pre id='hljs'>"),
                     }}
                 ></div>
+
                 <div
                     className="siteContent markdownStyle"
                     dangerouslySetInnerHTML={{
-                        __html: marked(props.about.filter(item => !item.isMe)[0].content).replace(
-                            /<pre>/g,
-                            "<pre id='hljs'>"
-                        ),
+                        __html: marked(
+                            props.about.filter(item => !item.isMe)[0]?.content || ''
+                        ).replace(/<pre>/g, "<pre id='hljs'>"),
                     }}
                 ></div>
             </div>
