@@ -6,16 +6,17 @@ import Login from './pages/Login';
 import Admin from './pages/Admin';
 
 const App = ({ loginState, login }) => {
-    useEffect(() => {
-        auth.hasLoginState() ? login(true) : login(false);
-    }, [loginState]);
+  useEffect(() => {
+    auth.hasLoginState() ? login(true) : login(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loginState]);
 
-    return <>{loginState ? <Admin /> : <Login />}</>;
+  return <>{loginState ? <Admin /> : <Login />}</>;
 };
 
 export default connect(
-    state => ({
-        loginState: state.loginState,
-    }),
-    { login }
+  state => ({
+    loginState: state.loginState
+  }),
+  { login }
 )(App);
