@@ -75,9 +75,9 @@ const LoginBox = props => {
       <div className='loginBtn' onClick={() => login(false)}>
         登录
       </div>
-      {/* <div className="visitorBtn" onClick={() => login(true)}>
-                游客
-            </div> */}
+      <div className='visitorBtn' onClick={() => login(true)}>
+        游客
+      </div>
     </div>
   );
 };
