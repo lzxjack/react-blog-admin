@@ -31,9 +31,7 @@
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
-    "test": "react-app-rewired test",
-    "eject": "react-scripts eject",
-    "deploy": "tcb hosting deploy build -e react-blog-admin-8fo571wf24c87f9"
+    "go": "tcb hosting deploy build -e react-blog-admin-8fo571wf24c87f9"
   },
   "eslintConfig": {
     "extends": [
