@@ -1,9 +1,43 @@
-> 这是个人博客系统的**后台管理页面**，**博客展示页面**仓库见<a href="https://github.com/lzxjack/react-blog" target="_blank">「react-blog」</a>。
+## 📖简介
 
+学习 Webpack 后搭建的小项目，供以后个人开发开箱即用。
 
+这是一个自己基于 Webpack 搭建的 React 脚手架，配置了相关模块，添加了常用功能，便于以后 React 新项目的搭建。
 
-😖现在看到的代码是**第一次**写的，扩展性、规范性、性能都不太好，各位大佬莫见笑~
+此脚手架集成了`react`+`react-router-dom`+`typescript`+`redux`+`less`+`sass`+`commitlint`+`eslint`+`dayjs`+`antd按需引入/自定义主题`+`ahooks`，可省去繁琐的配置过程，开箱即用。
 
-😕今后会进行**后台管理页面**的重写，**但短期内不会**。
+## 📝使用
 
-😎目前已将<a href="https://github.com/lzxjack/react-blog" target="_blank">「博客展示页面」</a>重构，大大提升开发体验、代码规范性、性能，欢迎体验~
+安装依赖：
+
+```powershell
+yarn
+```
+
+开发环境：
+
+```powershell
+yarn start
+```
+
+生产环境：
+
+```powershell
+yarn build
+```
+
+## 🏷️Webpack 版本
+
+- `webpack`：5.69.1
+- `webpack-cli`：4.9.2
+
+## 🔖功能版本
+
+- `react`：18.2.0
+- `react-router-dom`：6.8.2
+- `typescript`：4.9.5
+- `redux`：4.2.1
+- `dayjs`：1.11.7
+- `antd`：5.2.3
+- `ahooks`：3.7.5
+- ...
