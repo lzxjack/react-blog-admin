@@ -1,27 +1,9 @@
-import {
-  HomeOutlined,
-  LoadingOutlined,
-  SettingFilled,
-  SmileOutlined,
-  SyncOutlined
-} from '@ant-design/icons';
-import { useTitle } from 'ahooks';
-import { Button } from 'antd';
 import React from 'react';
 
+import s from './index.scss';
+
 const Admin: React.FC = () => {
-  useTitle('Admin');
-  return (
-    <>
-      <Button type='primary'>按钮</Button>
-      <HomeOutlined />
-      <SettingFilled />
-      <SmileOutlined />
-      <SyncOutlined spin />
-      <SmileOutlined rotate={180} />
-      <LoadingOutlined />
-    </>
-  );
+  return <div>Admin</div>;
 };
 
 export default Admin;
