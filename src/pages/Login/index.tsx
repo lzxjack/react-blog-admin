@@ -1,8 +1,9 @@
 import { notification } from 'antd';
 import classNames from 'classnames';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
+import { login } from '@/redux/slices/isLogin';
 import { authLogin } from '@/utils/apis/authLogin';
 import { avatarUrl, visitorEmail, visitorPwd } from '@/utils/constant';
 
@@ -11,12 +12,13 @@ import s from './index.scss';
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
 
-  const login = async (Email: string, pwd: string) => {
+  const dispatch = useDispatch();
+
+  const handleLogin = async (Email: string, pwd: string) => {
     const res = await authLogin(Email, pwd);
     openLoginNoti(res);
-    res && navigate('/home');
+    res && dispatch(login());
   };
 
   const openLoginNoti = (state: boolean) => {
@@ -62,10 +64,10 @@ const Login: React.FC = () => {
             />
           </div>
           <div className={classNames(s.item, s.btnBox)}>
-            <div className={s.btn} onClick={() => login(visitorEmail, visitorPwd)}>
+            <div className={s.btn} onClick={() => handleLogin(visitorEmail, visitorPwd)}>
               游客
             </div>
-            <div className={s.btn} onClick={() => login(email, password)}>
+            <div className={s.btn} onClick={() => handleLogin(email, password)}>
               登录
             </div>
           </div>

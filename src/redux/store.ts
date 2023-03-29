@@ -1,9 +1,8 @@
-import { composeWithDevTools } from '@redux-devtools/extension';
-import { createStore } from 'redux';
+import { configureStore } from '@reduxjs/toolkit';
 
-import allReducers from './reducers';
+import isLogin from '@/redux/slices/isLogin';
 
-const enhancers =
-  process.env.NODE_ENV === 'development' ? composeWithDevTools() : undefined;
-
-export default createStore(allReducers, enhancers);
+export default configureStore({
+  reducer: { isLogin },
+  devTools: process.env.NODE_ENV !== 'production'
+});
