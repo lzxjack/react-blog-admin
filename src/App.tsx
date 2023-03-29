@@ -1,26 +1,37 @@
 import './global.custom.scss';
 
-import React, { Suspense, useEffect } from 'react';
+import { useMount } from 'ahooks';
+import React, { lazy, Suspense } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Routes, useLocation } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 
 import { selectIsLogin } from '@/redux/selectors';
 import { login, logout } from '@/redux/slices/isLogin';
 import { auth } from '@/utils/cloudBase';
-import { renderRoutes, routes } from '@/utils/routes';
+
+const Login = lazy(
+  () => import(/* webpackChunkName:'Login', webpackPrefetch:true */ '@/pages/Login')
+);
+const Home = lazy(
+  () => import(/* webpackChunkName:'Home', webpackPrefetch:true */ '@/pages/Home')
+);
 
 const App: React.FC = () => {
-  const location = useLocation();
   const isLogin = useSelector(selectIsLogin);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    auth.hasLoginState() ? dispatch(login()) : dispatch(logout());
-  }, []);
+  useMount(() => {
+    dispatch(auth.hasLoginState() ? login() : logout());
+  });
 
   return (
     <Suspense fallback={null}>
-      <Routes>{renderRoutes(location, isLogin, routes)}</Routes>
+      <Routes>
+        <Route path='/' element={isLogin ? <Navigate to='/home' /> : <Login />} />
+        <Route path='/home/*' element={isLogin ? <Home /> : <Login />} />
+        <Route path='*' element={<Navigate to='/' />} />
+      </Routes>
     </Suspense>
   );
 };

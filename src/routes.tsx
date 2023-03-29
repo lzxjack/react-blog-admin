@@ -1,14 +1,11 @@
 import React, { lazy } from 'react';
 import { Navigate, Route } from 'react-router-dom';
 
-const Login = lazy(
-  () => import(/* webpackChunkName:'Login', webpackPrefetch:true */ '@/pages/Login')
-);
-const Home = lazy(
-  () => import(/* webpackChunkName:'Home', webpackPrefetch:true */ '@/pages/Home')
-);
 const Article = lazy(
   () => import(/* webpackChunkName:'Article', webpackPrefetch:true */ '@/pages/Article')
+);
+const About = lazy(
+  () => import(/* webpackChunkName:'About', webpackPrefetch:true */ '@/pages/About')
 );
 
 export interface routeType {
@@ -46,23 +43,18 @@ export const renderRoutes = (location: any, loginState: boolean, routes: routeTy
 
 export const routes: routeType[] = [
   {
-    path: '/',
-    Element: Login,
+    path: 'article',
+    Element: Article,
     auth: false
   },
   {
-    path: '/home',
-    Element: Home,
-    auth: true
-  },
-  {
-    path: '/article',
-    Element: Article,
+    path: 'about',
+    Element: About,
     auth: true
   },
   {
     path: '*',
-    Element: Login,
+    Element: About,
     auth: false
   }
 ];
