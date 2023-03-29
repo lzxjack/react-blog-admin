@@ -1,24 +1,20 @@
 import './global.custom.scss';
 
-import React, { lazy, Suspense } from 'react';
+import React, { Suspense } from 'react';
+import { Routes, useLocation } from 'react-router-dom';
 
-// import { Link, Route, Routes } from 'react-router-dom';
-import ErrorBoundary from '@/components/ErrorBoundary';
-
-import s from './App.scss';
-
-const Admin = lazy(
-  () => import(/* webpackChunkName:'Admin', webpackPrefetch:true */ '@/pages/Admin')
-);
-
-const Login = lazy(
-  () => import(/* webpackChunkName:'Login', webpackPrefetch:true */ '@/pages/Login')
-);
+import { renderRoutes, routes } from '@/utils/routes';
 
 const App: React.FC = () => {
-  const loginState = true;
+  const location = useLocation();
 
-  return <ErrorBoundary>{loginState ? <Admin /> : <Login />}</ErrorBoundary>;
+  const loginState = !true;
+
+  return (
+    <Suspense fallback={null}>
+      <Routes>{renderRoutes(location, loginState, routes)}</Routes>
+    </Suspense>
+  );
 };
 
 export default App;

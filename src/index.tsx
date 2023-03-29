@@ -6,6 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import store from '@/redux/store';
 
 import App from './App';
+import ErrorBoundary from './components/ErrorBoundary';
 
 if (module?.hot) {
   module.hot.accept();
@@ -14,11 +15,13 @@ if (module?.hot) {
 const root = createRoot(document.getElementById('root') as HTMLElement);
 
 const element = (
-  <Provider store={store}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </Provider>
+  <ErrorBoundary>
+    <Provider store={store}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Provider>
+  </ErrorBoundary>
 );
 
 root.render(element);
