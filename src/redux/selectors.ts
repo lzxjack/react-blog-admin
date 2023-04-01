@@ -1,5 +1,7 @@
-interface stateType {
-  isLogin: { value: boolean };
-}
+// interface stateType {
+//   isLogin: { value: boolean };
+// }
 
-export const selectIsLogin = (state: stateType) => state.isLogin.value;
+// export const selectIsLogin = (state: stateType) => state.isLogin.value;
+
+export {};

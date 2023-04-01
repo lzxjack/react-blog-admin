@@ -1,9 +1,8 @@
 import { notification } from 'antd';
 import classNames from 'classnames';
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
-import { login } from '@/redux/slices/isLogin';
 import { authLogin } from '@/utils/apis/authLogin';
 import { avatarUrl, visitorEmail, visitorPwd } from '@/utils/constant';
 
@@ -13,12 +12,12 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogin = async (Email: string, pwd: string) => {
     const res = await authLogin(Email, pwd);
+    res && navigate('admin');
     openLoginNoti(res);
-    res && dispatch(login());
   };
 
   const openLoginNoti = (state: boolean) => {
