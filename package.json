@@ -29,6 +29,7 @@
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
     "@cloudbase/js-sdk": "^1.7.2",
+    "@reduxjs/toolkit": "^1.9.3",
     "ahooks": "^3.7.5",
     "antd": "^5.2.3",
     "classnames": "^2.3.2",
@@ -37,8 +38,7 @@
     "react-dom": "^18.2.0",
     "react-icons": "^4.7.1",
     "react-redux": "^8.0.5",
-    "react-router-dom": "^6.8.2",
-    "redux": "^4.2.1"
+    "react-router-dom": "^6.8.2"
   },
   "devDependencies": {
     "@babel/core": "7.17.5",
@@ -50,7 +50,6 @@
     "@babel/runtime-corejs3": "7.17.2",
     "@commitlint/cli": "16.2.1",
     "@commitlint/config-conventional": "16.2.1",
-    "@redux-devtools/extension": "3.2.2",
     "@types/react": "^17.0.40",
     "@types/react-dom": "^17.0.13",
     "@types/webpack-env": "1.16.3",

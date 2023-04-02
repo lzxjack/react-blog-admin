@@ -11,6 +11,12 @@ body {
   margin: 0;
 }
 
+div {
+  box-sizing: border-box;
+  font-family: BlinkMacSystemFont, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial,
+    sans-serif;
+}
+
 a,
 a:link,
 a:visited,
@@ -20,7 +26,23 @@ a:focus {
   text-decoration: none !important;
 }
 
+ul,
+li {
+  list-style: none;
+}
+
+img {
+  -webkit-user-drag: none;
+}
+
+input {
+  background: none;
+  outline: none;
+  border: 0px;
+  border-radius: 0;
+}
+
 // 重置antd样式
-.ant-btn-primary {
-  background-color: red !important;
+.ant-notification-notice-close {
+  display: none !important;
 }
