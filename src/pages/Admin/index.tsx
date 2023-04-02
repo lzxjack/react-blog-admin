@@ -1,4 +1,4 @@
-import { Popconfirm } from 'antd';
+import { notification, Popconfirm } from 'antd';
 import classNames from 'classnames';
 import React from 'react';
 import { IoHome, IoLogOut } from 'react-icons/io5';
@@ -16,6 +16,12 @@ const Admin: React.FC = () => {
 
   const logout = () => {
     localStorage.clear();
+    notification.success({
+      message: '退出登录',
+      description: '已退出个人博客后台管理系统！',
+      placement: 'bottomLeft',
+      duration: 1.5
+    });
     navigate('/');
   };
 
