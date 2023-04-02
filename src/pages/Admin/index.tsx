@@ -1,59 +1,54 @@
-import React, { lazy } from 'react';
+import classNames from 'classnames';
+import React from 'react';
 import { Navigate, NavLink, Route, Routes } from 'react-router-dom';
 
 import RequireAuth from '@/components/RequireAuth';
+import { AppName } from '@/utils/constant';
 
+import { RouteType, useRoutes } from './config';
 import s from './index.scss';
 
-const Article = lazy(
-  () =>
-    import(/* webpackChunkName:'Article', webpackPrefetch:true */ '@/pages/Admin/Article')
-);
-const About = lazy(
-  () => import(/* webpackChunkName:'About', webpackPrefetch:true */ '@/pages/Admin/About')
-);
-const Home = lazy(
-  () => import(/* webpackChunkName:'Home', webpackPrefetch:true */ '@/pages/Admin/Home')
-);
-
 const Admin: React.FC = () => {
+  const routes = useRoutes();
+
   return (
-    <>
-      <nav>
-        <NavLink to='/admin'>Admin</NavLink>
-        &nbsp;
-        <NavLink to='/admin/article'>article</NavLink>
-        &nbsp;
-        <NavLink to='/admin/about'>about</NavLink>
+    <div className={s.adminBox}>
+      {/* 左侧导航区 */}
+      <nav className={s.nav}>
+        <div className={s.appName}>{AppName}</div>
+        <ul>
+          {routes.map((item: RouteType) => (
+            <li key={item.path} className={s.liItem}>
+              <NavLink
+                to={`/admin/${item.path}`}
+                className={({ isActive }) =>
+                  isActive ? classNames(s.navItem, s.navItemActive) : s.navItem
+                }
+              >
+                {item.disPlayName}
+              </NavLink>
+            </li>
+          ))}
+        </ul>
       </nav>
-      <Routes>
-        <Route
-          path=''
-          element={
-            <RequireAuth requireLogin={true} to='/'>
-              <Home />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path='article'
-          element={
-            <RequireAuth requireLogin={true} to='/'>
-              <Article />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path='about'
-          element={
-            <RequireAuth requireLogin={true} to='/'>
-              <About />
-            </RequireAuth>
-          }
-        />
-        <Route path='*' element={<Navigate to='' />} />
-      </Routes>
-    </>
+      {/* 右侧内容区域= */}
+      <div className={s.content}>
+        <Routes>
+          {routes.map((item: RouteType) => (
+            <Route
+              key={item.path}
+              path={item.path}
+              element={
+                <RequireAuth requireLogin={true} to='/'>
+                  {item.element}
+                </RequireAuth>
+              }
+            />
+          ))}
+          <Route path='*' element={<Navigate to='home' />} />
+        </Routes>
+      </div>
+    </div>
   );
 };
 

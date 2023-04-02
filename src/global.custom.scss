@@ -26,6 +26,11 @@ a:focus {
   text-decoration: none !important;
 }
 
+ul,
+li {
+  list-style: none;
+}
+
 img {
   -webkit-user-drag: none;
 }

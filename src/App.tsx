@@ -19,7 +19,7 @@ const App: React.FC = () => {
         <Route
           path='/'
           element={
-            <RequireAuth requireLogin={false} to='admin'>
+            <RequireAuth requireLogin={false} to='/admin/home'>
               <Login />
             </RequireAuth>
           }

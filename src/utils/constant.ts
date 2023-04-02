@@ -8,3 +8,6 @@ export const avatarUrl = 'https://img.lzxjack.top/img/202203302348298.webp';
 export const visitorEmail = '490878306@qq.com';
 export const visitorPwd = 'asd123456';
 export const visitorAvatar = 'https://img.lzxjack.top/img/20210826221910.jpg';
+
+// 站点名称
+export const AppName = '飞鸟小站';
