@@ -2,7 +2,6 @@
 @import '../../styles/style.scss';
 
 $navWidth: 160px;
-$headerHeight: 54px;
 
 .navItemBase {
   margin: 14px auto;
@@ -16,30 +15,16 @@ $headerHeight: 54px;
   overflow: hidden;
 }
 
-.headerBtnBase {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 14px;
-  user-select: none;
-  font-size: 22px;
-  color: #a7d5ff;
-  background-color: #fff;
-  @extend .trans;
-}
-
 .adminBox {
-  display: flex;
   height: 100%;
+  background-color: #f0f2f5;
 
-  .nav {
+  .leftNav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
     width: $navWidth;
-    height: 100%;
     background-color: $themeColor1;
     color: #fff;
 
@@ -78,45 +63,15 @@ $headerHeight: 54px;
     }
   }
 
-  .content {
-    flex: 1;
+  .rightContent {
+    margin-left: $navWidth;
+    padding-top: 54px;
     height: 100%;
-    display: flex;
-    flex-direction: column;
-
-    .headerBox {
-      height: $headerHeight;
-      background-color: #a7d5ff;
-      position: relative;
-
-      .blogBtn {
-        right: calc(20px * 2 + 40px);
-        @extend .headerBtnBase;
-      }
-
-      .blogBtn:hover {
-        color: #fff;
-        background-color: $themeColor3;
-        cursor: pointer;
-      }
-
-      .logoutBtn {
-        right: 20px;
-        @extend .headerBtnBase;
-      }
-
-      .logoutBtn:hover {
-        color: #fff;
-        background-color: red;
-        cursor: pointer;
-      }
-    }
 
     .routeContent {
       padding: 20px;
       width: 100%;
-      flex: 1;
-      background-color: #f0f2f5;
+      min-height: calc(100vh - 54px - 70px);
     }
   }
 }

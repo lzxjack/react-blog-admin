@@ -1,0 +1,50 @@
+@import '../../styles/base.scss';
+@import '../../styles/style.scss';
+
+.headerBtnBase {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 14px;
+  user-select: none;
+  font-size: 22px;
+  color: #a7d5ff;
+  background-color: #fff;
+  @extend .trans;
+}
+
+.headerBox {
+  position: fixed;
+  top: 0;
+  left: 160px;
+  right: 0;
+  height: 54px;
+  background-color: #a7d5ff;
+
+  .blogBtn {
+    right: calc(20px * 2 + 40px);
+    @extend .headerBtnBase;
+  }
+
+  .blogBtn:hover {
+    color: #fff;
+    background-color: $themeColor3;
+    cursor: pointer;
+  }
+
+  .logoutBtn {
+    right: 20px;
+    @extend .headerBtnBase;
+  }
+
+  .logoutBtn:hover {
+    color: #fff;
+    background-color: red;
+    cursor: pointer;
+  }
+}

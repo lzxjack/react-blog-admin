@@ -11,6 +11,10 @@ body {
   margin: 0;
 }
 
+body::-webkit-scrollbar {
+  display: none;
+}
+
 div {
   box-sizing: border-box;
   font-family: BlinkMacSystemFont, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial,
@@ -24,7 +28,7 @@ a:hover,
 a:active,
 a:focus {
   text-decoration: none !important;
-  cursor: default;
+  // cursor: default;
 }
 
 ul,

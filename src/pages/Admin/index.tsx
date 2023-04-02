@@ -4,6 +4,8 @@ import React from 'react';
 import { IoHome, IoLogOut } from 'react-icons/io5';
 import { Navigate, NavLink, Route, Routes, useNavigate } from 'react-router-dom';
 
+import Footer from '@/components/Footer';
+import Header from '@/components/Header';
 import RequireAuth from '@/components/RequireAuth';
 import { AppName, blogUrl } from '@/utils/constant';
 
@@ -28,7 +30,7 @@ const Admin: React.FC = () => {
   return (
     <div className={s.adminBox}>
       {/* 左侧导航区 */}
-      <nav className={s.nav}>
+      <nav className={s.leftNav}>
         <div className={s.appName}>{AppName}</div>
         <ul>
           {routes.map((item: RouteType) => (
@@ -46,23 +48,8 @@ const Admin: React.FC = () => {
         </ul>
       </nav>
       {/* 右侧内容区域= */}
-      <div className={s.content}>
-        <div className={s.headerBox}>
-          <a className={s.blogBtn} href={blogUrl} target='_blank'>
-            <IoHome />
-          </a>
-          <Popconfirm
-            title='确定退出吗？'
-            placement='bottomRight'
-            onConfirm={logout}
-            okText='Yes'
-            cancelText='No'
-          >
-            <div className={s.logoutBtn}>
-              <IoLogOut />
-            </div>
-          </Popconfirm>
-        </div>
+      <div className={s.rightContent}>
+        <Header />
         {/* 路由内容 */}
         <div className={s.routeContent}>
           <Routes>
@@ -80,6 +67,7 @@ const Admin: React.FC = () => {
             <Route path='*' element={<Navigate to='home' />} />
           </Routes>
         </div>
+        <Footer />
       </div>
     </div>
   );
