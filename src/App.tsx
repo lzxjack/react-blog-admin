@@ -1,9 +1,11 @@
 import './global.custom.scss';
 
-import React, { lazy, Suspense } from 'react';
+import React, { lazy } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import RequireAuth from '@/components/RequireAuth';
+
+import WithLoading from './components/WithLoading';
 
 const Login = lazy(
   () => import(/* webpackChunkName:'Login', webpackPrefetch:true */ '@/pages/Login')
@@ -14,7 +16,7 @@ const Admin = lazy(
 
 const App: React.FC = () => {
   return (
-    <Suspense fallback={null}>
+    <WithLoading>
       <Routes>
         <Route
           path='/'
@@ -34,7 +36,7 @@ const App: React.FC = () => {
         />
         <Route path='*' element={<Navigate to='/' />} />
       </Routes>
-    </Suspense>
+    </WithLoading>
   );
 };
 

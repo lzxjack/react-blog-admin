@@ -1,6 +1,7 @@
 import { useRequest, useSafeState, useTitle } from 'ahooks';
 import React from 'react';
 
+import Loading from '@/components/Loading';
 import PageHeader from '@/components/PageHeader';
 import { DB } from '@/utils/apis/dbConfig';
 import { getPageData } from '@/utils/apis/getPageData';
@@ -38,6 +39,7 @@ const Link: React.FC = () => {
           console.log(123);
         }}
       />
+      <Loading />
     </>
   );
 };

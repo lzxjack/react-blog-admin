@@ -5,6 +5,7 @@ import { Navigate, NavLink, Route, Routes } from 'react-router-dom';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import RequireAuth from '@/components/RequireAuth';
+import WithLoading from '@/components/WithLoading';
 import { AppName } from '@/utils/constant';
 
 import { RouteType, useRoutes } from './config';
@@ -40,20 +41,22 @@ const Admin: React.FC = () => {
         <Header />
         {/* 路由内容 */}
         <div className={s.routeContent}>
-          <Routes>
-            {routes.map((item: RouteType) => (
-              <Route
-                key={item.path}
-                path={item.path}
-                element={
-                  <RequireAuth requireLogin={true} to='/'>
-                    {item.element}
-                  </RequireAuth>
-                }
-              />
-            ))}
-            <Route path='*' element={<Navigate to='home' />} />
-          </Routes>
+          <WithLoading>
+            <Routes>
+              {routes.map((item: RouteType) => (
+                <Route
+                  key={item.path}
+                  path={item.path}
+                  element={
+                    <RequireAuth requireLogin={true} to='/'>
+                      {item.element}
+                    </RequireAuth>
+                  }
+                />
+              ))}
+              <Route path='*' element={<Navigate to='home' />} />
+            </Routes>
+          </WithLoading>
         </div>
         <Footer />
       </div>
