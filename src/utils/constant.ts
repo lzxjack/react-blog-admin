@@ -17,3 +17,12 @@ export const blogUrl = 'https://lzxjack.top';
 
 // 博客后台github
 export const githubUrl = 'https://github.com/lzxjack/blog-admin';
+
+// 页面title
+export const siteTitle = '飞鸟小站后台管理';
+
+// 数据缓存时间
+export const staleTime = 180000;
+
+// 分页每页数量
+export const size = 10;

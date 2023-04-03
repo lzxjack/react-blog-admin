@@ -1,4 +1,8 @@
 // 颜色
 $themeColor1: var(--themeColor1, rgb(18, 83, 143));
 $themeColor2: var(--themeColor2, rgb(195, 206, 217));
-$themeColor3: var(--themeColor3, rgb(24, 144, 255));
+$themeColor3: var(--themeColor3, rgb(22, 119, 255));
+$themeColor3_light: var(--themeColor3, rgb(64, 150, 255));
+
+$themeColor4: var(--themeColor3, rgb(255, 77, 79));
+$themeColor4_light: var(--themeColor3, rgb(255, 135, 133));
