@@ -32,6 +32,12 @@ const Deleted = lazy(
   () =>
     import(/* webpackChunkName:'Deleted', webpackPrefetch:true */ '@/pages/Admin/Deleted')
 );
+const AddArticle = lazy(
+  () =>
+    import(
+      /* webpackChunkName:'AddArticle', webpackPrefetch:true */ '@/pages/Admin/AddArticle'
+    )
+);
 
 export interface RouteType {
   path: string;
@@ -89,5 +95,10 @@ export const useRoutes = (): RouteType[] => [
     path: 'deleted',
     disPlayName: '已删除',
     element: <Deleted />
+  },
+  {
+    path: 'addArticle',
+    disPlayName: '',
+    element: <AddArticle />
   }
 ];
