@@ -1,4 +1,5 @@
 import { useRequest, useSafeState, useTitle } from 'ahooks';
+import { Table } from 'antd';
 import React from 'react';
 
 import Loading from '@/components/Loading';
@@ -8,11 +9,24 @@ import { getPageData } from '@/utils/apis/getPageData';
 import { siteTitle, size, staleTime } from '@/utils/constant';
 
 import { Title } from '../titleConfig';
+import { useColumns } from './config';
 import s from './index.scss';
 
 const Link: React.FC = () => {
   useTitle(`${siteTitle} | ${Title.Link}`);
   const [page, setPage] = useSafeState(1);
+
+  const editLink = (id: string) => {
+    // TODO:
+    console.log(id);
+  };
+
+  const deleteLink = (id: string) => {
+    // TODO:
+    console.log(id);
+  };
+
+  const columns = useColumns({ editLink, deleteLink });
 
   const { data, loading } = useRequest(
     () =>
@@ -29,8 +43,6 @@ const Link: React.FC = () => {
     }
   );
 
-  console.log(data);
-
   return (
     <>
       <PageHeader
@@ -39,7 +51,15 @@ const Link: React.FC = () => {
           console.log(123);
         }}
       />
-      <Loading />
+      <Table
+        size='middle'
+        bordered
+        loading={loading}
+        columns={columns}
+        dataSource={data?.data}
+        rowKey={columns => columns._id}
+        showSorterTooltip={false}
+      />
     </>
   );
 };

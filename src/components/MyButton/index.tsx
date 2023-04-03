@@ -8,12 +8,21 @@ interface Props {
   danger?: boolean;
   small?: boolean;
   className?: string;
-  onClick: MouseEventHandler<HTMLDivElement>;
+  style?: Object;
+  onClick?: MouseEventHandler<HTMLDivElement>;
 }
 
-const MyButton: React.FC<Props> = ({ text, onClick, danger, small, className }) => {
+const MyButton: React.FC<Props> = ({
+  text,
+  onClick,
+  danger,
+  small,
+  className,
+  style
+}) => {
   return (
     <div
+      style={style}
       className={classNames(s.myButtonBox, className, {
         [s.btnDanger]: danger,
         [s.btnSamll]: small

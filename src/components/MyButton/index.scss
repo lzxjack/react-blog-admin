@@ -2,14 +2,14 @@
 @import '../../styles/style.scss';
 
 .myButtonBox {
+  display: inline-block !important;
   width: 80px;
   height: 40px;
   font-size: 16px;
   color: #fff;
   background-color: $themeColor3;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  text-align: center;
+  line-height: 40px;
   border-radius: 12px;
   user-select: none;
   @extend .trans;
@@ -31,6 +31,7 @@
 .btnSamll {
   width: 64px;
   height: 32px;
+  line-height: 32px;
   font-size: 14px;
   border-radius: 8px;
 }
