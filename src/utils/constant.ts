@@ -11,3 +11,9 @@ export const visitorAvatar = 'https://img.lzxjack.top/img/20210826221910.jpg';
 
 // 站点名称
 export const AppName = '飞鸟小站';
+
+// 博客主页url
+export const blogUrl = 'https://lzxjack.top';
+
+// 博客后台github
+export const githubUrl = 'https://github.com/lzxjack/blog-admin';

@@ -16,12 +16,15 @@ $navWidth: 160px;
 }
 
 .adminBox {
-  display: flex;
   height: 100%;
+  background-color: #f0f2f5;
 
-  .nav {
+  .leftNav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
     width: $navWidth;
-    height: 100%;
     background-color: $themeColor1;
     color: #fff;
 
@@ -50,12 +53,25 @@ $navWidth: 160px;
         .navItemActive {
           background-color: $themeColor3;
           color: #fff;
+          cursor: pointer;
+        }
+
+        .navItemActive {
+          cursor: default !important;
         }
       }
     }
   }
 
-  .content {
-    width: calc(100%-$navWidth);
+  .rightContent {
+    margin-left: $navWidth;
+    padding-top: 54px;
+    height: 100%;
+
+    .routeContent {
+      padding: 20px;
+      width: 100%;
+      min-height: calc(100vh - 54px - 70px);
+    }
   }
 }
