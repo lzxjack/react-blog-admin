@@ -38,7 +38,7 @@ const Link: React.FC = () => {
     {
       retryCount: 3,
       refreshDeps: [page],
-      cacheKey: `${DB.Link}-${page}`,
+      cacheKey: `${DB.Link}-data-${page}`,
       staleTime
     }
   );
@@ -59,6 +59,16 @@ const Link: React.FC = () => {
         dataSource={data?.data}
         rowKey={columns => columns._id}
         showSorterTooltip={false}
+        // pagination={{
+        //   current: page,
+        //   total: total,
+        //   defaultPageSize: defaultPageSize,
+        //   showSizeChanger: false,
+        //   showTitle: false,
+        //   onChange: (page: number) => {
+        //     setPage(page);
+        //   }
+        // }}
       />
     </>
   );
