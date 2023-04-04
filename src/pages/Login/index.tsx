@@ -1,14 +1,17 @@
+import { useTitle } from 'ahooks';
 import { notification } from 'antd';
 import classNames from 'classnames';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { authLogin } from '@/utils/apis/authLogin';
-import { avatarUrl, visitorEmail, visitorPwd } from '@/utils/constant';
+import { avatarUrl, siteTitle, visitorEmail, visitorPwd } from '@/utils/constant';
 
 import s from './index.scss';
 
 const Login: React.FC = () => {
+  useTitle(siteTitle);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 

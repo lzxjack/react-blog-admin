@@ -1,17 +1,24 @@
+import { useTitle } from 'ahooks';
 import React from 'react';
 
+import CountCard from '@/components/CountCard';
+import { siteTitle } from '@/utils/constant';
+
+import { useCountCarts } from './config';
 import s from './index.scss';
 
 const Home: React.FC = () => {
-  const arr = new Array(20).fill(1);
+  useTitle(siteTitle);
+  const countCarts = useCountCarts();
 
   return (
     <>
-      {arr.map((item, index) => (
-        <div key={index} className={s.test}>
-          test
-        </div>
-      ))}
+      {/* 统计卡片区 */}
+      <div className={s.countCardContainer}>
+        {countCarts.map(({ title, DBName }) => (
+          <CountCard key={title} title={title} DBName={DBName} />
+        ))}
+      </div>
     </>
   );
 };
