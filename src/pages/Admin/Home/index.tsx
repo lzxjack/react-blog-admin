@@ -1,19 +1,14 @@
+import { useTitle } from 'ahooks';
 import React from 'react';
+
+import { siteTitle } from '@/utils/constant';
 
 import s from './index.scss';
 
 const Home: React.FC = () => {
-  const arr = new Array(20).fill(1);
+  useTitle(`${siteTitle}`);
 
-  return (
-    <>
-      {arr.map((item, index) => (
-        <div key={index} className={s.test}>
-          test
-        </div>
-      ))}
-    </>
-  );
+  return <>Home</>;
 };
 
 export default Home;
