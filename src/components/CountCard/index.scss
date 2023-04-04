@@ -1,0 +1,31 @@
+@import '../../styles/base.scss';
+
+.countCardBox {
+  width: calc((100% - 4 * 20px) / 5);
+  height: 160px;
+  background-color: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .key {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 22px;
+    font-weight: 700;
+    font-family: 'dengxian';
+  }
+
+  .value {
+    font-size: 80px;
+    color: $themeColor3;
+  }
+
+  .loading {
+    font-size: 40px;
+  }
+}
