@@ -18,7 +18,7 @@ body::-webkit-scrollbar {
 div {
   box-sizing: border-box;
   font-family: BlinkMacSystemFont, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial,
-    sans-serif;
+    sans-serif !important;
 }
 
 a,
@@ -48,6 +48,22 @@ input {
 }
 
 // 重置antd样式
+// notification通知隐藏关闭按钮
 .ant-notification-notice-close {
   display: none !important;
+}
+
+// 表格圆角
+.ant-table {
+  overflow: hidden;
+  border-radius: 12px !important;
+
+  .ant-table-cell {
+    text-align: center !important;
+  }
+
+  th.ant-table-cell {
+    font-size: 16px;
+    font-weight: 700;
+  }
 }

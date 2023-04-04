@@ -4,6 +4,7 @@
 .headerBtnBase {
   position: absolute;
   top: 50%;
+  z-index: 99;
   transform: translateY(-50%);
   width: 40px;
   height: 40px;
