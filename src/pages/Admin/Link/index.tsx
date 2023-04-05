@@ -40,7 +40,6 @@ const Link: React.FC = () => {
         }}
       />
       <Table
-        size='middle'
         bordered
         loading={loading}
         columns={columns}
@@ -53,6 +52,7 @@ const Link: React.FC = () => {
           defaultPageSize: pageSize,
           showSizeChanger: false,
           showTitle: false,
+          position: ['bottomCenter'],
           onChange: (page: number) => setPage(page)
         }}
       />
