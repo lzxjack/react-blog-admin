@@ -4,11 +4,11 @@ import React from 'react';
 import MyButton from '@/components/MyButton';
 
 interface Props {
-  editLink: (id: string) => void;
-  deleteLink: (id: string) => void;
+  handleEdit: (id: string) => void;
+  handleDelete: (id: string) => void;
 }
 
-export const useColumns = ({ editLink, deleteLink }: Props) => [
+export const useColumns = ({ handleEdit, handleDelete }: Props) => [
   {
     title: 'Name',
     dataIndex: 'name',
@@ -43,12 +43,12 @@ export const useColumns = ({ editLink, deleteLink }: Props) => [
           style={{ marginRight: '10px' }}
           text='修改'
           small
-          onClick={() => editLink(record._id)}
+          onClick={() => handleEdit(record._id)}
         />
         <Popconfirm
           placement='bottomRight'
           title='确定要删除该友链吗？'
-          onConfirm={() => deleteLink(record._id)}
+          onConfirm={() => handleDelete(record._id)}
           okText='Yes'
           cancelText='No'
         >
