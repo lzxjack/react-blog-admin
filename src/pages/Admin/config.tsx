@@ -28,10 +28,6 @@ const Log = lazy(
 const Draft = lazy(
   () => import(/* webpackChunkName:'Draft', webpackPrefetch:true */ '@/pages/Admin/Draft')
 );
-const Deleted = lazy(
-  () =>
-    import(/* webpackChunkName:'Deleted', webpackPrefetch:true */ '@/pages/Admin/Deleted')
-);
 const AddArticle = lazy(
   () =>
     import(
@@ -90,11 +86,6 @@ export const useRoutes = (): RouteType[] => [
     path: 'draft',
     disPlayName: '草稿箱',
     element: <Draft />
-  },
-  {
-    path: 'deleted',
-    disPlayName: '已删除',
-    element: <Deleted />
   },
   {
     path: 'addArticle',
