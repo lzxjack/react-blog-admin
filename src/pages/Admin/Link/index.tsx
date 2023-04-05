@@ -1,16 +1,13 @@
-import { useRequest, useSafeState, useTitle } from 'ahooks';
+import { useSafeState, useTitle } from 'ahooks';
 import { Table } from 'antd';
 import React from 'react';
 
-import Loading from '@/components/Loading';
 import PageHeader from '@/components/PageHeader';
-import { DB } from '@/utils/apis/dbConfig';
-import { getPageData } from '@/utils/apis/getPageData';
-import { siteTitle, size, staleTime } from '@/utils/constant';
+import { pageSize, siteTitle } from '@/utils/constant';
+import { useMyRequest } from '@/utils/myRequest';
 
 import { Title } from '../titleConfig';
 import { useColumns } from './config';
-import s from './index.scss';
 
 const Link: React.FC = () => {
   useTitle(`${siteTitle} | ${Title.Link}`);
@@ -28,20 +25,11 @@ const Link: React.FC = () => {
 
   const columns = useColumns({ editLink, deleteLink });
 
-  const { data, loading } = useRequest(
-    () =>
-      getPageData({
-        dbName: DB.Link,
-        page,
-        size
-      }),
-    {
-      retryCount: 3,
-      refreshDeps: [page],
-      cacheKey: `${DB.Link}-data-${page}`,
-      staleTime
-    }
-  );
+  const {
+    data,
+    sum: total,
+    loading
+  } = useMyRequest({ index: 'link', page, size: pageSize });
 
   return (
     <>
@@ -56,19 +44,17 @@ const Link: React.FC = () => {
         bordered
         loading={loading}
         columns={columns}
-        dataSource={data?.data}
+        dataSource={data}
         rowKey={columns => columns._id}
         showSorterTooltip={false}
-        // pagination={{
-        //   current: page,
-        //   total: total,
-        //   defaultPageSize: defaultPageSize,
-        //   showSizeChanger: false,
-        //   showTitle: false,
-        //   onChange: (page: number) => {
-        //     setPage(page);
-        //   }
-        // }}
+        pagination={{
+          current: page,
+          total,
+          defaultPageSize: pageSize,
+          showSizeChanger: false,
+          showTitle: false,
+          onChange: (page: number) => setPage(page)
+        }}
       />
     </>
   );

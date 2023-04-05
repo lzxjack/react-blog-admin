@@ -25,4 +25,4 @@ export const siteTitle = '飞鸟小站后台管理';
 export const staleTime = 180000;
 
 // 分页每页数量
-export const size = 10;
+export const pageSize = 10;

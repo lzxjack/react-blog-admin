@@ -1,13 +1,15 @@
-interface DataSumType {
-  article: string;
-  draft: string;
-  link: string;
-  msg: string;
-  say: string;
-}
+// interface DataSumType {
+//   article: number;
+//   draft: number;
+//   link: number;
+//   msg: number;
+//   say: number;
+// }
 
-interface stateType {
-  dataSum: DataSumType;
-}
+// interface stateType {
+//   dataSum: DataSumType;
+// }
 
-export const selectDataSum = (state: stateType) => state.dataSum;
+// export const selectDataSum = (state: stateType) => state.dataSum;
+
+export {};
