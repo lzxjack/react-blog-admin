@@ -1,8 +1,10 @@
-import { setArticleSum } from '@/redux/slices/articleSum';
-import { setDraftSum } from '@/redux/slices/draftSum';
-import { setLinkSum } from '@/redux/slices/linkSum';
-import { setMsgSum } from '@/redux/slices/msgSum';
-import { setSaySum } from '@/redux/slices/saySum';
+import {
+  setArticleSum,
+  setDraftSum,
+  setLinkSum,
+  setMsgSum,
+  setSaySum
+} from '@/redux/slices/dataSum';
 import { DB } from '@/utils/apis/dbConfig';
 
 export const useCardMap = () => ({
