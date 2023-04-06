@@ -124,10 +124,26 @@ $pageHeight: 34px;
       height: 18px;
     }
   }
+
+  .ant-pagination-item-link-icon {
+    color: $textColor !important;
+  }
 }
 
 // model
 .ant-modal-title {
   font-size: 20px !important;
   font-weight: 700 !important;
+}
+
+th,
+td {
+  padding: 0 !important;
+  margin: 0 !important;
+  box-sizing: border-box;
+}
+
+.ant-table-row,
+.ant-table-thead {
+  height: 64px !important;
 }

@@ -1,0 +1,62 @@
+@import '../../../styles/base.scss';
+
+.tagBase {
+  color: #fff;
+  height: 24px;
+  padding: 0 5px;
+  display: inline-block;
+  text-align: center;
+  line-height: 24px;
+  border-radius: 6px;
+}
+
+.msgUserNameBox {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .msgUserName {
+    font-weight: 700;
+  }
+
+  .msgUserAdmin {
+    background-color: $themeColor3_light;
+    @extend .tagBase;
+  }
+}
+
+.typeBox {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .comment {
+    @extend .tagBase;
+    background-color: rgb(1, 185, 176);
+  }
+
+  .msg {
+    @extend .tagBase;
+    background-color: rgb(243, 243, 13);
+    color: #000;
+  }
+
+  .reply {
+    @extend .tagBase;
+    background-color: rgb(3, 194, 31);
+  }
+}
+
+.msgsContent {
+  width: 100%;
+  height: 100%;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  padding: 4px 16px;
+}

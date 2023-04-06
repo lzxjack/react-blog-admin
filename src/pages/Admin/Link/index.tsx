@@ -37,24 +37,10 @@ const Link: React.FC = () => {
     dataRun,
     sumRun,
     myClearCache,
-    myClearCacheOnePage
+    myClearCacheOnePage,
+    getTotalPage,
+    getAfterDeletedPage
   } = useTableData({ DBName: DB.Link, page, size: pageSize });
-
-  const getTotalPage = (total: number, pageSize: number) => {
-    const totalPage = total / pageSize;
-    if (Number.isInteger(totalPage)) {
-      return totalPage;
-    }
-    return Math.ceil(totalPage);
-  };
-
-  const getAfterDeletedPage = (total: number, nowPage: number, pageSize: number) => {
-    if (total === 1) return 1;
-    if (total % pageSize === 1 && nowPage === Math.ceil(total / pageSize)) {
-      return nowPage - 1;
-    }
-    return nowPage;
-  };
 
   const handleEdit = (id: string) => {
     setIsModalOpen(true);
