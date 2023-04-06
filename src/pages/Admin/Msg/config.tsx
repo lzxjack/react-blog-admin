@@ -4,15 +4,17 @@ import dayjs from 'dayjs';
 import React from 'react';
 
 import MyButton from '@/components/MyButton';
+import { DeleteProps } from '@/utils/hooks/useTableData';
 
 import s from './index.scss';
 
 interface Props {
   handleOpenMsg: (postTitle: string) => void;
-  handleDelete: (id: string) => void;
+  handleDelete: (id: string, props: DeleteProps) => void;
+  deleteProps: DeleteProps;
 }
 
-export const useColumns = ({ handleOpenMsg, handleDelete }: Props) => [
+export const useColumns = ({ handleOpenMsg, handleDelete, deleteProps }: Props) => [
   {
     title: '昵称',
     dataIndex: 'name',
@@ -49,15 +51,15 @@ export const useColumns = ({ handleOpenMsg, handleDelete }: Props) => [
   {
     title: '类型',
     key: '_id',
-    render: (record: { postTitle: string; replyId: string }) => (
+    render: ({ postTitle, replyId }: { postTitle: string; replyId: string }) => (
       <div className={s.typeBox}>
         <div
-          className={record.postTitle ? s.comment : s.msg}
-          style={record.replyId ? { marginRight: '5px' } : {}}
+          className={postTitle ? s.comment : s.msg}
+          style={replyId ? { marginRight: '5px' } : {}}
         >
-          {record.postTitle ? '文章评论' : '留言板'}
+          {postTitle ? '文章评论' : '留言板'}
         </div>
-        {record.replyId && <div className={s.reply}>回复</div>}
+        {replyId && <div className={s.reply}>回复</div>}
       </div>
     )
   },
@@ -71,18 +73,18 @@ export const useColumns = ({ handleOpenMsg, handleDelete }: Props) => [
   {
     title: '操作',
     key: '_id',
-    render: (record: { postTitle: string; _id: string }) => (
+    render: ({ postTitle, _id }: { postTitle: string; _id: string }) => (
       <>
         <MyButton
           style={{ marginRight: '10px' }}
           text='查看'
           small
-          onClick={() => handleOpenMsg(record.postTitle)}
+          onClick={() => handleOpenMsg(postTitle)}
         />
         <Popconfirm
           placement='bottomRight'
           title='确定要删除该留言吗？'
-          onConfirm={() => handleDelete(record._id)}
+          onConfirm={() => handleDelete(_id, deleteProps)}
           okText='Yes'
           cancelText='No'
         >

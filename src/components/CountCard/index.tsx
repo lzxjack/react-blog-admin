@@ -3,7 +3,7 @@ import { useRequest } from 'ahooks';
 import classNames from 'classnames';
 import React from 'react';
 
-import { getSum } from '@/utils/apis/getSum';
+import { getTotal } from '@/utils/apis/getTotal';
 import { staleTime } from '@/utils/constant';
 import { dataMap } from '@/utils/dataMap';
 import { DB } from '@/utils/dbConfig';
@@ -16,7 +16,7 @@ interface Props {
 }
 
 const CountCard: React.FC<Props> = ({ DBName, className }) => {
-  const { data, loading } = useRequest(() => getSum(DBName), {
+  const { data, loading } = useRequest(() => getTotal(DBName), {
     retryCount: 3,
     cacheKey: `${DBName}-count`,
     staleTime

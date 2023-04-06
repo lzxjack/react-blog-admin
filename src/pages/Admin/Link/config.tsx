@@ -2,13 +2,15 @@ import { Popconfirm } from 'antd';
 import React from 'react';
 
 import MyButton from '@/components/MyButton';
+import { DeleteProps } from '@/utils/hooks/useTableData';
 
 interface Props {
   handleEdit: (id: string) => void;
-  handleDelete: (id: string) => void;
+  handleDelete: (id: string, props: DeleteProps) => void;
+  deleteProps: DeleteProps;
 }
 
-export const useColumns = ({ handleEdit, handleDelete }: Props) => [
+export const useColumns = ({ handleEdit, handleDelete, deleteProps }: Props) => [
   {
     title: 'Name',
     dataIndex: 'name',
@@ -37,18 +39,18 @@ export const useColumns = ({ handleEdit, handleDelete }: Props) => [
   {
     title: '操作',
     key: '_id',
-    render: (record: { _id: string }) => (
+    render: ({ _id }: { _id: string }) => (
       <>
         <MyButton
           style={{ marginRight: '10px' }}
           text='更新'
           small
-          onClick={() => handleEdit(record._id)}
+          onClick={() => handleEdit(_id)}
         />
         <Popconfirm
           placement='bottomRight'
           title='确定要删除该友链吗？'
-          onConfirm={() => handleDelete(record._id)}
+          onConfirm={() => handleDelete(_id, deleteProps)}
           okText='Yes'
           cancelText='No'
         >

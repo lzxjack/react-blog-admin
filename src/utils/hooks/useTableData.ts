@@ -1,20 +1,28 @@
 import { clearCache, useRequest } from 'ahooks';
+import { message } from 'antd';
+import { flushSync } from 'react-dom';
 
 import { getPageData } from '@/utils/apis/getPageData';
-import { getSum } from '@/utils/apis/getSum';
-import { staleTime } from '@/utils/constant';
+import { getTotal } from '@/utils/apis/getTotal';
+import { failText, pageSize, staleTime, visitorText } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
+
+import { deleteData } from '../apis/deleteData';
+import { isAdmin } from '../cloudBase';
 
 interface Props {
   DBName: DB;
   page: number;
-  size: number;
 }
 
-// 获取表格数据（data & sum）
-export const useTableData = (config: Props) => {
-  const { DBName, page, size } = config;
+export interface DeleteProps {
+  page: number;
+  total: number;
+  setPage: (page: number) => void;
+}
 
+// 获取表格数据（data & total）
+export const useTableData = ({ DBName, page }: Props) => {
   const {
     data,
     loading: dataLoading,
@@ -25,7 +33,7 @@ export const useTableData = (config: Props) => {
         dbName: DBName,
         isAsc: false,
         page,
-        size
+        size: pageSize
       }),
     {
       retryCount: 3,
@@ -36,12 +44,12 @@ export const useTableData = (config: Props) => {
   );
 
   const {
-    data: sum,
-    loading: sumLoading,
-    run: sumRun
-  } = useRequest(() => getSum(DBName), {
+    data: total,
+    loading: totalLoading,
+    run: totalRun
+  } = useRequest(() => getTotal(DBName), {
     retryCount: 3,
-    cacheKey: `${DBName}-count`,
+    cacheKey: `${DBName}-total`,
     staleTime
   });
 
@@ -49,7 +57,7 @@ export const useTableData = (config: Props) => {
     for (let i = page; i <= totalPage; i++) {
       clearCache(`${DBName}-data-${i}`);
     }
-    clearCache(`${DBName}-count`);
+    clearCache(`${DBName}-total`);
   };
 
   const myClearCacheOnePage = (page: number) => {
@@ -72,15 +80,37 @@ export const useTableData = (config: Props) => {
     return nowPage;
   };
 
+  const handleDelete = (id: string, { page, total, setPage }: DeleteProps) => {
+    if (!isAdmin()) {
+      message.warning(visitorText);
+      return;
+    }
+    deleteData(DBName, id).then(res => {
+      if (!res.success && !res.permission) {
+        message.warning(visitorText);
+      } else if (res.success && res.permission) {
+        message.success('删除成功！');
+        flushSync(() => myClearCache(page, getTotalPage(total, pageSize)));
+        flushSync(() => setPage(getAfterDeletedPage(total, page, pageSize)));
+        flushSync(() => {
+          dataRun();
+          totalRun();
+        });
+      } else {
+        message.warning(failText);
+      }
+    });
+  };
+
   return {
     data: data?.data,
-    sum: sum?.total,
-    loading: dataLoading && sumLoading,
+    total: total?.total,
+    loading: dataLoading && totalLoading,
     dataRun,
-    sumRun,
+    totalRun,
     myClearCache,
     myClearCacheOnePage,
     getTotalPage,
-    getAfterDeletedPage
+    handleDelete
   };
 };

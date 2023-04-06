@@ -7,7 +7,6 @@ import LinkModel from '@/components/LinkModel';
 import MyTable from '@/components/MyTable';
 import PageHeader from '@/components/PageHeader';
 import { addData } from '@/utils/apis/addData';
-import { deleteData } from '@/utils/apis/deleteData';
 import { updateData } from '@/utils/apis/updateData';
 import { isAdmin } from '@/utils/cloudBase';
 import { failText, pageSize, siteTitle, visitorText } from '@/utils/constant';
@@ -32,15 +31,15 @@ const Link: React.FC = () => {
 
   const {
     data,
-    sum: total,
+    total,
     loading,
     dataRun,
-    sumRun,
-    myClearCache,
+    totalRun,
     myClearCacheOnePage,
+    myClearCache,
     getTotalPage,
-    getAfterDeletedPage
-  } = useTableData({ DBName: DB.Link, page, size: pageSize });
+    handleDelete
+  } = useTableData({ DBName: DB.Link, page });
 
   const handleEdit = (id: string) => {
     setIsModalOpen(true);
@@ -58,29 +57,15 @@ const Link: React.FC = () => {
     }
   };
 
-  const handleDelete = (id: string) => {
-    if (!isAdmin()) {
-      message.warning(visitorText);
-      return;
+  const columns = useColumns({
+    handleEdit,
+    handleDelete,
+    deleteProps: {
+      page,
+      total,
+      setPage
     }
-    deleteData(DB.Link, id).then(res => {
-      if (!res.success && !res.permission) {
-        message.warning(visitorText);
-      } else if (res.success && res.permission) {
-        message.success('删除成功！');
-        flushSync(() => myClearCache(page, getTotalPage(total, pageSize)));
-        flushSync(() => setPage(getAfterDeletedPage(total, page, pageSize)));
-        flushSync(() => {
-          dataRun();
-          sumRun();
-        });
-      } else {
-        message.warning(failText);
-      }
-    });
-  };
-
-  const columns = useColumns({ handleEdit, handleDelete });
+  });
 
   const clearData = () => {
     setId('');
@@ -102,7 +87,8 @@ const Link: React.FC = () => {
       link,
       avatar,
       descr,
-      date: new Date().getTime()
+      // date: new Date().getTime()
+      date: 1680709143000
     }).then(res => {
       if (!res.success && !res.permission) {
         message.warning(visitorText);
@@ -113,7 +99,7 @@ const Link: React.FC = () => {
         flushSync(() => setPage(1));
         flushSync(() => {
           dataRun();
-          sumRun();
+          totalRun();
         });
       } else {
         message.warning(failText);
