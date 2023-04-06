@@ -65,13 +65,13 @@ $navWidth: 160px;
 
   .rightContent {
     margin-left: $navWidth;
-    padding-top: 54px;
+    padding-top: 62px;
     height: 100%;
 
     .routeContent {
       padding: 20px;
       width: 100%;
-      min-height: calc(100vh - 54px - 70px);
+      min-height: calc(100vh - 62px - 70px);
     }
   }
 }

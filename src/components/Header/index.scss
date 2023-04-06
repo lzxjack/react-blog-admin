@@ -14,7 +14,7 @@
   border-radius: 14px;
   user-select: none;
   font-size: 22px;
-  color: #a7d5ff;
+  color: #9ed0ff;
   background-color: #fff;
   @extend .trans;
 }
@@ -24,11 +24,35 @@
   top: 0;
   left: 160px;
   right: 0;
-  height: 54px;
-  background-color: #a7d5ff;
+  height: 62px;
+  background-color: #9ed0ff;
+
+  .avatar {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translate(0, -50%);
+    height: 54px;
+    width: 54px;
+    border-radius: 50%;
+  }
+  .avatarText {
+    position: absolute;
+    left: calc(10px * 2 + 54px);
+    top: 50%;
+    transform: translate(0, -50%);
+    font-size: 20px;
+    font-family: 'dengxian';
+    font-weight: 700;
+    color: #fff;
+
+    .userName {
+      color: $themeColor3;
+    }
+  }
 
   .blogBtn {
-    right: calc(20px * 2 + 40px);
+    right: calc(11px * 2 + 40px);
     @extend .headerBtnBase;
   }
 
@@ -39,7 +63,7 @@
   }
 
   .logoutBtn {
-    right: 20px;
+    right: 11px;
     @extend .headerBtnBase;
   }
 
