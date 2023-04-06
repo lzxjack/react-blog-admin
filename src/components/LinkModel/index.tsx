@@ -1,7 +1,7 @@
 import { Modal } from 'antd';
 import React from 'react';
 
-import { DB } from '@/utils/apis/dbConfig';
+import { DB } from '@/utils/dbConfig';
 
 import ModelTitle from '../ModelTitle';
 import s from './index.scss';

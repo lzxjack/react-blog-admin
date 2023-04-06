@@ -1,5 +1,5 @@
 import { db } from '../cloudBase';
-import { DB } from './dbConfig';
+import { DB } from '../dbConfig';
 
 export const updateData = (dbName: DB, id: string, data: object) =>
   db

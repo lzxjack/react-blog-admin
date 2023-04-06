@@ -1,4 +1,4 @@
-import { DB } from '@/utils/apis/dbConfig';
+import { DB } from '@/utils/dbConfig';
 
 export const dataMap = {
   [DB.Article]: '文章',

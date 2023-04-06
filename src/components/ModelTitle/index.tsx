@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { DB } from '@/utils/apis/dbConfig';
 import { dataMap } from '@/utils/dataMap';
+import { DB } from '@/utils/dbConfig';
 
 import s from './index.scss';
 

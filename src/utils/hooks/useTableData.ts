@@ -1,9 +1,9 @@
 import { clearCache, useRequest } from 'ahooks';
 
-import { DB } from '@/utils/apis/dbConfig';
 import { getPageData } from '@/utils/apis/getPageData';
 import { getSum } from '@/utils/apis/getSum';
 import { staleTime } from '@/utils/constant';
+import { DB } from '@/utils/dbConfig';
 
 interface Props {
   DBName: DB;
@@ -12,7 +12,7 @@ interface Props {
 }
 
 // 获取表格数据（data & sum）
-export const getTableData = (config: Props) => {
+export const useTableData = (config: Props) => {
   const { DBName, page, size } = config;
 
   const {

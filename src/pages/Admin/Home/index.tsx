@@ -2,8 +2,8 @@ import { useTitle } from 'ahooks';
 import React from 'react';
 
 import CountCard from '@/components/CountCard';
-import { DB } from '@/utils/apis/dbConfig';
 import { siteTitle } from '@/utils/constant';
+import { DB } from '@/utils/dbConfig';
 
 import s from './index.scss';
 

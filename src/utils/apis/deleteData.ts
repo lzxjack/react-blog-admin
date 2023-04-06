@@ -1,5 +1,5 @@
 import { db } from '../cloudBase';
-import { DB } from './dbConfig';
+import { DB } from '../dbConfig';
 
 export const deleteData = (dbName: DB, id: string) =>
   db

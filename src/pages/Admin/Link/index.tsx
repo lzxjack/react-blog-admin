@@ -6,21 +6,22 @@ import { flushSync } from 'react-dom';
 import LinkModel from '@/components/LinkModel';
 import PageHeader from '@/components/PageHeader';
 import { addData } from '@/utils/apis/addData';
-import { DB } from '@/utils/apis/dbConfig';
 import { deleteData } from '@/utils/apis/deleteData';
-import { getTableData } from '@/utils/apis/getTableData';
 import { updateData } from '@/utils/apis/updateData';
 import { auth } from '@/utils/cloudBase';
 import { adminUid, failText, pageSize, siteTitle, visitorText } from '@/utils/constant';
+import { DB } from '@/utils/dbConfig';
+import { usePage } from '@/utils/hooks/usePage';
+import { useTableData } from '@/utils/hooks/useTableData';
 
 import { Title } from '../titleConfig';
 import { useColumns } from './config';
 
 const Link: React.FC = () => {
   useTitle(`${siteTitle} | ${Title.Link}`);
-  const [page, setPage] = useState(1);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const { page, setPage } = usePage();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [id, setId] = useState('');
   const [name, setName] = useState('');
@@ -36,7 +37,7 @@ const Link: React.FC = () => {
     sumRun,
     myClearCache,
     myClearCacheOnePage
-  } = getTableData({ DBName: DB.Link, page, size: pageSize });
+  } = useTableData({ DBName: DB.Link, page, size: pageSize });
 
   const getTotalPage = (total: number, pageSize: number) => {
     const totalPage = total / pageSize;

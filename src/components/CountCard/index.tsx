@@ -3,10 +3,10 @@ import { useRequest } from 'ahooks';
 import classNames from 'classnames';
 import React from 'react';
 
-import { DB } from '@/utils/apis/dbConfig';
 import { getSum } from '@/utils/apis/getSum';
 import { staleTime } from '@/utils/constant';
 import { dataMap } from '@/utils/dataMap';
+import { DB } from '@/utils/dbConfig';
 
 import s from './index.scss';
 
