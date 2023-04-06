@@ -11,7 +11,9 @@ if (module?.hot) {
   module.hot.accept();
 }
 
-const root = createRoot(document.getElementById('root') as HTMLElement);
+const containerElement = document.getElementById('root') as HTMLElement;
+
+const root = createRoot(containerElement);
 
 const element = (
   <ErrorBoundary>

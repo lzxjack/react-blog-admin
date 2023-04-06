@@ -1,7 +1,15 @@
-// interface stateType {
-//   isLogin: { value: boolean };
+// interface DataSumType {
+//   article: number;
+//   draft: number;
+//   link: number;
+//   msg: number;
+//   say: number;
 // }
 
-// export const selectIsLogin = (state: stateType) => state.isLogin.value;
+// interface stateType {
+//   dataSum: DataSumType;
+// }
+
+// export const selectDataSum = (state: stateType) => state.dataSum;
 
 export {};

@@ -1,3 +1,6 @@
+@import './styles/base.scss';
+@import './styles/style.scss';
+
 html,
 body,
 #root {
@@ -66,4 +69,65 @@ input {
     font-size: 16px;
     font-weight: 700;
   }
+}
+
+$textColor: #fff;
+$pageHeight: 34px;
+
+// 表格分页器
+.ant-pagination {
+  .ant-pagination-prev .ant-pagination-item-link,
+  .ant-pagination-next .ant-pagination-item-link {
+    border-radius: 10px !important;
+  }
+
+  .ant-pagination-item-link,
+  .ant-pagination-item,
+  .ant-pagination-jump-prev,
+  .ant-pagination-jump-next {
+    background-color: #a7d5ff;
+    border: none;
+    border-radius: 10px;
+    width: $pageHeight;
+    height: $pageHeight;
+    font-size: 18px;
+    line-height: $pageHeight;
+    @extend .trans;
+  }
+
+  .ant-pagination-item a {
+    @extend .trans;
+    color: $textColor;
+  }
+
+  .ant-pagination-item a:hover,
+  .ant-pagination-item-active a,
+  .ant-pagination-item-ellipsis {
+    color: $textColor !important;
+    cursor: pointer;
+  }
+
+  .ant-pagination-item-link:hover,
+  .ant-pagination-item:hover,
+  .ant-pagination-item-active:hover,
+  .ant-pagination-jump-prev:hover,
+  .ant-pagination-jump-next:hover,
+  .ant-pagination-item-active {
+    background-color: $themeColor3 !important;
+    color: $textColor !important;
+    font-weight: 400 !important;
+  }
+
+  .ant-pagination-item-link-icon {
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
+
+// model
+.ant-modal-title {
+  font-size: 20px !important;
+  font-weight: 700 !important;
 }
