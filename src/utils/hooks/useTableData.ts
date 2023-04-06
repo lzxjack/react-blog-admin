@@ -56,6 +56,22 @@ export const useTableData = (config: Props) => {
     clearCache(`${DBName}-data-${page}`);
   };
 
+  const getTotalPage = (total: number, pageSize: number) => {
+    const totalPage = total / pageSize;
+    if (Number.isInteger(totalPage)) {
+      return totalPage;
+    }
+    return Math.ceil(totalPage);
+  };
+
+  const getAfterDeletedPage = (total: number, nowPage: number, pageSize: number) => {
+    if (total === 1) return 1;
+    if (total % pageSize === 1 && nowPage === Math.ceil(total / pageSize)) {
+      return nowPage - 1;
+    }
+    return nowPage;
+  };
+
   return {
     data: data?.data,
     sum: sum?.total,
@@ -63,6 +79,8 @@ export const useTableData = (config: Props) => {
     dataRun,
     sumRun,
     myClearCache,
-    myClearCacheOnePage
+    myClearCacheOnePage,
+    getTotalPage,
+    getAfterDeletedPage
   };
 };
