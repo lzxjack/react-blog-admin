@@ -13,5 +13,5 @@ export const usePage = () => {
     setSearchParams(`page=${page}`);
   };
 
-  return { page: Number(searchParams.get('page')), setPage };
+  return { page: Number(searchParams.get('page') || 1), setPage };
 };

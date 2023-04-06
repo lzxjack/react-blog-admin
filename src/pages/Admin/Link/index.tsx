@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
 
 import LinkModel from '@/components/LinkModel';
+import MyTable from '@/components/MyTable';
 import PageHeader from '@/components/PageHeader';
 import { addData } from '@/utils/apis/addData';
 import { deleteData } from '@/utils/apis/deleteData';
@@ -169,26 +170,13 @@ const Link: React.FC = () => {
   return (
     <>
       <PageHeader text='添加友链' onClick={() => setIsModalOpen(true)} />
-      <Table
-        bordered
+      <MyTable
         loading={loading}
         columns={columns}
-        dataSource={data}
-        rowKey={columns => columns._id}
-        showSorterTooltip={false}
-        pagination={
-          total <= pageSize
-            ? false
-            : {
-                current: page,
-                total,
-                defaultPageSize: pageSize,
-                showSizeChanger: false,
-                showTitle: false,
-                position: ['bottomCenter'],
-                onChange: (page: number) => setPage(page)
-              }
-        }
+        data={data}
+        total={total}
+        page={page}
+        setPage={setPage}
       />
       <LinkModel
         isEdit={isEdit}

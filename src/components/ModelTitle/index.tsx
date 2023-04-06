@@ -19,10 +19,10 @@ const ModelTitle: React.FC<Props> = ({
   updateText = '更新'
 }) => {
   return (
-    <>
+    <div className={s.modelTitleBox}>
       <div className={s.modelTitleCustom}>{isEdit ? updateText : addText}</div>
       {dataMap[type as keyof typeof dataMap]}
-    </>
+    </div>
   );
 };
 

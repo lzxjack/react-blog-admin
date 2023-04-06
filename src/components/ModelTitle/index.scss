@@ -1,10 +1,23 @@
 @import '../../styles/base.scss';
 
-.modelTitleCustom {
-  display: inline-block;
-  background-color: $themeColor3;
-  color: #fff;
-  padding: 0 6px;
-  margin-right: 2px;
-  border-radius: 8px;
+.modelTitleBox {
+  height: 34px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  .modelTitleCustom {
+    height: 26px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $themeColor3;
+    color: #fff;
+    padding: 0 6px;
+    margin-right: 2px;
+    border-radius: 8px;
+    font-size: 16px !important;
+    font-family: 'dengxian' !important;
+    font-weight: 400;
+  }
 }

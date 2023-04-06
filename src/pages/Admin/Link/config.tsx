@@ -58,5 +58,3 @@ export const useColumns = ({ handleEdit, handleDelete }: Props) => [
     )
   }
 ];
-
-// export {};
