@@ -1,5 +1,5 @@
 import { useTitle } from 'ahooks';
-import { message, Table } from 'antd';
+import { message } from 'antd';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
 
@@ -9,8 +9,8 @@ import PageHeader from '@/components/PageHeader';
 import { addData } from '@/utils/apis/addData';
 import { deleteData } from '@/utils/apis/deleteData';
 import { updateData } from '@/utils/apis/updateData';
-import { auth } from '@/utils/cloudBase';
-import { adminUid, failText, pageSize, siteTitle, visitorText } from '@/utils/constant';
+import { isAdmin } from '@/utils/cloudBase';
+import { failText, pageSize, siteTitle, visitorText } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
 import { usePage } from '@/utils/hooks/usePage';
 import { useTableData } from '@/utils/hooks/useTableData';
@@ -73,7 +73,7 @@ const Link: React.FC = () => {
   };
 
   const handleDelete = (id: string) => {
-    if (auth.currentUser?.uid !== adminUid) {
+    if (!isAdmin()) {
       message.warning(visitorText);
       return;
     }
@@ -160,7 +160,7 @@ const Link: React.FC = () => {
       message.info('请输入完整友链信息！');
       return;
     }
-    if (auth.currentUser?.uid !== adminUid) {
+    if (!isAdmin()) {
       message.warning(visitorText);
       return;
     }
