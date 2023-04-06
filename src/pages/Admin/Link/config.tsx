@@ -41,7 +41,7 @@ export const useColumns = ({ handleEdit, handleDelete }: Props) => [
       <>
         <MyButton
           style={{ marginRight: '10px' }}
-          text='修改'
+          text='更新'
           small
           onClick={() => handleEdit(record._id)}
         />

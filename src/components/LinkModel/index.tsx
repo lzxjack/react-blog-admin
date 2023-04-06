@@ -1,9 +1,13 @@
 import { Modal } from 'antd';
 import React from 'react';
 
+import { DB } from '@/utils/apis/dbConfig';
+
+import ModelTitle from '../ModelTitle';
 import s from './index.scss';
 
 interface Props {
+  isEdit: boolean;
   isModalOpen: boolean;
   modelOk: () => void;
   modelCancel: () => void;
@@ -18,6 +22,7 @@ interface Props {
 }
 
 const LinkModel: React.FC<Props> = ({
+  isEdit,
   isModalOpen,
   modelOk,
   modelCancel,
@@ -31,7 +36,12 @@ const LinkModel: React.FC<Props> = ({
   setDescr
 }) => {
   return (
-    <Modal title='添加友链' open={isModalOpen} onOk={modelOk} onCancel={modelCancel}>
+    <Modal
+      title={<ModelTitle isEdit={isEdit} type={DB.Link} />}
+      open={isModalOpen}
+      onOk={modelOk}
+      onCancel={modelCancel}
+    >
       <div className={s.linkInputBox}>
         <div className={s.modalInputBox}>
           <div className={s.modalInputKey}>name：</div>

@@ -8,9 +8,10 @@ import PageHeader from '@/components/PageHeader';
 import { addData } from '@/utils/apis/addData';
 import { DB } from '@/utils/apis/dbConfig';
 import { deleteData } from '@/utils/apis/deleteData';
+import { getTableData } from '@/utils/apis/getTableData';
+import { updateData } from '@/utils/apis/updateData';
 import { auth } from '@/utils/cloudBase';
 import { adminUid, failText, pageSize, siteTitle, visitorText } from '@/utils/constant';
-import { useMyRequest } from '@/utils/myRequest';
 
 import { Title } from '../titleConfig';
 import { useColumns } from './config';
@@ -33,8 +34,17 @@ const Link: React.FC = () => {
     loading,
     dataRun,
     sumRun,
-    myClearCache
-  } = useMyRequest({ index: 'link', page, size: pageSize });
+    myClearCache,
+    myClearCacheOnePage
+  } = getTableData({ DBName: DB.Link, page, size: pageSize });
+
+  const getTotalPage = (total: number, pageSize: number) => {
+    const totalPage = total / pageSize;
+    if (Number.isInteger(totalPage)) {
+      return totalPage;
+    }
+    return Math.ceil(totalPage);
+  };
 
   const getAfterDeletedPage = (total: number, nowPage: number, pageSize: number) => {
     if (total === 1) return 1;
@@ -45,10 +55,18 @@ const Link: React.FC = () => {
   };
 
   const handleEdit = (id: string) => {
-    // TODO:
-    if (auth.currentUser?.uid !== adminUid) {
-      message.warning(visitorText);
-      return;
+    setIsModalOpen(true);
+    setIsEdit(true);
+    setId(id);
+    for (const item of data) {
+      const { _id, avatar, descr, link, name } = item;
+      if (id === _id) {
+        setAvatar(avatar);
+        setDescr(descr);
+        setLink(link);
+        setName(name);
+        break;
+      }
     }
   };
 
@@ -62,10 +80,12 @@ const Link: React.FC = () => {
         message.warning(visitorText);
       } else if (res.success && res.permission) {
         message.success('删除成功！');
-        flushSync(() => myClearCache());
+        flushSync(() => myClearCache(page, getTotalPage(total, pageSize)));
         flushSync(() => setPage(getAfterDeletedPage(total, page, pageSize)));
-        dataRun();
-        sumRun();
+        flushSync(() => {
+          dataRun();
+          sumRun();
+        });
       } else {
         message.warning(failText);
       }
@@ -94,15 +114,14 @@ const Link: React.FC = () => {
       link,
       avatar,
       descr,
-      // date: new Date().getTime()
-      date: 1680709136000
+      date: new Date().getTime()
     }).then(res => {
       if (!res.success && !res.permission) {
         message.warning(visitorText);
       } else if (res.success && res.permission) {
         message.success('添加成功！');
         closeModel();
-        flushSync(() => myClearCache());
+        flushSync(() => myClearCache(1, getTotalPage(total, pageSize)));
         flushSync(() => setPage(1));
         flushSync(() => {
           dataRun();
@@ -114,7 +133,25 @@ const Link: React.FC = () => {
     });
   };
 
-  const editLink = () => {};
+  const editLink = () => {
+    updateData(DB.Link, id, {
+      name,
+      link,
+      avatar,
+      descr
+    }).then(res => {
+      if (!res.success && !res.permission) {
+        message.warning(visitorText);
+      } else if (res.success && res.permission) {
+        message.success('修改成功！');
+        closeModel();
+        flushSync(() => myClearCacheOnePage(page));
+        flushSync(() => dataRun());
+      } else {
+        message.warning(failText);
+      }
+    });
+  };
 
   const modelOk = () => {
     if (!name || !link || !avatar || !descr) {
@@ -138,17 +175,22 @@ const Link: React.FC = () => {
         dataSource={data}
         rowKey={columns => columns._id}
         showSorterTooltip={false}
-        pagination={{
-          current: page,
-          total,
-          defaultPageSize: pageSize,
-          showSizeChanger: false,
-          showTitle: false,
-          position: ['bottomCenter'],
-          onChange: (page: number) => setPage(page)
-        }}
+        pagination={
+          total <= pageSize
+            ? false
+            : {
+                current: page,
+                total,
+                defaultPageSize: pageSize,
+                showSizeChanger: false,
+                showTitle: false,
+                position: ['bottomCenter'],
+                onChange: (page: number) => setPage(page)
+              }
+        }
       />
       <LinkModel
+        isEdit={isEdit}
         isModalOpen={isModalOpen}
         modelOk={modelOk}
         modelCancel={closeModel}
