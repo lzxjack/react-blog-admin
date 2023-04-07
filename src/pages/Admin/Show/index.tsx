@@ -42,7 +42,22 @@ const Show: React.FC = () => {
     pageSize: showPageSize
   });
 
-  const handleEdit = (id: string) => {};
+  const handleEdit = (id: string) => {
+    setIsModalOpen(true);
+    setIsEdit(true);
+    setId(id);
+    for (const item of data) {
+      const { _id, cover, descr, link, name, order } = item;
+      if (id === _id) {
+        setCover(cover);
+        setDescr(descr);
+        setLink(link);
+        setName(name);
+        setOrder(order);
+        break;
+      }
+    }
+  };
 
   const handleOpenShow = (url: string) => {
     window.open(url);
