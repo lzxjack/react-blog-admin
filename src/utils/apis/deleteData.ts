@@ -1,7 +1,7 @@
 import { db } from '../cloudBase';
 import { DB } from '../dbConfig';
 
-export const deleteData = (dbName: DB, id: string) =>
+export const deleteDataAPI = (dbName: DB, id: string) =>
   db
     .collection(dbName)
     .doc(id)

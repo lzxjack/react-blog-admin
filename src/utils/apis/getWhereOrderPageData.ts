@@ -1,7 +1,7 @@
 import { db } from '../cloudBase';
 import { DB } from '../dbConfig';
 
-export const getWhereOrderPageData = (config: {
+export const getWhereOrderPageDataAPI = (config: {
   dbName: DB;
   where: object;
   page: number;

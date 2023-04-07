@@ -3,11 +3,11 @@ import { message } from 'antd';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
 
-import LinkModel from '@/components/LinkModel';
+import CustomModal from '@/components/CustomModal';
 import MyTable from '@/components/MyTable';
 import PageHeader from '@/components/PageHeader';
-import { addData } from '@/utils/apis/addData';
-import { updateData } from '@/utils/apis/updateData';
+import { addDataAPI } from '@/utils/apis/addData';
+import { updateDataAPI } from '@/utils/apis/updateData';
 import { isAdmin } from '@/utils/cloudBase';
 import { defaultPageSize, failText, siteTitle, visitorText } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
@@ -28,6 +28,29 @@ const Link: React.FC = () => {
   const [link, setLink] = useState('');
   const [avatar, setAvatar] = useState('');
   const [descr, setDescr] = useState('');
+
+  const dataFilter = [
+    {
+      text: '名称',
+      data: name,
+      setData: setName
+    },
+    {
+      text: '链接',
+      data: link,
+      setData: setLink
+    },
+    {
+      text: '头像',
+      data: avatar,
+      setData: setAvatar
+    },
+    {
+      text: '描述',
+      data: descr,
+      setData: setDescr
+    }
+  ];
 
   const {
     data,
@@ -75,26 +98,25 @@ const Link: React.FC = () => {
     setDescr('');
   };
 
-  const closeModel = () => {
+  const modalCancel = () => {
     setIsModalOpen(false);
     clearData();
     setIsEdit(false);
   };
 
   const addLink = () => {
-    addData(DB.Link, {
+    addDataAPI(DB.Link, {
       name,
       link,
       avatar,
       descr,
-      // date: new Date().getTime()
-      date: 1680709143000
+      date: new Date().getTime()
     }).then(res => {
       if (!res.success && !res.permission) {
         message.warning(visitorText);
       } else if (res.success && res.permission) {
         message.success('添加成功！');
-        closeModel();
+        modalCancel();
         flushSync(() => myClearCache(1, getTotalPage(total, defaultPageSize)));
         flushSync(() => setPage(1));
         flushSync(() => {
@@ -108,7 +130,7 @@ const Link: React.FC = () => {
   };
 
   const editLink = () => {
-    updateData(DB.Link, id, {
+    updateDataAPI(DB.Link, id, {
       name,
       link,
       avatar,
@@ -118,7 +140,7 @@ const Link: React.FC = () => {
         message.warning(visitorText);
       } else if (res.success && res.permission) {
         message.success('修改成功！');
-        closeModel();
+        modalCancel();
         flushSync(() => myClearCacheOnePage(page));
         flushSync(() => dataRun());
       } else {
@@ -127,7 +149,7 @@ const Link: React.FC = () => {
     });
   };
 
-  const modelOk = () => {
+  const modalOk = () => {
     if (!name || !link || !avatar || !descr) {
       message.info('请输入完整友链信息！');
       return;
@@ -150,19 +172,13 @@ const Link: React.FC = () => {
         page={page}
         setPage={setPage}
       />
-      <LinkModel
+      <CustomModal
         isEdit={isEdit}
         isModalOpen={isModalOpen}
-        modelOk={modelOk}
-        modelCancel={closeModel}
-        name={name}
-        setName={setName}
-        link={link}
-        setLink={setLink}
-        avatar={avatar}
-        setAvatar={setAvatar}
-        descr={descr}
-        setDescr={setDescr}
+        DBType={DB.Link}
+        modalOk={modalOk}
+        modalCancel={modalCancel}
+        dataFilter={dataFilter}
       />
     </>
   );

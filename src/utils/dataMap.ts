@@ -6,5 +6,6 @@ export const dataMap = {
   [DB.Link]: '友链',
   [DB.Msg]: '留言',
   [DB.Say]: '说说',
-  [DB.Log]: '日志'
+  [DB.Log]: '日志',
+  [DB.Show]: '作品'
 };

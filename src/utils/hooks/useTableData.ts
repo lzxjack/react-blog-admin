@@ -1,18 +1,23 @@
 import { clearCache, useRequest } from 'ahooks';
 import { message } from 'antd';
+import { Dispatch, SetStateAction } from 'react';
 import { flushSync } from 'react-dom';
 
-import { getPageData } from '@/utils/apis/getPageData';
-import { getTotal } from '@/utils/apis/getTotal';
+import { getPageDataAPI } from '@/utils/apis/getPageData';
+import { getTotalAPI } from '@/utils/apis/getTotal';
 import { defaultPageSize, failText, staleTime, visitorText } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
 
-import { deleteData } from '../apis/deleteData';
+import { addDataAPI } from '../apis/addData';
+import { deleteDataAPI } from '../apis/deleteData';
+import { updateDataAPI } from '../apis/updateData';
 import { isAdmin } from '../cloudBase';
 
 interface Props {
   DBName: DB;
   page: number;
+  setPage?: (page: number) => void;
+  modalCancel?: () => void;
   sortKey?: string;
   isAsc?: boolean;
   pageSize?: number;
@@ -28,6 +33,8 @@ export interface DeleteProps {
 export const useTableData = ({
   DBName,
   page,
+  setPage,
+  modalCancel,
   sortKey = 'date',
   isAsc = false,
   pageSize = defaultPageSize
@@ -38,7 +45,7 @@ export const useTableData = ({
     run: dataRun
   } = useRequest(
     () =>
-      getPageData({
+      getPageDataAPI({
         dbName: DBName,
         sortKey,
         isAsc,
@@ -57,7 +64,7 @@ export const useTableData = ({
     data: total,
     loading: totalLoading,
     run: totalRun
-  } = useRequest(() => getTotal(DBName), {
+  } = useRequest(() => getTotalAPI(DBName), {
     retryCount: 3,
     cacheKey: `${DBName}-total`,
     staleTime
@@ -95,7 +102,7 @@ export const useTableData = ({
       message.warning(visitorText);
       return;
     }
-    deleteData(DBName, id).then(res => {
+    deleteDataAPI(DBName, id).then(res => {
       if (!res.success && !res.permission) {
         message.warning(visitorText);
       } else if (res.success && res.permission) {
@@ -112,6 +119,69 @@ export const useTableData = ({
     });
   };
 
+  const addData = (data: object, total: number) => {
+    addDataAPI(DBName, data).then(res => {
+      if (!res.success && !res.permission) {
+        message.warning(visitorText);
+      } else if (res.success && res.permission) {
+        message.success('添加成功！');
+        modalCancel?.();
+        flushSync(() => myClearCache(1, getTotalPage(total, pageSize)));
+        flushSync(() => setPage?.(1));
+        flushSync(() => {
+          dataRun();
+          totalRun();
+        });
+      } else {
+        message.warning(failText);
+      }
+    });
+  };
+
+  const editData = (id: string, data: object, page: number) => {
+    updateDataAPI(DBName, id, data).then(res => {
+      if (!res.success && !res.permission) {
+        message.warning(visitorText);
+      } else if (res.success && res.permission) {
+        message.success('修改成功！');
+        modalCancel?.();
+        flushSync(() => myClearCacheOnePage(page));
+        flushSync(() => dataRun());
+      } else {
+        message.warning(failText);
+      }
+    });
+  };
+
+  const modalOk = ({
+    dataFilter,
+    isEdit,
+    config: { id, data, total, page }
+  }: {
+    dataFilter: {
+      text: string;
+      data: string;
+      setData: Dispatch<SetStateAction<string>>;
+    }[];
+    isEdit: boolean;
+    config: {
+      id: string;
+      data: object;
+      total: number;
+      page: number;
+    };
+  }) => {
+    if (dataFilter.some(({ data }) => !data)) {
+      message.info('请输入完整作品信息！');
+      return;
+    }
+    if (!isAdmin()) {
+      message.warning(visitorText);
+      return;
+    }
+    isEdit ? editData(id, data, page) : addData(data, total);
+  };
+
   return {
     data: data?.data,
     total: total?.total,
@@ -121,6 +191,7 @@ export const useTableData = ({
     myClearCache,
     myClearCacheOnePage,
     getTotalPage,
-    handleDelete
+    handleDelete,
+    modalOk
   };
 };

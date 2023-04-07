@@ -1,9 +1,12 @@
 import { useTitle } from 'ahooks';
+import { message } from 'antd';
 import React, { useState } from 'react';
 
+import CustomModal from '@/components/CustomModal';
 import MyTable from '@/components/MyTable';
 import PageHeader from '@/components/PageHeader';
-import { showPageSize, siteTitle } from '@/utils/constant';
+import { isAdmin } from '@/utils/cloudBase';
+import { showPageSize, siteTitle, visitorText } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
 import { usePage } from '@/utils/hooks/usePage';
 import { useTableData } from '@/utils/hooks/useTableData';
@@ -24,6 +27,47 @@ const Show: React.FC = () => {
   const [cover, setCover] = useState('');
   const [link, setLink] = useState('');
 
+  const dataFilter = [
+    {
+      text: '序号',
+      data: order,
+      setData: setOrder
+    },
+    {
+      text: '名称',
+      data: name,
+      setData: setName
+    },
+    {
+      text: '描述',
+      data: descr,
+      setData: setDescr
+    },
+
+    {
+      text: '封面',
+      data: cover,
+      setData: setCover
+    },
+    {
+      text: '链接',
+      data: link,
+      setData: setLink
+    }
+  ];
+
+  const clearData = () => {
+    for (const { setData } of dataFilter) {
+      setData('');
+    }
+  };
+
+  const modalCancel = () => {
+    setIsModalOpen(false);
+    clearData();
+    setIsEdit(false);
+  };
+
   const {
     data,
     total,
@@ -33,10 +77,13 @@ const Show: React.FC = () => {
     myClearCacheOnePage,
     myClearCache,
     getTotalPage,
-    handleDelete
+    handleDelete,
+    modalOk
   } = useTableData({
     DBName: DB.Show,
     page,
+    setPage,
+    modalCancel,
     sortKey: 'order',
     isAsc: true,
     pageSize: showPageSize
@@ -74,6 +121,13 @@ const Show: React.FC = () => {
     }
   });
 
+  const handleModalOk = () =>
+    modalOk({
+      dataFilter,
+      isEdit,
+      config: { id, data: { order, name, descr, cover, link }, total, page }
+    });
+
   return (
     <>
       <PageHeader text='添加作品' onClick={() => setIsModalOpen(true)} />
@@ -85,6 +139,14 @@ const Show: React.FC = () => {
         page={page}
         pageSize={showPageSize}
         setPage={setPage}
+      />
+      <CustomModal
+        isEdit={isEdit}
+        isModalOpen={isModalOpen}
+        DBType={DB.Show}
+        modalOk={handleModalOk}
+        modalCancel={modalCancel}
+        dataFilter={dataFilter}
       />
     </>
   );

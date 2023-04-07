@@ -1,7 +1,7 @@
 import { db } from '../cloudBase';
 import { DB } from '../dbConfig';
 
-export const getPageData = (config: {
+export const getPageDataAPI = (config: {
   dbName: DB;
   sortKey?: string;
   isAsc?: boolean;

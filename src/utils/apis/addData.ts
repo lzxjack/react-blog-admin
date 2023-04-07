@@ -1,7 +1,7 @@
 import { db } from '../cloudBase';
 import { DB } from '../dbConfig';
 
-export const addData = (dbName: DB, data: object) =>
+export const addDataAPI = (dbName: DB, data: object) =>
   db
     .collection(dbName)
     .add(data)

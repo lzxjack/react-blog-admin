@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { authLogin } from '@/utils/apis/authLogin';
+import { authLoginAPI } from '@/utils/apis/authLogin';
 import { avatarUrl, siteTitle, visitorEmail, visitorPwd } from '@/utils/constant';
 
 import s from './index.scss';
@@ -18,7 +18,7 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
 
   const handleLogin = async (Email: string, pwd: string) => {
-    const res = await authLogin(Email, pwd);
+    const res = await authLoginAPI(Email, pwd);
     res && navigate('admin');
     openLoginNoti(res);
   };

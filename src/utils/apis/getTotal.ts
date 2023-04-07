@@ -1,7 +1,7 @@
 import { db } from '../cloudBase';
 import { DB } from '../dbConfig';
 
-export const getTotal = (dbName: DB) =>
+export const getTotalAPI = (dbName: DB) =>
   db
     .collection(dbName)
     .count()

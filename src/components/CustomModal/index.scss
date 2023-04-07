@@ -1,16 +1,16 @@
 @import '../../styles/base.scss';
 
-.linkInputBox {
+.modalBox {
   height: 240px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
 
-  .modalInputBox {
+  .inputBox {
     display: flex;
     height: 40px;
 
-    .modalInputKey {
+    .inputKey {
       width: 64px;
       height: 40px;
       line-height: 40px;
@@ -19,7 +19,7 @@
       font-weight: 700;
     }
 
-    .modalInputValue {
+    .inputValue {
       flex: 1;
       border: 1px solid $themeColor3_light;
       height: 40px;
