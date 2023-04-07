@@ -4,31 +4,36 @@ import React from 'react';
 import MyButton from '@/components/MyButton';
 import { DeleteProps } from '@/utils/hooks/useTableData';
 
+import s from './index.scss';
+
 interface Props {
   handleEdit: (id: string) => void;
+  handleOpenShow: (id: string) => void;
   handleDelete: (id: string, props: DeleteProps) => void;
   deleteProps: DeleteProps;
 }
 
-export const useColumns = ({ handleEdit, handleDelete, deleteProps }: Props) => [
+export const useColumns = ({
+  handleEdit,
+  handleOpenShow,
+  handleDelete,
+  deleteProps
+}: Props) => [
   {
-    title: '名称',
-    dataIndex: 'name',
-    key: '_id'
-  },
-  {
-    title: '链接',
-    dataIndex: 'link',
+    title: '封面',
+    dataIndex: 'cover',
     key: '_id',
-    render: (text: string) => (
-      <a href={text} target='_blank' rel='noreferrer'>
-        {text}
-      </a>
+    render: (url: string) => (
+      <div className={s.tableCoverCell}>
+        <div className={s.tableCoverBox}>
+          <img src={url} alt='cover' className={s.tableCover} />
+        </div>
+      </div>
     )
   },
   {
-    title: '头像',
-    dataIndex: 'avatar',
+    title: '名称',
+    dataIndex: 'name',
     key: '_id'
   },
   {
@@ -39,8 +44,14 @@ export const useColumns = ({ handleEdit, handleDelete, deleteProps }: Props) => 
   {
     title: '操作',
     key: '_id',
-    render: ({ _id }: { _id: string }) => (
+    render: ({ _id, link }: { _id: string; link: string }) => (
       <>
+        <MyButton
+          style={{ marginRight: '10px' }}
+          text='查看'
+          small
+          onClick={() => handleOpenShow(link)}
+        />
         <MyButton
           style={{ marginRight: '10px' }}
           text='更新'
@@ -49,7 +60,7 @@ export const useColumns = ({ handleEdit, handleDelete, deleteProps }: Props) => 
         />
         <Popconfirm
           placement='bottomRight'
-          title='确定要删除该友链吗？'
+          title='确定要删除该作品吗？'
           onConfirm={() => handleDelete(_id, deleteProps)}
           okText='Yes'
           cancelText='No'

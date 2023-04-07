@@ -4,7 +4,7 @@ import { flushSync } from 'react-dom';
 
 import { getPageData } from '@/utils/apis/getPageData';
 import { getTotal } from '@/utils/apis/getTotal';
-import { failText, pageSize, staleTime, visitorText } from '@/utils/constant';
+import { defaultPageSize, failText, staleTime, visitorText } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
 
 import { deleteData } from '../apis/deleteData';
@@ -13,6 +13,9 @@ import { isAdmin } from '../cloudBase';
 interface Props {
   DBName: DB;
   page: number;
+  sortKey?: string;
+  isAsc?: boolean;
+  pageSize?: number;
 }
 
 export interface DeleteProps {
@@ -22,7 +25,13 @@ export interface DeleteProps {
 }
 
 // 获取表格数据（data & total）
-export const useTableData = ({ DBName, page }: Props) => {
+export const useTableData = ({
+  DBName,
+  page,
+  sortKey = 'date',
+  isAsc = false,
+  pageSize = defaultPageSize
+}: Props) => {
   const {
     data,
     loading: dataLoading,
@@ -31,7 +40,8 @@ export const useTableData = ({ DBName, page }: Props) => {
     () =>
       getPageData({
         dbName: DBName,
-        isAsc: false,
+        sortKey,
+        isAsc,
         page,
         size: pageSize
       }),

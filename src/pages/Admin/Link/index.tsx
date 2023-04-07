@@ -9,7 +9,7 @@ import PageHeader from '@/components/PageHeader';
 import { addData } from '@/utils/apis/addData';
 import { updateData } from '@/utils/apis/updateData';
 import { isAdmin } from '@/utils/cloudBase';
-import { failText, pageSize, siteTitle, visitorText } from '@/utils/constant';
+import { defaultPageSize, failText, siteTitle, visitorText } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
 import { usePage } from '@/utils/hooks/usePage';
 import { useTableData } from '@/utils/hooks/useTableData';
@@ -95,7 +95,7 @@ const Link: React.FC = () => {
       } else if (res.success && res.permission) {
         message.success('添加成功！');
         closeModel();
-        flushSync(() => myClearCache(1, getTotalPage(total, pageSize)));
+        flushSync(() => myClearCache(1, getTotalPage(total, defaultPageSize)));
         flushSync(() => setPage(1));
         flushSync(() => {
           dataRun();

@@ -73,14 +73,14 @@ export const useRoutes = (): RouteType[] => [
     element: <Show />
   },
   {
-    path: 'about',
-    disPlayName: '关于',
-    element: <About />
-  },
-  {
     path: 'log',
     disPlayName: '建站日志',
     element: <Log />
+  },
+  {
+    path: 'about',
+    disPlayName: '关于',
+    element: <About />
   },
   {
     path: 'draft',

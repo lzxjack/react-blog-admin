@@ -25,9 +25,6 @@ export const siteTitle = '飞鸟小站后台管理';
 // 数据缓存时间
 export const staleTime = 180000;
 
-// 分页每页数量
-export const pageSize = 9;
-
 // 游客修改失败后的提示语句
 export const visitorText = '游客不可以修改哦~😆';
 
@@ -36,3 +33,9 @@ export const failText = '操作失败，请重试！';
 
 // 管理员id
 export const adminUid = 'dbee9976b3c14448a06f2006a4795cf2';
+
+// 分页：默认每页数量
+export const defaultPageSize = 9;
+
+// 作品页 分页
+export const showPageSize = 7;

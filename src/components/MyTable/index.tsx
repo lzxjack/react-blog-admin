@@ -2,7 +2,7 @@ import { Table } from 'antd';
 import { ColumnGroupType, ColumnType } from 'antd/es/table';
 import React from 'react';
 
-import { pageSize } from '@/utils/constant';
+import { defaultPageSize } from '@/utils/constant';
 
 interface Props {
   loading: boolean;
@@ -10,10 +10,19 @@ interface Props {
   data: readonly any[];
   total: number;
   page: number;
+  pageSize?: number;
   setPage: (page: number) => void;
 }
 
-const MyTable: React.FC<Props> = ({ loading, columns, data, total, page, setPage }) => (
+const MyTable: React.FC<Props> = ({
+  loading,
+  columns,
+  data,
+  total,
+  page,
+  pageSize = defaultPageSize,
+  setPage
+}) => (
   <Table
     bordered
     loading={loading}
