@@ -14,8 +14,15 @@ import { updateDataAPI } from '../apis/updateData';
 import { isAdmin } from '../cloudBase';
 import { dataMap } from '../dataMap';
 
+interface DataFilterProps {
+  text: string;
+  data: string;
+  setData: Dispatch<SetStateAction<string>>;
+}
+
 interface Props {
   DBName: DB;
+  dataFilter?: DataFilterProps[];
   page: number;
   setPage: (page: number) => void;
   modalCancel?: () => void;
@@ -33,6 +40,7 @@ export interface DeleteProps {
 // 获取表格数据（data & total）
 export const useTableData = ({
   DBName,
+  dataFilter,
   page,
   setPage,
   modalCancel,
@@ -60,6 +68,12 @@ export const useTableData = ({
       staleTime
     }
   );
+
+  const clearData = () => {
+    for (const { setData } of dataFilter || []) {
+      setData('');
+    }
+  };
 
   const {
     data: total,
@@ -127,6 +141,7 @@ export const useTableData = ({
       } else if (res.success && res.permission) {
         message.success('添加成功！');
         modalCancel?.();
+        clearData();
         flushSync(() => myClearCache(1, getTotalPage(total, pageSize)));
         flushSync(() => setPage(1));
         flushSync(() => {
@@ -146,6 +161,7 @@ export const useTableData = ({
       } else if (res.success && res.permission) {
         message.success('修改成功！');
         modalCancel?.();
+        clearData();
         flushSync(() => myClearCacheOnePage(page));
         flushSync(() => dataRun());
       } else {
@@ -155,24 +171,19 @@ export const useTableData = ({
   };
 
   const modalOk = ({
-    dataFilter,
     isEdit,
-    config: { id, data, total, page }
+    id,
+    data,
+    total,
+    page
   }: {
-    dataFilter: {
-      text: string;
-      data: string;
-      setData: Dispatch<SetStateAction<string>>;
-    }[];
     isEdit: boolean;
-    config: {
-      id: string;
-      data: object;
-      total: number;
-      page: number;
-    };
+    id: string;
+    data: object;
+    total: number;
+    page: number;
   }) => {
-    if (dataFilter.some(({ data }) => !data)) {
+    if (dataFilter?.some(({ data }) => !data)) {
       message.info(`请输入完整${dataMap[DBName as keyof typeof dataMap]}信息！`);
       return;
     }

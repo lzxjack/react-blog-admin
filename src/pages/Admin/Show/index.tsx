@@ -14,11 +14,11 @@ import { useColumns } from './config';
 
 const Show: React.FC = () => {
   useTitle(`${siteTitle} | ${Title.Show}`);
+
   const { page, setPage } = usePage();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [id, setId] = useState('');
-
   const [order, setOrder] = useState('');
   const [name, setName] = useState('');
   const [descr, setDescr] = useState('');
@@ -54,20 +54,15 @@ const Show: React.FC = () => {
     }
   ];
 
-  const clearData = () => {
-    for (const { setData } of dataFilter) {
-      setData('');
-    }
-  };
-
   const modalCancel = () => {
     setIsModalOpen(false);
-    clearData();
     setIsEdit(false);
+    setId('');
   };
 
   const { data, total, loading, handleDelete, modalOk } = useTableData({
     DBName: DB.Show,
+    dataFilter,
     page,
     setPage,
     modalCancel,
@@ -103,12 +98,16 @@ const Show: React.FC = () => {
     }
   });
 
-  const handleModalOk = () =>
+  const handleModalOk = () => {
+    const data = { order, name, descr, cover, link };
     modalOk({
-      dataFilter,
       isEdit,
-      config: { id, data: { order, name, descr, cover, link }, total, page }
+      id,
+      data,
+      total,
+      page
     });
+  };
 
   return (
     <>

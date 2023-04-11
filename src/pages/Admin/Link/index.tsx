@@ -47,25 +47,18 @@ const Link: React.FC = () => {
     }
   ];
 
-  const clearData = () => {
-    setId('');
-    setName('');
-    setLink('');
-    setAvatar('');
-    setDescr('');
-  };
-
   const modalCancel = () => {
     setIsModalOpen(false);
-    clearData();
     setIsEdit(false);
+    setId('');
   };
 
   const { data, total, loading, handleDelete, modalOk } = useTableData({
     DBName: DB.Link,
+    dataFilter,
     page,
-    modalCancel,
-    setPage
+    setPage,
+    modalCancel
   });
 
   const handleEdit = (id: string) => {
@@ -97,15 +90,11 @@ const Link: React.FC = () => {
   const handleModalOk = () => {
     const data = { name, link, avatar, descr };
     modalOk({
-      dataFilter,
       isEdit,
-      config: {
-        id,
-        // data: isEdit ? data : { ...data, date: new Date().getTime() },
-        data: isEdit ? data : { ...data, date: 1680709250000 },
-        total,
-        page
-      }
+      id,
+      data: isEdit ? data : { ...data, date: new Date().getTime() },
+      total,
+      page
     });
   };
 
