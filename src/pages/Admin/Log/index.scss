@@ -1,0 +1,39 @@
+@import '../../../styles/base.scss';
+@import '../../../styles/style.scss';
+
+.contentItem {
+  display: flex;
+  height: 40px;
+  margin: 15px 0;
+
+  .contentkey {
+    width: 64px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .contentValue {
+    flex: 1;
+    border: 1px solid $themeColor3_light;
+    height: 40px;
+    font-size: 16px;
+    padding: 0 10px;
+    border-radius: 10px;
+  }
+}
+
+.textAreaBox {
+  height: 120px;
+
+  .textArea {
+    box-sizing: border-box;
+    resize: none;
+    height: 100%;
+    outline: none;
+    padding: 10px;
+    font-family: 'dengxian';
+  }
+}

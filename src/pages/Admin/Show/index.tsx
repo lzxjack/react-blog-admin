@@ -1,4 +1,4 @@
-import { useTitle } from 'ahooks';
+import { useResetState, useTitle } from 'ahooks';
 import React, { useState } from 'react';
 
 import CustomModal from '@/components/CustomModal';
@@ -18,53 +18,59 @@ const Show: React.FC = () => {
   const { page, setPage } = usePage();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-  const [id, setId] = useState('');
-  const [order, setOrder] = useState('');
-  const [name, setName] = useState('');
-  const [descr, setDescr] = useState('');
-  const [cover, setCover] = useState('');
-  const [link, setLink] = useState('');
+
+  const [id, setId, resetId] = useResetState('');
+  const [order, setOrder, resetOrder] = useResetState('');
+  const [name, setName, resetName] = useResetState('');
+  const [descr, setDescr, resetDescr] = useResetState('');
+  const [cover, setCover, resetCover] = useResetState('');
+  const [link, setLink, resetLink] = useResetState('');
 
   const dataFilter = [
     {
       text: '序号',
       data: order,
-      setData: setOrder
+      setData: setOrder,
+      reSet: resetOrder
     },
     {
       text: '名称',
       data: name,
-      setData: setName
+      setData: setName,
+      reSet: resetName
     },
     {
       text: '描述',
       data: descr,
-      setData: setDescr
+      setData: setDescr,
+      reSet: resetDescr
     },
 
     {
       text: '封面',
       data: cover,
-      setData: setCover
+      setData: setCover,
+      reSet: resetCover
     },
     {
       text: '链接',
       data: link,
-      setData: setLink
+      setData: setLink,
+      reSet: resetLink
     }
   ];
 
   const clearData = () => {
-    for (const { setData } of dataFilter) {
-      setData('');
+    for (const { reSet } of dataFilter) {
+      reSet();
     }
+    resetId();
   };
 
   const modalCancel = () => {
     setIsModalOpen(false);
     setIsEdit(false);
     clearData();
-    setId('');
   };
 
   const { data, total, loading, handleDelete, modalOk } = useTableData({

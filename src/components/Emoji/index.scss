@@ -1,0 +1,26 @@
+@import '../../styles/style.scss';
+
+.emojiBox {
+  .emojiBtn {
+    width: 32px;
+    height: 32px;
+    display: inline-block;
+    margin-right: 5px;
+    border-radius: 8px;
+    user-select: none;
+    text-align: center;
+    line-height: 32px;
+    font-size: 18px;
+    @extend .trans;
+  }
+
+  .emojiBtn:hover {
+    background-color: rgb(100, 170, 255);
+  }
+}
+
+.emojiContent {
+  width: 344px;
+  word-break: break-all;
+  font-size: 20px;
+}

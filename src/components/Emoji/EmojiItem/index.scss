@@ -1,0 +1,19 @@
+@import '../../../styles/base.scss';
+@import '../../../styles/style.scss';
+
+.emoji {
+  display: inline-block;
+  margin: 2px;
+  border-radius: 8px;
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+  text-align: center;
+  user-select: none;
+  cursor: pointer;
+  @extend .trans;
+}
+
+.emoji:hover {
+  background-color: rgb(100, 170, 255);
+}

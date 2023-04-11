@@ -36,6 +36,7 @@ export const adminUid = 'dbee9976b3c14448a06f2006a4795cf2';
 
 // 分页：默认每页数量
 export const defaultPageSize = 9;
-
-// 作品页 分页
+// 作品 分页
 export const showPageSize = 7;
+// 建站日志 分页
+export const logPageSize = 5;

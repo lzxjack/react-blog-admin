@@ -1,6 +1,5 @@
 import { clearCache, useRequest } from 'ahooks';
 import { message } from 'antd';
-import { Dispatch, SetStateAction } from 'react';
 import { flushSync } from 'react-dom';
 
 import { getPageDataAPI } from '@/utils/apis/getPageData';
@@ -14,10 +13,11 @@ import { updateDataAPI } from '../apis/updateData';
 import { isAdmin } from '../cloudBase';
 import { dataMap } from '../dataMap';
 
-interface DataFilterProps {
+export interface DataFilterProps {
   text: string;
-  data: string;
-  setData: Dispatch<SetStateAction<string>>;
+  data: string | string[];
+  setData: any;
+  reSet: any;
 }
 
 interface Props {
@@ -191,7 +191,12 @@ export const useTableData = ({
     page: number;
     isClearAll?: boolean;
   }) => {
-    if (dataFilter?.some(({ data }) => !data)) {
+    if (
+      dataFilter?.some(
+        ({ data: filterData }) =>
+          !filterData || (Array.isArray(filterData) && !filterData.length)
+      )
+    ) {
       message.info(`请输入完整${dataMap[DBName as keyof typeof dataMap]}信息！`);
       return;
     }

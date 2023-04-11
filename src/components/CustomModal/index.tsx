@@ -2,6 +2,7 @@ import { Modal } from 'antd';
 import React, { Dispatch, SetStateAction } from 'react';
 
 import { DB } from '@/utils/dbConfig';
+import { DataFilterProps } from '@/utils/hooks/useTableData';
 
 import ModalTitle from '../ModalTitle';
 import s from './index.scss';
@@ -12,13 +13,10 @@ interface Props {
   DBType: DB;
   modalOk: () => void;
   modalCancel: () => void;
-  dataFilter: {
-    text: string;
-    data: string;
-    setData: Dispatch<SetStateAction<string>>;
-  }[];
+  dataFilter?: DataFilterProps[];
   addText?: string;
   updateText?: string;
+  render?: () => React.ReactNode;
 }
 
 const LinkModal: React.FC<Props> = ({
@@ -27,10 +25,24 @@ const LinkModal: React.FC<Props> = ({
   DBType,
   modalOk,
   modalCancel,
-  dataFilter,
+  dataFilter = [],
   addText = '添加',
-  updateText = '更新'
+  updateText = '更新',
+  render
 }) => {
+  const dataFilterRes = () =>
+    dataFilter.map(({ text, data, setData }) => (
+      <div className={s.inputBox} key={text}>
+        <div className={s.inputKey}>{text}：</div>
+        <input
+          className={s.inputValue}
+          type='text'
+          value={data}
+          onChange={e => setData(e.target.value)}
+        />
+      </div>
+    ));
+
   return (
     <Modal
       title={
@@ -45,19 +57,7 @@ const LinkModal: React.FC<Props> = ({
       onOk={modalOk}
       onCancel={modalCancel}
     >
-      <div className={s.modalBox}>
-        {dataFilter.map(({ text, data, setData }) => (
-          <div className={s.inputBox} key={text}>
-            <div className={s.inputKey}>{text}：</div>
-            <input
-              className={s.inputValue}
-              type='text'
-              value={data}
-              onChange={e => setData(e.target.value)}
-            />
-          </div>
-        ))}
-      </div>
+      <div className={s.modalBox}>{render?.() || dataFilterRes()}</div>
     </Modal>
   );
 };
