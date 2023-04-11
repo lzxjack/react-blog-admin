@@ -18,7 +18,7 @@ interface Props {
 const CountCard: React.FC<Props> = ({ DBName, className }) => {
   const { data, loading } = useRequest(() => getTotalAPI(DBName), {
     retryCount: 3,
-    cacheKey: `${DBName}-count`,
+    cacheKey: `${DBName}-total`,
     staleTime
   });
 

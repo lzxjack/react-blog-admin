@@ -14,7 +14,11 @@ const Msg: React.FC = () => {
   useTitle(`${siteTitle} | ${Title.Msg}`);
   const { page, setPage } = usePage();
 
-  const { data, total, loading, handleDelete } = useTableData({ DBName: DB.Msg, page });
+  const { data, total, loading, handleDelete } = useTableData({
+    DBName: DB.Msg,
+    page,
+    setPage
+  });
 
   const handleOpenMsg = (postTitle: string) => {
     const url = postTitle ? `${blogUrl}/post?title=${postTitle}` : `${blogUrl}/msg`;

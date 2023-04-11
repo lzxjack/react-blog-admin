@@ -1,15 +1,10 @@
 import { useTitle } from 'ahooks';
-import { message } from 'antd';
 import React, { useState } from 'react';
-import { flushSync } from 'react-dom';
 
 import CustomModal from '@/components/CustomModal';
 import MyTable from '@/components/MyTable';
 import PageHeader from '@/components/PageHeader';
-import { addDataAPI } from '@/utils/apis/addData';
-import { updateDataAPI } from '@/utils/apis/updateData';
-import { isAdmin } from '@/utils/cloudBase';
-import { defaultPageSize, failText, siteTitle, visitorText } from '@/utils/constant';
+import { siteTitle } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
 import { usePage } from '@/utils/hooks/usePage';
 import { useTableData } from '@/utils/hooks/useTableData';
@@ -52,17 +47,26 @@ const Link: React.FC = () => {
     }
   ];
 
-  const {
-    data,
-    total,
-    loading,
-    dataRun,
-    totalRun,
-    myClearCacheOnePage,
-    myClearCache,
-    getTotalPage,
-    handleDelete
-  } = useTableData({ DBName: DB.Link, page });
+  const clearData = () => {
+    setId('');
+    setName('');
+    setLink('');
+    setAvatar('');
+    setDescr('');
+  };
+
+  const modalCancel = () => {
+    setIsModalOpen(false);
+    clearData();
+    setIsEdit(false);
+  };
+
+  const { data, total, loading, handleDelete, modalOk } = useTableData({
+    DBName: DB.Link,
+    page,
+    modalCancel,
+    setPage
+  });
 
   const handleEdit = (id: string) => {
     setIsModalOpen(true);
@@ -90,75 +94,19 @@ const Link: React.FC = () => {
     }
   });
 
-  const clearData = () => {
-    setId('');
-    setName('');
-    setLink('');
-    setAvatar('');
-    setDescr('');
-  };
-
-  const modalCancel = () => {
-    setIsModalOpen(false);
-    clearData();
-    setIsEdit(false);
-  };
-
-  const addLink = () => {
-    addDataAPI(DB.Link, {
-      name,
-      link,
-      avatar,
-      descr,
-      date: new Date().getTime()
-    }).then(res => {
-      if (!res.success && !res.permission) {
-        message.warning(visitorText);
-      } else if (res.success && res.permission) {
-        message.success('添加成功！');
-        modalCancel();
-        flushSync(() => myClearCache(1, getTotalPage(total, defaultPageSize)));
-        flushSync(() => setPage(1));
-        flushSync(() => {
-          dataRun();
-          totalRun();
-        });
-      } else {
-        message.warning(failText);
+  const handleModalOk = () => {
+    const data = { name, link, avatar, descr };
+    modalOk({
+      dataFilter,
+      isEdit,
+      config: {
+        id,
+        // data: isEdit ? data : { ...data, date: new Date().getTime() },
+        data: isEdit ? data : { ...data, date: 1680709250000 },
+        total,
+        page
       }
     });
-  };
-
-  const editLink = () => {
-    updateDataAPI(DB.Link, id, {
-      name,
-      link,
-      avatar,
-      descr
-    }).then(res => {
-      if (!res.success && !res.permission) {
-        message.warning(visitorText);
-      } else if (res.success && res.permission) {
-        message.success('修改成功！');
-        modalCancel();
-        flushSync(() => myClearCacheOnePage(page));
-        flushSync(() => dataRun());
-      } else {
-        message.warning(failText);
-      }
-    });
-  };
-
-  const modalOk = () => {
-    if (!name || !link || !avatar || !descr) {
-      message.info('请输入完整友链信息！');
-      return;
-    }
-    if (!isAdmin()) {
-      message.warning(visitorText);
-      return;
-    }
-    isEdit ? editLink() : addLink();
   };
 
   return (
@@ -176,7 +124,7 @@ const Link: React.FC = () => {
         isEdit={isEdit}
         isModalOpen={isModalOpen}
         DBType={DB.Link}
-        modalOk={modalOk}
+        modalOk={handleModalOk}
         modalCancel={modalCancel}
         dataFilter={dataFilter}
       />

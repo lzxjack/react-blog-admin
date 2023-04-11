@@ -68,18 +68,7 @@ const Show: React.FC = () => {
     setIsEdit(false);
   };
 
-  const {
-    data,
-    total,
-    loading,
-    dataRun,
-    totalRun,
-    myClearCacheOnePage,
-    myClearCache,
-    getTotalPage,
-    handleDelete,
-    modalOk
-  } = useTableData({
+  const { data, total, loading, handleDelete, modalOk } = useTableData({
     DBName: DB.Show,
     page,
     setPage,

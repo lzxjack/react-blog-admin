@@ -12,11 +12,12 @@ import { addDataAPI } from '../apis/addData';
 import { deleteDataAPI } from '../apis/deleteData';
 import { updateDataAPI } from '../apis/updateData';
 import { isAdmin } from '../cloudBase';
+import { dataMap } from '../dataMap';
 
 interface Props {
   DBName: DB;
   page: number;
-  setPage?: (page: number) => void;
+  setPage: (page: number) => void;
   modalCancel?: () => void;
   sortKey?: string;
   isAsc?: boolean;
@@ -127,7 +128,7 @@ export const useTableData = ({
         message.success('添加成功！');
         modalCancel?.();
         flushSync(() => myClearCache(1, getTotalPage(total, pageSize)));
-        flushSync(() => setPage?.(1));
+        flushSync(() => setPage(1));
         flushSync(() => {
           dataRun();
           totalRun();
@@ -172,7 +173,7 @@ export const useTableData = ({
     };
   }) => {
     if (dataFilter.some(({ data }) => !data)) {
-      message.info('请输入完整作品信息！');
+      message.info(`请输入完整${dataMap[DBName as keyof typeof dataMap]}信息！`);
       return;
     }
     if (!isAdmin()) {
@@ -186,11 +187,6 @@ export const useTableData = ({
     data: data?.data,
     total: total?.total,
     loading: dataLoading && totalLoading,
-    dataRun,
-    totalRun,
-    myClearCache,
-    myClearCacheOnePage,
-    getTotalPage,
     handleDelete,
     modalOk
   };
