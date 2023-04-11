@@ -33,19 +33,22 @@ const Say: React.FC = () => {
       text: '时间',
       data: date,
       setData: setDate,
-      reSet: resetDate
+      reSet: resetDate,
+      require: true
     },
     {
       text: '内容',
       data: content,
       setData: setContent,
-      reSet: resetContent
+      reSet: resetContent,
+      require: true
     },
     {
       text: '图片',
       data: imgs,
       setData: setImgs,
-      reSet: resetImgs
+      reSet: resetImgs,
+      require: false
     }
   ];
 
@@ -135,11 +138,13 @@ const Say: React.FC = () => {
         <div className={sLog.contentkey}>图片：</div>
         <textarea
           className={classNames(sLog.contentValue, sLog.textArea)}
-          placeholder='（可选）插入图片url，回车分隔'
+          placeholder='（可选）插入图片url，回车分隔，最多4张'
           value={imgs.join(`\n`)}
           onChange={e => {
-            if (imgs.length > 4) return;
-            setImgs(e.target.value.split(`\n`));
+            const imgs = e.target.value.split(`\n`);
+            if (imgs.length <= 4) {
+              setImgs(imgs);
+            }
           }}
         />
       </div>

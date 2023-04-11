@@ -18,6 +18,7 @@ export interface DataFilterProps {
   data: string | string[];
   setData: any;
   reSet: any;
+  require: boolean;
 }
 
 interface Props {
@@ -193,8 +194,8 @@ export const useTableData = ({
   }) => {
     if (
       dataFilter?.some(
-        ({ data: filterData }) =>
-          !filterData || (Array.isArray(filterData) && !filterData.length)
+        ({ data: filterData, require }) =>
+          require && (!filterData || (Array.isArray(filterData) && !filterData.length))
       )
     ) {
       message.info(`请输入完整${dataMap[DBName as keyof typeof dataMap]}信息！`);

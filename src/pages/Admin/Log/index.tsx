@@ -32,13 +32,15 @@ const Log: React.FC = () => {
       text: '时间',
       data: date,
       setData: setDate,
-      reSet: resetDate
+      reSet: resetDate,
+      require: true
     },
     {
       text: '日志',
       data: logContent,
       setData: setLogContent,
-      reSet: resetLogContent
+      reSet: resetLogContent,
+      require: true
     }
   ];
 

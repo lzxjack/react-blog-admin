@@ -31,32 +31,36 @@ const Show: React.FC = () => {
       text: '序号',
       data: order,
       setData: setOrder,
-      reSet: resetOrder
+      reSet: resetOrder,
+      require: true
     },
     {
       text: '名称',
       data: name,
       setData: setName,
-      reSet: resetName
+      reSet: resetName,
+      require: true
     },
     {
       text: '描述',
       data: descr,
       setData: setDescr,
-      reSet: resetDescr
+      reSet: resetDescr,
+      require: true
     },
-
     {
       text: '封面',
       data: cover,
       setData: setCover,
-      reSet: resetCover
+      reSet: resetCover,
+      require: true
     },
     {
       text: '链接',
       data: link,
       setData: setLink,
-      reSet: resetLink
+      reSet: resetLink,
+      require: true
     }
   ];
 

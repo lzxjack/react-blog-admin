@@ -30,25 +30,29 @@ const Link: React.FC = () => {
       text: '名称',
       data: name,
       setData: setName,
-      reSet: resetName
+      reSet: resetName,
+      require: true
     },
     {
       text: '链接',
       data: link,
       setData: setLink,
-      reSet: resetLink
+      reSet: resetLink,
+      require: true
     },
     {
       text: '头像',
       data: avatar,
       setData: setAvatar,
-      reSet: resetAvatar
+      reSet: resetAvatar,
+      require: true
     },
     {
       text: '描述',
       data: descr,
       setData: setDescr,
-      reSet: resetDescr
+      reSet: resetDescr,
+      require: true
     }
   ];
 
