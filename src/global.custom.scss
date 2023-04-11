@@ -50,6 +50,10 @@ input {
   border-radius: 0;
 }
 
+textarea {
+  outline: none;
+}
+
 // 重置antd样式
 // notification通知隐藏关闭按钮
 .ant-notification-notice-close {

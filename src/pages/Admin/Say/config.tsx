@@ -1,4 +1,4 @@
-import { Popconfirm } from 'antd';
+import { Popconfirm, Popover } from 'antd';
 import dayjs from 'dayjs';
 import React from 'react';
 
@@ -13,24 +13,37 @@ interface Props {
 
 export const useColumns = ({ handleEdit, handleDelete, deleteProps }: Props) => [
   {
-    title: '日期',
+    title: '发布日期',
     dataIndex: 'date',
     key: '_id',
-    render: (timeLine: string) => <>{dayjs(timeLine).format('YYYY-MM-DD')}</>
+    render: (timeLine: string) => <>{dayjs(timeLine).format('YYYY-MM-DD HH:mm:ss')}</>
   },
   {
-    title: '日志内容',
-    dataIndex: 'logContent',
+    title: '说说内容',
+    dataIndex: 'content',
     key: '_id',
-    render: (arr: string[]) => (
-      <div style={{ margin: 'auto', width: '500px' }}>
-        {arr.map((item, index) => (
-          <div key={index} style={{ fontSize: '16px', padding: '5px 0' }}>
-            {item}
+    render: (content: string, { imgs }: { imgs?: string[] }) => {
+      return (
+        <Popover
+          placement='bottom'
+          content='123123'
+          trigger='hover'
+          open={!!imgs?.length}
+        >
+          <div style={{ width: '100%', height: '100%' }}>
+            <div
+              style={{
+                margin: 'auto',
+                width: '500px',
+                fontSize: '16px'
+              }}
+            >
+              {content}
+            </div>
           </div>
-        ))}
-      </div>
-    )
+        </Popover>
+      );
+    }
   },
   {
     title: '操作',
@@ -45,7 +58,7 @@ export const useColumns = ({ handleEdit, handleDelete, deleteProps }: Props) => 
         />
         <Popconfirm
           placement='bottomRight'
-          title='确定要删除该日志吗？'
+          title='确定要删除该说说吗？'
           onConfirm={() => handleDelete(_id, deleteProps)}
           okText='Yes'
           cancelText='No'

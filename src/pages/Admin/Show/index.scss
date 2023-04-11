@@ -1,21 +1,14 @@
-.tableCoverCell {
-  width: 100%;
-  height: 100%;
+.tableCoverBox {
+  margin: auto;
+  width: 100px;
+  height: 80px;
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 10px;
+  overflow: hidden;
 
-  .tableCoverBox {
-    width: 100px;
-    height: 80px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 10px;
-    overflow: hidden;
-
-    .tableCover {
-      height: 100%;
-    }
+  .tableCover {
+    height: 100%;
   }
 }

@@ -18,10 +18,8 @@ export const useColumns = ({ handleEdit, handleDelete, deleteProps }: Props) => 
     dataIndex: 'cover',
     key: '_id',
     render: (url: string) => (
-      <div className={s.tableCoverCell}>
-        <div className={s.tableCoverBox}>
-          <img src={url} alt='cover' className={s.tableCover} />
-        </div>
+      <div className={s.tableCoverBox}>
+        <img src={url} alt='cover' className={s.tableCover} />
       </div>
     )
   },
