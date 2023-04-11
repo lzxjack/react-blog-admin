@@ -8,17 +8,11 @@ import s from './index.scss';
 
 interface Props {
   handleEdit: (id: string) => void;
-  handleOpenShow: (id: string) => void;
   handleDelete: (id: string, props: DeleteProps) => void;
   deleteProps: DeleteProps;
 }
 
-export const useColumns = ({
-  handleEdit,
-  handleOpenShow,
-  handleDelete,
-  deleteProps
-}: Props) => [
+export const useColumns = ({ handleEdit, handleDelete, deleteProps }: Props) => [
   {
     title: '封面',
     dataIndex: 'cover',
@@ -50,7 +44,7 @@ export const useColumns = ({
           style={{ marginRight: '10px' }}
           text='查看'
           small
-          onClick={() => handleOpenShow(link)}
+          onClick={() => window.open(link)}
         />
         <MyButton
           style={{ marginRight: '10px' }}

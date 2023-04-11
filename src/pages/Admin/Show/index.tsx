@@ -1,12 +1,10 @@
 import { useTitle } from 'ahooks';
-import { message } from 'antd';
 import React, { useState } from 'react';
 
 import CustomModal from '@/components/CustomModal';
 import MyTable from '@/components/MyTable';
 import PageHeader from '@/components/PageHeader';
-import { isAdmin } from '@/utils/cloudBase';
-import { showPageSize, siteTitle, visitorText } from '@/utils/constant';
+import { showPageSize, siteTitle } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
 import { usePage } from '@/utils/hooks/usePage';
 import { useTableData } from '@/utils/hooks/useTableData';
@@ -95,13 +93,8 @@ const Show: React.FC = () => {
     }
   };
 
-  const handleOpenShow = (url: string) => {
-    window.open(url);
-  };
-
   const columns = useColumns({
     handleEdit,
-    handleOpenShow,
     handleDelete,
     deleteProps: {
       page,

@@ -4,17 +4,17 @@ import dayjs from 'dayjs';
 import React from 'react';
 
 import MyButton from '@/components/MyButton';
+import { blogUrl } from '@/utils/constant';
 import { DeleteProps } from '@/utils/hooks/useTableData';
 
 import s from './index.scss';
 
 interface Props {
-  handleOpenMsg: (postTitle: string) => void;
   handleDelete: (id: string, props: DeleteProps) => void;
   deleteProps: DeleteProps;
 }
 
-export const useColumns = ({ handleOpenMsg, handleDelete, deleteProps }: Props) => [
+export const useColumns = ({ handleDelete, deleteProps }: Props) => [
   {
     title: '昵称',
     dataIndex: 'name',
@@ -79,7 +79,12 @@ export const useColumns = ({ handleOpenMsg, handleDelete, deleteProps }: Props) 
           style={{ marginRight: '10px' }}
           text='查看'
           small
-          onClick={() => handleOpenMsg(postTitle)}
+          onClick={() => {
+            const url = postTitle
+              ? `${blogUrl}/post?title=${postTitle}`
+              : `${blogUrl}/msg`;
+            window.open(url);
+          }}
         />
         <Popconfirm
           placement='bottomRight'

@@ -2,7 +2,7 @@ import { useTitle } from 'ahooks';
 import React from 'react';
 
 import MyTable from '@/components/MyTable';
-import { blogUrl, siteTitle } from '@/utils/constant';
+import { siteTitle } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
 import { usePage } from '@/utils/hooks/usePage';
 import { useTableData } from '@/utils/hooks/useTableData';
@@ -20,13 +20,7 @@ const Msg: React.FC = () => {
     setPage
   });
 
-  const handleOpenMsg = (postTitle: string) => {
-    const url = postTitle ? `${blogUrl}/post?title=${postTitle}` : `${blogUrl}/msg`;
-    window.open(url);
-  };
-
   const columns = useColumns({
-    handleOpenMsg,
     handleDelete,
     deleteProps: {
       page,
