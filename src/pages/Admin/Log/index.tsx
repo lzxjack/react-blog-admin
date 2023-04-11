@@ -35,7 +35,7 @@ const Log: React.FC = () => {
       reSet: resetDate
     },
     {
-      text: '事件',
+      text: '日志',
       data: logContent,
       setData: setLogContent,
       reSet: resetLogContent
@@ -114,10 +114,10 @@ const Log: React.FC = () => {
         />
       </div>
       <div className={classNames(s.contentItem, s.textAreaBox)}>
-        <div className={s.contentkey}>事件：</div>
+        <div className={s.contentkey}>日志：</div>
         <textarea
           className={classNames(s.contentValue, s.textArea)}
-          placeholder='请输入事件，回车分隔'
+          placeholder='请输入日志，回车分隔'
           value={logContent.join(`\n`)}
           onChange={e => setLogContent(e.target.value.split(`\n`))}
         />
@@ -128,7 +128,7 @@ const Log: React.FC = () => {
 
   return (
     <>
-      <PageHeader text='添加事件' onClick={openModal} />
+      <PageHeader text='添加日志' onClick={openModal} />
       <MyTable
         loading={loading}
         columns={columns}

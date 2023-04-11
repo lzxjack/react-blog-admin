@@ -9,7 +9,7 @@ import s from './index.scss';
 
 const Home: React.FC = () => {
   useTitle(siteTitle);
-  const countCards = [DB.Article, DB.Draft, DB.Link, DB.Msg, DB.Say];
+  const countCards = [DB.Article, DB.Say, DB.Msg, DB.Link, DB.Log];
 
   return (
     <>

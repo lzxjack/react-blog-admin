@@ -21,7 +21,7 @@ export const useColumns = ({ handleEdit, handleDelete, deleteProps }: Props) => 
     render: (timeLine: string) => <>{dayjs(timeLine).format('YYYY-MM-DD')}</>
   },
   {
-    title: '事件内容',
+    title: '日志内容',
     dataIndex: 'logContent',
     key: '_id',
     render: (arr: string[]) => (
@@ -47,7 +47,7 @@ export const useColumns = ({ handleEdit, handleDelete, deleteProps }: Props) => 
         />
         <Popconfirm
           placement='bottomRight'
-          title='确定要删除该事件吗？'
+          title='确定要删除该日志吗？'
           onConfirm={() => handleDelete(_id, deleteProps)}
           okText='Yes'
           cancelText='No'
