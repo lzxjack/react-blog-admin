@@ -100,7 +100,6 @@ const Show: React.FC = () => {
     handleDelete,
     deleteProps: {
       page,
-      total,
       setPage
     }
   });
@@ -111,7 +110,6 @@ const Show: React.FC = () => {
       isEdit,
       id,
       data,
-      total,
       page,
       isClearAll: true
     });

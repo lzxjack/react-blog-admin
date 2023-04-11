@@ -24,7 +24,6 @@ const Msg: React.FC = () => {
     handleDelete,
     deleteProps: {
       page,
-      total,
       setPage
     }
   });

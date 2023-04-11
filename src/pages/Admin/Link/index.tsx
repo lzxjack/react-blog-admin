@@ -89,7 +89,6 @@ const Link: React.FC = () => {
     handleDelete,
     deleteProps: {
       page,
-      total,
       setPage
     }
   });
@@ -100,7 +99,6 @@ const Link: React.FC = () => {
       isEdit,
       id,
       data: isEdit ? data : { ...data, date: new Date().getTime() },
-      total,
       page
     });
   };

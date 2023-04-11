@@ -33,7 +33,6 @@ interface Props {
 
 export interface DeleteProps {
   page: number;
-  total: number;
   setPage: (page: number) => void;
 }
 
@@ -106,7 +105,7 @@ export const useTableData = ({
     return nowPage;
   };
 
-  const handleDelete = (id: string, { page, total, setPage }: DeleteProps) => {
+  const handleDelete = (id: string, { page, setPage }: DeleteProps) => {
     if (!isAdmin()) {
       message.warning(visitorText);
       return;
@@ -116,8 +115,8 @@ export const useTableData = ({
         message.warning(visitorText);
       } else if (res.success && res.permission) {
         message.success('删除成功！');
-        flushSync(() => myClearCache(page, getTotalPage(total, pageSize)));
-        flushSync(() => setPage(getAfterDeletedPage(total, page, pageSize)));
+        flushSync(() => myClearCache(page, getTotalPage(total.total, pageSize)));
+        flushSync(() => setPage(getAfterDeletedPage(total.total, page, pageSize)));
         flushSync(() => {
           dataRun();
           totalRun();
@@ -128,14 +127,14 @@ export const useTableData = ({
     });
   };
 
-  const addData = ({ data, total }: { data: object; total: number }) => {
+  const addData = (data: object) => {
     addDataAPI(DBName, data).then(res => {
       if (!res.success && !res.permission) {
         message.warning(visitorText);
       } else if (res.success && res.permission) {
         message.success('添加成功！');
         modalCancel?.();
-        flushSync(() => myClearCache(1, getTotalPage(total, pageSize)));
+        flushSync(() => myClearCache(1, getTotalPage(total.total, pageSize)));
         flushSync(() => setPage(1));
         flushSync(() => {
           dataRun();
@@ -183,14 +182,12 @@ export const useTableData = ({
     isEdit,
     id,
     data,
-    total,
     page,
     isClearAll = false
   }: {
     isEdit: boolean;
     id: string;
     data: object;
-    total: number;
     page: number;
     isClearAll?: boolean;
   }) => {
@@ -202,7 +199,7 @@ export const useTableData = ({
       message.warning(visitorText);
       return;
     }
-    isEdit ? editData({ id, data, page, isClearAll }) : addData({ data, total });
+    isEdit ? editData({ id, data, page, isClearAll }) : addData(data);
   };
 
   return {
