@@ -47,9 +47,16 @@ const Link: React.FC = () => {
     }
   ];
 
+  const clearData = () => {
+    for (const { setData } of dataFilter) {
+      setData('');
+    }
+  };
+
   const modalCancel = () => {
     setIsModalOpen(false);
     setIsEdit(false);
+    clearData();
     setId('');
   };
 

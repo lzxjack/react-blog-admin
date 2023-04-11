@@ -69,12 +69,6 @@ export const useTableData = ({
     }
   );
 
-  const clearData = () => {
-    for (const { setData } of dataFilter || []) {
-      setData('');
-    }
-  };
-
   const {
     data: total,
     loading: totalLoading,
@@ -134,14 +128,13 @@ export const useTableData = ({
     });
   };
 
-  const addData = (data: object, total: number) => {
+  const addData = ({ data, total }: { data: object; total: number }) => {
     addDataAPI(DBName, data).then(res => {
       if (!res.success && !res.permission) {
         message.warning(visitorText);
       } else if (res.success && res.permission) {
         message.success('添加成功！');
         modalCancel?.();
-        clearData();
         flushSync(() => myClearCache(1, getTotalPage(total, pageSize)));
         flushSync(() => setPage(1));
         flushSync(() => {
@@ -154,16 +147,32 @@ export const useTableData = ({
     });
   };
 
-  const editData = (id: string, data: object, page: number) => {
+  const editData = ({
+    id,
+    data,
+    page,
+    isClearAll
+  }: {
+    id: string;
+    data: object;
+    page: number;
+    isClearAll: boolean;
+  }) => {
     updateDataAPI(DBName, id, data).then(res => {
       if (!res.success && !res.permission) {
         message.warning(visitorText);
       } else if (res.success && res.permission) {
         message.success('修改成功！');
         modalCancel?.();
-        clearData();
-        flushSync(() => myClearCacheOnePage(page));
-        flushSync(() => dataRun());
+        flushSync(() => {
+          isClearAll
+            ? myClearCache(1, getTotalPage(total.total, pageSize))
+            : myClearCacheOnePage(page);
+        });
+        flushSync(() => {
+          dataRun();
+          totalRun();
+        });
       } else {
         message.warning(failText);
       }
@@ -175,13 +184,15 @@ export const useTableData = ({
     id,
     data,
     total,
-    page
+    page,
+    isClearAll = false
   }: {
     isEdit: boolean;
     id: string;
     data: object;
     total: number;
     page: number;
+    isClearAll?: boolean;
   }) => {
     if (dataFilter?.some(({ data }) => !data)) {
       message.info(`请输入完整${dataMap[DBName as keyof typeof dataMap]}信息！`);
@@ -191,7 +202,7 @@ export const useTableData = ({
       message.warning(visitorText);
       return;
     }
-    isEdit ? editData(id, data, page) : addData(data, total);
+    isEdit ? editData({ id, data, page, isClearAll }) : addData({ data, total });
   };
 
   return {

@@ -54,9 +54,16 @@ const Show: React.FC = () => {
     }
   ];
 
+  const clearData = () => {
+    for (const { setData } of dataFilter) {
+      setData('');
+    }
+  };
+
   const modalCancel = () => {
     setIsModalOpen(false);
     setIsEdit(false);
+    clearData();
     setId('');
   };
 
@@ -99,13 +106,14 @@ const Show: React.FC = () => {
   });
 
   const handleModalOk = () => {
-    const data = { order, name, descr, cover, link };
+    const data = { order: Number(order), name, descr, cover, link };
     modalOk({
       isEdit,
       id,
       data,
       total,
-      page
+      page,
+      isClearAll: true
     });
   };
 
