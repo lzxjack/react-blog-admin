@@ -1,9 +1,12 @@
 import { Popconfirm, Popover } from 'antd';
 import dayjs from 'dayjs';
 import React from 'react';
+import { IoImage } from 'react-icons/io5';
 
 import MyButton from '@/components/MyButton';
 import { DeleteProps } from '@/utils/hooks/useTableData';
+
+import s from './index.scss';
 
 interface Props {
   handleEdit: (id: string) => void;
@@ -19,31 +22,46 @@ export const useColumns = ({ handleEdit, handleDelete, deleteProps }: Props) => 
     render: (timeLine: string) => <>{dayjs(timeLine).format('YYYY-MM-DD HH:mm:ss')}</>
   },
   {
+    title: '图片',
+    dataIndex: 'imgs',
+    key: '_id',
+    render: (imgs: string[]) =>
+      imgs?.length ? (
+        <Popover
+          placement='right'
+          content={
+            <div className={s.imgsBox}>
+              {imgs?.map((url, index) => (
+                <div key={index} className={s.imgDiv}>
+                  <img src={url} alt='img' className={s.img} />
+                </div>
+              ))}
+            </div>
+          }
+          trigger='hover'
+        >
+          <div className={s.imgHover}>
+            <IoImage />
+          </div>
+        </Popover>
+      ) : null
+  },
+  {
     title: '说说内容',
     dataIndex: 'content',
     key: '_id',
-    render: (content: string, { imgs }: { imgs?: string[] }) => {
-      return (
-        <Popover
-          placement='bottom'
-          content='123123'
-          trigger='hover'
-          open={!!imgs?.length}
+    render: (content: string) => (
+      <div style={{ width: '100%', height: '100%' }}>
+        <div
+          style={{
+            margin: 'auto',
+            width: '500px'
+          }}
         >
-          <div style={{ width: '100%', height: '100%' }}>
-            <div
-              style={{
-                margin: 'auto',
-                width: '500px',
-                fontSize: '16px'
-              }}
-            >
-              {content}
-            </div>
-          </div>
-        </Popover>
-      );
-    }
+          {content}
+        </div>
+      </div>
+    )
   },
   {
     title: '操作',

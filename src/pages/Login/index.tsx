@@ -18,6 +18,15 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
 
   const handleLogin = async (Email: string, pwd: string) => {
+    if (!email || !password) {
+      notification.warning({
+        message: '登录失败',
+        description: '请输入账号、密码！',
+        placement: 'bottomLeft',
+        duration: 1.5
+      });
+      return;
+    }
     const res = await authLoginAPI(Email, pwd);
     res && navigate('admin');
     openLoginNoti(res);

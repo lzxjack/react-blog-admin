@@ -1,0 +1,36 @@
+$height: 90px;
+
+.imgsBox {
+  height: $height;
+
+  .imgDiv {
+    display: inline-block;
+    position: relative;
+    height: $height;
+    width: $height * 4/3;
+    margin-right: 5px;
+    border-radius: 6px;
+    overflow: hidden;
+
+    .img {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      // object-fit: cover;
+      height: 100%;
+    }
+  }
+
+  .imgDiv:last-child {
+    margin-right: 0;
+  }
+}
+
+.imgHover {
+  font-size: 22px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

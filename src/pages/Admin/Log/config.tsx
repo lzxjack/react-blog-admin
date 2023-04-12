@@ -25,7 +25,7 @@ export const useColumns = ({ handleEdit, handleDelete, deleteProps }: Props) => 
     render: (arr: string[]) => (
       <div style={{ margin: 'auto', width: '500px' }}>
         {arr.map((item, index) => (
-          <div key={index} style={{ fontSize: '16px', padding: '5px 0' }}>
+          <div key={index} style={{ padding: '5px 0' }}>
             {item}
           </div>
         ))}

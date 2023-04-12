@@ -103,7 +103,11 @@ const Say: React.FC = () => {
   });
 
   const handleModalOk = () => {
-    const data = { date: new Date(date).getTime(), content, imgs };
+    const data = {
+      date: new Date(date).getTime(),
+      content,
+      imgs: imgs.filter(img => img)
+    };
     modalOk({
       isEdit,
       id,
