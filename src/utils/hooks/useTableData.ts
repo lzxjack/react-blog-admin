@@ -211,7 +211,7 @@ export const useTableData = ({
   return {
     data: data?.data,
     total: total?.total,
-    loading: dataLoading && totalLoading,
+    loading: dataLoading || totalLoading,
     handleDelete,
     modalOk
   };

@@ -1,5 +1,14 @@
 @import '../../styles/base.scss';
 
+.cardTitle {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 22px;
+  font-weight: 700;
+  font-family: 'dengxian';
+}
+
 .countCardBox {
   width: calc((100% - 4 * 20px) / 5);
   height: 160px;
@@ -12,12 +21,7 @@
   align-items: center;
 
   .key {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    font-size: 22px;
-    font-weight: 700;
-    font-family: 'dengxian';
+    @extend .cardTitle;
   }
 
   .value {

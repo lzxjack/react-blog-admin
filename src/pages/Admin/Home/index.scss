@@ -1,4 +1,32 @@
 .countCardContainer {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.homeBigContainer {
+  flex: 1;
+  display: flex;
+
+  .chartContainer {
+    flex: 2;
+    margin-right: 20px;
+  }
+  .classesContainer {
+    flex: 1;
+    margin-right: 20px;
+  }
+  .tagsNoticeContainer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    .NoticeContainer {
+      height: 160px;
+      margin-bottom: 20px;
+    }
+    .tagsContainer {
+      flex: 1;
+    }
+  }
 }
