@@ -3,4 +3,14 @@
   height: 50px;
   padding: 5px;
   border-radius: 12px;
+  display: flex;
+  justify-content: flex-start;
+
+  .searchBox {
+    height: 100%;
+    margin-left: 5px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
 }

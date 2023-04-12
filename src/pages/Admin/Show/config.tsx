@@ -40,13 +40,13 @@ export const useColumns = ({ handleEdit, handleDelete, deleteProps }: Props) => 
       <>
         <MyButton
           style={{ marginRight: '10px' }}
-          text='查看'
+          content='查看'
           small
           onClick={() => window.open(link)}
         />
         <MyButton
           style={{ marginRight: '10px' }}
-          text='更新'
+          content='更新'
           small
           onClick={() => handleEdit(_id)}
         />
@@ -57,7 +57,7 @@ export const useColumns = ({ handleEdit, handleDelete, deleteProps }: Props) => 
           okText='Yes'
           cancelText='No'
         >
-          <MyButton text='删除' small danger />
+          <MyButton content='删除' small danger />
         </Popconfirm>
       </>
     )

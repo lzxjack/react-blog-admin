@@ -7,12 +7,14 @@ import s from './index.scss';
 interface Props {
   text: string;
   onClick: MouseEventHandler<HTMLDivElement>;
+  render?: () => React.ReactNode;
 }
 
-const PageHeader: React.FC<Props> = ({ text, onClick }) => {
+const PageHeader: React.FC<Props> = ({ text, onClick, render }) => {
   return (
     <div className={s.pageHeaderBox}>
-      <MyButton text={text} onClick={onClick} />
+      <MyButton content={text} onClick={onClick} style={{ borderRadius: 8 }} />
+      {render && <div className={s.searchBox}>{render()}</div>}
     </div>
   );
 };

@@ -77,7 +77,7 @@ export const useColumns = ({ handleDelete, deleteProps }: Props) => [
       <>
         <MyButton
           style={{ marginRight: '10px' }}
-          text='查看'
+          content='查看'
           small
           onClick={() => {
             const url = postTitle
@@ -93,7 +93,7 @@ export const useColumns = ({ handleDelete, deleteProps }: Props) => [
           okText='Yes'
           cancelText='No'
         >
-          <MyButton text='删除' small danger />
+          <MyButton content='删除' small danger />
         </Popconfirm>
       </>
     )

@@ -4,7 +4,7 @@ import React, { MouseEventHandler } from 'react';
 import s from './index.scss';
 
 interface Props {
-  text: string;
+  content: string | React.ReactNode;
   danger?: boolean;
   small?: boolean;
   className?: string;
@@ -13,7 +13,7 @@ interface Props {
 }
 
 const MyButton: React.FC<Props> = ({
-  text,
+  content,
   onClick,
   danger,
   small,
@@ -29,7 +29,7 @@ const MyButton: React.FC<Props> = ({
       })}
       onClick={onClick}
     >
-      {text}
+      {content}
     </div>
   );
 };
