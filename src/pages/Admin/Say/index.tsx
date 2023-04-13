@@ -83,7 +83,7 @@ const Say: React.FC = () => {
     setIsEdit(true);
     setId(id);
     for (const item of data) {
-      const { _id, date, content, imgs } = item;
+      const { _id, date, content, imgs = [] } = item;
       if (id === _id) {
         setDate(dayjs(date).format('YYYY-MM-DD HH:mm:ss'));
         setContent(content);
