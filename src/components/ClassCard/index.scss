@@ -1,5 +1,6 @@
 @import '../ChartCard/index.scss';
 @import '../../styles/base.scss';
+@import '../../styles/style.scss';
 
 .cardBox {
   @extend .cardBase;
@@ -33,8 +34,25 @@
         user-select: none;
         margin-right: 4px;
       }
-      .classText {
+      .classTextBox {
         flex: 1;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+
+        .classText {
+          height: 26px;
+          line-height: 26px;
+          display: inline-block;
+          border-radius: 6px;
+          user-select: none;
+          cursor: pointer;
+          @extend .trans;
+        }
+        .classText:hover {
+          background-color: $themeColor3_light;
+          color: #fff;
+        }
       }
       .classBtn {
         width: 30px;
@@ -50,17 +68,15 @@
     }
   }
 
-  /* 设置滚动条的样式 */
   .classesBox::-webkit-scrollbar {
-    width: 6px;
+    display: none;
   }
-  /* 滚动槽 */
-  .classesBox::-webkit-scrollbar-track {
-    background-color: rgba(0, 0, 0, 0);
-  }
-  /* 滚动条滑块 */
-  .classesBox::-webkit-scrollbar-thumb {
-    background: $themeColor3_light;
-    border-radius: 3px;
+
+  .classLoading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 50px;
+    color: $themeColor3;
   }
 }

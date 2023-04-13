@@ -89,7 +89,7 @@ const NoticeCard: React.FC = () => {
           className={classNames(s.noticeText, { [s.loading]: loading })}
           onClick={openModal}
         >
-          {loading ? <LoadingOutlined /> : data?.data[0]?.notice || ''}
+          {data?.data[0]?.notice || <LoadingOutlined />}
         </div>
       </div>
       <CustomModal
