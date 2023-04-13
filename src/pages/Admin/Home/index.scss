@@ -5,7 +5,7 @@
 }
 
 .homeBigContainer {
-  flex: 1;
+  height: calc(100vh - 62px - 20px - 160px - 20px - 20px - 70px);
   display: flex;
 
   .chartContainer {

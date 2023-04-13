@@ -1,9 +1,66 @@
 @import '../ChartCard/index.scss';
+@import '../../styles/base.scss';
 
 .cardBox {
   @extend .cardBase;
+  padding: 50px 20px 20px 20px;
+  display: flex;
+  flex-direction: column;
 
   .title {
     @extend .cardTitle;
+  }
+
+  .classesBox {
+    flex: 1;
+    margin-top: 6px;
+    overflow-y: auto;
+
+    .classItem {
+      height: 40px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #ccc;
+
+      .count {
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        line-height: 30px;
+        background-color: $themeColor3;
+        border-radius: 6px;
+        color: #fff;
+        user-select: none;
+        margin-right: 4px;
+      }
+      .classText {
+        flex: 1;
+      }
+      .classBtn {
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        line-height: 30px;
+        border-radius: 6px;
+        margin-left: 4px;
+      }
+    }
+    .classItem:last-child {
+      border: none;
+    }
+  }
+
+  /* 设置滚动条的样式 */
+  .classesBox::-webkit-scrollbar {
+    width: 6px;
+  }
+  /* 滚动槽 */
+  .classesBox::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  /* 滚动条滑块 */
+  .classesBox::-webkit-scrollbar-thumb {
+    background: $themeColor3_light;
+    border-radius: 3px;
   }
 }
