@@ -20,7 +20,7 @@ echarts.use([
   LabelLayout
 ]);
 
-const Chart: React.FC = () => {
+const ChartCard: React.FC = () => {
   const { option, loading } = useChartData();
 
   return (
@@ -43,4 +43,4 @@ const Chart: React.FC = () => {
   );
 };
 
-export default Chart;
+export default ChartCard;

@@ -1,0 +1,9 @@
+@import '../ChartCard/index.scss';
+
+.cardBox {
+  @extend .cardBase;
+
+  .title {
+    @extend .cardTitle;
+  }
+}

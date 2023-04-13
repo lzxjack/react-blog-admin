@@ -26,7 +26,6 @@ export const useChartData = () => {
         name: '未分类',
         value: leave
       });
-    console.log(res);
     return res;
   };
 

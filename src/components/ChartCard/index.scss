@@ -1,11 +1,15 @@
 @import '../CountCard/index.scss';
 
-.chartBox {
+.cardBase {
   position: relative;
   height: 100%;
   background-color: #fff;
   border-radius: 14px;
   overflow: hidden;
+}
+
+.chartBox {
+  @extend .cardBase;
 
   .loading {
     font-size: 60px;

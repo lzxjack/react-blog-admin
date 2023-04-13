@@ -1,0 +1,37 @@
+@import '../ChartCard/index.scss';
+@import '../../styles/style.scss';
+
+.cardBox {
+  @extend .cardBase;
+
+  .title {
+    @extend .cardTitle;
+  }
+
+  .noticeText {
+    position: absolute;
+    top: 20px + 30px;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+    word-break: break-all;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    font-size: 18px;
+    border-radius: 14px;
+    cursor: pointer;
+    @extend .trans;
+  }
+
+  .noticeText:hover {
+    background-color: $themeColor3_light;
+    color: #fff;
+  }
+
+  .loading {
+    font-size: 40px;
+    color: $themeColor3;
+  }
+}

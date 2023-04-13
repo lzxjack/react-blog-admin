@@ -1,8 +1,11 @@
 import { useTitle } from 'ahooks';
 import React from 'react';
 
-import Chart from '@/components/Chart';
+import ChartCard from '@/components/ChartCard';
+import ClassCard from '@/components/ClassCard';
 import CountCard from '@/components/CountCard';
+import NoticeCard from '@/components/NoticeCard';
+import TagCard from '@/components/TagCard';
 import { siteTitle } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
 
@@ -23,12 +26,18 @@ const Home: React.FC = () => {
       {/* 扇形图、分类、标签、公告 */}
       <div className={s.homeBigContainer}>
         <div className={s.chartContainer}>
-          <Chart />
+          <ChartCard />
         </div>
-        <div className={s.classesContainer}>2</div>
+        <div className={s.classesContainer}>
+          <ClassCard />
+        </div>
         <div className={s.tagsNoticeContainer}>
-          <div className={s.NoticeContainer}>3</div>
-          <div className={s.tagsContainer}>4</div>
+          <div className={s.NoticeContainer}>
+            <NoticeCard />
+          </div>
+          <div className={s.tagsContainer}>
+            <TagCard />
+          </div>
         </div>
       </div>
     </>

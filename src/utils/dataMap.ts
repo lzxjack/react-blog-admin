@@ -7,5 +7,6 @@ export const dataMap = {
   [DB.Msg]: '留言',
   [DB.Say]: '说说',
   [DB.Log]: '日志',
-  [DB.Show]: '作品'
+  [DB.Show]: '作品',
+  [DB.Notice]: '公告'
 };
