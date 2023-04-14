@@ -9,5 +9,6 @@ export const dataMap = {
   [DB.Log]: '日志',
   [DB.Show]: '作品',
   [DB.Notice]: '公告',
-  [DB.Class]: '分类'
+  [DB.Class]: '分类',
+  [DB.Tag]: '标签'
 };

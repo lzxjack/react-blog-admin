@@ -1,9 +1,54 @@
 @import '../ChartCard/index.scss';
+@import '../../styles/style.scss';
 
 .cardBox {
   @extend .cardBase;
+  padding: 50px 20px 20px 20px;
+  display: flex;
+  flex-direction: column;
 
   .title {
     @extend .cardTitle;
+  }
+
+  .tagsBox {
+    flex: 1;
+    margin-top: 6px;
+    overflow-y: auto;
+
+    .tagItem {
+      display: inline-block;
+      height: 30px;
+      line-height: 30px - 3px * 2;
+      text-align: center;
+      color: #fff;
+      border-radius: 6px;
+      font-size: 14px;
+      padding: 3px 6px;
+      margin: 0 8px 8px 0;
+      user-select: none;
+      cursor: pointer;
+      @extend .trans;
+
+      .iconBtn {
+        margin-left: 4px;
+      }
+    }
+
+    .tagItem:hover {
+      background-color: $themeColor3 !important;
+    }
+  }
+
+  .tagsBox::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tagLoading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 50px;
+    color: $themeColor3;
   }
 }

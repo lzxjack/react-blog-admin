@@ -137,7 +137,7 @@ const ClassCard: React.FC = () => {
       <div className={s.cardBox}>
         <div className={s.title}>分类</div>
         <Search
-          placeholder='新建标签'
+          placeholder='新建分类'
           allowClear
           enterButton='创建'
           size='middle'
@@ -146,38 +146,46 @@ const ClassCard: React.FC = () => {
           onSearch={addNewClass}
         />
         <div className={classNames(s.classesBox, { [s.classLoading]: loading })}>
-          {data?.data.map(
-            ({
-              _id,
-              class: classText,
-              count
-            }: {
-              _id: string;
-              class: string;
-              count: number;
-            }) => (
-              <div key={_id} className={s.classItem}>
-                <div className={s.count}>{count}</div>
-                <div className={s.classTextBox}>
-                  <div className={s.classText}>《{classText}》</div>
+          {loading ? (
+            <LoadingOutlined />
+          ) : (
+            (data?.data || []).map(
+              ({
+                _id,
+                class: classText,
+                count
+              }: {
+                _id: string;
+                class: string;
+                count: number;
+              }) => (
+                <div key={_id} className={s.classItem}>
+                  <div className={s.count}>{count}</div>
+                  <div className={s.classTextBox}>
+                    <div className={s.classText}>《{classText}》</div>
+                  </div>
+                  <MyButton
+                    onClick={() => openModal(_id)}
+                    content={<EditOutlined />}
+                    className={s.classBtn}
+                  />
+                  <Popconfirm
+                    placement='bottomRight'
+                    title={`确定要删除《${classText}》吗？`}
+                    onConfirm={() => deleteClass(_id)}
+                    okText='Yes'
+                    cancelText='No'
+                  >
+                    <MyButton
+                      content={<DeleteOutlined />}
+                      danger
+                      className={s.classBtn}
+                    />
+                  </Popconfirm>
                 </div>
-                <MyButton
-                  onClick={() => openModal(_id)}
-                  content={<EditOutlined />}
-                  className={s.classBtn}
-                />
-                <Popconfirm
-                  placement='bottomRight'
-                  title={`确定要删除《${classText}》吗？`}
-                  onConfirm={() => deleteClass(_id)}
-                  okText='Yes'
-                  cancelText='No'
-                >
-                  <MyButton content={<DeleteOutlined />} danger className={s.classBtn} />
-                </Popconfirm>
-              </div>
+              )
             )
-          ) || <LoadingOutlined />}
+          )}
         </div>
       </div>
       <CustomModal
