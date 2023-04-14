@@ -97,18 +97,20 @@ const ClassCard: React.FC = () => {
       message.warning(visitorText);
       return;
     }
-    addDataAPI(DB.Class, { class: newClassText, count: 0 }).then(res => {
-      if (!res.success && !res.permission) {
-        message.warning(visitorText);
-      } else if (res.success && res.permission) {
-        message.success('添加成功！');
-        resetNewClassText();
-        flushSync(() => clearCache(`${DB.Class}-data`));
-        flushSync(() => run());
-      } else {
-        message.warning(failText);
+    addDataAPI(DB.Class, { class: newClassText, count: 0, date: Date.now() }).then(
+      res => {
+        if (!res.success && !res.permission) {
+          message.warning(visitorText);
+        } else if (res.success && res.permission) {
+          message.success('添加成功！');
+          resetNewClassText();
+          flushSync(() => clearCache(`${DB.Class}-data`));
+          flushSync(() => run());
+        } else {
+          message.warning(failText);
+        }
       }
-    });
+    );
   };
 
   const deleteClass = (id: string) => {

@@ -122,7 +122,7 @@ const TagCard: React.FC = () => {
       message.warning(visitorText);
       return;
     }
-    addDataAPI(DB.Tag, { tag: newTag }).then(res => {
+    addDataAPI(DB.Tag, { tag: newTag, date: Date.now() }).then(res => {
       if (!res.success && !res.permission) {
         message.warning(visitorText);
       } else if (res.success && res.permission) {

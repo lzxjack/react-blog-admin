@@ -107,7 +107,7 @@ const Link: React.FC = () => {
     modalOk({
       isEdit,
       id,
-      data: isEdit ? data : { ...data, date: new Date().getTime() },
+      data: isEdit ? data : { ...data, date: Date.now() },
       page
     });
   };
