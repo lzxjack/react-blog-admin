@@ -9,7 +9,8 @@ import { addDataAPI } from '@/utils/apis/addData';
 import { deleteDataAPI } from '@/utils/apis/deleteData';
 import { getDataAPI } from '@/utils/apis/getData';
 import { updateDataAPI } from '@/utils/apis/updateData';
-import { isAdmin } from '@/utils/cloudBase';
+import { updateWhereDataAPI } from '@/utils/apis/updateWhereData';
+import { _, isAdmin } from '@/utils/cloudBase';
 import { failText, staleTime, visitorText } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
 
@@ -113,7 +114,23 @@ const ClassCard: React.FC = () => {
     );
   };
 
-  const deleteClass = (id: string) => {
+  const deleteClassFrom = (DBName: DB, classText: string) => {
+    const text = DBName === DB.Article ? '文章' : '草稿';
+    updateWhereDataAPI(DBName, { classes: _.eq(classText) }, { classes: '' }).then(
+      res => {
+        if (!res.success && !res.permission) {
+          message.warning(visitorText);
+        } else if (res.success && res.permission) {
+          message.success(`更新${text}分类成功！`);
+          // TODO:删除所有article的缓存
+        } else {
+          message.warning(failText);
+        }
+      }
+    );
+  };
+
+  const deleteClass = (id: string, classText: string) => {
     if (!isAdmin()) {
       message.warning(visitorText);
       return;
@@ -125,7 +142,8 @@ const ClassCard: React.FC = () => {
         message.success('删除成功！');
         flushSync(() => clearCache(`${DB.Class}-data`));
         flushSync(() => run());
-        // TODO:修改关联的文章信息
+        deleteClassFrom(DB.Article, classText);
+        deleteClassFrom(DB.Draft, classText);
       } else {
         message.warning(failText);
       }
@@ -174,7 +192,7 @@ const ClassCard: React.FC = () => {
                   <Popconfirm
                     placement='bottomRight'
                     title={`确定要删除《${classText}》吗？`}
-                    onConfirm={() => deleteClass(_id)}
+                    onConfirm={() => deleteClass(_id, classText)}
                     okText='Yes'
                     cancelText='No'
                   >
