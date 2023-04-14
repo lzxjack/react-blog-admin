@@ -31,6 +31,14 @@ const ClassCard: React.FC = () => {
     staleTime
   });
 
+  const isExist = (
+    content: string,
+    data: { class?: string; tag?: string }[],
+    type: 'class' | 'tag'
+  ) => {
+    return data.some(item => item[type as keyof typeof item] === content);
+  };
+
   const openModal = (id: string) => {
     setIsModalOpen(true);
     setId(id);
@@ -42,9 +50,19 @@ const ClassCard: React.FC = () => {
     }
   };
 
+  const modalCancel = () => {
+    setIsModalOpen(false);
+    resetId();
+    resetClassText();
+  };
+
   const modalOk = () => {
     if (!classText) {
       message.warning('请输入分类名称~');
+      return;
+    }
+    if (isExist(classText, data?.data || [], 'class')) {
+      message.warning('分类名称已存在~');
       return;
     }
     if (!isAdmin()) {
@@ -65,15 +83,14 @@ const ClassCard: React.FC = () => {
       }
     });
   };
-  const modalCancel = () => {
-    setIsModalOpen(false);
-    resetId();
-    resetClassText();
-  };
 
   const addNewClass = () => {
     if (!newClassText) {
       message.warning('请输入分类名称~');
+      return;
+    }
+    if (isExist(newClassText, data?.data || [], 'class')) {
+      message.warning('分类名称已存在~');
       return;
     }
     if (!isAdmin()) {
@@ -85,7 +102,7 @@ const ClassCard: React.FC = () => {
         message.warning(visitorText);
       } else if (res.success && res.permission) {
         message.success('添加成功！');
-        modalCancel();
+        resetNewClassText();
         flushSync(() => clearCache(`${DB.Class}-data`));
         flushSync(() => run());
       } else {
