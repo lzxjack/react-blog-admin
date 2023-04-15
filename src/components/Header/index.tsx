@@ -4,7 +4,7 @@ import { IoHome, IoLogOut } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
 
 import { isAdmin } from '@/utils/cloudBase';
-import { blogUrl, userAvatar, visitorAvatar } from '@/utils/constant';
+import { blogUrl, nowEnv, userAvatar, visitorAvatar } from '@/utils/constant';
 import { useTime } from '@/utils/hooks/useTime';
 
 import s from './index.scss';
@@ -31,7 +31,8 @@ const Header: React.FC = () => {
     <div className={s.headerBox}>
       <img src={getAvatar()} alt='' className={s.avatar} />
       <div className={s.avatarText}>
-        {timeText}，<span className={s.userName}>{getName()}</span>！
+        {timeText}，
+        <span className={s.userName}>{nowEnv === 'test' ? '测试用户' : getName()}</span>！
       </div>
       <a className={s.blogBtn} href={blogUrl} target='_blank'>
         <IoHome />

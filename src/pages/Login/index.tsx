@@ -5,7 +5,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { authLoginAPI } from '@/utils/apis/authLogin';
-import { avatarUrl, siteTitle, visitorEmail, visitorPwd } from '@/utils/constant';
+import { auth } from '@/utils/cloudBase';
+import { avatarUrl, nowEnv, siteTitle, visitorEmail, visitorPwd } from '@/utils/constant';
 
 import s from './index.scss';
 
@@ -18,6 +19,11 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
 
   const handleLogin = async (Email: string, pwd: string) => {
+    if (nowEnv === 'test') {
+      const res = await auth.anonymousAuthProvider().signIn();
+      res.isAnonymousAuth && navigate('admin');
+      return;
+    }
     if (!email || !password) {
       notification.warning({
         message: '登录失败',
@@ -76,7 +82,7 @@ const Login: React.FC = () => {
           </div>
           <div className={classNames(s.item, s.btnBox)}>
             <div className={s.btn} onClick={() => handleLogin(visitorEmail, visitorPwd)}>
-              游客
+              {nowEnv === 'prod' ? '游客' : '测试'}
             </div>
             <div className={s.btn} onClick={() => handleLogin(email, password)}>
               登录

@@ -1,5 +1,12 @@
+import { authMap } from '../../auth.secret';
+
+type EnvType = 'test' | 'prod';
+
+// 当前环境
+export const nowEnv: EnvType = 'test';
+
 // 博客的云环境ID
-export const env = 'react-blog-admin-8fo571wf24c87f9';
+export const env = authMap[nowEnv as keyof typeof authMap].env;
 
 // 个人基本信息
 export const userAvatar = 'https://img.lzxjack.top/img/202304061855646.webp';
@@ -30,9 +37,6 @@ export const visitorText = '游客不可以修改哦~😆';
 
 // 操作失败后的提示语句
 export const failText = '操作失败，请重试！';
-
-// 管理员id
-export const adminUid = 'dbee9976b3c14448a06f2006a4795cf2';
 
 // notice数据id
 export const noticeId = '2d44d6c2612a2178078ff9f553561764';
