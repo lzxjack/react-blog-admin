@@ -8,12 +8,15 @@ import { flushSync } from 'react-dom';
 import { addDataAPI } from '@/utils/apis/addData';
 import { deleteDataAPI } from '@/utils/apis/deleteData';
 import { getDataAPI } from '@/utils/apis/getData';
+import { getTotalAPI } from '@/utils/apis/getTotal';
 import { updateDataAPI } from '@/utils/apis/updateData';
-import { isAdmin } from '@/utils/cloudBase';
+import { updateWhereDataAPI } from '@/utils/apis/updateWhereData';
+import { _, isAdmin } from '@/utils/cloudBase';
 import { failText, staleTime, visitorText } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
 
 import CustomModal from '../CustomModal';
+import { useColor } from './config';
 import s from './index.scss';
 
 const { Search } = Input;
@@ -29,6 +32,46 @@ const TagCard: React.FC = () => {
     cacheKey: `${DB.Tag}-data`,
     staleTime
   });
+
+  const { data: articleTotal } = useRequest(() => getTotalAPI(DB.Article), {
+    retryCount: 3,
+    cacheKey: `${DB.Article}-total`,
+    staleTime
+  });
+
+  const { data: draftTotal } = useRequest(() => getTotalAPI(DB.Draft), {
+    retryCount: 3,
+    cacheKey: `${DB.Draft}-total`,
+    staleTime
+  });
+
+  // const updateTagFrom = async (DBName: DB, oldTag: string, newTag: string) => {
+  //   const map = {
+  //     [DB.Article]: articleTotal?.total || 0,
+  //     [DB.Draft]: draftTotal?.total || 0
+  //   };
+  //   await updateWhereDataAPI(
+  //     DBName,
+  //     {
+  //       tags: _.all([oldTag]),
+  //   },
+  //     { classes: newClassText }
+  //   ).then(res => {
+  //     if (!res.success && !res.permission) {
+  //       message.warning(visitorText);
+  //     } else if (res.success && res.permission) {
+  //       message.success(`更新${dataMap[DBName as keyof typeof dataMap]}分类成功！`);
+  //       myClearCache({
+  //         DBName,
+  //         page: 1,
+  //         totalPage: getTotalPage(map[DBName as keyof typeof map], defaultPageSize),
+  //         deleteTotal: false
+  //       });
+  //     } else {
+  //       message.warning(failText);
+  //     }
+  //   });
+  // };
 
   const isExist = (
     content: string,
@@ -55,31 +98,7 @@ const TagCard: React.FC = () => {
     resetTag();
   };
 
-  const tagColor = [
-    'rgb(236, 17, 17)',
-    'rgb(236, 141, 17)',
-    'rgb(177, 174, 11)',
-    'rgb(116, 115, 109)',
-    'rgb(77, 75, 65)',
-    'rgb(35, 207, 50)',
-    'rgb(38, 204, 162)',
-    'rgb(11, 156, 120)',
-    'rgb(4, 187, 211)',
-    'rgb(7, 133, 206)',
-    'rgb(7, 64, 151)',
-    'rgb(9, 24, 235)',
-    'rgb(157, 160, 212)',
-    'rgb(144, 76, 235)',
-    'rgb(209, 76, 235)',
-    'rgb(224, 19, 224)',
-    'rgb(238, 45, 126)',
-    'rgb(253, 48, 65)',
-    '#f50',
-    '#2db7f5',
-    '#87d068',
-    '#108ee9'
-  ];
-  const colorLen = tagColor.length;
+  const { tagColor, colorLen } = useColor();
 
   const modalOk = () => {
     if (!tag) {
