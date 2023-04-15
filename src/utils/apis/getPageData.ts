@@ -8,7 +8,7 @@ export const getPageDataAPI = (config: {
   page: number;
   size: number;
 }) => {
-  const { dbName, sortKey = 'date', isAsc = true, page, size } = config;
+  const { dbName, sortKey = 'date', isAsc = false, page, size } = config;
 
   return db
     .collection(dbName)

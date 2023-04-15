@@ -9,7 +9,7 @@ export const getWhereOrderPageDataAPI = (config: {
   sortKey?: string;
   isAsc?: boolean;
 }) => {
-  const { dbName, where, sortKey = '_id', isAsc = false, page, size } = config;
+  const { dbName, where, sortKey = 'date', isAsc = false, page, size } = config;
 
   return db
     .collection(dbName)

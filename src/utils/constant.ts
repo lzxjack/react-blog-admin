@@ -4,6 +4,7 @@ type EnvType = 'test' | 'prod';
 
 // 当前环境
 export const nowEnv: EnvType = 'test';
+// export const nowEnv: EnvType = 'prod';
 
 // 博客的云环境ID
 export const env = authMap[nowEnv as keyof typeof authMap].env;

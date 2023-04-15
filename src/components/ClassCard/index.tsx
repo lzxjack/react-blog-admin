@@ -176,8 +176,6 @@ const ClassCard: React.FC = () => {
     });
   };
 
-  console.log(data?.data);
-
   return (
     <>
       <div className={s.cardBox}>
