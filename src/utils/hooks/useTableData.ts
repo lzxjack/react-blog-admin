@@ -12,6 +12,12 @@ import { deleteDataAPI } from '../apis/deleteData';
 import { updateDataAPI } from '../apis/updateData';
 import { isAdmin } from '../cloudBase';
 import { dataMap } from '../dataMap';
+import {
+  getAfterDeletedPage,
+  getTotalPage,
+  myClearCache,
+  myClearCacheOnePage
+} from '../functions';
 
 export interface DataFilterProps {
   text: string;
@@ -79,33 +85,6 @@ export const useTableData = ({
     staleTime
   });
 
-  const myClearCache = (page: number, totalPage: number) => {
-    for (let i = page; i <= totalPage; i++) {
-      clearCache(`${DBName}-data-${i}`);
-    }
-    clearCache(`${DBName}-total`);
-  };
-
-  const myClearCacheOnePage = (page: number) => {
-    clearCache(`${DBName}-data-${page}`);
-  };
-
-  const getTotalPage = (total: number, pageSize: number) => {
-    const totalPage = total / pageSize;
-    if (Number.isInteger(totalPage)) {
-      return totalPage;
-    }
-    return Math.ceil(totalPage);
-  };
-
-  const getAfterDeletedPage = (total: number, nowPage: number, pageSize: number) => {
-    if (total === 1) return 1;
-    if (total % pageSize === 1 && nowPage === Math.ceil(total / pageSize)) {
-      return nowPage - 1;
-    }
-    return nowPage;
-  };
-
   const handleDelete = (id: string, { page, setPage }: DeleteProps) => {
     if (!isAdmin()) {
       message.warning(visitorText);
@@ -116,7 +95,14 @@ export const useTableData = ({
         message.warning(visitorText);
       } else if (res.success && res.permission) {
         message.success('删除成功！');
-        flushSync(() => myClearCache(page, getTotalPage(total.total, pageSize)));
+        flushSync(() =>
+          myClearCache({
+            DBName,
+            page,
+            totalPage: getTotalPage(total?.total || 0, pageSize),
+            deleteTotal: true
+          })
+        );
         flushSync(() => setPage(getAfterDeletedPage(total.total, page, pageSize)));
         flushSync(() => {
           dataRun();
@@ -135,7 +121,14 @@ export const useTableData = ({
       } else if (res.success && res.permission) {
         message.success('添加成功！');
         modalCancel?.();
-        flushSync(() => myClearCache(1, getTotalPage(total.total, pageSize)));
+        flushSync(() =>
+          myClearCache({
+            DBName,
+            page: 1,
+            totalPage: getTotalPage(total?.total || 0, pageSize),
+            deleteTotal: true
+          })
+        );
         flushSync(() => setPage(1));
         flushSync(() => {
           dataRun();
@@ -166,12 +159,16 @@ export const useTableData = ({
         modalCancel?.();
         flushSync(() => {
           isClearAll
-            ? myClearCache(1, getTotalPage(total.total, pageSize))
-            : myClearCacheOnePage(page);
+            ? myClearCache({
+                DBName,
+                page: 1,
+                totalPage: getTotalPage(total?.total || 0, pageSize),
+                deleteTotal: false
+              })
+            : myClearCacheOnePage(DBName, page);
         });
         flushSync(() => {
           dataRun();
-          totalRun();
         });
       } else {
         message.warning(failText);

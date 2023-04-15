@@ -8,11 +8,14 @@ import { flushSync } from 'react-dom';
 import { addDataAPI } from '@/utils/apis/addData';
 import { deleteDataAPI } from '@/utils/apis/deleteData';
 import { getDataAPI } from '@/utils/apis/getData';
+import { getTotalAPI } from '@/utils/apis/getTotal';
 import { updateDataAPI } from '@/utils/apis/updateData';
 import { updateWhereDataAPI } from '@/utils/apis/updateWhereData';
 import { _, isAdmin } from '@/utils/cloudBase';
-import { failText, staleTime, visitorText } from '@/utils/constant';
+import { defaultPageSize, failText, staleTime, visitorText } from '@/utils/constant';
+import { dataMap } from '@/utils/dataMap';
 import { DB } from '@/utils/dbConfig';
+import { getTotalPage, myClearCache } from '@/utils/functions';
 
 import CustomModal from '../CustomModal';
 import MyButton from '../MyButton';
@@ -22,13 +25,26 @@ const { Search } = Input;
 
 const ClassCard: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [id, setId, resetId] = useResetState('');
-  const [classText, setClassText, resetClassText] = useResetState('');
+  const [id, setId] = useState('');
+  const [oldClassText, setOldClassText] = useState('');
+  const [classText, setClassText] = useState('');
   const [newClassText, setNewClassText, resetNewClassText] = useResetState('');
 
   const { data, loading, run } = useRequest(() => getDataAPI(DB.Class), {
     retryCount: 3,
     cacheKey: `${DB.Class}-data`,
+    staleTime
+  });
+
+  const { data: articleTotal } = useRequest(() => getTotalAPI(DB.Article), {
+    retryCount: 3,
+    cacheKey: `${DB.Article}-total`,
+    staleTime
+  });
+
+  const { data: draftTotal } = useRequest(() => getTotalAPI(DB.Draft), {
+    retryCount: 3,
+    cacheKey: `${DB.Draft}-total`,
     staleTime
   });
 
@@ -46,6 +62,7 @@ const ClassCard: React.FC = () => {
     for (const { _id, class: classText } of data?.data || []) {
       if (id === _id) {
         setClassText(classText);
+        setOldClassText(classText);
         break;
       }
     }
@@ -53,8 +70,6 @@ const ClassCard: React.FC = () => {
 
   const modalCancel = () => {
     setIsModalOpen(false);
-    resetId();
-    resetClassText();
   };
 
   const modalOk = () => {
@@ -78,7 +93,8 @@ const ClassCard: React.FC = () => {
         modalCancel();
         flushSync(() => clearCache(`${DB.Class}-data`));
         flushSync(() => run());
-        // TODO:修改关联的文章信息
+        updateClassFrom(DB.Article, oldClassText, classText);
+        updateClassFrom(DB.Draft, oldClassText, classText);
       } else {
         message.warning(failText);
       }
@@ -114,20 +130,30 @@ const ClassCard: React.FC = () => {
     );
   };
 
-  const deleteClassFrom = (DBName: DB, classText: string) => {
-    const text = DBName === DB.Article ? '文章' : '草稿';
-    updateWhereDataAPI(DBName, { classes: _.eq(classText) }, { classes: '' }).then(
-      res => {
-        if (!res.success && !res.permission) {
-          message.warning(visitorText);
-        } else if (res.success && res.permission) {
-          message.success(`更新${text}分类成功！`);
-          // TODO:删除所有article的缓存
-        } else {
-          message.warning(failText);
-        }
+  const updateClassFrom = (DBName: DB, oldClassText: string, newClassText: string) => {
+    const map = {
+      [DB.Article]: articleTotal?.total || 0,
+      [DB.Draft]: draftTotal?.total || 0
+    };
+    updateWhereDataAPI(
+      DBName,
+      { classes: _.eq(oldClassText) },
+      { classes: newClassText }
+    ).then(res => {
+      if (!res.success && !res.permission) {
+        message.warning(visitorText);
+      } else if (res.success && res.permission) {
+        message.success(`更新${dataMap[DBName as keyof typeof dataMap]}分类成功！`);
+        myClearCache({
+          DBName,
+          page: 1,
+          totalPage: getTotalPage(map[DBName as keyof typeof map], defaultPageSize),
+          deleteTotal: false
+        });
+      } else {
+        message.warning(failText);
       }
-    );
+    });
   };
 
   const deleteClass = (id: string, classText: string) => {
@@ -142,8 +168,8 @@ const ClassCard: React.FC = () => {
         message.success('删除成功！');
         flushSync(() => clearCache(`${DB.Class}-data`));
         flushSync(() => run());
-        deleteClassFrom(DB.Article, classText);
-        deleteClassFrom(DB.Draft, classText);
+        updateClassFrom(DB.Article, classText, '');
+        updateClassFrom(DB.Draft, classText, '');
       } else {
         message.warning(failText);
       }
