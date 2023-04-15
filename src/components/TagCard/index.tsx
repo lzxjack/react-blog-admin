@@ -12,8 +12,10 @@ import { getTotalAPI } from '@/utils/apis/getTotal';
 import { updateDataAPI } from '@/utils/apis/updateData';
 import { updateWhereDataAPI } from '@/utils/apis/updateWhereData';
 import { _, isAdmin } from '@/utils/cloudBase';
-import { failText, staleTime, visitorText } from '@/utils/constant';
+import { defaultPageSize, failText, staleTime, visitorText } from '@/utils/constant';
+import { dataMap } from '@/utils/dataMap';
 import { DB } from '@/utils/dbConfig';
+import { getTotalPage, myClearCache } from '@/utils/functions';
 
 import CustomModal from '../CustomModal';
 import { useColor } from './config';
@@ -23,8 +25,9 @@ const { Search } = Input;
 
 const TagCard: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [id, setId, resetId] = useResetState('');
-  const [tag, setTag, resetTag] = useResetState('');
+  const [id, setId] = useState('');
+  const [oldTag, setOldTag] = useState('');
+  const [tag, setTag] = useState('');
   const [newTag, setNewTag, resetNewTag] = useResetState('');
 
   const { data, loading, run } = useRequest(() => getDataAPI(DB.Tag), {
@@ -45,33 +48,80 @@ const TagCard: React.FC = () => {
     staleTime
   });
 
-  // const updateTagFrom = async (DBName: DB, oldTag: string, newTag: string) => {
-  //   const map = {
-  //     [DB.Article]: articleTotal?.total || 0,
-  //     [DB.Draft]: draftTotal?.total || 0
-  //   };
-  //   await updateWhereDataAPI(
-  //     DBName,
-  //     {
-  //       tags: _.all([oldTag]),
-  //   },
-  //     { classes: newClassText }
-  //   ).then(res => {
-  //     if (!res.success && !res.permission) {
-  //       message.warning(visitorText);
-  //     } else if (res.success && res.permission) {
-  //       message.success(`更新${dataMap[DBName as keyof typeof dataMap]}分类成功！`);
-  //       myClearCache({
-  //         DBName,
-  //         page: 1,
-  //         totalPage: getTotalPage(map[DBName as keyof typeof map], defaultPageSize),
-  //         deleteTotal: false
-  //       });
-  //     } else {
-  //       message.warning(failText);
-  //     }
-  //   });
-  // };
+  const updateTagFrom = ({
+    DBName,
+    oldTag,
+    newTag
+  }: {
+    DBName: DB;
+    oldTag: string;
+    newTag: string;
+  }) => {
+    const map = {
+      [DB.Article]: articleTotal?.total || 0,
+      [DB.Draft]: draftTotal?.total || 0
+    };
+
+    // 1. 添加新标签
+    updateWhereDataAPI(
+      DBName,
+      { tags: _.all([oldTag]) },
+      { tags: _.addToSet(newTag) }
+    ).then(res => {
+      if (!res.success && !res.permission) {
+        message.warning(visitorText);
+      } else if (res.success && res.permission) {
+        // 2. 删除旧标签
+        updateWhereDataAPI(
+          DBName,
+          { tags: _.all([oldTag]) },
+          { tags: _.pull(oldTag) }
+        ).then(res => {
+          if (!res.success && !res.permission) {
+            message.warning(visitorText);
+          } else if (res.success && res.permission) {
+            message.success(`更新${dataMap[DBName as keyof typeof dataMap]}分类成功！`);
+            myClearCache({
+              DBName,
+              page: 1,
+              totalPage: getTotalPage(map[DBName as keyof typeof map], defaultPageSize),
+              deleteTotal: false
+            });
+          } else {
+            message.warning(failText);
+          }
+        });
+      } else {
+        message.warning(failText);
+      }
+    });
+  };
+
+  const deleteTagFrom = (DBName: DB, tagWillDeletd: string) => {
+    const map = {
+      [DB.Article]: articleTotal?.total || 0,
+      [DB.Draft]: draftTotal?.total || 0
+    };
+    updateWhereDataAPI(
+      DBName,
+      { tags: _.all([tagWillDeletd]) },
+      { tags: _.pull(tagWillDeletd) }
+    ).then(res => {
+      if (!res.success && !res.permission) {
+        message.warning(visitorText);
+      } else if (res.success && res.permission) {
+        message.success(`更新${dataMap[DBName as keyof typeof dataMap]}分类成功！`);
+        myClearCache({
+          DBName,
+          page: 1,
+          totalPage: getTotalPage(map[DBName as keyof typeof map], defaultPageSize),
+          deleteTotal: false
+        });
+      } else {
+        message.warning(failText);
+      }
+    });
+  };
 
   const isExist = (
     content: string,
@@ -87,6 +137,7 @@ const TagCard: React.FC = () => {
     for (const { _id, tag } of data?.data || []) {
       if (id === _id) {
         setTag(tag);
+        setOldTag(tag);
         break;
       }
     }
@@ -94,8 +145,6 @@ const TagCard: React.FC = () => {
 
   const modalCancel = () => {
     setIsModalOpen(false);
-    resetId();
-    resetTag();
   };
 
   const { tagColor, colorLen } = useColor();
@@ -121,7 +170,16 @@ const TagCard: React.FC = () => {
         modalCancel();
         flushSync(() => clearCache(`${DB.Tag}-data`));
         flushSync(() => run());
-        // TODO:修改关联的文章信息
+        updateTagFrom({
+          DBName: DB.Article,
+          oldTag,
+          newTag: tag
+        });
+        updateTagFrom({
+          DBName: DB.Draft,
+          oldTag,
+          newTag: tag
+        });
       } else {
         message.warning(failText);
       }
@@ -155,7 +213,7 @@ const TagCard: React.FC = () => {
     });
   };
 
-  const deleteTag = (id: string) => {
+  const deleteTag = (id: string, tagWillDeletd: string) => {
     if (!isAdmin()) {
       message.warning(visitorText);
       return;
@@ -167,7 +225,8 @@ const TagCard: React.FC = () => {
         message.success('删除成功！');
         flushSync(() => clearCache(`${DB.Tag}-data`));
         flushSync(() => run());
-        // TODO:修改关联的文章信息
+        deleteTagFrom(DB.Article, tagWillDeletd);
+        deleteTagFrom(DB.Draft, tagWillDeletd);
       } else {
         message.warning(failText);
       }
@@ -203,7 +262,7 @@ const TagCard: React.FC = () => {
                   <Popconfirm
                     placement='bottomRight'
                     title={`确定要删除「${tag}」吗？`}
-                    onConfirm={() => deleteTag(_id)}
+                    onConfirm={() => deleteTag(_id, tag)}
                     okText='Yes'
                     cancelText='No'
                   >

@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
-    "@cloudbase/js-sdk": "^1.7.2",
+    "@cloudbase/js-sdk": "^1.5.0",
     "@reduxjs/toolkit": "^1.9.3",
     "ahooks": "^3.7.5",
     "antd": "^5.2.3",

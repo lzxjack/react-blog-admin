@@ -1099,7 +1099,7 @@
     "@cloudbase/types" "^1.1.3-alpha.0"
     "@cloudbase/utilities" "^1.3.4"
 
-"@cloudbase/js-sdk@^1.7.2":
+"@cloudbase/js-sdk@^1.5.0":
   version "1.7.2"
   resolved "https://registry.npmmirror.com/@cloudbase/js-sdk/-/js-sdk-1.7.2.tgz#49a69a4531dbedb73cbfc4ebaa2820193b406530"
   integrity sha512-CF+pd1EKNFfUO2rmj8zL4yocjTKu1GkJMjig5UAcsX+CBXS0yxQEyMvGvwUlorOCBYvlxm7i6hEUBoHrnefHMg==
