@@ -16,7 +16,7 @@ $navWidth: 160px;
 }
 
 .adminBox {
-  height: 100%;
+  min-height: 100vh;
   background-color: #f0f2f5;
 
   .leftNav {

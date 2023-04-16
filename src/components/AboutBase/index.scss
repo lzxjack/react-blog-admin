@@ -1,0 +1,30 @@
+@import '../../styles/base.scss';
+
+.aboutBox {
+  height: 100%;
+
+  .contentBox {
+    height: calc(100vh - 62px - 70px - 40px - 50px);
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #fff;
+    overflow-y: auto;
+  }
+
+  .site {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .contentBox::-webkit-scrollbar {
+    width: 8px;
+  }
+  .contentBox::-webkit-scrollbar-thumb {
+    background: $themeColor3_light;
+    border-radius: 4px;
+  }
+}

@@ -44,6 +44,6 @@ export const getAfterDeletedPage = (total: number, nowPage: number, pageSize: nu
 };
 
 // allData、someData数组，判断someData是否是allData的子集
-
-export const isSubset = (allData: string[], someData: string[]) =>
-  someData.every(elem => allData.includes(elem));
+export const isSubset = (allData: string[], someData: string[]) => {
+  return someData.every(elem => allData.includes(elem));
+};

@@ -1,6 +1,14 @@
 @import './styles/base.scss';
 @import './styles/style.scss';
 
+@font-face {
+  font-family: 'FiraCode';
+  font-display: auto;
+  src: url(./fonts/FiraCode-Regular.ttf);
+  font-weight: normal;
+  font-style: normal;
+}
+
 html,
 body,
 #root {
@@ -18,8 +26,9 @@ body::-webkit-scrollbar {
   display: none;
 }
 
-div {
-  box-sizing: border-box;
+div,
+textarea {
+  box-sizing: border-box !important;
   font-family: BlinkMacSystemFont, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial,
     sans-serif;
 }
@@ -34,10 +43,10 @@ a:focus {
   // cursor: default;
 }
 
-ul,
-li {
-  list-style: none;
-}
+// ul,
+// li {
+//   list-style: none;
+// }
 
 img {
   -webkit-user-drag: none;
@@ -52,6 +61,8 @@ input {
 
 textarea {
   outline: none;
+  border: none;
+  resize: none;
 }
 
 // 重置antd样式

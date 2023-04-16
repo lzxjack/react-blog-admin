@@ -34,6 +34,12 @@ const AddArticle = lazy(
       /* webpackChunkName:'AddArticle', webpackPrefetch:true */ '@/pages/Admin/AddArticle'
     )
 );
+const AboutEdit = lazy(
+  () =>
+    import(
+      /* webpackChunkName:'AboutEdit', webpackPrefetch:true */ '@/pages/Admin/AboutEdit'
+    )
+);
 
 export interface RouteType {
   path: string;
@@ -91,5 +97,10 @@ export const useRoutes = (): RouteType[] => [
     path: 'addArticle',
     disPlayName: '',
     element: <AddArticle />
+  },
+  {
+    path: 'aboutEdit',
+    disPlayName: '',
+    element: <AboutEdit />
   }
 ];
