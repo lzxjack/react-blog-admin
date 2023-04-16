@@ -16,10 +16,14 @@ export const useChartData = () => {
   const formatData = (classData: ClassType[], total: number) => {
     if (classData === undefined || total === undefined) return [];
     let sum = 0;
-    const res = classData.map(obj => {
-      sum += obj.count;
-      return { name: obj.class, value: obj.count };
-    });
+    console.log(classData);
+
+    const res = classData
+      .filter(obj => obj.count !== 0)
+      .map(obj => {
+        sum += obj.count;
+        return { name: obj.class, value: obj.count };
+      });
     const leave = total - sum;
     leave &&
       res.push({
