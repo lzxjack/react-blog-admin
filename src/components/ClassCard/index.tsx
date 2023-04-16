@@ -4,6 +4,7 @@ import { Input, message, Popconfirm } from 'antd';
 import classNames from 'classnames';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { addDataAPI } from '@/utils/apis/addData';
 import { deleteDataAPI } from '@/utils/apis/deleteData';
@@ -24,6 +25,7 @@ import s from './index.scss';
 const { Search } = Input;
 
 const ClassCard: React.FC = () => {
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [id, setId] = useState('');
   const [oldClassText, setOldClassText] = useState('');
@@ -176,6 +178,10 @@ const ClassCard: React.FC = () => {
     });
   };
 
+  const toArticle = (classText: string) => {
+    navigate(`/admin/article?searchClass=${encodeURIComponent(classText)}`);
+  };
+
   return (
     <>
       <div className={s.cardBox}>
@@ -206,7 +212,9 @@ const ClassCard: React.FC = () => {
                 <div key={_id} className={s.classItem}>
                   <div className={s.count}>{count}</div>
                   <div className={s.classTextBox}>
-                    <div className={s.classText}>《{classText}》</div>
+                    <div className={s.classText} onClick={() => toArticle(classText)}>
+                      《{classText}》
+                    </div>
                   </div>
                   <MyButton
                     onClick={() => openModal(_id)}

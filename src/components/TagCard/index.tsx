@@ -4,6 +4,7 @@ import { Input, message, Popconfirm } from 'antd';
 import classNames from 'classnames';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { addDataAPI } from '@/utils/apis/addData';
 import { deleteDataAPI } from '@/utils/apis/deleteData';
@@ -24,6 +25,7 @@ import s from './index.scss';
 const { Search } = Input;
 
 const TagCard: React.FC = () => {
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [id, setId] = useState('');
   const [oldTag, setOldTag] = useState('');
@@ -233,6 +235,10 @@ const TagCard: React.FC = () => {
     });
   };
 
+  const toArticle = (tag: string) => {
+    navigate(`/admin/article?searchTag=${encodeURIComponent(tag)}`);
+  };
+
   return (
     <>
       <div className={s.cardBox}>
@@ -256,6 +262,7 @@ const TagCard: React.FC = () => {
                   key={_id}
                   className={s.tagItem}
                   style={{ backgroundColor: tagColor[index % colorLen] }}
+                  onClick={() => toArticle(tag)}
                 >
                   {tag}
                   <EditOutlined className={s.iconBtn} onClick={() => openModal(_id)} />
