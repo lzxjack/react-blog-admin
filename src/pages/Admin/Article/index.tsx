@@ -20,6 +20,8 @@ import { useTableData } from '@/utils/hooks/useTableData';
 import { Title } from '../titleConfig';
 import { useColumns } from './config';
 
+const { Option } = Select;
+
 const Article: React.FC = () => {
   useTitle(`${siteTitle} | ${Title.Articles}`);
 
@@ -54,13 +56,16 @@ const Article: React.FC = () => {
     setPage
   });
 
-  const { data: classData } = useRequest(() => getDataAPI(DB.Class), {
-    retryCount: 3,
-    cacheKey: `${DB.Class}-data`,
-    staleTime
-  });
+  const { data: classData, loading: classLoading } = useRequest(
+    () => getDataAPI(DB.Class),
+    {
+      retryCount: 3,
+      cacheKey: `${DB.Class}-data`,
+      staleTime
+    }
+  );
 
-  const { data: tagData } = useRequest(() => getDataAPI(DB.Tag), {
+  const { data: tagData, loading: tagLoading } = useRequest(() => getDataAPI(DB.Tag), {
     retryCount: 3,
     cacheKey: `${DB.Tag}-data`,
     staleTime
@@ -137,13 +142,13 @@ const Article: React.FC = () => {
         allowClear
         value={searchClass}
         onChange={value => setSearchClass(value)}
-        notFoundContent={null}
-        options={(classData?.data || []).map(
-          ({ class: classText }: { class: string }) => ({
+        disabled={classLoading}
+        options={
+          classData?.data.map(({ class: classText }: { class: string }) => ({
             value: classText,
             label: classText
-          })
-        )}
+          })) || []
+        }
       />
       <Select
         size='large'
@@ -156,11 +161,13 @@ const Article: React.FC = () => {
         allowClear
         value={searchTag}
         onChange={value => setSearchTag(value)}
-        notFoundContent={null}
-        options={(tagData?.data || []).map(({ tag }: { tag: string }) => ({
-          value: tag,
-          label: tag
-        }))}
+        disabled={tagLoading}
+        options={
+          tagData?.data.map(({ tag }: { tag: string }) => ({
+            value: tag,
+            label: tag
+          })) || []
+        }
       />
       <MyButton
         content={<SearchOutlined />}
