@@ -1,4 +1,5 @@
 import { useResetState, useTitle } from 'ahooks';
+import { Input } from 'antd';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import React, { useState } from 'react';
@@ -15,6 +16,8 @@ import { useTableData } from '@/utils/hooks/useTableData';
 import sLog from '../Log/index.scss';
 import { Title } from '../titleConfig';
 import { useColumns } from './config';
+
+const { TextArea } = Input;
 
 const Say: React.FC = () => {
   useTitle(`${siteTitle} | ${Title.Say}`);
@@ -120,28 +123,27 @@ const Say: React.FC = () => {
     <>
       <div className={sLog.contentItem}>
         <div className={sLog.contentkey}>时间：</div>
-        <input
-          className={sLog.contentValue}
-          type='text'
+        <Input
           value={date}
+          style={{ fontSize: 16 }}
           onChange={e => setDate(e.target.value)}
         />
       </div>
       <div className={classNames(sLog.contentItem, sLog.textAreaBox)}>
         <div className={sLog.contentkey}>内容：</div>
-        <textarea
-          className={classNames(sLog.contentValue, sLog.textArea)}
+        <TextArea
+          style={{ resize: 'none', fontSize: 16 }}
           value={content}
           onChange={e => setContent(e.target.value)}
         />
       </div>
       <div
         className={classNames(sLog.contentItem, sLog.textAreaBox)}
-        style={{ height: '90px' }}
+        style={{ height: 112 }}
       >
         <div className={sLog.contentkey}>图片：</div>
-        <textarea
-          className={classNames(sLog.contentValue, sLog.textArea)}
+        <TextArea
+          style={{ resize: 'none', fontSize: 16 }}
           placeholder='（可选）插入图片url，回车分隔，最多4张'
           value={imgs.join(`\n`)}
           onChange={e => {
@@ -152,7 +154,7 @@ const Say: React.FC = () => {
           }}
         />
       </div>
-      <Emoji style={{ marginLeft: '64px' }} />
+      <Emoji style={{ marginLeft: 64 }} />
     </>
   );
 

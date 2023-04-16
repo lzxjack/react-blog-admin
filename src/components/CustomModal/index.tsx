@@ -1,4 +1,4 @@
-import { Modal } from 'antd';
+import { Input, Modal } from 'antd';
 import React, { Dispatch, SetStateAction } from 'react';
 
 import { DB } from '@/utils/dbConfig';
@@ -34,10 +34,9 @@ const LinkModal: React.FC<Props> = ({
     dataFilter.map(({ text, data, setData }) => (
       <div className={s.inputBox} key={text}>
         <div className={s.inputKey}>{text}：</div>
-        <input
-          className={s.inputValue}
-          type='text'
+        <Input
           value={data}
+          style={{ fontSize: 16 }}
           onChange={e => setData(e.target.value)}
         />
       </div>

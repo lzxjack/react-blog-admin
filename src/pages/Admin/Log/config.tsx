@@ -23,7 +23,7 @@ export const useColumns = ({ handleEdit, handleDelete, deleteProps }: Props) => 
     dataIndex: 'logContent',
     key: '_id',
     render: (arr: string[]) => (
-      <div style={{ margin: 'auto', width: '500px' }}>
+      <div style={{ margin: 'auto', width: 500 }}>
         {arr.map((item, index) => (
           <div key={index} style={{ padding: '5px 0' }}>
             {item}
@@ -38,7 +38,7 @@ export const useColumns = ({ handleEdit, handleDelete, deleteProps }: Props) => 
     render: ({ _id }: { _id: string }) => (
       <>
         <MyButton
-          style={{ marginRight: '10px' }}
+          style={{ marginRight: 10 }}
           content='修改'
           small
           onClick={() => handleEdit(_id)}

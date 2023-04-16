@@ -1,4 +1,5 @@
 import { useResetState, useTitle } from 'ahooks';
+import { Input } from 'antd';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import React, { useState } from 'react';
@@ -15,6 +16,8 @@ import { useTableData } from '@/utils/hooks/useTableData';
 import { Title } from '../titleConfig';
 import { useColumns } from './config';
 import s from './index.scss';
+
+const { TextArea } = Input;
 
 const Log: React.FC = () => {
   useTitle(`${siteTitle} | ${Title.Log}`);
@@ -108,23 +111,22 @@ const Log: React.FC = () => {
     <>
       <div className={s.contentItem}>
         <div className={s.contentkey}>时间：</div>
-        <input
-          className={s.contentValue}
-          type='text'
+        <Input
+          style={{ fontSize: 16 }}
           value={date}
           onChange={e => setDate(e.target.value)}
         />
       </div>
       <div className={classNames(s.contentItem, s.textAreaBox)}>
         <div className={s.contentkey}>日志：</div>
-        <textarea
-          className={classNames(s.contentValue, s.textArea)}
+        <TextArea
+          style={{ resize: 'none', fontSize: 16 }}
           placeholder='请输入日志，回车分隔'
           value={logContent.join(`\n`)}
           onChange={e => setLogContent(e.target.value.split(`\n`))}
         />
       </div>
-      <Emoji style={{ marginLeft: '64px' }} />
+      <Emoji style={{ marginLeft: 64 }} />
     </>
   );
 

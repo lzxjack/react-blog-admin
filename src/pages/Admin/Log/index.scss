@@ -14,24 +14,8 @@
     font-size: 16px;
     font-weight: 700;
   }
-
-  .contentValue {
-    flex: 1;
-    border: 1px solid $themeColor3_light;
-    height: 40px;
-    font-size: 16px;
-    padding: 0 10px;
-    border-radius: 10px;
-  }
 }
 
 .textAreaBox {
   height: 120px;
-
-  .textArea {
-    box-sizing: border-box;
-    height: 100%;
-    padding: 10px;
-    font-family: 'dengxian';
-  }
 }

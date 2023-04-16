@@ -39,13 +39,13 @@ export const useColumns = ({ handleEdit, handleDelete, deleteProps }: Props) => 
     render: ({ _id, link }: { _id: string; link: string }) => (
       <>
         <MyButton
-          style={{ marginRight: '10px' }}
+          style={{ marginRight: 10 }}
           content='查看'
           small
           onClick={() => window.open(link)}
         />
         <MyButton
-          style={{ marginRight: '10px' }}
+          style={{ marginRight: 10 }}
           content='更新'
           small
           onClick={() => handleEdit(_id)}

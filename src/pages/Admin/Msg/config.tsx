@@ -55,7 +55,7 @@ export const useColumns = ({ handleDelete, deleteProps }: Props) => [
       <div className={s.typeBox}>
         <div
           className={postTitle ? s.comment : s.msg}
-          style={replyId ? { marginRight: '5px' } : {}}
+          style={replyId ? { marginRight: 5 } : {}}
         >
           {postTitle ? '文章评论' : '留言板'}
         </div>
@@ -67,7 +67,7 @@ export const useColumns = ({ handleDelete, deleteProps }: Props) => [
     title: '内容',
     dataIndex: 'content',
     key: '_id',
-    width: '400px',
+    width: 400,
     render: (text: string) => <div className={s.msgsContent}>{text}</div>
   },
   {
@@ -76,7 +76,7 @@ export const useColumns = ({ handleDelete, deleteProps }: Props) => [
     render: ({ postTitle, _id }: { postTitle: string; _id: string }) => (
       <>
         <MyButton
-          style={{ marginRight: '10px' }}
+          style={{ marginRight: 10 }}
           content='查看'
           small
           onClick={() => {
