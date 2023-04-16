@@ -265,7 +265,13 @@ const TagCard: React.FC = () => {
                   onClick={() => toArticle(tag)}
                 >
                   {tag}
-                  <EditOutlined className={s.iconBtn} onClick={() => openModal(_id)} />
+                  <EditOutlined
+                    className={s.iconBtn}
+                    onClick={e => {
+                      e.stopPropagation();
+                      openModal(_id);
+                    }}
+                  />
                   <Popconfirm
                     placement='bottomRight'
                     title={`确定要删除「${tag}」吗？`}
