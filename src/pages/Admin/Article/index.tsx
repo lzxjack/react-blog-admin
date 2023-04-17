@@ -1,5 +1,5 @@
 import { ClearOutlined, SearchOutlined } from '@ant-design/icons';
-import { useKeyPress, useMount, useRequest, useResetState, useTitle } from 'ahooks';
+import { useKeyPress, useMount, useRequest, useTitle } from 'ahooks';
 import { Input, message, Select } from 'antd';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
@@ -8,9 +8,8 @@ import MyButton from '@/components/MyButton';
 import MyTable from '@/components/MyTable';
 import PageHeader from '@/components/PageHeader';
 import { getDataAPI } from '@/utils/apis/getData';
-import { getWhereOrderPageDataAPI } from '@/utils/apis/getWhereOrderPageData';
-import { _, db } from '@/utils/cloudBase';
-import { defaultPageSize, siteTitle, staleTime } from '@/utils/constant';
+import { _ } from '@/utils/cloudBase';
+import { siteTitle, staleTime } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
 import { isSubset } from '@/utils/functions';
 import { useMyParams } from '@/utils/hooks/useMyParams';
@@ -19,8 +18,6 @@ import { useTableData } from '@/utils/hooks/useTableData';
 
 import { Title } from '../titleConfig';
 import { useColumns } from './config';
-
-const { Option } = Select;
 
 const Article: React.FC = () => {
   useTitle(`${siteTitle} | ${Title.Articles}`);
