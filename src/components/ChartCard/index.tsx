@@ -1,4 +1,4 @@
-import { LoadingOutlined } from '@ant-design/icons';
+import { IconLoading } from '@arco-design/web-react/icon';
 import classNames from 'classnames';
 import { PieChart } from 'echarts/charts';
 import { LegendComponent, TitleComponent, TooltipComponent } from 'echarts/components';
@@ -27,7 +27,7 @@ const ChartCard: React.FC = () => {
     <div className={classNames(s.chartBox, { [s.loadingCenter]: loading })}>
       <div className={s.chartTitle}>文章概览</div>
       {loading ? (
-        <LoadingOutlined className={s.loading} />
+        <IconLoading className={s.loading} />
       ) : (
         <ReactEChartsCore
           style={{

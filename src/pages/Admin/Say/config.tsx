@@ -1,9 +1,8 @@
-import { Popconfirm, Popover } from 'antd';
+import { Button, Popconfirm, Popover } from '@arco-design/web-react';
 import dayjs from 'dayjs';
 import React from 'react';
 import { IoImage } from 'react-icons/io5';
 
-import MyButton from '@/components/MyButton';
 import { DeleteProps } from '@/utils/hooks/useTableData';
 
 import s from './index.scss';
@@ -18,17 +17,16 @@ export const useColumns = ({ handleEdit, handleDelete, deleteProps }: Props) => 
   {
     title: '发布日期',
     dataIndex: 'date',
-    key: '_id',
     render: (timeLine: string) => <>{dayjs(timeLine).format('YYYY-MM-DD HH:mm:ss')}</>
   },
   {
     title: '图片',
     dataIndex: 'imgs',
-    key: '_id',
     render: (imgs: string[]) =>
       imgs?.length ? (
         <Popover
-          placement='right'
+          position='right'
+          className={s.imgsPopover}
           content={
             <div className={s.imgsBox}>
               {imgs?.map((url, index) => (
@@ -49,7 +47,6 @@ export const useColumns = ({ handleEdit, handleDelete, deleteProps }: Props) => 
   {
     title: '说说内容',
     dataIndex: 'content',
-    key: '_id',
     render: (content: string) => (
       <div style={{ width: '100%', height: '100%' }}>
         <div
@@ -65,23 +62,25 @@ export const useColumns = ({ handleEdit, handleDelete, deleteProps }: Props) => 
   },
   {
     title: '操作',
-    key: '_id',
-    render: ({ _id }: { _id: string }) => (
+    render: (_: any, { _id }: { _id: string }) => (
       <>
-        <MyButton
+        <Button
+          type='primary'
           style={{ marginRight: 10 }}
-          content='修改'
-          small
           onClick={() => handleEdit(_id)}
-        />
+        >
+          修改
+        </Button>
         <Popconfirm
-          placement='bottomRight'
+          position='br'
           title='确定要删除该说说吗？'
-          onConfirm={() => handleDelete(_id, deleteProps)}
+          onOk={() => handleDelete(_id, deleteProps)}
           okText='Yes'
           cancelText='No'
         >
-          <MyButton content='删除' small danger />
+          <Button type='primary' status='danger'>
+            删除
+          </Button>
         </Popconfirm>
       </>
     )

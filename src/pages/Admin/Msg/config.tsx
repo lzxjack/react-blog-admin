@@ -1,9 +1,8 @@
-import { Popconfirm } from 'antd';
+import { Button, Popconfirm } from '@arco-design/web-react';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import React from 'react';
 
-import MyButton from '@/components/MyButton';
 import { blogUrl } from '@/utils/constant';
 import { DeleteProps } from '@/utils/hooks/useTableData';
 
@@ -18,7 +17,6 @@ export const useColumns = ({ handleDelete, deleteProps }: Props) => [
   {
     title: '昵称',
     dataIndex: 'name',
-    key: '_id',
     render: (text: string) => (
       <div className={s.msgUserNameBox}>
         <div className={classNames(s.msgUserName, { [s.msgUserAdmin]: text === '飞鸟' })}>
@@ -29,13 +27,11 @@ export const useColumns = ({ handleDelete, deleteProps }: Props) => [
   },
   {
     title: '联系邮箱',
-    dataIndex: 'email',
-    key: '_id'
+    dataIndex: 'email'
   },
   {
     title: '网址',
     dataIndex: 'link',
-    key: '_id',
     render: (text: string) => (
       <a href={text} target='_blank' rel='noreferrer'>
         {text}
@@ -45,13 +41,12 @@ export const useColumns = ({ handleDelete, deleteProps }: Props) => [
   {
     title: '日期',
     dataIndex: 'date',
-    key: '_id',
     render: (text: string) => <>{dayjs(text).format('YYYY-MM-DD HH:mm:ss')}</>
   },
   {
     title: '类型',
-    key: '_id',
-    render: ({ postTitle, replyId }: { postTitle: string; replyId: string }) => (
+
+    render: (_: any, { postTitle, replyId }: { postTitle: string; replyId: string }) => (
       <div className={s.typeBox}>
         <div
           className={postTitle ? s.comment : s.msg}
@@ -66,34 +61,36 @@ export const useColumns = ({ handleDelete, deleteProps }: Props) => [
   {
     title: '内容',
     dataIndex: 'content',
-    key: '_id',
+
     width: 400,
     render: (text: string) => <div className={s.msgsContent}>{text}</div>
   },
   {
     title: '操作',
-    key: '_id',
-    render: ({ postTitle, _id }: { postTitle: string; _id: string }) => (
+    render: (_: any, { postTitle, _id }: { postTitle: string; _id: string }) => (
       <>
-        <MyButton
+        <Button
           style={{ marginRight: 10 }}
-          content='查看'
-          small
+          type='primary'
           onClick={() => {
             const url = postTitle
               ? `${blogUrl}/post?title=${postTitle}`
               : `${blogUrl}/msg`;
             window.open(url);
           }}
-        />
+        >
+          查看
+        </Button>
         <Popconfirm
-          placement='bottomRight'
+          position='br'
           title='确定要删除该留言吗？'
-          onConfirm={() => handleDelete(_id, deleteProps)}
+          onOk={() => handleDelete(_id, deleteProps)}
           okText='Yes'
           cancelText='No'
         >
-          <MyButton content='删除' small danger />
+          <Button type='primary' status='danger'>
+            删除
+          </Button>
         </Popconfirm>
       </>
     )

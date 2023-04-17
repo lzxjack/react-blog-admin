@@ -1,8 +1,7 @@
-import { Popconfirm, Tag } from 'antd';
+import { Button, Popconfirm, Tag } from '@arco-design/web-react';
 import dayjs from 'dayjs';
 import React from 'react';
 
-import MyButton from '@/components/MyButton';
 import { DeleteProps } from '@/utils/hooks/useTableData';
 
 interface Props {
@@ -15,25 +14,23 @@ export const useColumns = ({ handleEdit, handleDelete, deleteProps }: Props) => 
   {
     title: '标题',
     dataIndex: 'title',
-    key: '_id',
     render: (title: string) => <strong>{title}</strong>
   },
   {
     title: '保存日期',
     dataIndex: 'date',
-    key: '_id',
     render: (timeLine: string) => <>{dayjs(timeLine).format('YYYY-MM-DD HH:mm:ss')}</>
   },
   {
     title: '分类',
     dataIndex: 'classes',
-    key: '_id',
-    render: (classText: string) => <Tag color='#2db7f5'>{classText}</Tag>
+    render: (classText: string) => (
+      <>{classText ? <Tag color='#2db7f5'>{classText}</Tag> : null}</>
+    )
   },
   {
     title: '标签',
     dataIndex: 'tags',
-    key: '_id',
     render: (tags: string[]) => (
       <>
         {tags.map((tag, index) => {
@@ -49,23 +46,25 @@ export const useColumns = ({ handleEdit, handleDelete, deleteProps }: Props) => 
   },
   {
     title: '操作',
-    key: '_id',
-    render: ({ _id, url }: { _id: string; url: string }) => (
+    render: (_: any, { _id }: { _id: string; url: string }) => (
       <>
-        <MyButton
+        <Button
           style={{ marginRight: 10 }}
-          content='编辑'
-          small
+          type='primary'
           onClick={() => handleEdit(_id)}
-        />
+        >
+          编辑
+        </Button>
         <Popconfirm
-          placement='bottomRight'
+          position='br'
           title='确定要删除该文章吗？'
-          onConfirm={() => handleDelete(_id, deleteProps)}
+          onOk={() => handleDelete(_id, deleteProps)}
           okText='Yes'
           cancelText='No'
         >
-          <MyButton content='删除' small danger />
+          <Button type='primary' status='danger'>
+            删除
+          </Button>
         </Popconfirm>
       </>
     )

@@ -1,7 +1,7 @@
+import { Button, Input, Notification } from '@arco-design/web-react';
 import { useTitle } from 'ahooks';
-import { notification } from 'antd';
-import classNames from 'classnames';
 import React, { useState } from 'react';
+import { BiLockAlt, BiUser } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
 
 import { authLoginAPI } from '@/utils/apis/authLogin';
@@ -25,10 +25,10 @@ const Login: React.FC = () => {
       return;
     }
     if (!email || !password) {
-      notification.warning({
-        message: '登录失败',
-        description: '请输入账号、密码！',
-        placement: 'bottomLeft',
+      Notification.warning({
+        title: '登录失败',
+        content: '请输入账号、密码！',
+        position: 'bottomLeft',
         duration: 1.5
       });
       return;
@@ -40,16 +40,16 @@ const Login: React.FC = () => {
 
   const openLoginNoti = (state: boolean) => {
     state
-      ? notification.success({
-          message: '登录成功',
-          description: '欢迎进入个人博客后台管理系统！',
-          placement: 'bottomLeft',
+      ? Notification.success({
+          title: '登录成功',
+          content: '欢迎进入个人博客后台管理系统！',
+          position: 'bottomLeft',
           duration: 1.5
         })
-      : notification.error({
-          message: '登录失败',
-          description: '用户名或密码不正确，请重新登录！',
-          placement: 'bottomLeft',
+      : Notification.error({
+          title: '登录失败',
+          content: '用户名或密码不正确，请重新登录！',
+          position: 'bottomLeft',
           duration: 1.5
         });
   };
@@ -62,31 +62,37 @@ const Login: React.FC = () => {
           <img src={avatarUrl} alt='avatar' />
         </div>
         <div className={s.loginBox}>
-          <div className={s.item}>
-            <div className={s.key}>账号</div>
-            <input
-              type='text'
-              className={s.value}
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-            />
-          </div>
-          <div className={s.item}>
-            <div className={s.key}>密码</div>
-            <input
-              type='password'
-              className={s.value}
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-            />
-          </div>
-          <div className={classNames(s.item, s.btnBox)}>
-            <div className={s.btn} onClick={() => handleLogin(visitorEmail, visitorPwd)}>
+          <Input
+            style={{ marginBottom: 20 }}
+            size='large'
+            prefix={<BiUser />}
+            value={email}
+            onChange={value => setEmail(value)}
+          />
+          <Input.Password
+            style={{ marginBottom: 20 }}
+            size='large'
+            prefix={<BiLockAlt />}
+            defaultValue='password'
+            value={password}
+            onChange={value => setPassword(value)}
+          />
+          <div className={s.btnBox}>
+            <Button
+              type='primary'
+              status='success'
+              size='large'
+              onClick={() => handleLogin(visitorEmail, visitorPwd)}
+            >
               {nowEnv === 'prod' ? '游客' : '测试'}
-            </div>
-            <div className={s.btn} onClick={() => handleLogin(email, password)}>
+            </Button>
+            <Button
+              type='primary'
+              size='large'
+              onClick={() => handleLogin(email, password)}
+            >
               登录
-            </div>
+            </Button>
           </div>
         </div>
       </div>

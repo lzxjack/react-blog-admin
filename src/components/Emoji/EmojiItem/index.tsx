@@ -1,4 +1,4 @@
-import { message } from 'antd';
+import { Message } from '@arco-design/web-react';
 import copy from 'copy-to-clipboard';
 import React from 'react';
 
@@ -15,7 +15,7 @@ const EmojiItem: React.FC<Props> = ({ emojis }) => {
         <div
           className={s.emoji}
           key={index}
-          onClick={() => copy(item) && message.success('已复制到剪切板!')}
+          onClick={() => copy(item) && Message.success('已复制到剪切板!')}
         >
           {item}
         </div>

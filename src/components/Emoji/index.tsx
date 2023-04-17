@@ -1,4 +1,4 @@
-import { Popover } from 'antd';
+import { Popover } from '@arco-design/web-react';
 import classNames from 'classnames';
 import React from 'react';
 
@@ -41,13 +41,15 @@ const Emoji: React.FC<Props> = ({ className, style }) => {
       {emojiData.map((item, index) => (
         <Popover
           key={index}
-          className={s.emojiBtn}
-          overlayClassName={s.emojiContent}
-          placement='bottom'
-          content={<EmojiItem emojis={item.emojis} />}
+          position='bottom'
+          content={
+            <div className={s.emojiContent}>
+              <EmojiItem emojis={item.emojis} />
+            </div>
+          }
           trigger='hover'
         >
-          <div>{item.show}</div>
+          <div className={s.emojiBtn}>{item.show}</div>
         </Popover>
       ))}
     </div>

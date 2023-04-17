@@ -1,7 +1,6 @@
-import { Popconfirm } from 'antd';
+import { Button, Popconfirm } from '@arco-design/web-react';
 import React from 'react';
 
-import MyButton from '@/components/MyButton';
 import { DeleteProps } from '@/utils/hooks/useTableData';
 
 import s from './index.scss';
@@ -16,7 +15,6 @@ export const useColumns = ({ handleEdit, handleDelete, deleteProps }: Props) => 
   {
     title: '封面',
     dataIndex: 'cover',
-    key: '_id',
     render: (url: string) => (
       <div className={s.tableCoverBox}>
         <img src={url} alt='cover' className={s.tableCover} />
@@ -25,39 +23,40 @@ export const useColumns = ({ handleEdit, handleDelete, deleteProps }: Props) => 
   },
   {
     title: '名称',
-    dataIndex: 'name',
-    key: '_id'
+    dataIndex: 'name'
   },
   {
     title: '描述',
-    dataIndex: 'descr',
-    key: '_id'
+    dataIndex: 'descr'
   },
   {
     title: '操作',
-    key: '_id',
-    render: ({ _id, link }: { _id: string; link: string }) => (
+    render: (_: any, { _id, link }: { _id: string; link: string }) => (
       <>
-        <MyButton
+        <Button
+          type='primary'
           style={{ marginRight: 10 }}
-          content='查看'
-          small
           onClick={() => window.open(link)}
-        />
-        <MyButton
+        >
+          查看
+        </Button>
+        <Button
           style={{ marginRight: 10 }}
-          content='更新'
-          small
+          type='primary'
           onClick={() => handleEdit(_id)}
-        />
+        >
+          更新
+        </Button>
         <Popconfirm
-          placement='bottomRight'
+          position='br'
           title='确定要删除该作品吗？'
-          onConfirm={() => handleDelete(_id, deleteProps)}
+          onOk={() => handleDelete(_id, deleteProps)}
           okText='Yes'
           cancelText='No'
         >
-          <MyButton content='删除' small danger />
+          <Button type='primary' status='danger'>
+            删除
+          </Button>
         </Popconfirm>
       </>
     )

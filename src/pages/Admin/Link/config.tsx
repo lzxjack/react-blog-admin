@@ -1,7 +1,6 @@
-import { Popconfirm } from 'antd';
+import { Button, Popconfirm } from '@arco-design/web-react';
 import React from 'react';
 
-import MyButton from '@/components/MyButton';
 import { DeleteProps } from '@/utils/hooks/useTableData';
 
 interface Props {
@@ -13,13 +12,11 @@ interface Props {
 export const useColumns = ({ handleEdit, handleDelete, deleteProps }: Props) => [
   {
     title: '名称',
-    dataIndex: 'name',
-    key: '_id'
+    dataIndex: 'name'
   },
   {
     title: '链接',
     dataIndex: 'link',
-    key: '_id',
     render: (text: string) => (
       <a href={text} target='_blank' rel='noreferrer'>
         {text}
@@ -28,33 +25,33 @@ export const useColumns = ({ handleEdit, handleDelete, deleteProps }: Props) => 
   },
   {
     title: '头像',
-    dataIndex: 'avatar',
-    key: '_id'
+    dataIndex: 'avatar'
   },
   {
     title: '描述',
-    dataIndex: 'descr',
-    key: '_id'
+    dataIndex: 'descr'
   },
   {
     title: '操作',
-    key: '_id',
-    render: ({ _id }: { _id: string }) => (
+    render: (_: any, { _id }: { _id: string }) => (
       <>
-        <MyButton
+        <Button
+          type='primary'
           style={{ marginRight: 10 }}
-          content='更新'
-          small
           onClick={() => handleEdit(_id)}
-        />
+        >
+          更新
+        </Button>
         <Popconfirm
-          placement='bottomRight'
+          position='br'
           title='确定要删除该友链吗？'
-          onConfirm={() => handleDelete(_id, deleteProps)}
+          onOk={() => handleDelete(_id, deleteProps)}
           okText='Yes'
           cancelText='No'
         >
-          <MyButton content='删除' small danger />
+          <Button type='primary' status='danger'>
+            删除
+          </Button>
         </Popconfirm>
       </>
     )

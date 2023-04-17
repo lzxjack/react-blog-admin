@@ -1,4 +1,4 @@
-import { LoadingOutlined } from '@ant-design/icons';
+import { IconLoading } from '@arco-design/web-react/icon';
 import { useRequest } from 'ahooks';
 import classNames from 'classnames';
 import React from 'react';
@@ -26,7 +26,7 @@ const CountCard: React.FC<Props> = ({ DBName, className }) => {
     <div className={classNames(s.countCardBox, className)}>
       <div className={s.key}>{dataMap[DBName as keyof typeof dataMap]}数</div>
       <div className={classNames(s.value, { [s.loading]: loading })}>
-        {loading ? <LoadingOutlined /> : data?.total}
+        {loading ? <IconLoading /> : data?.total}
       </div>
     </div>
   );

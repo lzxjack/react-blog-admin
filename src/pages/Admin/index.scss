@@ -1,77 +1,67 @@
 @import '../../styles/base.scss';
 @import '../../styles/style.scss';
 
-$navWidth: 160px;
-
-.navItemBase {
-  margin: 14px auto;
-  height: 40px;
-  width: 80%;
-  line-height: 40px;
-  text-align: center;
-  font-size: 16px;
-  user-select: none;
-  border-radius: 15px;
-  overflow: hidden;
-}
-
 .adminBox {
   min-height: 100vh;
   background-color: #f2f3f5;
 
-  .leftNav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: $navWidth;
-    background-color: $themeColor1;
-    color: #fff;
+  .mainContent {
+    display: flex;
 
-    .appName {
-      @extend .navItemBase;
-      background-color: #457caf;
-    }
-
-    ul {
-      margin: 0;
-      padding: 0;
+    .leftNav {
+      width: 150px;
+      box-sizing: border-box;
+      padding: 62px 10px 10px 10px;
+      background-color: #fff;
+      color: rgb(78, 89, 105);
+      border-right: 1px solid rgb(229, 230, 235);
 
       .liItem {
-        @extend .navItemBase;
+        margin: 10px 0;
+        height: 40px;
+        font-size: 15px;
+        user-select: none;
+        border-radius: 2px;
 
         .navItem {
-          @extend .trans;
-          width: 100%;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
           height: 100%;
-          display: block;
-          background-color: $themeColor2;
-          color: $themeColor1;
+          color: rgb(78, 89, 105);
+
+          .navIcon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
         }
 
         .navItem:hover,
         .navItemActive {
-          background-color: $themeColor3;
-          color: #fff;
+          background-color: #f2f3f5;
           cursor: pointer;
         }
 
         .navItemActive {
           cursor: default !important;
+          color: $themeColor3;
         }
       }
     }
-  }
 
-  .rightContent {
-    margin-left: $navWidth;
-    padding-top: 62px;
-    height: 100%;
+    .rightContent {
+      width: calc(100% - 160px);
+      padding-top: 62px;
+      height: 100%;
 
-    .routeContent {
-      padding: 20px;
-      width: 100%;
-      min-height: calc(100vh - 62px - 70px);
+      .routeContent {
+        padding: 20px;
+        width: 100%;
+        min-height: calc(100vh - 62px - 70px);
+      }
     }
   }
 }

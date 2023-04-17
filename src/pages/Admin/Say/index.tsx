@@ -1,5 +1,5 @@
+import { Input } from '@arco-design/web-react';
 import { useResetState, useTitle } from 'ahooks';
-import { Input } from 'antd';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import React, { useState } from 'react';
@@ -121,40 +121,33 @@ const Say: React.FC = () => {
 
   const render = () => (
     <>
-      <div className={sLog.contentItem}>
-        <div className={sLog.contentkey}>时间：</div>
-        <Input
-          value={date}
-          style={{ fontSize: 16 }}
-          onChange={e => setDate(e.target.value)}
-        />
-      </div>
-      <div className={classNames(sLog.contentItem, sLog.textAreaBox)}>
-        <div className={sLog.contentkey}>内容：</div>
-        <TextArea
-          style={{ resize: 'none', fontSize: 16 }}
-          value={content}
-          onChange={e => setContent(e.target.value)}
-        />
-      </div>
-      <div
-        className={classNames(sLog.contentItem, sLog.textAreaBox)}
-        style={{ height: 112 }}
-      >
-        <div className={sLog.contentkey}>图片：</div>
-        <TextArea
-          style={{ resize: 'none', fontSize: 16 }}
-          placeholder='（可选）插入图片url，回车分隔，最多4张'
-          value={imgs.join(`\n`)}
-          onChange={e => {
-            const imgs = e.target.value.split(`\n`);
-            if (imgs.length <= 4) {
-              setImgs(imgs);
-            }
-          }}
-        />
-      </div>
-      <Emoji style={{ marginLeft: 64 }} />
+      <Input
+        size='large'
+        addBefore='时间'
+        value={date}
+        style={{ marginBottom: 10 }}
+        onChange={value => setDate(value)}
+      />
+
+      <TextArea
+        placeholder='说说内容'
+        style={{ resize: 'none', marginBottom: 10, height: 100 }}
+        value={content}
+        onChange={value => setContent(value)}
+      />
+
+      <TextArea
+        style={{ resize: 'none', marginBottom: 10, height: 98 }}
+        placeholder='（可选）插入图片url，回车分隔，最多4张'
+        value={imgs.join(`\n`)}
+        onChange={value => {
+          const imgs = value.split(`\n`);
+          if (imgs.length <= 4) {
+            setImgs(imgs);
+          }
+        }}
+      />
+      <Emoji />
     </>
   );
 

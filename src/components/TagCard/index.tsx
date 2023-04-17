@@ -1,6 +1,6 @@
-import { DeleteOutlined, EditOutlined, LoadingOutlined } from '@ant-design/icons';
+import { Input, Message, Popconfirm } from '@arco-design/web-react';
+import { IconDelete, IconEdit, IconLoading } from '@arco-design/web-react/icon';
 import { clearCache, useRequest, useResetState } from 'ahooks';
-import { Input, message, Popconfirm } from 'antd';
 import classNames from 'classnames';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
@@ -71,7 +71,7 @@ const TagCard: React.FC = () => {
       { tags: _.addToSet(newTag) }
     ).then(res => {
       if (!res.success && !res.permission) {
-        message.warning(visitorText);
+        Message.warning(visitorText);
       } else if (res.success && res.permission) {
         // 2. 删除旧标签
         updateWhereDataAPI(
@@ -80,9 +80,9 @@ const TagCard: React.FC = () => {
           { tags: _.pull(oldTag) }
         ).then(res => {
           if (!res.success && !res.permission) {
-            message.warning(visitorText);
+            Message.warning(visitorText);
           } else if (res.success && res.permission) {
-            message.success(`更新${dataMap[DBName as keyof typeof dataMap]}分类成功！`);
+            Message.success(`更新${dataMap[DBName as keyof typeof dataMap]}分类成功！`);
             myClearCache({
               DBName,
               page: 1,
@@ -90,11 +90,11 @@ const TagCard: React.FC = () => {
               deleteTotal: false
             });
           } else {
-            message.warning(failText);
+            Message.warning(failText);
           }
         });
       } else {
-        message.warning(failText);
+        Message.warning(failText);
       }
     });
   };
@@ -110,9 +110,9 @@ const TagCard: React.FC = () => {
       { tags: _.pull(tagWillDeletd) }
     ).then(res => {
       if (!res.success && !res.permission) {
-        message.warning(visitorText);
+        Message.warning(visitorText);
       } else if (res.success && res.permission) {
-        message.success(`更新${dataMap[DBName as keyof typeof dataMap]}分类成功！`);
+        Message.success(`更新${dataMap[DBName as keyof typeof dataMap]}分类成功！`);
         myClearCache({
           DBName,
           page: 1,
@@ -120,7 +120,7 @@ const TagCard: React.FC = () => {
           deleteTotal: false
         });
       } else {
-        message.warning(failText);
+        Message.warning(failText);
       }
     });
   };
@@ -153,22 +153,22 @@ const TagCard: React.FC = () => {
 
   const modalOk = () => {
     if (!tag) {
-      message.warning('请输入标签名称~');
+      Message.warning('请输入标签名称~');
       return;
     }
     if (isExist(tag, data?.data || [], 'tag')) {
-      message.warning('标签名称已存在~');
+      Message.warning('标签名称已存在~');
       return;
     }
     if (!isAdmin()) {
-      message.warning(visitorText);
+      Message.warning(visitorText);
       return;
     }
     updateDataAPI(DB.Tag, id, { tag }).then(res => {
       if (!res.success && !res.permission) {
-        message.warning(visitorText);
+        Message.warning(visitorText);
       } else if (res.success && res.permission) {
-        message.success('修改成功！');
+        Message.success('修改成功！');
         modalCancel();
         flushSync(() => clearCache(`${DB.Tag}-data`));
         flushSync(() => run());
@@ -183,54 +183,54 @@ const TagCard: React.FC = () => {
           newTag: tag
         });
       } else {
-        message.warning(failText);
+        Message.warning(failText);
       }
     });
   };
 
   const addNewTag = () => {
     if (!newTag) {
-      message.warning('请输入标签名称~');
+      Message.warning('请输入标签名称~');
       return;
     }
     if (isExist(newTag, data?.data || [], 'tag')) {
-      message.warning('标签名称已存在~');
+      Message.warning('标签名称已存在~');
       return;
     }
     if (!isAdmin()) {
-      message.warning(visitorText);
+      Message.warning(visitorText);
       return;
     }
     addDataAPI(DB.Tag, { tag: newTag, date: Date.now() }).then(res => {
       if (!res.success && !res.permission) {
-        message.warning(visitorText);
+        Message.warning(visitorText);
       } else if (res.success && res.permission) {
-        message.success('添加成功！');
+        Message.success('添加成功！');
         resetNewTag();
         flushSync(() => clearCache(`${DB.Tag}-data`));
         flushSync(() => run());
       } else {
-        message.warning(failText);
+        Message.warning(failText);
       }
     });
   };
 
   const deleteTag = (id: string, tagWillDeletd: string) => {
     if (!isAdmin()) {
-      message.warning(visitorText);
+      Message.warning(visitorText);
       return;
     }
     deleteDataAPI(DB.Tag, id).then(res => {
       if (!res.success && !res.permission) {
-        message.warning(visitorText);
+        Message.warning(visitorText);
       } else if (res.success && res.permission) {
-        message.success('删除成功！');
+        Message.success('删除成功！');
         flushSync(() => clearCache(`${DB.Tag}-data`));
         flushSync(() => run());
         deleteTagFrom(DB.Article, tagWillDeletd);
         deleteTagFrom(DB.Draft, tagWillDeletd);
       } else {
-        message.warning(failText);
+        Message.warning(failText);
       }
     });
   };
@@ -244,42 +244,36 @@ const TagCard: React.FC = () => {
       <div className={s.cardBox}>
         <div className={s.title}>标签</div>
         <Search
-          placeholder='新建标签'
+          size='default'
           allowClear
-          enterButton='创建'
-          size='middle'
+          placeholder='新建标签'
+          searchButton='创建'
           value={newTag}
-          onChange={e => setNewTag(e.target.value)}
+          onChange={(value: string) => setNewTag(value)}
           onSearch={addNewTag}
         />
         <div className={classNames(s.tagsBox, { [s.tagLoading]: loading })}>
           {loading ? (
-            <LoadingOutlined />
+            <IconLoading />
           ) : (
-            (data?.data || []).map(
+            data?.data.map(
               ({ _id, tag }: { _id: string; tag: string }, index: number) => (
                 <div
                   key={_id}
                   className={s.tagItem}
                   style={{ backgroundColor: tagColor[index % colorLen] }}
-                  onClick={() => toArticle(tag)}
+                  onDoubleClick={() => toArticle(tag)}
                 >
                   {tag}
-                  <EditOutlined
-                    className={s.iconBtn}
-                    onClick={e => {
-                      e.stopPropagation();
-                      openModal(_id);
-                    }}
-                  />
+                  <IconEdit className={s.iconBtn} onClick={() => openModal(_id)} />
                   <Popconfirm
-                    placement='bottomRight'
+                    position='br'
                     title={`确定要删除「${tag}」吗？`}
-                    onConfirm={() => deleteTag(_id, tag)}
+                    onOk={() => deleteTag(_id, tag)}
                     okText='Yes'
                     cancelText='No'
                   >
-                    <DeleteOutlined className={s.iconBtn} />
+                    <IconDelete className={s.iconBtn} />
                   </Popconfirm>
                 </div>
               )
@@ -294,7 +288,7 @@ const TagCard: React.FC = () => {
         modalOk={modalOk}
         modalCancel={modalCancel}
         render={() => (
-          <Input size='middle' value={tag} onChange={e => setTag(e.target.value)} />
+          <Input size='default' value={tag} onChange={value => setTag(value)} />
         )}
       />
     </>

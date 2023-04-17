@@ -3,12 +3,12 @@
   display: flex;
 
   .left {
-    margin-right: 20px;
+    margin-right: 10px;
   }
 
   .left,
   .right {
     width: 50%;
-    min-height: calc(100vh - 62px - 70px - 40px);
+    height: calc(100vh - 62px - 70px - 40px - 66px);
   }
 }

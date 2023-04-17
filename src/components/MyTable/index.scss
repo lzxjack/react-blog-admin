@@ -1,0 +1,11 @@
+.myTable {
+  th div,
+  td div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  th span {
+    font-weight: 700;
+  }
+}

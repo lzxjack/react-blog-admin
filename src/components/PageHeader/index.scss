@@ -1,17 +1,9 @@
 .pageHeaderBox {
   position: relative;
-  background-color: #c9e5ff;
-  height: 50px;
-  padding: 5px;
-  border-radius: 12px;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 2px;
   display: flex;
   justify-content: flex-start;
-
-  .searchBox {
-    height: 100%;
-    margin-left: 5px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-  }
+  margin-bottom: 10px;
 }

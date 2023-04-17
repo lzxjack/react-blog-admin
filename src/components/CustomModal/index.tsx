@@ -1,5 +1,5 @@
-import { Input, Modal } from 'antd';
-import React, { Dispatch, SetStateAction } from 'react';
+import { Input, Modal } from '@arco-design/web-react';
+import React from 'react';
 
 import { DB } from '@/utils/dbConfig';
 import { DataFilterProps } from '@/utils/hooks/useTableData';
@@ -19,7 +19,7 @@ interface Props {
   render?: () => React.ReactNode;
 }
 
-const LinkModal: React.FC<Props> = ({
+const CustomModal: React.FC<Props> = ({
   isEdit,
   isModalOpen,
   DBType,
@@ -31,15 +31,15 @@ const LinkModal: React.FC<Props> = ({
   render
 }) => {
   const dataFilterRes = () =>
-    dataFilter.map(({ text, data, setData }) => (
-      <div className={s.inputBox} key={text}>
-        <div className={s.inputKey}>{text}：</div>
-        <Input
-          value={data}
-          style={{ fontSize: 16 }}
-          onChange={e => setData(e.target.value)}
-        />
-      </div>
+    dataFilter.map(({ text, data, setData }, index) => (
+      <Input
+        size='large'
+        key={index}
+        addBefore={text}
+        value={data as string}
+        onChange={value => setData(value)}
+        className={s.modalInput}
+      />
     ));
 
   return (
@@ -52,13 +52,13 @@ const LinkModal: React.FC<Props> = ({
           updateText={updateText}
         />
       }
-      open={isModalOpen}
+      visible={isModalOpen}
       onOk={modalOk}
       onCancel={modalCancel}
     >
-      <div className={s.modalBox}>{render?.() || dataFilterRes()}</div>
+      {render?.() || dataFilterRes()}
     </Modal>
   );
 };
 
-export default LinkModal;
+export default CustomModal;

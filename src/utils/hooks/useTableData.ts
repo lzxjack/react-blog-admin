@@ -1,5 +1,5 @@
-import { clearCache, useRequest } from 'ahooks';
-import { message } from 'antd';
+import { Message } from '@arco-design/web-react';
+import { useRequest } from 'ahooks';
 import { flushSync } from 'react-dom';
 
 import { getPageDataAPI } from '@/utils/apis/getPageData';
@@ -87,14 +87,14 @@ export const useTableData = ({
 
   const handleDelete = (id: string, { page, setPage }: DeleteProps) => {
     if (!isAdmin()) {
-      message.warning(visitorText);
+      Message.warning(visitorText);
       return;
     }
     deleteDataAPI(DBName, id).then(res => {
       if (!res.success && !res.permission) {
-        message.warning(visitorText);
+        Message.warning(visitorText);
       } else if (res.success && res.permission) {
-        message.success('删除成功！');
+        Message.success('删除成功！');
         flushSync(() =>
           myClearCache({
             DBName,
@@ -109,7 +109,7 @@ export const useTableData = ({
           totalRun();
         });
       } else {
-        message.warning(failText);
+        Message.warning(failText);
       }
     });
   };
@@ -117,9 +117,9 @@ export const useTableData = ({
   const addData = (data: object) => {
     addDataAPI(DBName, data).then(res => {
       if (!res.success && !res.permission) {
-        message.warning(visitorText);
+        Message.warning(visitorText);
       } else if (res.success && res.permission) {
-        message.success('添加成功！');
+        Message.success('添加成功！');
         modalCancel?.();
         flushSync(() =>
           myClearCache({
@@ -135,7 +135,7 @@ export const useTableData = ({
           totalRun();
         });
       } else {
-        message.warning(failText);
+        Message.warning(failText);
       }
     });
   };
@@ -153,9 +153,9 @@ export const useTableData = ({
   }) => {
     updateDataAPI(DBName, id, data).then(res => {
       if (!res.success && !res.permission) {
-        message.warning(visitorText);
+        Message.warning(visitorText);
       } else if (res.success && res.permission) {
-        message.success('修改成功！');
+        Message.success('修改成功！');
         modalCancel?.();
         flushSync(() => {
           isClearAll
@@ -171,7 +171,7 @@ export const useTableData = ({
           dataRun();
         });
       } else {
-        message.warning(failText);
+        Message.warning(failText);
       }
     });
   };
@@ -195,11 +195,11 @@ export const useTableData = ({
           require && (!filterData || (Array.isArray(filterData) && !filterData.length))
       )
     ) {
-      message.info(`请输入完整${dataMap[DBName as keyof typeof dataMap]}信息！`);
+      Message.info(`请输入完整${dataMap[DBName as keyof typeof dataMap]}信息！`);
       return;
     }
     if (!isAdmin()) {
-      message.warning(visitorText);
+      Message.warning(visitorText);
       return;
     }
     isEdit ? editData({ id, data, page, isClearAll }) : addData(data);

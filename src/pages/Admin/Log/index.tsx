@@ -1,5 +1,5 @@
+import { Input } from '@arco-design/web-react';
 import { useResetState, useTitle } from 'ahooks';
-import { Input } from 'antd';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import React, { useState } from 'react';
@@ -15,7 +15,6 @@ import { useTableData } from '@/utils/hooks/useTableData';
 
 import { Title } from '../titleConfig';
 import { useColumns } from './config';
-import s from './index.scss';
 
 const { TextArea } = Input;
 
@@ -109,24 +108,20 @@ const Log: React.FC = () => {
 
   const render = () => (
     <>
-      <div className={s.contentItem}>
-        <div className={s.contentkey}>时间：</div>
-        <Input
-          style={{ fontSize: 16 }}
-          value={date}
-          onChange={e => setDate(e.target.value)}
-        />
-      </div>
-      <div className={classNames(s.contentItem, s.textAreaBox)}>
-        <div className={s.contentkey}>日志：</div>
-        <TextArea
-          style={{ resize: 'none', fontSize: 16 }}
-          placeholder='请输入日志，回车分隔'
-          value={logContent.join(`\n`)}
-          onChange={e => setLogContent(e.target.value.split(`\n`))}
-        />
-      </div>
-      <Emoji style={{ marginLeft: 64 }} />
+      <Input
+        size='large'
+        addBefore='时间'
+        style={{ marginBottom: 10 }}
+        value={date}
+        onChange={value => setDate(value)}
+      />
+      <TextArea
+        style={{ resize: 'none', marginBottom: 10, height: 120 }}
+        placeholder='请输入日志内容，回车分隔'
+        value={logContent.join(`\n`)}
+        onChange={value => setLogContent(value.split(`\n`))}
+      />
+      <Emoji />
     </>
   );
 

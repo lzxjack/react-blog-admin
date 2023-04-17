@@ -2,8 +2,8 @@
 
 .cardTitle {
   position: absolute;
-  top: 20px;
-  left: 20px;
+  top: 15px;
+  left: 15px;
   font-size: 22px;
   font-weight: 700;
   font-family: 'dengxian';
@@ -13,7 +13,7 @@
   width: calc((100% - 4 * 20px) / 5);
   height: 160px;
   background-color: #fff;
-  border-radius: 14px;
+  border-radius: 2px;
   overflow: hidden;
   position: relative;
   display: flex;

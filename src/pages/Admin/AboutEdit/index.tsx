@@ -1,11 +1,10 @@
+import { Button, Message } from '@arco-design/web-react';
 import { useRequest, useTitle } from 'ahooks';
-import { message } from 'antd';
 import classNames from 'classnames';
 import React, { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import MarkDown from '@/components/MarkDown';
-import MyButton from '@/components/MyButton';
 import PageHeader from '@/components/PageHeader';
 import { getDataAPI } from '@/utils/apis/getData';
 import { updateDataAPI } from '@/utils/apis/updateData';
@@ -39,21 +38,21 @@ const AboutEdit: React.FC = () => {
 
   const updateAbout = () => {
     if (!content) {
-      message.info('请写点什么再更新！');
+      Message.info('请写点什么再更新！');
       return;
     }
     if (!isAdmin()) {
-      message.warning(visitorText);
+      Message.warning(visitorText);
       return;
     }
     updateDataAPI(DB.About, id, { content }).then(res => {
       if (!res.success && !res.permission) {
-        message.warning(visitorText);
+        Message.warning(visitorText);
       } else if (res.success && res.permission) {
-        message.success('更新成功！');
+        Message.success('更新成功！');
         navigate(`/admin/about?updated=1`);
       } else {
-        message.warning(failText);
+        Message.warning(failText);
       }
     });
   };
@@ -61,7 +60,9 @@ const AboutEdit: React.FC = () => {
   const render = () => (
     <>
       <div className={s.aboutTitle}>关于{isMe ? '我' : '本站'}</div>
-      <MyButton content='更新' className={s.aboutUpdate} onClick={updateAbout} />
+      <Button size='large' type='primary' className={s.aboutUpdate} onClick={updateAbout}>
+        更新
+      </Button>
     </>
   );
 

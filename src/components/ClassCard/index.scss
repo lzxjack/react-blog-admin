@@ -21,16 +21,16 @@
       height: 40px;
       display: flex;
       align-items: center;
-      border-bottom: 1px solid #ccc;
+      border-bottom: 1px solid #e5e6eb;
 
       .count {
         width: 30px;
         height: 30px;
         text-align: center;
         line-height: 30px;
-        background-color: $themeColor3;
-        border-radius: 6px;
-        color: #fff;
+        background-color: #e5e6eb;
+        border-radius: 50%;
+        color: rgb(134, 144, 156);
         user-select: none;
         margin-right: 4px;
       }
@@ -44,8 +44,9 @@
           height: 26px;
           line-height: 26px;
           display: inline-block;
-          border-radius: 6px;
+          border-radius: 2px;
           user-select: none;
+          padding: 0 6px;
           cursor: pointer;
           @extend .trans;
         }
@@ -59,8 +60,21 @@
         height: 30px;
         text-align: center;
         line-height: 30px;
-        border-radius: 6px;
+        border-radius: 2px;
         margin-left: 4px;
+        background-color: $themeColor3;
+        color: #fff;
+        cursor: pointer;
+        @extend .trans;
+      }
+      .classBtn:hover {
+        background-color: $themeColor3_light;
+      }
+      .classBtnDanger {
+        background-color: $themeColor4;
+      }
+      .classBtnDanger:hover {
+        background-color: $themeColor4_light;
       }
     }
     .classItem:last-child {

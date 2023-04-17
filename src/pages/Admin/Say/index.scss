@@ -1,5 +1,9 @@
 $height: 90px;
 
+.imgsPopover {
+  max-width: 600px !important;
+}
+
 .imgsBox {
   height: $height;
 
@@ -9,7 +13,7 @@ $height: 90px;
     height: $height;
     width: $height * 4/3;
     margin-right: 5px;
-    border-radius: 6px;
+    border-radius: 2px;
     overflow: hidden;
 
     .img {
@@ -29,7 +33,6 @@ $height: 90px;
 
 .imgHover {
   font-size: 22px;
-  height: 60px;
   display: flex;
   justify-content: center;
   align-items: center;

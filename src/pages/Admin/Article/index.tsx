@@ -1,11 +1,10 @@
-import { ClearOutlined, SearchOutlined } from '@ant-design/icons';
+import { Button, Input, Message, Select } from '@arco-design/web-react';
 import { useMount, useRequest, useTitle } from 'ahooks';
-import { Input, message, Select } from 'antd';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { BiBrushAlt, BiSearch } from 'react-icons/bi';
+import { useNavigate } from 'react-router-dom';
 
-import MyButton from '@/components/MyButton';
 import MyTable from '@/components/MyTable';
 import PageHeader from '@/components/PageHeader';
 import { getDataAPI } from '@/utils/apis/getData';
@@ -19,6 +18,7 @@ import { useTableData } from '@/utils/hooks/useTableData';
 
 import { Title } from '../titleConfig';
 import { useColumns } from './config';
+import s from './index.scss';
 
 const Article: React.FC = () => {
   useTitle(`${siteTitle} | ${Title.Articles}`);
@@ -101,7 +101,7 @@ const Article: React.FC = () => {
         setSearchData(result);
         setPage(1);
         setShowSearchData(true);
-        message.success('搜索成功！');
+        Message.success('搜索成功！');
       }
     }
   );
@@ -118,7 +118,7 @@ const Article: React.FC = () => {
 
   const search = () => {
     if (!searchTitle && !searchClass && !searchTag.length) {
-      message.info('请选择搜索内容！');
+      Message.info('请选择搜索内容！');
       return;
     }
     searchRun();
@@ -134,66 +134,80 @@ const Article: React.FC = () => {
   });
 
   const render = () => (
-    <>
-      <Input
-        size='large'
-        placeholder='输入文章标题'
-        style={{ width: 400, marginRight: 5 }}
-        value={searchTitle}
-        onChange={e => setSearchTitle(e.target.value)}
-        allowClear
-        onPressEnter={search}
-      />
-      <Select
-        size='large'
-        placeholder='请选择文章分类'
-        style={{ width: 300, marginRight: 5 }}
-        showSearch={false}
-        allowClear
-        value={searchClass}
-        onChange={value => setSearchClass(value)}
-        disabled={articleLoading || classLoading || tagLoading || searchLoading}
-        options={
-          classData?.data.map(({ class: classText }: { class: string }) => ({
-            value: classText,
-            label: classText
-          })) || undefined
-        }
-      />
-      <Select
-        size='large'
-        mode='tags'
-        placeholder='请选择文章标签'
-        style={{ width: 500, marginRight: 5 }}
-        maxTagCount={4}
-        showSearch={false}
-        showArrow
-        allowClear
-        value={searchTag}
-        onChange={value => setSearchTag(value)}
-        disabled={articleLoading || classLoading || tagLoading || searchLoading}
-        options={
-          tagData?.data.map(({ tag }: { tag: string }) => ({
-            value: tag,
-            label: tag
-          })) || undefined
-        }
-      />
-      <MyButton
-        content={<SearchOutlined />}
-        style={{ width: 40, borderRadius: 8, fontSize: 18, marginRight: 5 }}
-        onClick={search}
-      />
-      <MyButton
-        content={<ClearOutlined />}
-        style={{ width: 40, borderRadius: 8, fontSize: 18 }}
-        onClick={() => {
-          flushSync(() => clearSearch());
-          flushSync(() => setPage(1));
-          setShowSearchData(false);
-        }}
-      />
-    </>
+    <div className={s.searchBox}>
+      <div className={s.search}>
+        <Input
+          size='large'
+          allowClear
+          style={{ flex: 1, marginRight: 10 }}
+          placeholder='输入文章标题'
+          value={searchTitle}
+          onChange={value => setSearchTitle(value)}
+          onPressEnter={search}
+        />
+        <Select
+          size='large'
+          placeholder='请选择文章分类'
+          style={{ flex: 1, marginRight: 10 }}
+          allowCreate={false}
+          showSearch
+          allowClear
+          unmountOnExit={false}
+          value={searchClass}
+          onChange={value => setSearchClass(value)}
+          disabled={classLoading}
+          options={
+            classData?.data.map(({ class: classText }: { class: string }) => ({
+              value: classText,
+              label: classText
+            })) || undefined
+          }
+        />
+
+        <Select
+          placeholder='请选择文章标签'
+          size='large'
+          style={{ flex: 2, marginRight: 10 }}
+          maxTagCount={4}
+          mode='multiple'
+          allowCreate={false}
+          showSearch
+          allowClear
+          unmountOnExit={false}
+          value={searchTag}
+          onChange={value => setSearchTag(value)}
+          disabled={tagLoading}
+          options={
+            tagData?.data.map(({ tag }: { tag: string }) => ({
+              value: tag,
+              label: tag
+            })) || undefined
+          }
+        />
+      </div>
+      <div>
+        <Button
+          type='primary'
+          size='large'
+          onClick={search}
+          style={{ fontSize: 16, marginRight: 10 }}
+        >
+          <BiSearch />
+        </Button>
+        <Button
+          type='primary'
+          size='large'
+          onClick={() => {
+            flushSync(() => clearSearch());
+            flushSync(() => setPage(1));
+            setShowSearchData(false);
+          }}
+          style={{ fontSize: 16 }}
+        >
+          <BiBrushAlt />
+        </Button>
+      </div>
+    </div>
   );
 
   return (

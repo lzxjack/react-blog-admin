@@ -1,18 +1,7 @@
-@import '../../styles/base.scss';
+.modalInput {
+  margin-bottom: 10px;
+}
 
-.modalBox {
-  .inputBox {
-    display: flex;
-    height: 40px;
-    margin: 15px 0;
-
-    .inputKey {
-      width: 64px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 16px;
-      font-weight: 700;
-    }
-  }
+.modalInput:last-child {
+  margin-bottom: 0;
 }

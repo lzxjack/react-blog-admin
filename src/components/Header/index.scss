@@ -6,26 +6,27 @@
   top: 50%;
   z-index: 9999999;
   transform: translateY(-50%);
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 14px;
+  border-radius: 50%;
   user-select: none;
-  font-size: 22px;
-  color: #9ed0ff;
-  background-color: #fff;
+  font-size: 16px;
+  color: #4e5969;
+  background-color: #f2f3f5;
   @extend .trans;
 }
 
 .headerBox {
   position: fixed;
   top: 0;
-  left: 160px;
+  left: 0;
   right: 0;
   height: 62px;
-  background-color: #9ed0ff;
+  background-color: #fff;
+  border-bottom: 1px solid rgb(229, 230, 235);
 
   .avatar {
     position: absolute;
@@ -38,13 +39,12 @@
   }
   .avatarText {
     position: absolute;
-    left: calc(10px * 2 + 54px);
+    left: calc(10px * 2 + 60px);
     top: 50%;
     transform: translate(0, -50%);
-    font-size: 20px;
+    font-size: 18px;
     font-family: 'dengxian';
     font-weight: 700;
-    color: #fff;
 
     .userName {
       color: $themeColor3;
@@ -52,24 +52,22 @@
   }
 
   .blogBtn {
-    right: calc(11px * 2 + 40px);
+    right: calc(10px * 2 + 32px);
     @extend .headerBtnBase;
   }
 
   .blogBtn:hover {
-    color: #fff;
-    background-color: $themeColor3;
+    background-color: #e5e6eb;
     cursor: pointer;
   }
 
   .logoutBtn {
-    right: 11px;
+    right: 10px;
     @extend .headerBtnBase;
   }
 
   .logoutBtn:hover {
-    color: #fff;
-    background-color: red;
+    background-color: $themeColor4_light;
     cursor: pointer;
   }
 }

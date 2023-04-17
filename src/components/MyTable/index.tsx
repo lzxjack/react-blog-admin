@@ -1,13 +1,14 @@
-import { Table } from 'antd';
-import { ColumnGroupType, ColumnType } from 'antd/es/table';
+import { Table, TableColumnProps } from '@arco-design/web-react';
 import React from 'react';
 
 import { defaultPageSize } from '@/utils/constant';
 
+import s from './index.scss';
+
 interface Props {
   loading: boolean;
-  columns: (ColumnGroupType<any> | ColumnType<any>)[];
-  data: readonly any[];
+  columns: TableColumnProps[];
+  data: any[];
   total: number;
   page: number;
   pageSize?: number;
@@ -24,12 +25,15 @@ const MyTable: React.FC<Props> = ({
   setPage
 }) => (
   <Table
-    bordered
+    border
+    borderCell
     loading={loading}
     columns={columns}
-    dataSource={data}
+    data={data}
     rowKey={columns => columns._id}
     showSorterTooltip={false}
+    pagePosition='bottomCenter'
+    className={s.myTable}
     pagination={
       total <= pageSize
         ? false
@@ -37,10 +41,10 @@ const MyTable: React.FC<Props> = ({
             current: page,
             total,
             defaultPageSize: pageSize,
-            showSizeChanger: false,
-            showTitle: false,
-            position: ['bottomCenter'],
-            onChange: (page: number) => setPage(page)
+            sizeCanChange: false,
+            onChange: (page: number) => setPage(page),
+            hideOnSinglePage: true,
+            showTotal: true
           }
     }
   />

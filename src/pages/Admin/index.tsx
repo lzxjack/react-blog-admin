@@ -6,7 +6,6 @@ import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import RequireAuth from '@/components/RequireAuth';
 import WithLoading from '@/components/WithLoading';
-import { AppName } from '@/utils/constant';
 
 import { RouteType, useRoutes } from './config';
 import s from './index.scss';
@@ -16,49 +15,49 @@ const Admin: React.FC = () => {
 
   return (
     <div className={s.adminBox}>
-      {/* 左侧导航区 */}
-      <nav className={s.leftNav}>
-        <div className={s.appName}>{AppName}</div>
-        <ul>
+      <Header />
+      <div className={s.mainContent}>
+        {/* 左侧导航区 */}
+        <nav className={s.leftNav}>
           {routes.map((item: RouteType) => {
             return item.disPlayName ? (
-              <li key={item.path} className={s.liItem}>
+              <div key={item.path} className={s.liItem}>
                 <NavLink
                   to={`/admin/${item.path}`}
                   className={({ isActive }) =>
                     isActive ? classNames(s.navItem, s.navItemActive) : s.navItem
                   }
                 >
+                  <div className={s.navIcon}>{item.icon}</div>
                   {item.disPlayName}
                 </NavLink>
-              </li>
+              </div>
             ) : null;
           })}
-        </ul>
-      </nav>
-      {/* 右侧内容区域= */}
-      <div className={s.rightContent}>
-        <Header />
-        {/* 路由内容 */}
-        <div className={s.routeContent}>
-          <WithLoading>
-            <Routes>
-              {routes.map((item: RouteType) => (
-                <Route
-                  key={item.path}
-                  path={item.path}
-                  element={
-                    <RequireAuth requireLogin={true} to='/'>
-                      {item.element}
-                    </RequireAuth>
-                  }
-                />
-              ))}
-              <Route path='*' element={<Navigate to='home' />} />
-            </Routes>
-          </WithLoading>
+        </nav>
+        {/* 右侧内容区域= */}
+        <div className={s.rightContent}>
+          {/* 路由内容 */}
+          <div className={s.routeContent}>
+            <WithLoading>
+              <Routes>
+                {routes.map((item: RouteType) => (
+                  <Route
+                    key={item.path}
+                    path={item.path}
+                    element={
+                      <RequireAuth requireLogin={true} to='/'>
+                        {item.element}
+                      </RequireAuth>
+                    }
+                  />
+                ))}
+                <Route path='*' element={<Navigate to='home' />} />
+              </Routes>
+            </WithLoading>
+          </div>
+          <Footer />
         </div>
-        <Footer />
       </div>
     </div>
   );

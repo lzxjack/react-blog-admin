@@ -1,7 +1,6 @@
-import { LoadingOutlined } from '@ant-design/icons';
+import { Input, Message } from '@arco-design/web-react';
+import { IconLoading } from '@arco-design/web-react/icon';
 import { clearCache, useRequest, useResetState } from 'ahooks';
-import { message } from 'antd';
-import TextArea from 'antd/es/input/TextArea';
 import classNames from 'classnames';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
@@ -15,6 +14,8 @@ import { DB } from '@/utils/dbConfig';
 import CustomModal from '../CustomModal';
 import Emoji from '../Emoji';
 import s from './index.scss';
+
+const { TextArea } = Input;
 
 const NoticeCard: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -41,23 +42,23 @@ const NoticeCard: React.FC = () => {
 
   const modalOk = () => {
     if (!notice) {
-      message.warning('请输入公告内容~');
+      Message.warning('请输入公告内容~');
       return;
     }
     if (!isAdmin()) {
-      message.warning(visitorText);
+      Message.warning(visitorText);
       return;
     }
     updateDataAPI(DB.Notice, noticeId, { notice }).then(res => {
       if (!res.success && !res.permission) {
-        message.warning(visitorText);
+        Message.warning(visitorText);
       } else if (res.success && res.permission) {
-        message.success('修改成功！');
+        Message.success('修改成功！');
         modalCancel();
         flushSync(() => clearCache(`${DB.Notice}-data`));
         flushSync(() => run());
       } else {
-        message.warning(failText);
+        Message.warning(failText);
       }
     });
   };
@@ -68,16 +69,16 @@ const NoticeCard: React.FC = () => {
         placeholder='请输入公告内容'
         maxLength={21 * 4}
         allowClear
-        showCount
+        showWordLimit
         value={notice}
-        onChange={e => setNotice(e.target.value)}
+        onChange={value => setNotice(value)}
+        autoSize={false}
         style={{
-          fontSize: 16,
-          height: 140,
+          height: 100,
           resize: 'none'
         }}
       />
-      <Emoji />
+      <Emoji style={{ marginTop: 10 }} />
     </>
   );
 
@@ -89,7 +90,7 @@ const NoticeCard: React.FC = () => {
           className={classNames(s.noticeText, { [s.loading]: loading })}
           onClick={openModal}
         >
-          {loading ? <LoadingOutlined /> : data?.data[0]?.notice || ''}
+          {loading ? <IconLoading /> : data?.data[0]?.notice || ''}
         </div>
       </div>
       <CustomModal
