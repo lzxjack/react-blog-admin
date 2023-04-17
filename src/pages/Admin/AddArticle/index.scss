@@ -1,7 +1,10 @@
+@import '../../../styles/base.scss';
+
 .addArticleHeader {
-  padding: 5px;
-  background-color: #c9e5ff;
-  border-radius: 12px;
+  height: 102px;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 2px;
 
   .top,
   .bottom {
@@ -11,6 +14,53 @@
   }
 
   .top {
-    margin-bottom: 5px;
+    margin-bottom: 10px;
+
+    .chineseTitle {
+      flex: 1;
+      margin-right: 10px;
+    }
+  }
+
+  .bottom {
+    .classText,
+    .tags,
+    .time {
+      flex: 1;
+    }
+
+    .tags {
+      flex: 2;
+      margin: 0 10px;
+    }
+  }
+}
+
+.contentEdit {
+  height: calc(100vh - 62px - 70px - 102px - 20px * 2);
+  display: flex;
+  padding-top: 10px;
+
+  .markedEdit {
+    height: 100%;
+    width: 50%;
+    border-radius: 2px;
+    overflow: hidden;
+    background-color: #fff;
+    overflow-y: auto;
+  }
+
+  .input {
+    margin-right: 10px;
+    padding: 30px;
+    font-size: 18px;
+  }
+
+  .markedEdit::-webkit-scrollbar {
+    width: 8px;
+  }
+  .markedEdit::-webkit-scrollbar-thumb {
+    background: $themeColor3_light;
+    border-radius: 2px;
   }
 }

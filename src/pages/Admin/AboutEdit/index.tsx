@@ -1,7 +1,7 @@
-import { useEventListener, useRequest, useThrottleFn, useTitle } from 'ahooks';
+import { useRequest, useTitle } from 'ahooks';
 import { message } from 'antd';
 import classNames from 'classnames';
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import MarkDown from '@/components/MarkDown';
@@ -12,17 +12,20 @@ import { updateDataAPI } from '@/utils/apis/updateData';
 import { isAdmin } from '@/utils/cloudBase';
 import { failText, siteTitle, visitorText } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
+import { useScrollSync } from '@/utils/hooks/useScrollSync';
 
 import { Title } from '../titleConfig';
 import s from './index.scss';
 
 const AboutEdit: React.FC = () => {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+
   const isMe = searchParams.get('me') === '1';
 
   useTitle(`${siteTitle} | ${isMe ? Title.AboutMe : Title.AboutSite}`);
 
-  const navigate = useNavigate();
+  const { leftRef, rightRef, handleScrollRun } = useScrollSync();
 
   const [content, setContent] = useState('');
   const [id, setId] = useState('');
@@ -61,24 +64,6 @@ const AboutEdit: React.FC = () => {
       <MyButton content='更新' className={s.aboutUpdate} onClick={updateAbout} />
     </>
   );
-
-  const leftRef = useRef(null);
-  const rightRef = useRef(null);
-
-  const left = leftRef.current! as any;
-  const right = rightRef.current! as any;
-
-  const handleScroll = (event: any) => {
-    const scrollTopRatio =
-      event.target.scrollTop / (event.target.scrollHeight - event.target.clientHeight);
-    if (event.target === left) {
-      right.scrollTop = scrollTopRatio * (right.scrollHeight - right.clientHeight);
-    } else if (event.target === right) {
-      left.scrollTop = scrollTopRatio * (left.scrollHeight - left.clientHeight);
-    }
-  };
-
-  const { run: handleScrollRun } = useThrottleFn(handleScroll, { wait: 60 });
 
   return (
     <>
