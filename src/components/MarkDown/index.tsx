@@ -3,16 +3,17 @@ import './hljs.custom.scss';
 import classNames from 'classnames';
 import hljs from 'highlight.js';
 import { marked } from 'marked';
-import React from 'react';
+import React, { forwardRef, MutableRefObject } from 'react';
 
 import s from './index.scss';
 
 interface Props {
   content: string;
   className?: string;
+  onScroll?: (e: any) => void;
 }
 
-const MarkDown: React.FC<Props> = ({ content = '', className }) => {
+const MarkDown = forwardRef(({ content = '', className, onScroll }: Props, ref: any) => {
   hljs.configure({
     classPrefix: 'hljs-',
     languages: ['CSS', 'HTML', 'JavaScript', 'TypeScript', 'Markdown']
@@ -27,12 +28,14 @@ const MarkDown: React.FC<Props> = ({ content = '', className }) => {
 
   return (
     <div
+      ref={ref}
+      onScroll={onScroll}
       className={classNames(s.markdownBox, className)}
       dangerouslySetInnerHTML={{
         __html: marked(content).replace(/<pre>/g, "<pre id='hljs'>")
       }}
     />
   );
-};
+});
 
 export default MarkDown;

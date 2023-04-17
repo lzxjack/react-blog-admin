@@ -1,7 +1,7 @@
-import { useRequest } from 'ahooks';
+import { useEventListener, useRequest, useThrottleFn, useTitle } from 'ahooks';
 import { message } from 'antd';
 import classNames from 'classnames';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import MarkDown from '@/components/MarkDown';
@@ -10,14 +10,19 @@ import PageHeader from '@/components/PageHeader';
 import { getDataAPI } from '@/utils/apis/getData';
 import { updateDataAPI } from '@/utils/apis/updateData';
 import { isAdmin } from '@/utils/cloudBase';
-import { failText, visitorText } from '@/utils/constant';
+import { failText, siteTitle, visitorText } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
 
+import { Title } from '../titleConfig';
 import s from './index.scss';
 
 const AboutEdit: React.FC = () => {
-  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const isMe = searchParams.get('me') === '1';
+
+  useTitle(`${siteTitle} | ${isMe ? Title.AboutMe : Title.AboutSite}`);
+
+  const navigate = useNavigate();
 
   const [content, setContent] = useState('');
   const [id, setId] = useState('');
@@ -28,8 +33,6 @@ const AboutEdit: React.FC = () => {
       setId(res?.data[isMe ? 1 : 0]._id);
     }
   });
-
-  const isMe = searchParams.get('me') === '1';
 
   const updateAbout = () => {
     if (!content) {
@@ -59,17 +62,41 @@ const AboutEdit: React.FC = () => {
     </>
   );
 
+  const leftRef = useRef(null);
+  const rightRef = useRef(null);
+
+  const left = leftRef.current! as any;
+  const right = rightRef.current! as any;
+
+  const handleScroll = (event: any) => {
+    const scrollTopRatio =
+      event.target.scrollTop / (event.target.scrollHeight - event.target.clientHeight);
+    if (event.target === left) {
+      right.scrollTop = scrollTopRatio * (right.scrollHeight - right.clientHeight);
+    } else if (event.target === right) {
+      left.scrollTop = scrollTopRatio * (left.scrollHeight - left.clientHeight);
+    }
+  };
+
+  const { run: handleScrollRun } = useThrottleFn(handleScroll, { wait: 60 });
+
   return (
     <>
       <PageHeader text='返回' onClick={() => navigate('/admin/about')} render={render} />
       <div className={s.markedEditBox}>
         <textarea
+          ref={leftRef}
           className={classNames(s.markedEdit, s.input)}
-          defaultValue={content}
           value={content}
           onChange={e => setContent(e.target.value)}
+          onScroll={handleScrollRun}
         />
-        <MarkDown className={s.markedEdit} content={content} />
+        <MarkDown
+          ref={rightRef}
+          className={s.markedEdit}
+          content={content}
+          onScroll={handleScrollRun}
+        />
       </div>
     </>
   );

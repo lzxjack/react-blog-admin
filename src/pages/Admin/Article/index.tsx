@@ -1,8 +1,9 @@
 import { ClearOutlined, SearchOutlined } from '@ant-design/icons';
-import { useKeyPress, useMount, useRequest, useTitle } from 'ahooks';
+import { useMount, useRequest, useTitle } from 'ahooks';
 import { Input, message, Select } from 'antd';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import MyButton from '@/components/MyButton';
 import MyTable from '@/components/MyTable';
@@ -21,6 +22,7 @@ import { useColumns } from './config';
 
 const Article: React.FC = () => {
   useTitle(`${siteTitle} | ${Title.Articles}`);
+  const navigate = useNavigate();
 
   const { page, setPage } = usePage();
   const [showSearchData, setShowSearchData] = useState(false);
@@ -71,7 +73,13 @@ const Article: React.FC = () => {
   const { run: searchRun, loading: searchLoading } = useRequest(
     () => getDataAPI(DB.Article),
     {
+      manual: true,
       retryCount: 3,
+      cacheKey: `${DB.Article}-${searchTitle}-${searchClass}-${JSON.stringify(
+        searchTag
+      )}-searchRes`,
+      staleTime,
+      throttleWait: 1000,
       onSuccess: res => {
         const result = res.data.filter(
           ({
@@ -93,9 +101,16 @@ const Article: React.FC = () => {
         setSearchData(result);
         setPage(1);
         setShowSearchData(true);
+        message.success('搜索成功！');
       }
     }
   );
+
+  useMount(() => {
+    if (searchTitle || searchClass || searchTag.length) {
+      searchRun();
+    }
+  });
 
   const handleEdit = (id: string) => {
     console.log(id);
@@ -106,11 +121,8 @@ const Article: React.FC = () => {
       message.info('请选择搜索内容！');
       return;
     }
-
     searchRun();
   };
-
-  useKeyPress(13, () => search());
 
   const columns = useColumns({
     handleEdit,
@@ -130,6 +142,7 @@ const Article: React.FC = () => {
         value={searchTitle}
         onChange={e => setSearchTitle(e.target.value)}
         allowClear
+        onPressEnter={search}
       />
       <Select
         size='large'
@@ -141,10 +154,12 @@ const Article: React.FC = () => {
         onChange={value => setSearchClass(value)}
         disabled={classLoading}
         options={
-          classData?.data.map(({ class: classText }: { class: string }) => ({
-            value: classText,
-            label: classText
-          })) || []
+          !classLoading && classData
+            ? classData.data.map(({ class: classText }: { class: string }) => ({
+                value: classText,
+                label: classText
+              }))
+            : undefined
         }
       />
       <Select
@@ -160,10 +175,12 @@ const Article: React.FC = () => {
         onChange={value => setSearchTag(value)}
         disabled={tagLoading}
         options={
-          tagData?.data.map(({ tag }: { tag: string }) => ({
-            value: tag,
-            label: tag
-          })) || []
+          !tagLoading && tagData
+            ? tagData.data.map(({ tag }: { tag: string }) => ({
+                value: tag,
+                label: tag
+              }))
+            : undefined
         }
       />
       <MyButton
@@ -185,7 +202,11 @@ const Article: React.FC = () => {
 
   return (
     <>
-      <PageHeader text='写文章' onClick={() => {}} render={render} />
+      <PageHeader
+        text='写文章'
+        onClick={() => navigate(`/admin/addArticle`)}
+        render={render}
+      />
       <MyTable
         loading={showSearchData ? searchLoading : articleLoading}
         columns={columns}

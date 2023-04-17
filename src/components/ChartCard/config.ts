@@ -16,7 +16,6 @@ export const useChartData = () => {
   const formatData = (classData: ClassType[], total: number) => {
     if (classData === undefined || total === undefined) return [];
     let sum = 0;
-    console.log(classData);
 
     const res = classData
       .filter(obj => obj.count !== 0)
