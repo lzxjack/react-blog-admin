@@ -1,0 +1,16 @@
+.addArticleHeader {
+  padding: 5px;
+  background-color: #c9e5ff;
+  border-radius: 12px;
+
+  .top,
+  .bottom {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .top {
+    margin-bottom: 5px;
+  }
+}

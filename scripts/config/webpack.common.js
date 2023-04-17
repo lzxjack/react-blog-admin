@@ -9,19 +9,23 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { ROOT_PATH } = require('../constant');
 const { isDevelopment, isProduction } = require('../env');
 
-const getCssLoaders = () => {
+const getCssLoaders = (module = false) => {
+  const options = {
+    sourceMap: isDevelopment
+  };
+
+  if (!module) {
+    options.modules = {
+      localIdentName: '[local]--[hash:base64:5]'
+    };
+  }
+
   const cssLoaders = [
     // 开发模式使用style-loader，生产模式MiniCssExtractPlugin.loader
     isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
     {
       loader: 'css-loader',
-      options: {
-        modules: {
-          // 模块化类名，防止重复
-          localIdentName: '[local]--[hash:base64:5]'
-        },
-        sourceMap: isDevelopment
-      }
+      options
     }
   ];
 
@@ -137,9 +141,9 @@ module.exports = {
       },
       {
         test: /\.less$/,
-        exclude: /node_modules/,
+        // exclude: /node_modules/,
         use: [
-          ...getCssLoaders(),
+          ...getCssLoaders(true),
           {
             loader: 'less-loader',
             options: {

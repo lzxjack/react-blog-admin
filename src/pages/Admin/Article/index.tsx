@@ -148,18 +148,16 @@ const Article: React.FC = () => {
         size='large'
         placeholder='请选择文章分类'
         style={{ width: 300, marginRight: 5 }}
-        showSearch
+        showSearch={false}
         allowClear
         value={searchClass}
         onChange={value => setSearchClass(value)}
-        disabled={classLoading}
+        disabled={articleLoading || classLoading || tagLoading || searchLoading}
         options={
-          !classLoading && classData
-            ? classData.data.map(({ class: classText }: { class: string }) => ({
-                value: classText,
-                label: classText
-              }))
-            : undefined
+          classData?.data.map(({ class: classText }: { class: string }) => ({
+            value: classText,
+            label: classText
+          })) || undefined
         }
       />
       <Select
@@ -168,19 +166,17 @@ const Article: React.FC = () => {
         placeholder='请选择文章标签'
         style={{ width: 500, marginRight: 5 }}
         maxTagCount={4}
-        showSearch
+        showSearch={false}
         showArrow
         allowClear
         value={searchTag}
         onChange={value => setSearchTag(value)}
-        disabled={tagLoading}
+        disabled={articleLoading || classLoading || tagLoading || searchLoading}
         options={
-          !tagLoading && tagData
-            ? tagData.data.map(({ tag }: { tag: string }) => ({
-                value: tag,
-                label: tag
-              }))
-            : undefined
+          tagData?.data.map(({ tag }: { tag: string }) => ({
+            value: tag,
+            label: tag
+          })) || undefined
         }
       />
       <MyButton
