@@ -210,6 +210,8 @@ export const useTableData = ({
     total: total?.total,
     loading: dataLoading || totalLoading,
     handleDelete,
-    modalOk
+    modalOk,
+    dataRun,
+    totalRun
   };
 };

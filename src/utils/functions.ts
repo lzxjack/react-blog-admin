@@ -47,3 +47,24 @@ export const getAfterDeletedPage = (total: number, nowPage: number, pageSize: nu
 export const isSubset = (allData: string[], someData: string[]) => {
   return someData.every(elem => allData.includes(elem));
 };
+
+// 判断日期字符串是否合法
+export const isValidDateString = (dateString: string, hasTime: boolean) => {
+  const regex = hasTime ? /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/ : /^\d{4}-\d{2}-\d{2}$/;
+
+  if (!regex.test(dateString)) {
+    return false;
+  }
+
+  const date = Date.parse(dateString);
+  if (isNaN(date)) {
+    return false;
+  }
+
+  return true;
+};
+
+export const containsChineseCharacters = (str: string) => {
+  const regex = /[\u4e00-\u9fa5]/;
+  return regex.test(str);
+};

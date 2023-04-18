@@ -2,10 +2,12 @@ import { useTitle } from 'ahooks';
 import React from 'react';
 
 import MyTable from '@/components/MyTable';
-import { siteTitle } from '@/utils/constant';
+import { defaultPageSize, siteTitle } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
+import { getTotalPage, myClearCache } from '@/utils/functions';
 import { usePage } from '@/utils/hooks/usePage';
 import { useTableData } from '@/utils/hooks/useTableData';
+import { useUpdateData } from '@/utils/hooks/useUpdateData';
 
 import { Title } from '../titleConfig';
 import { useColumns } from './config';
@@ -15,11 +17,25 @@ const Draft: React.FC = () => {
 
   const { page, setPage } = usePage();
 
-  const { data, total, loading, handleDelete, modalOk } = useTableData({
+  const { data, total, loading, handleDelete, dataRun, totalRun } = useTableData({
     DBName: DB.Draft,
     page,
     setPage
   });
+
+  useUpdateData(
+    () =>
+      myClearCache({
+        DBName: DB.Draft,
+        page: 1,
+        totalPage: getTotalPage(total, defaultPageSize),
+        deleteTotal: true
+      }),
+    () => {
+      dataRun();
+      totalRun();
+    }
+  );
 
   const handleEdit = (id: string) => {
     console.log(id);

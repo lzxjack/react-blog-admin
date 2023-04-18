@@ -1,7 +1,7 @@
 import './index.custom.scss';
 
 import { Button, Input, Message, Select } from '@arco-design/web-react';
-import { useMount, useRequest, useTitle } from 'ahooks';
+import { useMount, useRequest, useTitle, useUpdate } from 'ahooks';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
 import { BiBrushAlt, BiSearch } from 'react-icons/bi';
@@ -11,12 +11,13 @@ import MyTable from '@/components/MyTable';
 import PageHeader from '@/components/PageHeader';
 import { getDataAPI } from '@/utils/apis/getData';
 import { _ } from '@/utils/cloudBase';
-import { siteTitle, staleTime } from '@/utils/constant';
+import { defaultPageSize, siteTitle, staleTime } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
-import { isSubset } from '@/utils/functions';
+import { getTotalPage, isSubset, myClearCache } from '@/utils/functions';
 import { useMyParams } from '@/utils/hooks/useMyParams';
 import { usePage } from '@/utils/hooks/usePage';
 import { useTableData } from '@/utils/hooks/useTableData';
+import { useUpdateData } from '@/utils/hooks/useUpdateData';
 
 import { Title } from '../titleConfig';
 import { useColumns } from './config';
@@ -50,12 +51,28 @@ const Article: React.FC = () => {
     data: articleData,
     total: articleTotal,
     loading: articleLoading,
-    handleDelete
+    handleDelete,
+    dataRun,
+    totalRun
   } = useTableData({
     DBName: DB.Article,
     page,
     setPage
   });
+
+  useUpdateData(
+    () =>
+      myClearCache({
+        DBName: DB.Article,
+        page: 1,
+        totalPage: getTotalPage(articleTotal, defaultPageSize),
+        deleteTotal: true
+      }),
+    () => {
+      dataRun();
+      totalRun();
+    }
+  );
 
   const { data: classData, loading: classLoading } = useRequest(
     () => getDataAPI(DB.Class),
