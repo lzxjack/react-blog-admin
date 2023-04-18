@@ -16,8 +16,6 @@ import { useScrollSync } from '@/utils/hooks/useScrollSync';
 import { Title } from '../titleConfig';
 import s from './index.scss';
 
-const { Option } = Select;
-
 const AddArticle: React.FC = () => {
   // TODO: 添加 or 编辑
   useTitle(`${siteTitle} | ${Title.AddArticle}`);
@@ -61,7 +59,6 @@ const AddArticle: React.FC = () => {
       return;
     }
 
-    const DBName = type === 'post' ? DB.Article : DB.Draft;
     const successText = type === 'post' ? '发布文章成功！' : '保存草稿成功！';
     const path = type === 'post' ? '/admin/article' : '/admin/draft';
 
@@ -72,10 +69,11 @@ const AddArticle: React.FC = () => {
       tags,
       classes: classText,
       date: new Date(date).getTime(),
-      url: `https://lzxjack.top/post?title=${titleEng}`
+      url: `https://lzxjack.top/post?title=${titleEng}`,
+      post: type === 'post'
     };
 
-    addDataAPI(DBName, data).then(res => {
+    addDataAPI(DB.Article, data).then(res => {
       if (!res.success && !res.permission) {
         Message.warning(visitorText);
       } else if (res.success && res.permission) {

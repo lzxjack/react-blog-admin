@@ -2,15 +2,15 @@ import { Message } from '@arco-design/web-react';
 import { useRequest } from 'ahooks';
 import { flushSync } from 'react-dom';
 
-import { getPageDataAPI } from '@/utils/apis/getPageData';
 import { getTotalAPI } from '@/utils/apis/getTotal';
+import { getWhereOrderPageDataAPI } from '@/utils/apis/getWhereOrderPageData';
 import { defaultPageSize, failText, staleTime, visitorText } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
 
 import { addDataAPI } from '../apis/addData';
 import { deleteDataAPI } from '../apis/deleteData';
 import { updateDataAPI } from '../apis/updateData';
-import { isAdmin } from '../cloudBase';
+import { _, isAdmin } from '../cloudBase';
 import { dataMap } from '../dataMap';
 import {
   getAfterDeletedPage,
@@ -36,6 +36,7 @@ interface Props {
   sortKey?: string;
   isAsc?: boolean;
   pageSize?: number;
+  where?: object;
 }
 
 export interface DeleteProps {
@@ -52,7 +53,8 @@ export const useTableData = ({
   modalCancel,
   sortKey = 'date',
   isAsc = false,
-  pageSize = defaultPageSize
+  pageSize = defaultPageSize,
+  where = {}
 }: Props) => {
   const {
     data,
@@ -60,17 +62,18 @@ export const useTableData = ({
     run: dataRun
   } = useRequest(
     () =>
-      getPageDataAPI({
+      getWhereOrderPageDataAPI({
         dbName: DBName,
         sortKey,
         isAsc,
         page,
-        size: pageSize
+        size: pageSize,
+        where
       }),
     {
       retryCount: 3,
       refreshDeps: [page],
-      cacheKey: `${DBName}-data-${page}`,
+      cacheKey: `${DBName}-${JSON.stringify(where)}-data-${page}`,
       staleTime
     }
   );
@@ -79,9 +82,9 @@ export const useTableData = ({
     data: total,
     loading: totalLoading,
     run: totalRun
-  } = useRequest(() => getTotalAPI(DBName), {
+  } = useRequest(() => getTotalAPI({ dbName: DBName, where }), {
     retryCount: 3,
-    cacheKey: `${DBName}-total`,
+    cacheKey: `${DBName}-${JSON.stringify(where)}-total`,
     staleTime
   });
 
@@ -97,7 +100,7 @@ export const useTableData = ({
         Message.success('删除成功！');
         flushSync(() =>
           myClearCache({
-            DBName,
+            key: `${DBName}-${JSON.stringify(where)}`,
             page,
             totalPage: getTotalPage(total?.total || 0, pageSize),
             deleteTotal: true
@@ -123,7 +126,7 @@ export const useTableData = ({
         modalCancel?.();
         flushSync(() =>
           myClearCache({
-            DBName,
+            key: `${DBName}-${JSON.stringify(where)}`,
             page: 1,
             totalPage: getTotalPage(total?.total || 0, pageSize),
             deleteTotal: true
@@ -160,12 +163,12 @@ export const useTableData = ({
         flushSync(() => {
           isClearAll
             ? myClearCache({
-                DBName,
+                key: `${DBName}-${JSON.stringify(where)}`,
                 page: 1,
                 totalPage: getTotalPage(total?.total || 0, pageSize),
                 deleteTotal: false
               })
-            : myClearCacheOnePage(DBName, page);
+            : myClearCacheOnePage(`${DBName}-${JSON.stringify(where)}`, page);
         });
         flushSync(() => {
           dataRun();

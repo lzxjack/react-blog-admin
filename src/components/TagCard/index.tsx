@@ -38,35 +38,28 @@ const TagCard: React.FC = () => {
     staleTime
   });
 
-  const { data: articleTotal } = useRequest(() => getTotalAPI(DB.Article), {
-    retryCount: 3,
-    cacheKey: `${DB.Article}-total`,
-    staleTime
-  });
+  const { data: articleTotal } = useRequest(
+    () => getTotalAPI({ dbName: DB.Article, where: { post: _.eq(true) } }),
+    {
+      retryCount: 3,
+      cacheKey: `${DB.Article}-${JSON.stringify({ post: _.eq(true) })}-total`,
+      staleTime
+    }
+  );
 
-  const { data: draftTotal } = useRequest(() => getTotalAPI(DB.Draft), {
-    retryCount: 3,
-    cacheKey: `${DB.Draft}-total`,
-    staleTime
-  });
+  const { data: draftTotal } = useRequest(
+    () => getTotalAPI({ dbName: DB.Article, where: { post: _.eq(false) } }),
+    {
+      retryCount: 3,
+      cacheKey: `${DB.Article}-${JSON.stringify({ post: _.eq(false) })}-total`,
+      staleTime
+    }
+  );
 
-  const updateTagFrom = ({
-    DBName,
-    oldTag,
-    newTag
-  }: {
-    DBName: DB;
-    oldTag: string;
-    newTag: string;
-  }) => {
-    const map = {
-      [DB.Article]: articleTotal?.total || 0,
-      [DB.Draft]: draftTotal?.total || 0
-    };
-
+  const updateTagFromDB = ({ oldTag, newTag }: { oldTag: string; newTag: string }) => {
     // 1. 添加新标签
     updateWhereDataAPI(
-      DBName,
+      DB.Article,
       { tags: _.all([oldTag]) },
       { tags: _.addToSet(newTag) }
     ).then(res => {
@@ -75,20 +68,26 @@ const TagCard: React.FC = () => {
       } else if (res.success && res.permission) {
         // 2. 删除旧标签
         updateWhereDataAPI(
-          DBName,
+          DB.Article,
           { tags: _.all([oldTag]) },
           { tags: _.pull(oldTag) }
         ).then(res => {
           if (!res.success && !res.permission) {
             Message.warning(visitorText);
           } else if (res.success && res.permission) {
-            Message.success(`更新${dataMap[DBName as keyof typeof dataMap]}分类成功！`);
             myClearCache({
-              DBName,
+              key: `${DB.Article}-${JSON.stringify({ post: _.eq(true) })}`,
               page: 1,
-              totalPage: getTotalPage(map[DBName as keyof typeof map], defaultPageSize),
+              totalPage: getTotalPage(articleTotal?.total || 0, defaultPageSize),
               deleteTotal: false
             });
+            myClearCache({
+              key: `${DB.Article}-${JSON.stringify({ post: _.eq(false) })}`,
+              page: 1,
+              totalPage: getTotalPage(draftTotal?.total || 0, defaultPageSize),
+              deleteTotal: false
+            });
+            Message.success(`更新数据库标签成功！`);
           } else {
             Message.warning(failText);
           }
@@ -99,26 +98,28 @@ const TagCard: React.FC = () => {
     });
   };
 
-  const deleteTagFrom = (DBName: DB, tagWillDeletd: string) => {
-    const map = {
-      [DB.Article]: articleTotal?.total || 0,
-      [DB.Draft]: draftTotal?.total || 0
-    };
+  const deleteTagFromDB = (tagWillDeletd: string) => {
     updateWhereDataAPI(
-      DBName,
+      DB.Article,
       { tags: _.all([tagWillDeletd]) },
       { tags: _.pull(tagWillDeletd) }
     ).then(res => {
       if (!res.success && !res.permission) {
         Message.warning(visitorText);
       } else if (res.success && res.permission) {
-        Message.success(`更新${dataMap[DBName as keyof typeof dataMap]}分类成功！`);
         myClearCache({
-          DBName,
+          key: `${DB.Article}-${JSON.stringify({ post: _.eq(true) })}`,
           page: 1,
-          totalPage: getTotalPage(map[DBName as keyof typeof map], defaultPageSize),
+          totalPage: getTotalPage(articleTotal?.total || 0, defaultPageSize),
           deleteTotal: false
         });
+        myClearCache({
+          key: `${DB.Article}-${JSON.stringify({ post: _.eq(false) })}`,
+          page: 1,
+          totalPage: getTotalPage(draftTotal?.total || 0, defaultPageSize),
+          deleteTotal: false
+        });
+        Message.success(`更新数据库标签成功！`);
       } else {
         Message.warning(failText);
       }
@@ -172,13 +173,7 @@ const TagCard: React.FC = () => {
         modalCancel();
         flushSync(() => clearCache(`${DB.Tag}-data`));
         flushSync(() => run());
-        updateTagFrom({
-          DBName: DB.Article,
-          oldTag,
-          newTag: tag
-        });
-        updateTagFrom({
-          DBName: DB.Draft,
+        updateTagFromDB({
           oldTag,
           newTag: tag
         });
@@ -227,8 +222,7 @@ const TagCard: React.FC = () => {
         Message.success('删除成功！');
         flushSync(() => clearCache(`${DB.Tag}-data`));
         flushSync(() => run());
-        deleteTagFrom(DB.Article, tagWillDeletd);
-        deleteTagFrom(DB.Draft, tagWillDeletd);
+        deleteTagFromDB(tagWillDeletd);
       } else {
         Message.warning(failText);
       }

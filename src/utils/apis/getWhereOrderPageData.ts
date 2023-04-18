@@ -3,13 +3,13 @@ import { DB } from '../dbConfig';
 
 export const getWhereOrderPageDataAPI = (config: {
   dbName: DB;
-  where: object;
-  page: number;
-  size: number;
+  where?: object;
   sortKey?: string;
   isAsc?: boolean;
+  page: number;
+  size: number;
 }) => {
-  const { dbName, where, sortKey = 'date', isAsc = false, page, size } = config;
+  const { dbName, sortKey = 'date', isAsc = false, page, size, where = {} } = config;
 
   return db
     .collection(dbName)

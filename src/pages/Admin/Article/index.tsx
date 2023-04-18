@@ -57,13 +57,14 @@ const Article: React.FC = () => {
   } = useTableData({
     DBName: DB.Article,
     page,
-    setPage
+    setPage,
+    where: { post: _.eq(true) }
   });
 
   useUpdateData(
     () =>
       myClearCache({
-        DBName: DB.Article,
+        key: `${DB.Article}-${JSON.stringify({ post: _.eq(true) })}`,
         page: 1,
         totalPage: getTotalPage(articleTotal, defaultPageSize),
         deleteTotal: true

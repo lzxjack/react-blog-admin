@@ -1,28 +1,26 @@
 import { clearCache } from 'ahooks';
 
-import { DB } from './dbConfig';
-
 // 删除所有分页缓存数据
 export const myClearCache = ({
-  DBName,
+  key,
   page,
   totalPage,
   deleteTotal
 }: {
-  DBName: DB;
+  key: string;
   page: number;
   totalPage: number;
   deleteTotal: boolean;
 }) => {
   for (let i = page; i <= totalPage; i++) {
-    clearCache(`${DBName}-data-${i}`);
+    clearCache(`${key}-data-${i}`);
   }
-  deleteTotal && clearCache(`${DBName}-total`);
+  deleteTotal && clearCache(`${key}-total`);
 };
 
 // 删除分页缓存某页数据
-export const myClearCacheOnePage = (DBName: DB, page: number) => {
-  clearCache(`${DBName}-data-${page}`);
+export const myClearCacheOnePage = (key: string, page: number) => {
+  clearCache(`${key}-data-${page}`);
 };
 
 // 计算分页数量

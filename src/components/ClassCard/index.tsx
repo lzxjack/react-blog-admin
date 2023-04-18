@@ -37,17 +37,23 @@ const ClassCard: React.FC = () => {
     staleTime
   });
 
-  const { data: articleTotal } = useRequest(() => getTotalAPI(DB.Article), {
-    retryCount: 3,
-    cacheKey: `${DB.Article}-total`,
-    staleTime
-  });
+  const { data: articleTotal } = useRequest(
+    () => getTotalAPI({ dbName: DB.Article, where: { post: _.eq(true) } }),
+    {
+      retryCount: 3,
+      cacheKey: `${DB.Article}-${JSON.stringify({ post: _.eq(true) })}-total`,
+      staleTime
+    }
+  );
 
-  const { data: draftTotal } = useRequest(() => getTotalAPI(DB.Draft), {
-    retryCount: 3,
-    cacheKey: `${DB.Draft}-total`,
-    staleTime
-  });
+  const { data: draftTotal } = useRequest(
+    () => getTotalAPI({ dbName: DB.Article, where: { post: _.eq(false) } }),
+    {
+      retryCount: 3,
+      cacheKey: `${DB.Article}-${JSON.stringify({ post: _.eq(false) })}-total`,
+      staleTime
+    }
+  );
 
   const isExist = (
     content: string,
@@ -94,8 +100,7 @@ const ClassCard: React.FC = () => {
         modalCancel();
         flushSync(() => clearCache(`${DB.Class}-data`));
         flushSync(() => run());
-        updateClassFrom(DB.Article, oldClassText, classText);
-        updateClassFrom(DB.Draft, oldClassText, classText);
+        updateClassFromDB(oldClassText, classText);
       } else {
         Message.warning(failText);
       }
@@ -131,26 +136,28 @@ const ClassCard: React.FC = () => {
     );
   };
 
-  const updateClassFrom = (DBName: DB, oldClassText: string, newClassText: string) => {
-    const map = {
-      [DB.Article]: articleTotal?.total || 0,
-      [DB.Draft]: draftTotal?.total || 0
-    };
+  const updateClassFromDB = (oldClassText: string, newClassText: string) => {
     updateWhereDataAPI(
-      DBName,
+      DB.Article,
       { classes: _.eq(oldClassText) },
       { classes: newClassText }
     ).then(res => {
       if (!res.success && !res.permission) {
         Message.warning(visitorText);
       } else if (res.success && res.permission) {
-        Message.success(`更新${dataMap[DBName as keyof typeof dataMap]}分类成功！`);
         myClearCache({
-          DBName,
+          key: `${DB.Article}-${JSON.stringify({ post: _.eq(true) })}`,
           page: 1,
-          totalPage: getTotalPage(map[DBName as keyof typeof map], defaultPageSize),
+          totalPage: getTotalPage(articleTotal?.total || 0, defaultPageSize),
           deleteTotal: false
         });
+        myClearCache({
+          key: `${DB.Article}-${JSON.stringify({ post: _.eq(false) })}`,
+          page: 1,
+          totalPage: getTotalPage(draftTotal?.total || 0, defaultPageSize),
+          deleteTotal: false
+        });
+        Message.success(`更新数据库分类成功！`);
       } else {
         Message.warning(failText);
       }
@@ -169,8 +176,7 @@ const ClassCard: React.FC = () => {
         Message.success('删除成功！');
         flushSync(() => clearCache(`${DB.Class}-data`));
         flushSync(() => run());
-        updateClassFrom(DB.Article, classText, '');
-        updateClassFrom(DB.Draft, classText, '');
+        updateClassFromDB(classText, '');
       } else {
         Message.warning(failText);
       }

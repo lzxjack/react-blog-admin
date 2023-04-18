@@ -2,6 +2,7 @@ import { useRequest } from 'ahooks';
 
 import { getDataAPI } from '@/utils/apis/getData';
 import { getTotalAPI } from '@/utils/apis/getTotal';
+import { _ } from '@/utils/cloudBase';
 import { staleTime } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
 
@@ -39,10 +40,10 @@ export const useChartData = () => {
   });
 
   const { data: total, loading: totalLoading } = useRequest(
-    () => getTotalAPI(DB.Article),
+    () => getTotalAPI({ dbName: DB.Article, where: { post: _.eq(true) } }),
     {
       retryCount: 3,
-      cacheKey: `${DB.Article}-total`,
+      cacheKey: `${DB.Article}-${JSON.stringify({ post: _.eq(true) })}-total`,
       staleTime
     }
   );

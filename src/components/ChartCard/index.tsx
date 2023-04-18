@@ -7,21 +7,32 @@ import { LabelLayout } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
 import ReactEChartsCore from 'echarts-for-react/lib/core';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { useChartData } from './config';
 import s from './index.scss';
 
-echarts.use([
-  TitleComponent,
-  TooltipComponent,
-  LegendComponent,
-  PieChart,
-  CanvasRenderer,
-  LabelLayout
-]);
-
 const ChartCard: React.FC = () => {
   const { option, loading } = useChartData();
+
+  const navigate = useNavigate();
+
+  echarts.use([
+    TitleComponent,
+    TooltipComponent,
+    LegendComponent,
+    PieChart,
+    CanvasRenderer,
+    LabelLayout
+  ]);
+
+  const onEvents = {
+    click: (params: any) => {
+      const classText = params.data.name;
+      if (classText === '未分类') return;
+      navigate(`/admin/article?searchClass=${encodeURIComponent(classText)}&auto=1`);
+    }
+  };
 
   return (
     <div className={classNames(s.chartBox, { [s.loadingCenter]: loading })}>
@@ -37,6 +48,7 @@ const ChartCard: React.FC = () => {
           option={option}
           notMerge={true}
           lazyUpdate={true}
+          onEvents={onEvents}
         />
       )}
     </div>

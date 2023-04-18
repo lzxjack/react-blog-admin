@@ -13,12 +13,13 @@ import s from './index.scss';
 interface Props {
   DBName: DB;
   className?: string;
+  where?: object;
 }
 
-const CountCard: React.FC<Props> = ({ DBName, className }) => {
-  const { data, loading } = useRequest(() => getTotalAPI(DBName), {
+const CountCard: React.FC<Props> = ({ DBName, className, where = {} }) => {
+  const { data, loading } = useRequest(() => getTotalAPI({ dbName: DBName, where }), {
     retryCount: 3,
-    cacheKey: `${DBName}-total`,
+    cacheKey: `${DBName}-${JSON.stringify(where)}-total`,
     staleTime
   });
 
