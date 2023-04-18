@@ -105,7 +105,9 @@ const Article: React.FC = () => {
             const titleCondition =
               title.toLowerCase().indexOf((searchTitle || '').toLowerCase()) !== -1;
             const tagCondition = isSubset(tags, searchTag);
-            const classCondition = searchClass ? classes === searchClass : true;
+            const classCondition = searchClass
+              ? classes === (searchClass === '未分类' ? '' : searchClass)
+              : true;
             return titleCondition && tagCondition && classCondition;
           }
         );
@@ -170,10 +172,15 @@ const Article: React.FC = () => {
           onChange={value => setSearchClass(value)}
           disabled={classLoading}
           options={
-            classData?.data.map(({ class: classText }: { class: string }) => ({
-              value: classText,
-              label: classText
-            })) || undefined
+            classData
+              ? [
+                  ...classData.data.map(({ class: classText }: { class: string }) => ({
+                    value: classText,
+                    label: classText
+                  })),
+                  { value: '未分类', label: '未分类' }
+                ]
+              : undefined
           }
         />
 

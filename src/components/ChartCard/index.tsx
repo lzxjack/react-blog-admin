@@ -29,7 +29,6 @@ const ChartCard: React.FC = () => {
   const onEvents = {
     click: (params: any) => {
       const classText = params.data.name;
-      if (classText === '未分类') return;
       navigate(`/admin/article?searchClass=${encodeURIComponent(classText)}`);
     }
   };

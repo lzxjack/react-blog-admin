@@ -14,7 +14,6 @@ import { updateDataAPI } from '@/utils/apis/updateData';
 import { updateWhereDataAPI } from '@/utils/apis/updateWhereData';
 import { _, isAdmin } from '@/utils/cloudBase';
 import { defaultPageSize, failText, staleTime, visitorText } from '@/utils/constant';
-import { dataMap } from '@/utils/dataMap';
 import { DB } from '@/utils/dbConfig';
 import { getTotalPage, myClearCache } from '@/utils/functions';
 
@@ -187,6 +186,19 @@ const ClassCard: React.FC = () => {
     navigate(`/admin/article?searchClass=${encodeURIComponent(classText)}`);
   };
 
+  const getNoClass = () => {
+    let sum = 0;
+    data?.data.forEach((item: any) => {
+      sum += item.count;
+    });
+
+    return {
+      _id: '0000',
+      class: '未分类',
+      count: articleTotal?.total - sum
+    };
+  };
+
   return (
     <>
       <div className={s.cardBox}>
@@ -204,7 +216,7 @@ const ClassCard: React.FC = () => {
           {loading ? (
             <IconLoading />
           ) : (
-            data?.data.map(
+            [...(data?.data || []), getNoClass()].map(
               ({
                 _id,
                 class: classText,
