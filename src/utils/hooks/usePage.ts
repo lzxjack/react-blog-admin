@@ -6,7 +6,10 @@
 
 //   useMount(() => {
 //     const page = searchParams.get('page');
-//     setSearchParams(`page=${page || 1}`);
+//     if (!page) {
+//       const params = new URLSearchParams(searchParams);
+//       setSearchParams(`${params.toString()}&page=1`);
+//     }
 //   });
 
 //   const setPage = (page: number) => {
@@ -18,12 +21,15 @@
 
 import useUrlState from '@ahooksjs/use-url-state';
 import { useMount } from 'ahooks';
+import { useSearchParams } from 'react-router-dom';
 
 export const usePage = () => {
-  const [state, setState] = useUrlState({ page: 1 });
+  const [searchParams] = useSearchParams();
+  const [state, setState] = useUrlState();
 
   useMount(() => {
-    setState({ page: 1 });
+    const page = searchParams.get('page');
+    !page && setState({ page: 1 });
   });
 
   const setPage = (page: number) => {

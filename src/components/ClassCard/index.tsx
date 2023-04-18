@@ -184,7 +184,7 @@ const ClassCard: React.FC = () => {
   };
 
   const toArticle = (classText: string) => {
-    navigate(`/admin/article?searchClass=${encodeURIComponent(classText)}&auto=1`);
+    navigate(`/admin/article?searchClass=${encodeURIComponent(classText)}`);
   };
 
   return (

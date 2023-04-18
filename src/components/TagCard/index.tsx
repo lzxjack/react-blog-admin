@@ -230,7 +230,7 @@ const TagCard: React.FC = () => {
   };
 
   const toArticle = (tag: string) => {
-    navigate(`/admin/article?searchTag=${encodeURIComponent(tag)}&auto=1`);
+    navigate(`/admin/article?searchTag=${encodeURIComponent(tag)}`);
   };
 
   return (

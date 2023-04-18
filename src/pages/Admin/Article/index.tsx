@@ -1,7 +1,7 @@
 import './index.custom.scss';
 
 import { Button, Input, Message, Select } from '@arco-design/web-react';
-import { useMount, useRequest, useTitle, useUpdate } from 'ahooks';
+import { useMount, useRequest, useTitle } from 'ahooks';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
 import { BiBrushAlt, BiSearch } from 'react-icons/bi';
@@ -40,12 +40,6 @@ const Article: React.FC = () => {
     setSearchTag,
     clearSearch
   } = useMyParams();
-
-  useMount(() => {
-    if (searchTitle || searchClass || searchTag.length) {
-      setShowSearchData(true);
-    }
-  });
 
   const {
     data: articleData,
@@ -95,10 +89,6 @@ const Article: React.FC = () => {
     {
       manual: true,
       retryCount: 3,
-      cacheKey: `${DB.Article}-${searchTitle}-${searchClass}-${JSON.stringify(
-        searchTag
-      )}-searchRes`,
-      staleTime,
       throttleWait: 1000,
       onSuccess: res => {
         const result = res.data.filter(
@@ -129,6 +119,7 @@ const Article: React.FC = () => {
   useMount(() => {
     if (searchTitle || searchClass || searchTag.length) {
       searchRun();
+      setShowSearchData(true);
     }
   });
 
@@ -239,12 +230,14 @@ const Article: React.FC = () => {
         render={render}
       />
       <MyTable
-        loading={showSearchData ? searchLoading : articleLoading}
+        loading={searchLoading || articleLoading}
         columns={columns}
-        data={showSearchData ? searchData : articleData}
-        // data={articleData}
+        data={
+          showSearchData
+            ? searchData.slice(defaultPageSize * (page - 1), defaultPageSize * page)
+            : articleData
+        }
         total={showSearchData ? searchData.length : articleTotal}
-        // total={articleTotal}
         page={page}
         setPage={setPage}
       />
