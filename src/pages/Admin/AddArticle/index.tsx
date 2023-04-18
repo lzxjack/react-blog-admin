@@ -1,13 +1,18 @@
 import { Button, Input, Message, Select } from '@arco-design/web-react';
-import { useRequest, useTitle } from 'ahooks';
+import { useMount, useRequest, useTitle } from 'ahooks';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import MarkDown from '@/components/MarkDown';
 import { addDataAPI } from '@/utils/apis/addData';
 import { getDataAPI } from '@/utils/apis/getData';
+import { getDataByIdAPI } from '@/utils/apis/getDataById';
+import { getWhereDataAPI } from '@/utils/apis/getWhereData';
+import { updateDataAPI } from '@/utils/apis/updateData';
+import { updateWhereDataAPI } from '@/utils/apis/updateWhereData';
+import { _ } from '@/utils/cloudBase';
 import { failText, siteTitle, staleTime, visitorText } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
 import { containsChineseCharacters, isValidDateString } from '@/utils/functions';
@@ -20,6 +25,7 @@ const AddArticle: React.FC = () => {
   // TODO: 添加 or 编辑
   useTitle(`${siteTitle} | ${Title.AddArticle}`);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const { leftRef, rightRef, handleScrollRun } = useScrollSync();
 
@@ -29,6 +35,28 @@ const AddArticle: React.FC = () => {
   const [tags, setTags] = useState<string[]>([]);
   const [date, setDate] = useState(dayjs().format('YYYY-MM-DD HH:mm:ss'));
   const [content, setContent] = useState('');
+
+  // 文章/草稿 更新逻辑
+  const id = searchParams.get('id');
+  const from = searchParams.get('from');
+  console.log(from);
+
+  const [defaultClassText, setDefaultClassText] = useState('');
+
+  useRequest(() => getDataByIdAPI(DB.Article, id || ''), {
+    retryCount: 3,
+    onSuccess: res => {
+      if (!res.data.length) return;
+      const { title, titleEng, classes: classText, tags, date, content } = res.data[0];
+      setTitle(title);
+      setTitleEng(titleEng);
+      setClassText(classText);
+      setTags(tags);
+      setDate(dayjs(date).format('YYYY-MM-DD HH:mm:ss'));
+      setContent(content);
+      setDefaultClassText(classText);
+    }
+  });
 
   const { data: classData, loading: classLoading } = useRequest(
     () => getDataAPI(DB.Class),
@@ -45,6 +73,69 @@ const AddArticle: React.FC = () => {
     staleTime
   });
 
+  const classCountChange = (classText: string, type: 'add' | 'min') => {
+    if (!classText) return;
+    updateWhereDataAPI(
+      DB.Class,
+      { class: classText },
+      { count: _.inc(type === 'add' ? 1 : -1) }
+    ).then(res => {
+      if (!res.success && !res.permission) {
+        Message.warning(visitorText);
+      } else if (res.success && res.permission) {
+        Message.success(`${classText}成功${type === 'add' ? 1 : -1}`);
+      } else {
+        Message.warning(failText);
+      }
+    });
+  };
+
+  const addData = (type: 'post' | 'draft', data: object) => {
+    addDataAPI(DB.Article, data).then(res => {
+      if (!res.success && !res.permission) {
+        Message.warning(visitorText);
+      } else if (res.success && res.permission) {
+        Message.success(type === 'post' ? '发布文章成功！' : '保存草稿成功！');
+        navigate(`${type === 'post' ? '/admin/article' : '/admin/draft'}?updated=1`);
+      } else {
+        Message.warning(failText);
+      }
+    });
+  };
+
+  const updateData = (type: 'post' | 'draft', id: string, data: object) => {
+    updateDataAPI(DB.Article, id, data).then(res => {
+      if (!res.success && !res.permission) {
+        Message.warning(visitorText);
+      } else if (res.success && res.permission) {
+        Message.success(type === 'post' ? '更新文章成功！' : '保存草稿成功！');
+        navigate(`${type === 'post' ? '/admin/article' : '/admin/draft'}?updated=1`);
+      } else {
+        Message.warning(failText);
+      }
+    });
+  };
+
+  // 新建页面：
+  //   发布：
+  //     选择了分类：classCount++
+  //     未选择分类：
+  //   存草稿：
+
+  // 编辑页面：
+  //   文章页进来：
+  //     发布：
+  //       修改了分类：
+  //         新的不为空：old--，new++
+  //         新的为空：old--
+  //       未修改分类：
+  //     存草稿：非空old--
+  //   草稿页进来：
+  //     发布：
+  //       选择了分类：classCount++
+  //       未选择分类：
+  //     存草稿：
+
   const postArticle = (type: 'post' | 'draft') => {
     if (!title || !titleEng || !date || !content) {
       Message.info('请至少输入中英文标题、时间、正文！');
@@ -59,9 +150,6 @@ const AddArticle: React.FC = () => {
       return;
     }
 
-    const successText = type === 'post' ? '发布文章成功！' : '保存草稿成功！';
-    const path = type === 'post' ? '/admin/article' : '/admin/draft';
-
     const data = {
       title,
       titleEng,
@@ -73,17 +161,41 @@ const AddArticle: React.FC = () => {
       post: type === 'post'
     };
 
-    addDataAPI(DB.Article, data).then(res => {
-      if (!res.success && !res.permission) {
-        Message.warning(visitorText);
-      } else if (res.success && res.permission) {
-        Message.success(successText);
-        navigate(`${path}?updated=1`);
-      } else {
-        Message.warning(failText);
+    if (!id) {
+      // 新建页面
+      addData(type, data);
+      if (type === 'post') {
+        // 发布
+        classCountChange(classText, 'add');
       }
-    });
+    } else {
+      // 编辑页面
+      if (from === 'article') {
+        // 文章页进来
+        updateData(type, id, data);
+        if (type === 'post') {
+          // 发布
+          if (classText !== defaultClassText) {
+            classCountChange(classText, 'add');
+            classCountChange(defaultClassText, 'min');
+          }
+        } else {
+          // 存草稿
+          classCountChange(defaultClassText, 'min');
+        }
+      } else {
+        // 草稿页进来
+        updateData(type, id, data);
+        if (type === 'post') {
+          // 发布
+          classCountChange(classText, 'add');
+        }
+      }
+    }
   };
+
+  // TODO: 发布后，清除缓存
+  // TODO: article页面，删除文章后，classCount--
 
   return (
     <>
@@ -120,7 +232,7 @@ const AddArticle: React.FC = () => {
             status='success'
             onClick={() => postArticle('post')}
           >
-            发布文章
+            {id ? '更新' : '发布'}文章
           </Button>
         </div>
         <div className={s.bottom}>

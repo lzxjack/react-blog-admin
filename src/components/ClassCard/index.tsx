@@ -195,7 +195,7 @@ const ClassCard: React.FC = () => {
     return {
       _id: '0000',
       class: '未分类',
-      count: articleTotal?.total - sum
+      count: `${articleTotal?.total - sum}`
     };
   };
 

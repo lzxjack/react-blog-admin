@@ -1,5 +1,6 @@
 import { useTitle } from 'ahooks';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import MyTable from '@/components/MyTable';
 import { _ } from '@/utils/cloudBase';
@@ -15,6 +16,7 @@ import { useColumns } from './config';
 
 const Draft: React.FC = () => {
   useTitle(`${siteTitle} | ${Title.Drafts}`);
+  const navigate = useNavigate();
 
   const { page, setPage } = usePage();
 
@@ -40,7 +42,7 @@ const Draft: React.FC = () => {
   );
 
   const handleEdit = (id: string) => {
-    console.log(id);
+    navigate(`/admin/addArticle?id=${id}&from=draft`);
   };
 
   const columns = useColumns({

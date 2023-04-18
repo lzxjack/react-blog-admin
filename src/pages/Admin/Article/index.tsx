@@ -127,7 +127,7 @@ const Article: React.FC = () => {
   });
 
   const handleEdit = (id: string) => {
-    console.log(id);
+    navigate(`/admin/addArticle?id=${id}&from=article`);
   };
 
   const search = () => {
