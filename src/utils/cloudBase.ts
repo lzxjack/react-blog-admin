@@ -1,8 +1,12 @@
 // 腾讯云开发的一些API
 import cloudbase from '@cloudbase/js-sdk';
 
-import { authMap } from '../../auth.secret';
-import { env, nowEnv } from './constant';
+// adminUid、 prodEnv、 testEnv 需要自己提供
+import { adminUid, prodEnv, testEnv } from '@/utils/env.secret';
+
+import { nowEnv } from './constant';
+
+const env = nowEnv === 'prod' ? prodEnv : testEnv;
 
 export const app = cloudbase.init({ env });
 
@@ -12,4 +16,6 @@ export const db = app.database();
 
 export const _ = db.command;
 
-export const isAdmin = authMap[nowEnv as keyof typeof authMap].isAdmin;
+export const isAdmin = () => {
+  return nowEnv === 'prod' ? auth.currentUser?.uid === adminUid : true;
+};

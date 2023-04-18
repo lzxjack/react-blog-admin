@@ -1,13 +1,6 @@
-import { authMap } from '../../auth.secret';
-
-type EnvType = 'test' | 'prod';
-
 // 当前环境
-export const nowEnv: EnvType = 'test';
-// export const nowEnv: EnvType = 'prod';
-
-// 博客的云环境ID
-export const env = authMap[nowEnv as keyof typeof authMap].env;
+export const nowEnv: 'test' | 'prod' = 'test';
+// export const nowEnv: 'test' | 'prod' = 'prod';
 
 // 个人基本信息
 export const userAvatar = 'https://img.lzxjack.top/img/202304061855646.webp';
