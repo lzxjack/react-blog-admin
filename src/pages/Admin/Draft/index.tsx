@@ -42,6 +42,7 @@ const Draft: React.FC = () => {
       total={total}
       page={page}
       setPage={setPage}
+      noHeader={true}
     />
   );
 };

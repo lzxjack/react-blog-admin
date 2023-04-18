@@ -5,6 +5,7 @@
   padding: 10px;
   background-color: #fff;
   border-radius: 2px;
+  margin-bottom: 10px;
 
   .top,
   .bottom {
@@ -37,9 +38,8 @@
 }
 
 .contentEdit {
-  height: calc(100vh - 62px - 70px - 102px - 20px * 2);
+  height: calc(100% - (102px + 10px));
   display: flex;
-  padding-top: 10px;
 
   .markedEdit {
     height: 100%;

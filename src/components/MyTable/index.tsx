@@ -1,4 +1,5 @@
-import { Table, TableColumnProps } from '@arco-design/web-react';
+import { Pagination, Table, TableColumnProps } from '@arco-design/web-react';
+import classNames from 'classnames';
 import React from 'react';
 
 import { defaultPageSize } from '@/utils/constant';
@@ -12,6 +13,7 @@ interface Props {
   total: number;
   page: number;
   pageSize?: number;
+  noHeader?: boolean;
   setPage: (page: number) => void;
 }
 
@@ -22,32 +24,37 @@ const MyTable: React.FC<Props> = ({
   total,
   page,
   pageSize = defaultPageSize,
+  noHeader = false,
   setPage
 }) => (
-  <Table
-    border
-    borderCell
-    loading={loading}
-    columns={columns}
-    data={data}
-    rowKey={columns => columns._id}
-    showSorterTooltip={false}
-    pagePosition='bottomCenter'
-    className={s.myTable}
-    pagination={
-      total <= pageSize
-        ? false
-        : {
-            current: page,
-            total,
-            defaultPageSize: pageSize,
-            sizeCanChange: false,
-            onChange: (page: number) => setPage(page),
-            hideOnSinglePage: true,
-            showTotal: true
-          }
-    }
-  />
+  <>
+    <div className={classNames(s.myTableBox, { [s.noHeader]: noHeader })}>
+      <Table
+        border
+        borderCell
+        loading={loading}
+        columns={columns}
+        data={data}
+        rowKey={columns => columns._id}
+        showSorterTooltip={false}
+        pagePosition='bottomCenter'
+        className={s.myTable}
+        pagination={false}
+      />
+    </div>
+    <div className={s.paginationBox}>
+      <Pagination
+        size='large'
+        current={page}
+        total={total}
+        pageSize={pageSize}
+        sizeCanChange={false}
+        onChange={(page: number) => setPage(page)}
+        hideOnSinglePage={true}
+        showTotal={true}
+      />
+    </div>
+  </>
 );
 
 export default MyTable;

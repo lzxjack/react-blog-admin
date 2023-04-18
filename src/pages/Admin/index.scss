@@ -2,16 +2,18 @@
 @import '../../styles/style.scss';
 
 .adminBox {
-  min-height: 100vh;
+  height: 100vh;
   background-color: #f2f3f5;
 
   .mainContent {
+    height: calc(100% - 62px);
     display: flex;
 
     .leftNav {
+      height: 100%;
       width: 150px;
       box-sizing: border-box;
-      padding: 62px 10px 10px 10px;
+      padding: 10px;
       background-color: #fff;
       color: rgb(78, 89, 105);
       border-right: 1px solid rgb(229, 230, 235);
@@ -53,15 +55,9 @@
     }
 
     .rightContent {
-      width: calc(100% - 160px);
-      padding-top: 62px;
+      width: calc(100% - 150px);
       height: 100%;
-
-      .routeContent {
-        padding: 20px;
-        width: 100%;
-        min-height: calc(100vh - 62px - 70px);
-      }
+      padding: 10px;
     }
   }
 }

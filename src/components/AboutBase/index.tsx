@@ -16,14 +16,16 @@ const AboutBase: React.FC<Props> = ({ style = {}, content = '', site, params }) 
   const navigate = useNavigate();
 
   return (
-    <div className={s.aboutBox} style={style}>
+    <>
       <PageHeader
         text='编辑'
         onClick={() => navigate(`/admin/aboutEdit?me=${params}`)}
         render={() => <div className={s.site}>{site}</div>}
       />
-      <MarkDown content={content} className={s.contentBox} />
-    </div>
+      <div className={s.markDownContent}>
+        <MarkDown content={content} className={s.contentBox} />
+      </div>
+    </>
   );
 };
 

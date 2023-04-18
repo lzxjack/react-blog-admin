@@ -1,3 +1,5 @@
+import './index.custom.scss';
+
 import { Button, Input, Message, Select } from '@arco-design/web-react';
 import { useMount, useRequest, useTitle } from 'ahooks';
 import React, { useState } from 'react';
@@ -140,6 +142,7 @@ const Article: React.FC = () => {
           size='large'
           allowClear
           style={{ flex: 1, marginRight: 10 }}
+          className='articleInputBox'
           placeholder='输入文章标题'
           value={searchTitle}
           onChange={value => setSearchTitle(value)}

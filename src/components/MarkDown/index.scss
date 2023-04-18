@@ -5,6 +5,8 @@
   padding: 30px;
   font-size: 18px;
   word-break: break-all;
+  height: 100%;
+  overflow-y: auto;
 
   h2,
   h3,
@@ -100,4 +102,12 @@
   hr {
     margin: 20px 0;
   }
+}
+
+.markdownBox::-webkit-scrollbar {
+  width: 8px;
+}
+.markdownBox::-webkit-scrollbar-thumb {
+  background: $themeColor3_light;
+  border-radius: 2px;
 }

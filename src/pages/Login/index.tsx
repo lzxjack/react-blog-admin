@@ -21,7 +21,15 @@ const Login: React.FC = () => {
   const handleLogin = async (Email: string, pwd: string) => {
     if (nowEnv === 'test') {
       const res = await auth.anonymousAuthProvider().signIn();
-      res.isAnonymousAuth && navigate('admin');
+      if (res.isAnonymousAuth) {
+        navigate('admin');
+        Notification.success({
+          title: '登录成功',
+          content: '欢迎进入个人博客后台管理系统！',
+          position: 'bottomLeft',
+          duration: 1.5
+        });
+      }
       return;
     }
     if (!email || !password) {

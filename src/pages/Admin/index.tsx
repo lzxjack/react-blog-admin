@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import React from 'react';
 import { Navigate, NavLink, Route, Routes } from 'react-router-dom';
 
-import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 import RequireAuth from '@/components/RequireAuth';
 import WithLoading from '@/components/WithLoading';
@@ -37,26 +36,22 @@ const Admin: React.FC = () => {
         </nav>
         {/* 右侧内容区域= */}
         <div className={s.rightContent}>
-          {/* 路由内容 */}
-          <div className={s.routeContent}>
-            <WithLoading>
-              <Routes>
-                {routes.map((item: RouteType) => (
-                  <Route
-                    key={item.path}
-                    path={item.path}
-                    element={
-                      <RequireAuth requireLogin={true} to='/'>
-                        {item.element}
-                      </RequireAuth>
-                    }
-                  />
-                ))}
-                <Route path='*' element={<Navigate to='home' />} />
-              </Routes>
-            </WithLoading>
-          </div>
-          <Footer />
+          <WithLoading>
+            <Routes>
+              {routes.map((item: RouteType) => (
+                <Route
+                  key={item.path}
+                  path={item.path}
+                  element={
+                    <RequireAuth requireLogin={true} to='/'>
+                      {item.element}
+                    </RequireAuth>
+                  }
+                />
+              ))}
+              <Route path='*' element={<Navigate to='home' />} />
+            </Routes>
+          </WithLoading>
         </div>
       </div>
     </div>

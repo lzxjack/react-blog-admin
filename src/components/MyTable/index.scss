@@ -1,11 +1,27 @@
-.myTable {
-  th div,
-  td div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.myTableBox {
+  height: calc(100% - (56px + 10px) - (36px + 10px));
+  overflow-y: auto;
+
+  .myTable {
+    th div,
+    td div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    th span {
+      font-weight: 700;
+    }
   }
-  th span {
-    font-weight: 700;
-  }
+}
+
+.noHeader {
+  height: calc(100% - (36px + 10px));
+}
+
+.paginationBox {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

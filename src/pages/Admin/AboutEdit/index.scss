@@ -16,7 +16,7 @@
 
 .markedEditBox {
   display: flex;
-  height: calc(100vh - 62px - 70px - 40px - 66px);
+  height: calc(100% - (56px + 10px));
 
   .markedEdit {
     height: 100%;
