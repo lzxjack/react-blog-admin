@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import MyTable from '@/components/MyTable';
 import PageHeader from '@/components/PageHeader';
 import { getDataAPI } from '@/utils/apis/getData';
+import { getWhereDataAPI } from '@/utils/apis/getWhereData';
 import { _ } from '@/utils/cloudBase';
 import { defaultPageSize, siteTitle, staleTime } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
@@ -85,7 +86,7 @@ const Article: React.FC = () => {
   });
 
   const { run: searchRun, loading: searchLoading } = useRequest(
-    () => getDataAPI(DB.Article),
+    () => getWhereDataAPI(DB.Article, { post: _.eq(true) }),
     {
       manual: true,
       retryCount: 3,
