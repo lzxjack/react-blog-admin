@@ -36,7 +36,7 @@ export const failText = '操作失败，请重试！';
 export const noticeId = '2d44d6c2612a2178078ff9f553561764';
 
 // 分页：默认每页数量
-export const defaultPageSize = 9;
+export const defaultPageSize = 19;
 // 作品 分页
 export const showPageSize = 7;
 // 建站日志 分页

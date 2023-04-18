@@ -11,3 +11,14 @@
   background-color: $themeColor3 !important;
   cursor: pointer;
 }
+
+.scroll {
+}
+
+.scroll::-webkit-scrollbar {
+  width: 8px;
+}
+.scroll::-webkit-scrollbar-thumb {
+  background: $themeColor3_light;
+  border-radius: 2px;
+}

@@ -1,4 +1,5 @@
 @import '../../../styles/base.scss';
+@import '../../../styles/style.scss';
 
 .addArticleHeader {
   height: 102px;
@@ -48,19 +49,12 @@
     overflow: hidden;
     background-color: #fff;
     overflow-y: auto;
+    @extend .scroll;
   }
 
   .input {
     margin-right: 10px;
     padding: 30px;
     font-size: 18px;
-  }
-
-  .markedEdit::-webkit-scrollbar {
-    width: 8px;
-  }
-  .markedEdit::-webkit-scrollbar-thumb {
-    background: $themeColor3_light;
-    border-radius: 2px;
   }
 }

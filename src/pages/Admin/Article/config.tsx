@@ -2,6 +2,7 @@ import { Button, Popconfirm, Tag } from '@arco-design/web-react';
 import dayjs from 'dayjs';
 import React from 'react';
 
+import TableTag from '@/components/TableTag';
 import { DeleteProps } from '@/utils/hooks/useTableData';
 
 interface Props {
@@ -31,18 +32,7 @@ export const useColumns = ({ handleEdit, handleDelete, deleteProps }: Props) => 
   {
     title: '标签',
     dataIndex: 'tags',
-    render: (tags: string[]) => (
-      <>
-        {tags.map((tag, index) => {
-          const color = tag.length > 5 ? 'geekblue' : 'green';
-          return (
-            <Tag color={color} key={index}>
-              {tag}
-            </Tag>
-          );
-        })}
-      </>
-    )
+    render: (tags: string[]) => <TableTag tags={tags} />
   },
   {
     title: '操作',

@@ -1,10 +1,13 @@
+@import '../../styles/style.scss';
+
 .myTableBox {
   height: calc(100% - (56px + 10px) - (36px + 10px));
   overflow-y: auto;
+  @extend .scroll;
 
   .myTable {
-    th div,
-    td div {
+    th > div,
+    td > div {
       display: flex;
       justify-content: center;
       align-items: center;

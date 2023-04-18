@@ -198,7 +198,7 @@ const ClassCard: React.FC = () => {
           {loading ? (
             <IconLoading />
           ) : (
-            (data?.data || []).map(
+            data?.data.map(
               ({
                 _id,
                 class: classText,
