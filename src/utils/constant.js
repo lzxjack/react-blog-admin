@@ -13,7 +13,7 @@ export const emojiSymbol =
   '◀️⬇️▶️⬅️🔠🔡🔤➡️⬆️⏬⏫🔽⤵️⤴️↩️↪️🔼🔃🔄⏪⏩ℹ️🆗🔀🔁🔂🆕🔝🆙🆒🆓🆖🎦🈁📶🈹🈴🈺🈯🈷️🈶🈵🈚🈸🈳🈲🈂️🚻🚹🚺🚼🚭🅿️♿🚇🛄🉑🚾🚰🚮㊙️㊗️Ⓜ️🛂🛅🛃🉐🆑🆘🆔🚫🔞📵🚯🚱🚳🚷🚸⛔✳️❇️✴️💟🆚📳📴💹💱♈♉♊♋♌♍♎♏♐♑♒♓⛎🔯❎🅰️🅱️🆎🅾️💠♻️🔚🔙🔛🔜🕐🕜🕙🕥🕚🕦🕛🕧🕑🕝🕒🕞🕓🕟🕔🕠🕕🕡🕖🕢🕗🕣🕘🕤💲❌❗⁉️⭕✖️➕➖➗💮💯✔️☑️🔘🔗➰🔱▪️▫️◾◽◼️◻️⬛⬜✅🔲🔳⚫⚪🔴🔵🔷🔶🔹🔸🔺🔻';
 
 // 头像地址
-export const avatarUrl = 'https://img.lzxjack.top/img/20201204121004.jpg';
+export const avatarUrl = 'https://img.lzxjack.top:99/20201204121004.jpg';
 
 // 博客地址
 export const blogUrl = 'https://lzxjack.top';
@@ -24,7 +24,7 @@ export const adminUid = 'dbee9976b3c14448a06f2006a4795cf2';
 // 游客帐号信息
 export const visitorEmail = '490878306@qq.com';
 export const visitorPwd = 'asd123456';
-export const visitorAvatar = 'https://img.lzxjack.top/img/20210826221910.jpg';
+export const visitorAvatar = 'https://img.lzxjack.top:99/20210826221910.jpg';
 
 // 游客修改失败后的提示语句
 export const visitorText = '游客不可以修改哦~😆';
