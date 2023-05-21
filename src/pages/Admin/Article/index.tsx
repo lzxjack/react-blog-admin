@@ -14,7 +14,7 @@ import { getWhereDataAPI } from '@/utils/apis/getWhereData';
 import { _ } from '@/utils/cloudBase';
 import { defaultPageSize, siteTitle } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
-import { getTotalPage, isSubset } from '@/utils/functions';
+import { isSubset } from '@/utils/functions';
 import { useMyParams } from '@/utils/hooks/useMyParams';
 import { usePage } from '@/utils/hooks/usePage';
 import { useTableData } from '@/utils/hooks/useTableData';

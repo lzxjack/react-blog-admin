@@ -15,7 +15,6 @@ import { updateWhereDataAPI } from '@/utils/apis/updateWhereData';
 import { _, isAdmin } from '@/utils/cloudBase';
 import { defaultPageSize, failText, visitorText } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
-import { getTotalPage } from '@/utils/functions';
 
 import CustomModal from '../CustomModal';
 import s from './index.scss';

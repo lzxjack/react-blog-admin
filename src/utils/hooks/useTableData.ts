@@ -12,7 +12,7 @@ import { deleteDataAPI } from '../apis/deleteData';
 import { updateDataAPI } from '../apis/updateData';
 import { _, isAdmin } from '../cloudBase';
 import { dataMap } from '../dataMap';
-import { getAfterDeletedPage, getTotalPage } from '../functions';
+import { classCountChange, getAfterDeletedPage } from '../functions';
 
 export interface DataFilterProps {
   text: string;
@@ -84,12 +84,16 @@ export const useTableData = ({
       Message.warning(visitorText);
       return;
     }
+
+    const classText = data?.data.filter(({ _id }: { _id: string }) => _id === id)[0]
+      .classes;
+
     deleteDataAPI(DBName, id).then(res => {
       if (!res.success && !res.permission) {
         Message.warning(visitorText);
       } else if (res.success && res.permission) {
         Message.success('删除成功！');
-
+        classCountChange(classText, 'min');
         flushSync(() => setPage(getAfterDeletedPage(total.total, page, pageSize)));
         flushSync(() => {
           dataRun();

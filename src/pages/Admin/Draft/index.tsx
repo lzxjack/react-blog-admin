@@ -6,7 +6,6 @@ import MyTable from '@/components/MyTable';
 import { _ } from '@/utils/cloudBase';
 import { defaultPageSize, siteTitle } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
-import { getTotalPage } from '@/utils/functions';
 import { usePage } from '@/utils/hooks/usePage';
 import { useTableData } from '@/utils/hooks/useTableData';
 import { useUpdateData } from '@/utils/hooks/useUpdateData';

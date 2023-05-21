@@ -1,4 +1,9 @@
-import { clearCache } from 'ahooks';
+import { Message } from '@arco-design/web-react';
+
+import { updateWhereDataAPI } from './apis/updateWhereData';
+import { _ } from './cloudBase';
+import { failText, visitorText } from './constant';
+import { DB } from './dbConfig';
 
 // 计算分页数量
 export const getTotalPage = (total: number, pageSize: number) => {
@@ -42,4 +47,22 @@ export const isValidDateString = (dateString: string, hasTime: boolean) => {
 export const containsChineseCharacters = (str: string) => {
   const regex = /[\u4e00-\u9fa5]/;
   return regex.test(str);
+};
+
+// 改变指定分类的数量
+export const classCountChange = (classText: string, type: 'add' | 'min') => {
+  if (!classText) return;
+  updateWhereDataAPI(
+    DB.Class,
+    { class: classText },
+    { count: _.inc(type === 'add' ? 1 : -1) }
+  ).then(res => {
+    if (!res.success && !res.permission) {
+      Message.warning(visitorText);
+    } else if (res.success && res.permission) {
+      Message.success(`${classText}成功${type === 'add' ? 1 : -1}`);
+    } else {
+      Message.warning(failText);
+    }
+  });
 };

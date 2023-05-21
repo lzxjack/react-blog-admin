@@ -15,7 +15,11 @@ import { updateWhereDataAPI } from '@/utils/apis/updateWhereData';
 import { _ } from '@/utils/cloudBase';
 import { failText, siteTitle, visitorText } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
-import { containsChineseCharacters, isValidDateString } from '@/utils/functions';
+import {
+  classCountChange,
+  containsChineseCharacters,
+  isValidDateString
+} from '@/utils/functions';
 import { useScrollSync } from '@/utils/hooks/useScrollSync';
 
 import { Title } from '../titleConfig';
@@ -67,23 +71,6 @@ const AddArticle: React.FC = () => {
   const { data: tagData, loading: tagLoading } = useRequest(() => getDataAPI(DB.Tag), {
     retryCount: 3
   });
-
-  const classCountChange = (classText: string, type: 'add' | 'min') => {
-    if (!classText) return;
-    updateWhereDataAPI(
-      DB.Class,
-      { class: classText },
-      { count: _.inc(type === 'add' ? 1 : -1) }
-    ).then(res => {
-      if (!res.success && !res.permission) {
-        Message.warning(visitorText);
-      } else if (res.success && res.permission) {
-        Message.success(`${classText}成功${type === 'add' ? 1 : -1}`);
-      } else {
-        Message.warning(failText);
-      }
-    });
-  };
 
   const addData = (type: 'post' | 'draft', data: object) => {
     addDataAPI(DB.Article, data).then(res => {
@@ -187,9 +174,6 @@ const AddArticle: React.FC = () => {
       }
     }
   };
-
-  // TODO: 发布后，清除缓存
-  // TODO: article页面，删除文章后，classCount--
 
   return (
     <>
