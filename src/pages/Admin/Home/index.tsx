@@ -6,6 +6,18 @@ import ClassCard from '@/components/ClassCard';
 import CountCard from '@/components/CountCard';
 import NoticeCard from '@/components/NoticeCard';
 import TagCard from '@/components/TagCard';
+import {
+  selectArticle,
+  selectLink,
+  selectLog,
+  selectMsg,
+  selectSay
+} from '@/redux/selectors';
+import { setArticleCount } from '@/redux/slices/articles';
+import { setLinkCount } from '@/redux/slices/links';
+import { setLogCount } from '@/redux/slices/logs';
+import { setMsgCount } from '@/redux/slices/msgs';
+import { setSayCount } from '@/redux/slices/says';
 import { _ } from '@/utils/cloudBase';
 import { siteTitle } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
@@ -17,19 +29,29 @@ const Home: React.FC = () => {
   const countCards = [
     {
       DBName: DB.Article,
-      where: { post: _.eq(true) }
+      where: { post: _.eq(true) },
+      selector: selectArticle,
+      reducer: setArticleCount
     },
     {
-      DBName: DB.Say
+      DBName: DB.Say,
+      selector: selectSay,
+      reducer: setSayCount
     },
     {
-      DBName: DB.Msg
+      DBName: DB.Msg,
+      selector: selectMsg,
+      reducer: setMsgCount
     },
     {
-      DBName: DB.Link
+      DBName: DB.Link,
+      selector: selectLink,
+      reducer: setLinkCount
     },
     {
-      DBName: DB.Log
+      DBName: DB.Log,
+      selector: selectLog,
+      reducer: setLogCount
     }
   ];
 
@@ -37,8 +59,14 @@ const Home: React.FC = () => {
     <>
       {/* 统计卡片区 */}
       <div className={s.countCardContainer}>
-        {countCards.map(({ DBName, where = {} }, index) => (
-          <CountCard key={index} DBName={DBName} where={where} />
+        {countCards.map(({ DBName, where = {}, selector, reducer }, index) => (
+          <CountCard
+            key={index}
+            DBName={DBName}
+            where={where}
+            selector={selector}
+            reducer={reducer}
+          />
         ))}
       </div>
       {/* 扇形图、分类、标签、公告 */}

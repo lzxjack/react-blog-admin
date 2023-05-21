@@ -1,15 +1,26 @@
-// interface DataSumType {
-//   article: number;
-//   draft: number;
-//   link: number;
-//   msg: number;
-//   say: number;
-// }
+import { DB } from '@/utils/dbConfig';
 
-// interface stateType {
-//   dataSum: DataSumType;
-// }
+export interface baseType {
+  count: {
+    value: number;
+    isDone: boolean;
+  };
+  data: {
+    value: any[];
+    isDone: boolean;
+  };
+}
 
-// export const selectDataSum = (state: stateType) => state.dataSum;
+export interface stateType {
+  [DB.Article]: baseType;
+  [DB.Link]: baseType;
+  [DB.Log]: baseType;
+  [DB.Say]: baseType;
+  [DB.Msg]: baseType;
+}
 
-export {};
+export const selectArticle = (state: stateType) => state[DB.Article];
+export const selectLink = (state: stateType) => state[DB.Link];
+export const selectLog = (state: stateType) => state[DB.Log];
+export const selectSay = (state: stateType) => state[DB.Say];
+export const selectMsg = (state: stateType) => state[DB.Msg];
