@@ -1,28 +1,5 @@
 import { clearCache } from 'ahooks';
 
-// 删除所有分页缓存数据
-export const myClearCache = ({
-  key,
-  page,
-  totalPage,
-  deleteTotal
-}: {
-  key: string;
-  page: number;
-  totalPage: number;
-  deleteTotal: boolean;
-}) => {
-  for (let i = page; i <= totalPage; i++) {
-    clearCache(`${key}-data-${i}`);
-  }
-  deleteTotal && clearCache(`${key}-total`);
-};
-
-// 删除分页缓存某页数据
-export const myClearCacheOnePage = (key: string, page: number) => {
-  clearCache(`${key}-data-${page}`);
-};
-
 // 计算分页数量
 export const getTotalPage = (total: number, pageSize: number) => {
   const totalPage = total / pageSize;

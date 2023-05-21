@@ -12,9 +12,9 @@ import PageHeader from '@/components/PageHeader';
 import { getDataAPI } from '@/utils/apis/getData';
 import { getWhereDataAPI } from '@/utils/apis/getWhereData';
 import { _ } from '@/utils/cloudBase';
-import { defaultPageSize, siteTitle, staleTime } from '@/utils/constant';
+import { defaultPageSize, siteTitle } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
-import { getTotalPage, isSubset, myClearCache } from '@/utils/functions';
+import { getTotalPage, isSubset } from '@/utils/functions';
 import { useMyParams } from '@/utils/hooks/useMyParams';
 import { usePage } from '@/utils/hooks/usePage';
 import { useTableData } from '@/utils/hooks/useTableData';
@@ -56,33 +56,20 @@ const Article: React.FC = () => {
     where: { post: _.eq(true) }
   });
 
-  useUpdateData(
-    () =>
-      myClearCache({
-        key: `${DB.Article}-${JSON.stringify({ post: _.eq(true) })}`,
-        page: 1,
-        totalPage: getTotalPage(articleTotal, defaultPageSize),
-        deleteTotal: true
-      }),
-    () => {
-      dataRun();
-      totalRun();
-    }
-  );
+  useUpdateData(() => {
+    dataRun();
+    totalRun();
+  });
 
   const { data: classData, loading: classLoading } = useRequest(
     () => getDataAPI(DB.Class),
     {
-      retryCount: 3,
-      cacheKey: `${DB.Class}-data`,
-      staleTime
+      retryCount: 3
     }
   );
 
   const { data: tagData, loading: tagLoading } = useRequest(() => getDataAPI(DB.Tag), {
-    retryCount: 3,
-    cacheKey: `${DB.Tag}-data`,
-    staleTime
+    retryCount: 3
   });
 
   // TODO: 自己写API

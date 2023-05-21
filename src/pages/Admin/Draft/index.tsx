@@ -6,7 +6,7 @@ import MyTable from '@/components/MyTable';
 import { _ } from '@/utils/cloudBase';
 import { defaultPageSize, siteTitle } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
-import { getTotalPage, myClearCache } from '@/utils/functions';
+import { getTotalPage } from '@/utils/functions';
 import { usePage } from '@/utils/hooks/usePage';
 import { useTableData } from '@/utils/hooks/useTableData';
 import { useUpdateData } from '@/utils/hooks/useUpdateData';
@@ -27,19 +27,10 @@ const Draft: React.FC = () => {
     where: { post: _.eq(false) }
   });
 
-  useUpdateData(
-    () =>
-      myClearCache({
-        key: `${DB.Article}-${JSON.stringify({ post: _.eq(false) })}`,
-        page: 1,
-        totalPage: getTotalPage(total, defaultPageSize),
-        deleteTotal: true
-      }),
-    () => {
-      dataRun();
-      totalRun();
-    }
-  );
+  useUpdateData(() => {
+    dataRun();
+    totalRun();
+  });
 
   const handleEdit = (id: string) => {
     navigate(`/admin/addArticle?id=${id}&from=draft`);

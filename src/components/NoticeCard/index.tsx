@@ -8,7 +8,7 @@ import { flushSync } from 'react-dom';
 import { getWhereDataAPI } from '@/utils/apis/getWhereData';
 import { updateDataAPI } from '@/utils/apis/updateData';
 import { _, isAdmin } from '@/utils/cloudBase';
-import { failText, noticeId, staleTime, visitorText } from '@/utils/constant';
+import { failText, noticeId, visitorText } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
 
 import CustomModal from '../CustomModal';
@@ -24,9 +24,7 @@ const NoticeCard: React.FC = () => {
   const { data, loading, run } = useRequest(
     () => getWhereDataAPI(DB.Notice, { _id: _.eq(noticeId) }),
     {
-      retryCount: 3,
-      cacheKey: `${DB.Notice}-data`,
-      staleTime
+      retryCount: 3
     }
   );
 

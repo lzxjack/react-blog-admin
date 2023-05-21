@@ -3,7 +3,6 @@ import { useRequest } from 'ahooks';
 import { getDataAPI } from '@/utils/apis/getData';
 import { getTotalAPI } from '@/utils/apis/getTotal';
 import { _ } from '@/utils/cloudBase';
-import { staleTime } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
 
 interface ClassType {
@@ -34,17 +33,13 @@ export const useChartData = () => {
   };
 
   const { data, loading: dataLoading } = useRequest(() => getDataAPI(DB.Class), {
-    retryCount: 3,
-    cacheKey: `${DB.Class}-data`,
-    staleTime
+    retryCount: 3
   });
 
   const { data: total, loading: totalLoading } = useRequest(
     () => getTotalAPI({ dbName: DB.Article, where: { post: _.eq(true) } }),
     {
-      retryCount: 3,
-      cacheKey: `${DB.Article}-${JSON.stringify({ post: _.eq(true) })}-total`,
-      staleTime
+      retryCount: 3
     }
   );
 

@@ -4,7 +4,7 @@ import { flushSync } from 'react-dom';
 
 import { getTotalAPI } from '@/utils/apis/getTotal';
 import { getWhereOrderPageDataAPI } from '@/utils/apis/getWhereOrderPageData';
-import { defaultPageSize, failText, staleTime, visitorText } from '@/utils/constant';
+import { defaultPageSize, failText, visitorText } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
 
 import { addDataAPI } from '../apis/addData';
@@ -12,12 +12,7 @@ import { deleteDataAPI } from '../apis/deleteData';
 import { updateDataAPI } from '../apis/updateData';
 import { _, isAdmin } from '../cloudBase';
 import { dataMap } from '../dataMap';
-import {
-  getAfterDeletedPage,
-  getTotalPage,
-  myClearCache,
-  myClearCacheOnePage
-} from '../functions';
+import { getAfterDeletedPage, getTotalPage } from '../functions';
 
 export interface DataFilterProps {
   text: string;
@@ -72,9 +67,7 @@ export const useTableData = ({
       }),
     {
       retryCount: 3,
-      refreshDeps: [page],
-      cacheKey: `${DBName}-${JSON.stringify(where)}-data-${page}`,
-      staleTime
+      refreshDeps: [page]
     }
   );
 
@@ -83,9 +76,7 @@ export const useTableData = ({
     loading: totalLoading,
     run: totalRun
   } = useRequest(() => getTotalAPI({ dbName: DBName, where }), {
-    retryCount: 3,
-    cacheKey: `${DBName}-${JSON.stringify(where)}-total`,
-    staleTime
+    retryCount: 3
   });
 
   const handleDelete = (id: string, { page, setPage }: DeleteProps) => {
@@ -98,14 +89,7 @@ export const useTableData = ({
         Message.warning(visitorText);
       } else if (res.success && res.permission) {
         Message.success('删除成功！');
-        flushSync(() =>
-          myClearCache({
-            key: `${DBName}-${JSON.stringify(where)}`,
-            page,
-            totalPage: getTotalPage(total?.total || 0, pageSize),
-            deleteTotal: true
-          })
-        );
+
         flushSync(() => setPage(getAfterDeletedPage(total.total, page, pageSize)));
         flushSync(() => {
           dataRun();
@@ -124,14 +108,6 @@ export const useTableData = ({
       } else if (res.success && res.permission) {
         Message.success('添加成功！');
         modalCancel?.();
-        flushSync(() =>
-          myClearCache({
-            key: `${DBName}-${JSON.stringify(where)}`,
-            page: 1,
-            totalPage: getTotalPage(total?.total || 0, pageSize),
-            deleteTotal: true
-          })
-        );
         flushSync(() => setPage(1));
         flushSync(() => {
           dataRun();
@@ -160,16 +136,6 @@ export const useTableData = ({
       } else if (res.success && res.permission) {
         Message.success('修改成功！');
         modalCancel?.();
-        flushSync(() => {
-          isClearAll
-            ? myClearCache({
-                key: `${DBName}-${JSON.stringify(where)}`,
-                page: 1,
-                totalPage: getTotalPage(total?.total || 0, pageSize),
-                deleteTotal: false
-              })
-            : myClearCacheOnePage(`${DBName}-${JSON.stringify(where)}`, page);
-        });
         flushSync(() => {
           dataRun();
         });

@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import React from 'react';
 
 import { getTotalAPI } from '@/utils/apis/getTotal';
-import { staleTime } from '@/utils/constant';
 import { dataMap } from '@/utils/dataMap';
 import { DB } from '@/utils/dbConfig';
 
@@ -18,9 +17,7 @@ interface Props {
 
 const CountCard: React.FC<Props> = ({ DBName, className, where = {} }) => {
   const { data, loading } = useRequest(() => getTotalAPI({ dbName: DBName, where }), {
-    retryCount: 3,
-    cacheKey: `${DBName}-${JSON.stringify(where)}-total`,
-    staleTime
+    retryCount: 3
   });
 
   return (

@@ -13,7 +13,7 @@ import { getWhereDataAPI } from '@/utils/apis/getWhereData';
 import { updateDataAPI } from '@/utils/apis/updateData';
 import { updateWhereDataAPI } from '@/utils/apis/updateWhereData';
 import { _ } from '@/utils/cloudBase';
-import { failText, siteTitle, staleTime, visitorText } from '@/utils/constant';
+import { failText, siteTitle, visitorText } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
 import { containsChineseCharacters, isValidDateString } from '@/utils/functions';
 import { useScrollSync } from '@/utils/hooks/useScrollSync';
@@ -60,16 +60,12 @@ const AddArticle: React.FC = () => {
   const { data: classData, loading: classLoading } = useRequest(
     () => getDataAPI(DB.Class),
     {
-      retryCount: 3,
-      cacheKey: `${DB.Class}-data`,
-      staleTime
+      retryCount: 3
     }
   );
 
   const { data: tagData, loading: tagLoading } = useRequest(() => getDataAPI(DB.Tag), {
-    retryCount: 3,
-    cacheKey: `${DB.Tag}-data`,
-    staleTime
+    retryCount: 3
   });
 
   const classCountChange = (classText: string, type: 'add' | 'min') => {

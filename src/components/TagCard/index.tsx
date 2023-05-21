@@ -13,10 +13,10 @@ import { getTotalAPI } from '@/utils/apis/getTotal';
 import { updateDataAPI } from '@/utils/apis/updateData';
 import { updateWhereDataAPI } from '@/utils/apis/updateWhereData';
 import { _, isAdmin } from '@/utils/cloudBase';
-import { defaultPageSize, failText, staleTime, visitorText } from '@/utils/constant';
+import { defaultPageSize, failText, visitorText } from '@/utils/constant';
 import { dataMap } from '@/utils/dataMap';
 import { DB } from '@/utils/dbConfig';
-import { getTotalPage, myClearCache } from '@/utils/functions';
+import { getTotalPage } from '@/utils/functions';
 
 import CustomModal from '../CustomModal';
 import { useColor } from './config';
@@ -33,26 +33,20 @@ const TagCard: React.FC = () => {
   const [newTag, setNewTag, resetNewTag] = useResetState('');
 
   const { data, loading, run } = useRequest(() => getDataAPI(DB.Tag), {
-    retryCount: 3,
-    cacheKey: `${DB.Tag}-data`,
-    staleTime
+    retryCount: 3
   });
 
   const { data: articleTotal } = useRequest(
     () => getTotalAPI({ dbName: DB.Article, where: { post: _.eq(true) } }),
     {
-      retryCount: 3,
-      cacheKey: `${DB.Article}-${JSON.stringify({ post: _.eq(true) })}-total`,
-      staleTime
+      retryCount: 3
     }
   );
 
   const { data: draftTotal } = useRequest(
     () => getTotalAPI({ dbName: DB.Article, where: { post: _.eq(false) } }),
     {
-      retryCount: 3,
-      cacheKey: `${DB.Article}-${JSON.stringify({ post: _.eq(false) })}-total`,
-      staleTime
+      retryCount: 3
     }
   );
 
@@ -75,18 +69,6 @@ const TagCard: React.FC = () => {
           if (!res.success && !res.permission) {
             Message.warning(visitorText);
           } else if (res.success && res.permission) {
-            myClearCache({
-              key: `${DB.Article}-${JSON.stringify({ post: _.eq(true) })}`,
-              page: 1,
-              totalPage: getTotalPage(articleTotal?.total || 0, defaultPageSize),
-              deleteTotal: false
-            });
-            myClearCache({
-              key: `${DB.Article}-${JSON.stringify({ post: _.eq(false) })}`,
-              page: 1,
-              totalPage: getTotalPage(draftTotal?.total || 0, defaultPageSize),
-              deleteTotal: false
-            });
             Message.success(`更新数据库标签成功！`);
           } else {
             Message.warning(failText);
@@ -107,18 +89,6 @@ const TagCard: React.FC = () => {
       if (!res.success && !res.permission) {
         Message.warning(visitorText);
       } else if (res.success && res.permission) {
-        myClearCache({
-          key: `${DB.Article}-${JSON.stringify({ post: _.eq(true) })}`,
-          page: 1,
-          totalPage: getTotalPage(articleTotal?.total || 0, defaultPageSize),
-          deleteTotal: false
-        });
-        myClearCache({
-          key: `${DB.Article}-${JSON.stringify({ post: _.eq(false) })}`,
-          page: 1,
-          totalPage: getTotalPage(draftTotal?.total || 0, defaultPageSize),
-          deleteTotal: false
-        });
         Message.success(`更新数据库标签成功！`);
       } else {
         Message.warning(failText);

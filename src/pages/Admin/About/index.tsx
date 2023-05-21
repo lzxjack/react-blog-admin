@@ -3,7 +3,7 @@ import React from 'react';
 
 import AboutBase from '@/components/AboutBase';
 import { getDataAPI } from '@/utils/apis/getData';
-import { siteTitle, staleTime } from '@/utils/constant';
+import { siteTitle } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
 import { useUpdateData } from '@/utils/hooks/useUpdateData';
 
@@ -14,12 +14,10 @@ const About: React.FC = () => {
   useTitle(`${siteTitle} | ${Title.About}`);
 
   const { data, run } = useRequest(() => getDataAPI(DB.About), {
-    retryCount: 3,
-    cacheKey: `${DB.About}-data`,
-    staleTime
+    retryCount: 3
   });
 
-  useUpdateData(`${DB.About}-data`, run);
+  useUpdateData(run);
 
   return (
     <div className={s.aboutBox}>
