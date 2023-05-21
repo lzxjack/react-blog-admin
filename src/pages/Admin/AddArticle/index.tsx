@@ -22,7 +22,6 @@ import { Title } from '../titleConfig';
 import s from './index.scss';
 
 const AddArticle: React.FC = () => {
-  // TODO: 添加 or 编辑
   useTitle(`${siteTitle} | ${Title.AddArticle}`);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -170,9 +169,9 @@ const AddArticle: React.FC = () => {
       }
     } else {
       // 编辑页面
+      updateData(type, id, data);
       if (from === 'article') {
         // 文章页进来
-        updateData(type, id, data);
         if (type === 'post') {
           // 发布
           if (classText !== defaultClassText) {
@@ -185,7 +184,6 @@ const AddArticle: React.FC = () => {
         }
       } else {
         // 草稿页进来
-        updateData(type, id, data);
         if (type === 'post') {
           // 发布
           classCountChange(classText, 'add');

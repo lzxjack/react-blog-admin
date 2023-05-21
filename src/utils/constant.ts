@@ -3,13 +3,13 @@ export const nowEnv: 'test' | 'prod' = 'test';
 // export const nowEnv: 'test' | 'prod' = 'prod';
 
 // 个人基本信息
-export const userAvatar = 'https://img.lzxjack.top/img/202304061855646.webp';
-export const avatarUrl = 'https://img.lzxjack.top/img/202203302348298.webp';
+export const userAvatar = 'https://img.lzxjack.top:99/202304061855646.webp';
+export const avatarUrl = 'https://img.lzxjack.top:99/202203302348298.webp';
 
 // 游客帐号信息
 export const visitorEmail = '490878306@qq.com';
 export const visitorPwd = 'asd123456';
-export const visitorAvatar = 'https://img.lzxjack.top/img/202304061850910.webp';
+export const visitorAvatar = 'https://img.lzxjack.top:99/202304061850910.webp';
 
 // 站点名称
 export const AppName = '飞鸟小站';
