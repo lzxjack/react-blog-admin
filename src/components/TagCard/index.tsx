@@ -1,19 +1,21 @@
 import { Input, Message, Popconfirm } from '@arco-design/web-react';
 import { IconDelete, IconEdit, IconLoading } from '@arco-design/web-react/icon';
-import { clearCache, useRequest, useResetState } from 'ahooks';
+import { clearCache, useMount, useRequest, useResetState } from 'ahooks';
 import classNames from 'classnames';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
+import { selectTag } from '@/redux/selectors';
+import { setTags } from '@/redux/slices/tags';
 import { addDataAPI } from '@/utils/apis/addData';
 import { deleteDataAPI } from '@/utils/apis/deleteData';
 import { getDataAPI } from '@/utils/apis/getData';
-import { getTotalAPI } from '@/utils/apis/getTotal';
 import { updateDataAPI } from '@/utils/apis/updateData';
 import { updateWhereDataAPI } from '@/utils/apis/updateWhereData';
 import { _, isAdmin } from '@/utils/cloudBase';
-import { defaultPageSize, failText, visitorText } from '@/utils/constant';
+import { failText, visitorText } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
 
 import CustomModal from '../CustomModal';
@@ -30,23 +32,22 @@ const TagCard: React.FC = () => {
   const [tag, setTag] = useState('');
   const [newTag, setNewTag, resetNewTag] = useResetState('');
 
-  const { data, loading, run } = useRequest(() => getDataAPI(DB.Tag), {
-    retryCount: 3
+  const tags = useSelector(selectTag);
+  const dispatch = useDispatch();
+
+  const { loading, run } = useRequest(() => getDataAPI(DB.Tag), {
+    retryCount: 3,
+    manual: true,
+    onSuccess: res => {
+      dispatch(setTags(res.data));
+    }
   });
 
-  const { data: articleTotal } = useRequest(
-    () => getTotalAPI({ dbName: DB.Article, where: { post: _.eq(true) } }),
-    {
-      retryCount: 3
+  useMount(() => {
+    if (!tags.isDone) {
+      run();
     }
-  );
-
-  const { data: draftTotal } = useRequest(
-    () => getTotalAPI({ dbName: DB.Article, where: { post: _.eq(false) } }),
-    {
-      retryCount: 3
-    }
-  );
+  });
 
   const updateTagFromDB = ({ oldTag, newTag }: { oldTag: string; newTag: string }) => {
     // 1. 添加新标签
@@ -105,7 +106,7 @@ const TagCard: React.FC = () => {
   const openModal = (id: string) => {
     setIsModalOpen(true);
     setId(id);
-    for (const { _id, tag } of data?.data || []) {
+    for (const { _id, tag } of tags.value) {
       if (id === _id) {
         setTag(tag);
         setOldTag(tag);
@@ -125,7 +126,7 @@ const TagCard: React.FC = () => {
       Message.warning('请输入标签名称~');
       return;
     }
-    if (isExist(tag, data?.data || [], 'tag')) {
+    if (isExist(tag, tags.value, 'tag')) {
       Message.warning('标签名称已存在~');
       return;
     }
@@ -156,7 +157,7 @@ const TagCard: React.FC = () => {
       Message.warning('请输入标签名称~');
       return;
     }
-    if (isExist(newTag, data?.data || [], 'tag')) {
+    if (isExist(newTag, tags.value, 'tag')) {
       Message.warning('标签名称已存在~');
       return;
     }
@@ -218,7 +219,7 @@ const TagCard: React.FC = () => {
           {loading ? (
             <IconLoading />
           ) : (
-            data?.data.map(
+            tags.value.map(
               ({ _id, tag }: { _id: string; tag: string }, index: number) => (
                 <div
                   key={_id}

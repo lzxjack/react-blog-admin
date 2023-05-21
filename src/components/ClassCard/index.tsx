@@ -4,16 +4,18 @@ import { clearCache, useRequest, useResetState } from 'ahooks';
 import classNames from 'classnames';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
+import { selectArticle, selectClass } from '@/redux/selectors';
+import { setClasses } from '@/redux/slices/classes';
 import { addDataAPI } from '@/utils/apis/addData';
 import { deleteDataAPI } from '@/utils/apis/deleteData';
 import { getDataAPI } from '@/utils/apis/getData';
-import { getTotalAPI } from '@/utils/apis/getTotal';
 import { updateDataAPI } from '@/utils/apis/updateData';
 import { updateWhereDataAPI } from '@/utils/apis/updateWhereData';
 import { _, isAdmin } from '@/utils/cloudBase';
-import { defaultPageSize, failText, visitorText } from '@/utils/constant';
+import { failText, visitorText } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
 
 import CustomModal from '../CustomModal';
@@ -29,23 +31,17 @@ const ClassCard: React.FC = () => {
   const [classText, setClassText] = useState('');
   const [newClassText, setNewClassText, resetNewClassText] = useResetState('');
 
-  const { data, loading, run } = useRequest(() => getDataAPI(DB.Class), {
-    retryCount: 3
+  const classes = useSelector(selectClass);
+  const articles = useSelector(selectArticle);
+  const dispatch = useDispatch();
+
+  const { loading, run } = useRequest(() => getDataAPI(DB.Class), {
+    retryCount: 3,
+    manual: true,
+    onSuccess: res => {
+      dispatch(setClasses(res.data));
+    }
   });
-
-  const { data: articleTotal } = useRequest(
-    () => getTotalAPI({ dbName: DB.Article, where: { post: _.eq(true) } }),
-    {
-      retryCount: 3
-    }
-  );
-
-  const { data: draftTotal } = useRequest(
-    () => getTotalAPI({ dbName: DB.Article, where: { post: _.eq(false) } }),
-    {
-      retryCount: 3
-    }
-  );
 
   const isExist = (
     content: string,
@@ -58,7 +54,7 @@ const ClassCard: React.FC = () => {
   const openModal = (id: string) => {
     setIsModalOpen(true);
     setId(id);
-    for (const { _id, class: classText } of data?.data || []) {
+    for (const { _id, class: classText } of classes.value) {
       if (id === _id) {
         setClassText(classText);
         setOldClassText(classText);
@@ -76,7 +72,7 @@ const ClassCard: React.FC = () => {
       Message.warning('请输入分类名称~');
       return;
     }
-    if (isExist(classText, data?.data || [], 'class')) {
+    if (isExist(classText, classes.value, 'class')) {
       Message.warning('分类名称已存在~');
       return;
     }
@@ -104,7 +100,7 @@ const ClassCard: React.FC = () => {
       Message.warning('请输入分类名称~');
       return;
     }
-    if (isExist(newClassText, data?.data || [], 'class')) {
+    if (isExist(newClassText, classes.value, 'class')) {
       Message.warning('分类名称已存在~');
       return;
     }
@@ -169,14 +165,14 @@ const ClassCard: React.FC = () => {
 
   const getNoClass = () => {
     let sum = 0;
-    data?.data.forEach((item: any) => {
+    classes.value.forEach((item: any) => {
       sum += item.count;
     });
 
     return {
       _id: '0000',
       class: '未分类',
-      count: `${articleTotal?.total - sum}`
+      count: `${articles.count.value - sum}`
     };
   };
 
@@ -197,7 +193,7 @@ const ClassCard: React.FC = () => {
           {loading ? (
             <IconLoading />
           ) : (
-            [...(data?.data || []), getNoClass()].map(
+            [...classes.value, getNoClass()].map(
               ({
                 _id,
                 class: classText,

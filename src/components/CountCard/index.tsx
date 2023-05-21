@@ -38,7 +38,7 @@ const CountCard: React.FC<Props> = ({
   });
 
   useMount(() => {
-    if (reduxData?.count?.isDone === false) {
+    if (!reduxData.count.isDone) {
       run();
     }
   });

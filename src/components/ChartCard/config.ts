@@ -1,7 +1,9 @@
-import { useRequest } from 'ahooks';
+import { useMount, useRequest } from 'ahooks';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { selectArticle, selectClass } from '@/redux/selectors';
+import { setClasses } from '@/redux/slices/classes';
 import { getDataAPI } from '@/utils/apis/getData';
-import { getTotalAPI } from '@/utils/apis/getTotal';
 import { _ } from '@/utils/cloudBase';
 import { DB } from '@/utils/dbConfig';
 
@@ -13,6 +15,10 @@ interface ClassType {
 }
 
 export const useChartData = () => {
+  const classes = useSelector(selectClass);
+  const articles = useSelector(selectArticle);
+  const dispatch = useDispatch();
+
   const formatData = (classData: ClassType[], total: number) => {
     if (classData === undefined || total === undefined) return [];
     let sum = 0;
@@ -32,19 +38,22 @@ export const useChartData = () => {
     return res;
   };
 
-  const { data, loading: dataLoading } = useRequest(() => getDataAPI(DB.Class), {
-    retryCount: 3
+  const { loading: dataLoading, run: classRun } = useRequest(() => getDataAPI(DB.Class), {
+    retryCount: 3,
+    manual: true,
+    onSuccess: res => {
+      dispatch(setClasses(res.data));
+    }
   });
 
-  const { data: total, loading: totalLoading } = useRequest(
-    () => getTotalAPI({ dbName: DB.Article, where: { post: _.eq(true) } }),
-    {
-      retryCount: 3
+  useMount(() => {
+    if (!classes.isDone) {
+      classRun();
     }
-  );
+  });
 
   return {
-    loading: dataLoading || totalLoading,
+    loading: dataLoading,
     option: {
       tooltip: {
         trigger: 'item',
@@ -58,7 +67,7 @@ export const useChartData = () => {
           type: 'pie',
           radius: '80%',
           height: '100%',
-          data: formatData(data?.data, total?.total),
+          data: formatData(classes.value, articles.count.value),
           emphasis: {
             itemStyle: {
               shadowBlur: 10,
