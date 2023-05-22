@@ -11,7 +11,7 @@ const says = createSlice({
     },
     data: {
       value: [],
-      isDone: false
+      done: []
     }
   },
   reducers: {

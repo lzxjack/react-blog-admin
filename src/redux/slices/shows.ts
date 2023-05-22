@@ -11,7 +11,7 @@ const shows = createSlice({
     },
     data: {
       value: [],
-      isDone: false
+      done: []
     }
   },
   reducers: {

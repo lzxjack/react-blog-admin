@@ -11,7 +11,7 @@ const links = createSlice({
     },
     data: {
       value: [],
-      isDone: false
+      done: []
     }
   },
   reducers: {

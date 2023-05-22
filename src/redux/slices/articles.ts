@@ -11,7 +11,7 @@ const articles = createSlice({
     },
     data: {
       value: [],
-      isDone: false
+      done: []
     }
   },
   reducers: {

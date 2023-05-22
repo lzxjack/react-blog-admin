@@ -13,6 +13,7 @@ import { updateDataAPI } from '../apis/updateData';
 import { _, isAdmin } from '../cloudBase';
 import { dataMap } from '../dataMap';
 import { classCountChange, getAfterDeletedPage } from '../functions';
+import { reduxMap } from '../reduxMap';
 
 export interface DataFilterProps {
   text: string;

@@ -11,7 +11,7 @@ const logs = createSlice({
     },
     data: {
       value: [],
-      isDone: false
+      done: []
     }
   },
   reducers: {

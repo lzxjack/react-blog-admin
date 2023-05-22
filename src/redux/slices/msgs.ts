@@ -11,7 +11,7 @@ const msgs = createSlice({
     },
     data: {
       value: [],
-      isDone: false
+      done: []
     }
   },
   reducers: {

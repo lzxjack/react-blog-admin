@@ -19,7 +19,10 @@ export interface baseType {
     value: number;
     isDone: boolean;
   };
-  data: dataType;
+  data: {
+    value: any[][];
+    done: number[];
+  };
 }
 
 export interface stateType {

@@ -11,7 +11,7 @@ const drafts = createSlice({
     },
     data: {
       value: [],
-      isDone: false
+      done: []
     }
   },
   reducers: {
