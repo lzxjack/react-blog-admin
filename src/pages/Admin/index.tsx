@@ -5,6 +5,7 @@ import { Navigate, NavLink, Route, Routes } from 'react-router-dom';
 import Header from '@/components/Header';
 import RequireAuth from '@/components/RequireAuth';
 import WithLoading from '@/components/WithLoading';
+import { oldVersionUrl } from '@/utils/constant';
 
 import { RouteType, useRoutes } from './config';
 import s from './index.scss';
@@ -33,6 +34,9 @@ const Admin: React.FC = () => {
               </div>
             ) : null;
           })}
+          <a href={oldVersionUrl} className={s.turnOldVer}>
+            返回旧版
+          </a>
         </nav>
         {/* 右侧内容区域= */}
         <div className={s.rightContent}>
