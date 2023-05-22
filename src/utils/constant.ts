@@ -1,9 +1,8 @@
 // 当前环境
-export const nowEnv: 'test' | 'prod' = 'test';
-// export const nowEnv: 'test' | 'prod' = 'prod';
+// export const nowEnv: 'test' | 'prod' = 'test';
+export const nowEnv: 'test' | 'prod' = 'prod';
 
 // 旧版链接
-
 export const oldVersionUrl =
   'https://react-blog-admin-8fo571wf24c87f9-1304393382.tcloudbaseapp.com';
 
