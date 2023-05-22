@@ -78,6 +78,7 @@ const Show: React.FC = () => {
   };
 
   const { data, total, loading, handleDelete, modalOk } = useTableData({
+    type: DB.Show,
     DBName: DB.Show,
     dataFilter,
     page,

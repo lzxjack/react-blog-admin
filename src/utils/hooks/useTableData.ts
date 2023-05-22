@@ -26,6 +26,7 @@ export interface DataFilterProps {
 }
 
 interface Props {
+  type: DB;
   DBName: DB;
   dataFilter?: DataFilterProps[];
   page: number;
@@ -45,6 +46,7 @@ export interface DeleteProps {
 
 // 获取表格数据（data & total）
 export const useTableData = ({
+  type,
   DBName,
   dataFilter,
   page,
@@ -57,7 +59,7 @@ export const useTableData = ({
   classesRun
 }: Props) => {
   const dispatch = useDispatch();
-  const reduxData = useSelector(reduxMap[DBName as keyof typeof reduxMap].selector);
+  const reduxData = useSelector(reduxMap[type as keyof typeof reduxMap].selector);
 
   const { loading: dataLoading, run: dataRun } = useRequest(
     () =>
@@ -74,7 +76,7 @@ export const useTableData = ({
       manual: true,
       onSuccess: res => {
         dispatch(
-          reduxMap[DBName as keyof typeof reduxMap].dataReducer({ items: res.data, page })
+          reduxMap[type as keyof typeof reduxMap].dataReducer({ items: res.data, page })
         );
       }
     }
@@ -86,7 +88,7 @@ export const useTableData = ({
       retryCount: 3,
       manual: true,
       onSuccess: res => {
-        dispatch(reduxMap[DBName as keyof typeof reduxMap].countReducer(res.total));
+        dispatch(reduxMap[type as keyof typeof reduxMap].countReducer(res.total));
       }
     }
   );
@@ -121,7 +123,7 @@ export const useTableData = ({
           classCountChange(classText, 'min', classesRun);
         }
         flushSync(() => {
-          dispatch(reduxMap[DBName as keyof typeof reduxMap].dataResetReducer());
+          dispatch(reduxMap[type as keyof typeof reduxMap].dataResetReducer());
           setPage(getAfterDeletedPage(reduxData.count.value, page, pageSize));
         });
         flushSync(() => {
@@ -142,7 +144,7 @@ export const useTableData = ({
         Message.success('添加成功！');
         modalCancel?.();
         flushSync(() => {
-          dispatch(reduxMap[DBName as keyof typeof reduxMap].dataResetReducer());
+          dispatch(reduxMap[type as keyof typeof reduxMap].dataResetReducer());
           setPage(1);
         });
         flushSync(() => {

@@ -70,6 +70,7 @@ const Link: React.FC = () => {
   };
 
   const { data, total, loading, handleDelete, modalOk } = useTableData({
+    type: DB.Link,
     DBName: DB.Link,
     dataFilter,
     page,

@@ -87,6 +87,7 @@ const Article: React.FC = () => {
     dataRun,
     totalRun
   } = useTableData({
+    type: DB.Article,
     DBName: DB.Article,
     page,
     setPage,

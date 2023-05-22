@@ -20,6 +20,7 @@ const Draft: React.FC = () => {
   const { page, setPage } = usePage();
 
   const { data, total, loading, handleDelete, dataRun, totalRun } = useTableData({
+    type: DB.Draft,
     DBName: DB.Article,
     page,
     setPage,

@@ -65,6 +65,7 @@ const Log: React.FC = () => {
   };
 
   const { data, total, loading, handleDelete, modalOk } = useTableData({
+    type: DB.Log,
     DBName: DB.Log,
     dataFilter,
     page,

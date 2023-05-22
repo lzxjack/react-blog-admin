@@ -73,6 +73,7 @@ const Say: React.FC = () => {
   };
 
   const { data, total, loading, handleDelete, modalOk } = useTableData({
+    type: DB.Say,
     DBName: DB.Say,
     dataFilter,
     page,

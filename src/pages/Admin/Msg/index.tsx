@@ -15,6 +15,7 @@ const Msg: React.FC = () => {
   const { page, setPage } = usePage();
 
   const { data, total, loading, handleDelete } = useTableData({
+    type: DB.Msg,
     DBName: DB.Msg,
     page,
     setPage
