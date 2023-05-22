@@ -13,16 +13,18 @@ import PageHeader from '@/components/PageHeader';
 import { selectClass, selectTag } from '@/redux/selectors';
 import { setClasses } from '@/redux/slices/classes';
 import { setTags } from '@/redux/slices/tags';
+import { deleteDataAPI } from '@/utils/apis/deleteData';
 import { getDataAPI } from '@/utils/apis/getData';
 import { getWhereDataAPI } from '@/utils/apis/getWhereData';
-import { _ } from '@/utils/cloudBase';
-import { defaultPageSize, siteTitle } from '@/utils/constant';
+import { _, isAdmin } from '@/utils/cloudBase';
+import { defaultPageSize, failText, siteTitle, visitorText } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
-import { isSubset } from '@/utils/functions';
+import { classCountChange, getAfterDeletedPage, isSubset } from '@/utils/functions';
 import { useMyParams } from '@/utils/hooks/useMyParams';
 import { usePage } from '@/utils/hooks/usePage';
-import { useTableData } from '@/utils/hooks/useTableData';
+import { DeleteProps, useTableData } from '@/utils/hooks/useTableData';
 import { useUpdateData } from '@/utils/hooks/useUpdateData';
+import { reduxMap } from '@/utils/reduxMap';
 
 import { Title } from '../titleConfig';
 import { useColumns } from './config';
@@ -34,7 +36,7 @@ const Article: React.FC = () => {
 
   const { page, setPage } = usePage();
   const [showSearchData, setShowSearchData] = useState(false);
-  const [searchData, setSearchData] = useState([]);
+  const [searchData, setSearchData] = useState<any[]>([]);
 
   const {
     searchTitle,
@@ -154,9 +156,41 @@ const Article: React.FC = () => {
     searchRun();
   };
 
+  const handleDeleteSearch = (id: string, { page, setPage }: DeleteProps) => {
+    if (!isAdmin()) {
+      Message.warning(visitorText);
+      return;
+    }
+
+    deleteDataAPI(DB.Article, id).then(res => {
+      if (!res.success && !res.permission) {
+        Message.warning(visitorText);
+      } else if (res.success && res.permission) {
+        Message.success('删除成功！');
+        const newSearchData = searchData.filter(({ _id }: { _id: string }) => _id !== id);
+        const classText = searchData.filter(({ _id }: { _id: string }) => _id === id)[0]
+          .classes;
+        classCountChange(classText, 'min', classesRun);
+        flushSync(() => setSearchData(newSearchData));
+        flushSync(() => {
+          dispatch(reduxMap[DB.Article].dataResetReducer());
+          setPage(getAfterDeletedPage(searchData.length, page, defaultPageSize));
+        });
+        flushSync(() => {
+          dataRun();
+          totalRun();
+        });
+      } else {
+        Message.warning(failText);
+      }
+    });
+  };
+
   const columns = useColumns({
+    showSearchData,
     handleEdit,
     handleDelete,
+    handleDeleteSearch,
     deleteProps: {
       page,
       setPage

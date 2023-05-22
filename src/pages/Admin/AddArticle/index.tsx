@@ -69,23 +69,18 @@ const AddArticle: React.FC = () => {
 
   const dispatch = useDispatch();
 
-  const {
-    data: classData,
-    loading: classLoading,
-    run: classesRun
-  } = useRequest(() => getDataAPI(DB.Class), {
-    retryCount: 3,
-    manual: true,
-    onSuccess: res => {
-      dispatch(setClasses(res.data));
+  const { loading: classLoading, run: classesRun } = useRequest(
+    () => getDataAPI(DB.Class),
+    {
+      retryCount: 3,
+      manual: true,
+      onSuccess: res => {
+        dispatch(setClasses(res.data));
+      }
     }
-  });
+  );
 
-  const {
-    data: tagData,
-    loading: tagLoading,
-    run: tagsRun
-  } = useRequest(() => getDataAPI(DB.Tag), {
+  const { loading: tagLoading, run: tagsRun } = useRequest(() => getDataAPI(DB.Tag), {
     retryCount: 3,
     manual: true,
     onSuccess: res => {
@@ -108,7 +103,9 @@ const AddArticle: React.FC = () => {
         Message.warning(visitorText);
       } else if (res.success && res.permission) {
         Message.success(type === 'post' ? '发布文章成功！' : '保存草稿成功！');
-        navigate(`${type === 'post' ? '/admin/article' : '/admin/draft'}?updated=1`);
+        navigate(
+          `${type === 'post' ? '/admin/article' : '/admin/draft'}?page=1&updated=1`
+        );
       } else {
         Message.warning(failText);
       }
@@ -121,7 +118,9 @@ const AddArticle: React.FC = () => {
         Message.warning(visitorText);
       } else if (res.success && res.permission) {
         Message.success(type === 'post' ? '更新文章成功！' : '保存草稿成功！');
-        navigate(`${type === 'post' ? '/admin/article' : '/admin/draft'}?updated=1`);
+        navigate(
+          `${type === 'post' ? '/admin/article' : '/admin/draft'}?page=1&updated=1`
+        );
       } else {
         Message.warning(failText);
       }
@@ -255,12 +254,12 @@ const AddArticle: React.FC = () => {
             value={classText}
             onChange={value => setClassText(value)}
             disabled={classLoading}
-            options={
-              classData?.data.map(({ class: classText }: { class: string }) => ({
+            options={reduxClasses.value.map(
+              ({ class: classText }: { class: string }) => ({
                 value: classText,
                 label: classText
-              })) || undefined
-            }
+              })
+            )}
           />
           <Select
             addBefore='标签'
@@ -275,12 +274,10 @@ const AddArticle: React.FC = () => {
             value={tags}
             onChange={value => setLocalTags(value)}
             disabled={tagLoading}
-            options={
-              tagData?.data.map(({ tag }: { tag: string }) => ({
-                value: tag,
-                label: tag
-              })) || undefined
-            }
+            options={reduxTags.value.map(({ tag }: { tag: string }) => ({
+              value: tag,
+              label: tag
+            }))}
           />
           <Input
             addBefore='时间'

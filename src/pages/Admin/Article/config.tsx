@@ -6,12 +6,20 @@ import TableTag from '@/components/TableTag';
 import { DeleteProps } from '@/utils/hooks/useTableData';
 
 interface Props {
+  showSearchData: boolean;
   handleEdit: (id: string) => void;
   handleDelete: (id: string, props: DeleteProps) => void;
+  handleDeleteSearch: (id: string, props: DeleteProps) => void;
   deleteProps: DeleteProps;
 }
 
-export const useColumns = ({ handleEdit, handleDelete, deleteProps }: Props) => [
+export const useColumns = ({
+  handleEdit,
+  handleDelete,
+  deleteProps,
+  showSearchData,
+  handleDeleteSearch
+}: Props) => [
   {
     title: '标题',
     dataIndex: 'title',
@@ -55,7 +63,11 @@ export const useColumns = ({ handleEdit, handleDelete, deleteProps }: Props) => 
         <Popconfirm
           position='br'
           title='确定要删除该文章吗？'
-          onOk={() => handleDelete(_id, deleteProps)}
+          onOk={() => {
+            showSearchData
+              ? handleDeleteSearch(_id, deleteProps)
+              : handleDelete(_id, deleteProps);
+          }}
           okText='Yes'
           cancelText='No'
         >
