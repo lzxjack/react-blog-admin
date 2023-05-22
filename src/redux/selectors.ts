@@ -5,9 +5,13 @@ interface dataType {
   isDone: boolean;
 }
 
-interface noticeType {
+interface stringType {
   value: string;
   isDone: boolean;
+}
+
+interface aboutType extends stringType {
+  id: string;
 }
 
 export interface baseType {
@@ -26,7 +30,11 @@ export interface stateType {
   [DB.Msg]: baseType;
   [DB.Class]: dataType;
   [DB.Tag]: dataType;
-  [DB.Notice]: noticeType;
+  [DB.Notice]: stringType;
+  [DB.About]: {
+    aboutMe: aboutType;
+    aboutSite: aboutType;
+  };
 }
 
 export const selectArticle = (state: stateType) => state[DB.Article];
@@ -37,3 +45,4 @@ export const selectMsg = (state: stateType) => state[DB.Msg];
 export const selectClass = (state: stateType) => state[DB.Class];
 export const selectTag = (state: stateType) => state[DB.Tag];
 export const selectNotice = (state: stateType) => state[DB.Notice];
+export const selectAbout = (state: stateType) => state[DB.About];

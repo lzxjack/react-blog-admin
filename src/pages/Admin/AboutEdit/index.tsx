@@ -1,12 +1,13 @@
 import { Button, Message } from '@arco-design/web-react';
-import { useRequest, useTitle } from 'ahooks';
+import { useMount, useTitle } from 'ahooks';
 import classNames from 'classnames';
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import MarkDown from '@/components/MarkDown';
 import PageHeader from '@/components/PageHeader';
-import { getDataAPI } from '@/utils/apis/getData';
+import { selectAbout } from '@/redux/selectors';
 import { updateDataAPI } from '@/utils/apis/updateData';
 import { isAdmin } from '@/utils/cloudBase';
 import { failText, siteTitle, visitorText } from '@/utils/constant';
@@ -29,11 +30,13 @@ const AboutEdit: React.FC = () => {
   const [content, setContent] = useState('');
   const [id, setId] = useState('');
 
-  useRequest(() => getDataAPI(DB.About), {
-    onSuccess: res => {
-      setContent(res?.data[isMe ? 1 : 0].content);
-      setId(res?.data[isMe ? 1 : 0]._id);
-    }
+  const about = useSelector(selectAbout);
+
+  useMount(() => {
+    const aboutContent = isMe ? about.aboutMe.value : about.aboutSite.value;
+    const id = isMe ? about.aboutMe.id : about.aboutSite.id;
+    setContent(aboutContent);
+    setId(id);
   });
 
   const updateAbout = () => {
