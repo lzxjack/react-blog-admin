@@ -24,18 +24,30 @@ const articles = createSlice({
         }
       };
     },
-    setArticleData: (state: any, { payload: value }) => {
+    setArticleData: (state: any, { payload: { items, page } }) => {
+      const newValue = [...state.data.value];
+      newValue[page] = items;
+      const newDone = [...new Set([...state.data.done, page])];
       return {
         ...state,
         data: {
-          value,
-          isDone: true
+          value: newValue,
+          done: newDone
+        }
+      };
+    },
+    resetArticleData: (state: any) => {
+      return {
+        ...state,
+        data: {
+          value: [],
+          done: []
         }
       };
     }
   }
 });
 
-export const { setArticleCount, setArticleData } = articles.actions;
+export const { setArticleCount, setArticleData, resetArticleData } = articles.actions;
 
 export default articles.reducer;

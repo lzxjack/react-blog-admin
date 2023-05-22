@@ -24,18 +24,30 @@ const drafts = createSlice({
         }
       };
     },
-    setDraftData: (state: any, { payload: value }) => {
+    setDraftData: (state: any, { payload: { items, page } }) => {
+      const newValue = [...state.data.value];
+      newValue[page] = items;
+      const newDone = [...new Set([...state.data.done, page])];
       return {
         ...state,
         data: {
-          value,
-          isDone: true
+          value: newValue,
+          done: newDone
+        }
+      };
+    },
+    resetDraftData: (state: any) => {
+      return {
+        ...state,
+        data: {
+          value: [],
+          done: []
         }
       };
     }
   }
 });
 
-export const { setDraftCount, setDraftData } = drafts.actions;
+export const { setDraftCount, setDraftData, resetDraftData } = drafts.actions;
 
 export default drafts.reducer;

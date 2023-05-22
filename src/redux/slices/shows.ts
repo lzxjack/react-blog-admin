@@ -24,18 +24,30 @@ const shows = createSlice({
         }
       };
     },
-    setShowData: (state: any, { payload: value }) => {
+    setShowData: (state: any, { payload: { items, page } }) => {
+      const newValue = [...state.data.value];
+      newValue[page] = items;
+      const newDone = [...new Set([...state.data.done, page])];
       return {
         ...state,
         data: {
-          value,
-          isDone: true
+          value: newValue,
+          done: newDone
+        }
+      };
+    },
+    resetShowData: (state: any) => {
+      return {
+        ...state,
+        data: {
+          value: [],
+          done: []
         }
       };
     }
   }
 });
 
-export const { setShowCount, setShowData } = shows.actions;
+export const { setShowCount, setShowData, resetShowData } = shows.actions;
 
 export default shows.reducer;

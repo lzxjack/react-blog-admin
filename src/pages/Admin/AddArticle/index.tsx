@@ -178,7 +178,7 @@ const AddArticle: React.FC = () => {
       addData(type, data);
       if (type === 'post') {
         // 发布
-        classCountChange(classText, 'add');
+        classCountChange(classText, 'add', classesRun);
       }
     } else {
       // 编辑页面
@@ -188,18 +188,18 @@ const AddArticle: React.FC = () => {
         if (type === 'post') {
           // 发布
           if (classText !== defaultClassText) {
-            classCountChange(classText, 'add');
-            classCountChange(defaultClassText, 'min');
+            classCountChange(classText, 'add', classesRun);
+            classCountChange(defaultClassText, 'min', classesRun);
           }
         } else {
           // 存草稿
-          classCountChange(defaultClassText, 'min');
+          classCountChange(defaultClassText, 'min', classesRun);
         }
       } else {
         // 草稿页进来
         if (type === 'post') {
           // 发布
-          classCountChange(classText, 'add');
+          classCountChange(classText, 'add', classesRun);
         }
       }
     }

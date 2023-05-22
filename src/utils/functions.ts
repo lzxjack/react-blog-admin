@@ -50,7 +50,11 @@ export const containsChineseCharacters = (str: string) => {
 };
 
 // 改变指定分类的数量
-export const classCountChange = (classText: string, type: 'add' | 'min') => {
+export const classCountChange = (
+  classText: string,
+  type: 'add' | 'min',
+  callback?: () => void
+) => {
   if (!classText) return;
   updateWhereDataAPI(
     DB.Class,
@@ -60,7 +64,8 @@ export const classCountChange = (classText: string, type: 'add' | 'min') => {
     if (!res.success && !res.permission) {
       Message.warning(visitorText);
     } else if (res.success && res.permission) {
-      Message.success(`${classText}成功${type === 'add' ? 1 : -1}`);
+      Message.success(`《${classText}》数量${type === 'add' ? 1 : -1}`);
+      callback?.();
     } else {
       Message.warning(failText);
     }

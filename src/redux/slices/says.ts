@@ -24,18 +24,30 @@ const says = createSlice({
         }
       };
     },
-    setSayData: (state: any, { payload: value }) => {
+    setSayData: (state: any, { payload: { items, page } }) => {
+      const newValue = [...state.data.value];
+      newValue[page] = items;
+      const newDone = [...new Set([...state.data.done, page])];
       return {
         ...state,
         data: {
-          value,
-          isDone: true
+          value: newValue,
+          done: newDone
+        }
+      };
+    },
+    resetSayData: (state: any) => {
+      return {
+        ...state,
+        data: {
+          value: [],
+          done: []
         }
       };
     }
   }
 });
 
-export const { setSayCount, setSayData } = says.actions;
+export const { setSayCount, setSayData, resetSayData } = says.actions;
 
 export default says.reducer;

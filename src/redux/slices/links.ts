@@ -24,18 +24,30 @@ const links = createSlice({
         }
       };
     },
-    setLinkData: (state: any, { payload: value }) => {
+    setLinkData: (state: any, { payload: { items, page } }) => {
+      const newValue = [...state.data.value];
+      newValue[page] = items;
+      const newDone = [...new Set([...state.data.done, page])];
       return {
         ...state,
         data: {
-          value,
-          isDone: true
+          value: newValue,
+          done: newDone
+        }
+      };
+    },
+    resetLinkData: (state: any) => {
+      return {
+        ...state,
+        data: {
+          value: [],
+          done: []
         }
       };
     }
   }
 });
 
-export const { setLinkCount, setLinkData } = links.actions;
+export const { setLinkCount, setLinkData, resetLinkData } = links.actions;
 
 export default links.reducer;

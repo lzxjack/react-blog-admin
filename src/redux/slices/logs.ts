@@ -24,18 +24,30 @@ const logs = createSlice({
         }
       };
     },
-    setLogData: (state: any, { payload: value }) => {
+    setLogData: (state: any, { payload: { items, page } }) => {
+      const newValue = [...state.data.value];
+      newValue[page] = items;
+      const newDone = [...new Set([...state.data.done, page])];
       return {
         ...state,
         data: {
-          value,
-          isDone: true
+          value: newValue,
+          done: newDone
+        }
+      };
+    },
+    resetLogData: (state: any) => {
+      return {
+        ...state,
+        data: {
+          value: [],
+          done: []
         }
       };
     }
   }
 });
 
-export const { setLogCount, setLogData } = logs.actions;
+export const { setLogCount, setLogData, resetLogData } = logs.actions;
 
 export default logs.reducer;

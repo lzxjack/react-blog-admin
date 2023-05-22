@@ -24,18 +24,30 @@ const msgs = createSlice({
         }
       };
     },
-    setMsgData: (state: any, { payload: value }) => {
+    setMsgData: (state: any, { payload: { items, page } }) => {
+      const newValue = [...state.data.value];
+      newValue[page] = items;
+      const newDone = [...new Set([...state.data.done, page])];
       return {
         ...state,
         data: {
-          value,
-          isDone: true
+          value: newValue,
+          done: newDone
+        }
+      };
+    },
+    resetMsgData: (state: any) => {
+      return {
+        ...state,
+        data: {
+          value: [],
+          done: []
         }
       };
     }
   }
 });
 
-export const { setMsgCount, setMsgData } = msgs.actions;
+export const { setMsgCount, setMsgData, resetMsgData } = msgs.actions;
 
 export default msgs.reducer;

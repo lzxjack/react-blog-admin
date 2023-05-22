@@ -46,25 +46,6 @@ const Article: React.FC = () => {
     clearSearch
   } = useMyParams();
 
-  const {
-    data: articleData,
-    total: articleTotal,
-    loading: articleLoading,
-    handleDelete,
-    dataRun,
-    totalRun
-  } = useTableData({
-    DBName: DB.Article,
-    page,
-    setPage,
-    where: { post: _.eq(true) }
-  });
-
-  useUpdateData(() => {
-    dataRun();
-    totalRun();
-  });
-
   const classes = useSelector(selectClass);
   const tags = useSelector(selectTag);
 
@@ -96,6 +77,26 @@ const Article: React.FC = () => {
     if (!tags.isDone) {
       tagsRun();
     }
+  });
+
+  const {
+    data: articleData,
+    total: articleTotal,
+    loading: articleLoading,
+    handleDelete,
+    dataRun,
+    totalRun
+  } = useTableData({
+    DBName: DB.Article,
+    page,
+    setPage,
+    where: { post: _.eq(true) },
+    classesRun
+  });
+
+  useUpdateData(() => {
+    dataRun();
+    totalRun();
   });
 
   // TODO: 自己写API

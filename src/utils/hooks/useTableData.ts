@@ -1,6 +1,8 @@
 import { Message } from '@arco-design/web-react';
-import { useRequest } from 'ahooks';
+import { useMount, useRequest } from 'ahooks';
+import { useEffect } from 'react';
 import { flushSync } from 'react-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { getTotalAPI } from '@/utils/apis/getTotal';
 import { getWhereOrderPageDataAPI } from '@/utils/apis/getWhereOrderPageData';
@@ -33,6 +35,7 @@ interface Props {
   isAsc?: boolean;
   pageSize?: number;
   where?: object;
+  classesRun?: () => void;
 }
 
 export interface DeleteProps {
@@ -50,13 +53,13 @@ export const useTableData = ({
   sortKey = 'date',
   isAsc = false,
   pageSize = defaultPageSize,
-  where = {}
+  where = {},
+  classesRun
 }: Props) => {
-  const {
-    data,
-    loading: dataLoading,
-    run: dataRun
-  } = useRequest(
+  const dispatch = useDispatch();
+  const reduxData = useSelector(reduxMap[DBName as keyof typeof reduxMap].selector);
+
+  const { loading: dataLoading, run: dataRun } = useRequest(
     () =>
       getWhereOrderPageDataAPI({
         dbName: DBName,
@@ -68,17 +71,37 @@ export const useTableData = ({
       }),
     {
       retryCount: 3,
-      refreshDeps: [page]
+      manual: true,
+      onSuccess: res => {
+        dispatch(
+          reduxMap[DBName as keyof typeof reduxMap].dataReducer({ items: res.data, page })
+        );
+      }
     }
   );
 
-  const {
-    data: total,
-    loading: totalLoading,
-    run: totalRun
-  } = useRequest(() => getTotalAPI({ dbName: DBName, where }), {
-    retryCount: 3
+  const { loading: totalLoading, run: totalRun } = useRequest(
+    () => getTotalAPI({ dbName: DBName, where }),
+    {
+      retryCount: 3,
+      manual: true,
+      onSuccess: res => {
+        dispatch(reduxMap[DBName as keyof typeof reduxMap].countReducer(res.total));
+      }
+    }
+  );
+
+  useMount(() => {
+    if (!reduxData.count.isDone) {
+      totalRun();
+    }
   });
+
+  useEffect(() => {
+    if (!new Set(reduxData.data.done).has(page)) {
+      dataRun();
+    }
+  }, [page]);
 
   const handleDelete = (id: string, { page, setPage }: DeleteProps) => {
     if (!isAdmin()) {
@@ -86,16 +109,21 @@ export const useTableData = ({
       return;
     }
 
-    const classText = data?.data.filter(({ _id }: { _id: string }) => _id === id)[0]
-      .classes;
-
     deleteDataAPI(DBName, id).then(res => {
       if (!res.success && !res.permission) {
         Message.warning(visitorText);
       } else if (res.success && res.permission) {
         Message.success('删除成功！');
-        classCountChange(classText, 'min');
-        flushSync(() => setPage(getAfterDeletedPage(total.total, page, pageSize)));
+        if (DBName === DB.Article) {
+          const classText = reduxData.data.value[page].filter(
+            ({ _id }: { _id: string }) => _id === id
+          )[0].classes;
+          classCountChange(classText, 'min', classesRun);
+        }
+        flushSync(() => {
+          dispatch(reduxMap[DBName as keyof typeof reduxMap].dataResetReducer());
+          setPage(getAfterDeletedPage(reduxData.count.value, page, pageSize));
+        });
         flushSync(() => {
           dataRun();
           totalRun();
@@ -113,7 +141,10 @@ export const useTableData = ({
       } else if (res.success && res.permission) {
         Message.success('添加成功！');
         modalCancel?.();
-        flushSync(() => setPage(1));
+        flushSync(() => {
+          dispatch(reduxMap[DBName as keyof typeof reduxMap].dataResetReducer());
+          setPage(1);
+        });
         flushSync(() => {
           dataRun();
           totalRun();
@@ -180,8 +211,8 @@ export const useTableData = ({
   };
 
   return {
-    data: data?.data,
-    total: total?.total,
+    data: reduxData.data.value[page],
+    total: reduxData.count.value,
     loading: dataLoading || totalLoading,
     handleDelete,
     modalOk,

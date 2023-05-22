@@ -7,49 +7,60 @@ import {
   selectSay,
   selectShow
 } from '@/redux/selectors';
-import { setArticleCount, setArticleData } from '@/redux/slices/articles';
-import { setDraftCount, setDraftData } from '@/redux/slices/drafts';
-import { setLinkCount, setLinkData } from '@/redux/slices/links';
-import { setLogCount, setLogData } from '@/redux/slices/logs';
-import { setMsgCount, setMsgData } from '@/redux/slices/msgs';
-import { setSayCount, setSayData } from '@/redux/slices/says';
-import { setShowCount, setShowData } from '@/redux/slices/shows';
+import {
+  resetArticleData,
+  setArticleCount,
+  setArticleData
+} from '@/redux/slices/articles';
+import { resetDraftData, setDraftCount, setDraftData } from '@/redux/slices/drafts';
+import { resetLinkData, setLinkCount, setLinkData } from '@/redux/slices/links';
+import { resetLogData, setLogCount, setLogData } from '@/redux/slices/logs';
+import { resetMsgData, setMsgCount, setMsgData } from '@/redux/slices/msgs';
+import { resetSayData, setSayCount, setSayData } from '@/redux/slices/says';
+import { resetShowData, setShowCount, setShowData } from '@/redux/slices/shows';
 import { DB } from '@/utils/dbConfig';
 
 export const reduxMap = {
   [DB.Article]: {
     selector: selectArticle,
     countReducer: setArticleCount,
-    dataReducer: setArticleData
+    dataReducer: setArticleData,
+    dataResetReducer: resetArticleData
   },
   [DB.Draft]: {
     selector: selectDraft,
     countReducer: setDraftCount,
-    dataReducer: setDraftData
+    dataReducer: setDraftData,
+    dataResetReducer: resetDraftData
   },
   [DB.Link]: {
     selector: selectLink,
     countReducer: setLinkCount,
-    dataReducer: setLinkData
+    dataReducer: setLinkData,
+    dataResetReducer: resetLinkData
   },
   [DB.Msg]: {
     selector: selectMsg,
     countReducer: setMsgCount,
-    dataReducer: setMsgData
+    dataReducer: setMsgData,
+    dataResetReducer: resetMsgData
   },
   [DB.Say]: {
     selector: selectSay,
     countReducer: setSayCount,
-    dataReducer: setSayData
+    dataReducer: setSayData,
+    dataResetReducer: resetSayData
   },
   [DB.Log]: {
     selector: selectLog,
     countReducer: setLogCount,
-    dataReducer: setLogData
+    dataReducer: setLogData,
+    dataResetReducer: resetLogData
   },
   [DB.Show]: {
     selector: selectShow,
     countReducer: setShowCount,
-    dataReducer: setShowData
+    dataReducer: setShowData,
+    dataResetReducer: resetShowData
   }
 };
