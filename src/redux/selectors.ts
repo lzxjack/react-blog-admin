@@ -24,6 +24,8 @@ export interface baseType {
 
 export interface stateType {
   [DB.Article]: baseType;
+  [DB.Show]: baseType;
+  [DB.Draft]: baseType;
   [DB.Link]: baseType;
   [DB.Log]: baseType;
   [DB.Say]: baseType;
@@ -46,3 +48,5 @@ export const selectClass = (state: stateType) => state[DB.Class];
 export const selectTag = (state: stateType) => state[DB.Tag];
 export const selectNotice = (state: stateType) => state[DB.Notice];
 export const selectAbout = (state: stateType) => state[DB.About];
+export const selectShow = (state: stateType) => state[DB.Show];
+export const selectDraft = (state: stateType) => state[DB.Draft];
