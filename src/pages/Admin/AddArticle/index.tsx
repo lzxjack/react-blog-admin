@@ -3,9 +3,13 @@ import { useMount, useRequest, useTitle } from 'ahooks';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import MarkDown from '@/components/MarkDown';
+import { selectClass, selectTag } from '@/redux/selectors';
+import { setClasses } from '@/redux/slices/classes';
+import { setTags } from '@/redux/slices/tags';
 import { addDataAPI } from '@/utils/apis/addData';
 import { getDataAPI } from '@/utils/apis/getData';
 import { getDataByIdAPI } from '@/utils/apis/getDataById';
@@ -35,14 +39,13 @@ const AddArticle: React.FC = () => {
   const [title, setTitle] = useState('');
   const [titleEng, setTitleEng] = useState('');
   const [classText, setClassText] = useState('');
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags, setLocalTags] = useState<string[]>([]);
   const [date, setDate] = useState(dayjs().format('YYYY-MM-DD HH:mm:ss'));
   const [content, setContent] = useState('');
 
   // 文章/草稿 更新逻辑
   const id = searchParams.get('id');
   const from = searchParams.get('from');
-  console.log(from);
 
   const [defaultClassText, setDefaultClassText] = useState('');
 
@@ -54,22 +57,49 @@ const AddArticle: React.FC = () => {
       setTitle(title);
       setTitleEng(titleEng);
       setClassText(classText);
-      setTags(tags);
+      setLocalTags(tags);
       setDate(dayjs(date).format('YYYY-MM-DD HH:mm:ss'));
       setContent(content);
       setDefaultClassText(classText);
     }
   });
 
-  const { data: classData, loading: classLoading } = useRequest(
-    () => getDataAPI(DB.Class),
-    {
-      retryCount: 3
-    }
-  );
+  const reduxClasses = useSelector(selectClass);
+  const reduxTags = useSelector(selectTag);
 
-  const { data: tagData, loading: tagLoading } = useRequest(() => getDataAPI(DB.Tag), {
-    retryCount: 3
+  const dispatch = useDispatch();
+
+  const {
+    data: classData,
+    loading: classLoading,
+    run: classesRun
+  } = useRequest(() => getDataAPI(DB.Class), {
+    retryCount: 3,
+    manual: true,
+    onSuccess: res => {
+      dispatch(setClasses(res.data));
+    }
+  });
+
+  const {
+    data: tagData,
+    loading: tagLoading,
+    run: tagsRun
+  } = useRequest(() => getDataAPI(DB.Tag), {
+    retryCount: 3,
+    manual: true,
+    onSuccess: res => {
+      dispatch(setTags(res.data));
+    }
+  });
+
+  useMount(() => {
+    if (!reduxClasses.isDone) {
+      classesRun();
+    }
+    if (!reduxTags.isDone) {
+      tagsRun();
+    }
   });
 
   const addData = (type: 'post' | 'draft', data: object) => {
@@ -243,7 +273,7 @@ const AddArticle: React.FC = () => {
             allowClear
             unmountOnExit={false}
             value={tags}
-            onChange={value => setTags(value)}
+            onChange={value => setLocalTags(value)}
             disabled={tagLoading}
             options={
               tagData?.data.map(({ tag }: { tag: string }) => ({

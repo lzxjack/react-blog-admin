@@ -5,10 +5,14 @@ import { useMount, useRequest, useTitle } from 'ahooks';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
 import { BiBrushAlt, BiSearch } from 'react-icons/bi';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import MyTable from '@/components/MyTable';
 import PageHeader from '@/components/PageHeader';
+import { selectClass, selectTag } from '@/redux/selectors';
+import { setClasses } from '@/redux/slices/classes';
+import { setTags } from '@/redux/slices/tags';
 import { getDataAPI } from '@/utils/apis/getData';
 import { getWhereDataAPI } from '@/utils/apis/getWhereData';
 import { _ } from '@/utils/cloudBase';
@@ -61,15 +65,37 @@ const Article: React.FC = () => {
     totalRun();
   });
 
-  const { data: classData, loading: classLoading } = useRequest(
+  const classes = useSelector(selectClass);
+  const tags = useSelector(selectTag);
+
+  const dispatch = useDispatch();
+
+  const { loading: classLoading, run: classesRun } = useRequest(
     () => getDataAPI(DB.Class),
     {
-      retryCount: 3
+      retryCount: 3,
+      manual: true,
+      onSuccess: res => {
+        dispatch(setClasses(res.data));
+      }
     }
   );
 
-  const { data: tagData, loading: tagLoading } = useRequest(() => getDataAPI(DB.Tag), {
-    retryCount: 3
+  const { loading: tagLoading, run: tagsRun } = useRequest(() => getDataAPI(DB.Tag), {
+    retryCount: 3,
+    manual: true,
+    onSuccess: res => {
+      dispatch(setTags(res.data));
+    }
+  });
+
+  useMount(() => {
+    if (!classes.isDone) {
+      classesRun();
+    }
+    if (!tags.isDone) {
+      tagsRun();
+    }
   });
 
   // TODO: 自己写API
@@ -159,17 +185,13 @@ const Article: React.FC = () => {
           value={searchClass}
           onChange={value => setSearchClass(value)}
           disabled={classLoading}
-          options={
-            classData
-              ? [
-                  ...classData.data.map(({ class: classText }: { class: string }) => ({
-                    value: classText,
-                    label: classText
-                  })),
-                  { value: '未分类', label: '未分类' }
-                ]
-              : undefined
-          }
+          options={[
+            ...classes.value.map(({ class: classText }: { class: string }) => ({
+              value: classText,
+              label: classText
+            })),
+            { value: '未分类', label: '未分类' }
+          ]}
         />
 
         <Select
@@ -185,12 +207,10 @@ const Article: React.FC = () => {
           value={searchTag}
           onChange={value => setSearchTag(value)}
           disabled={tagLoading}
-          options={
-            tagData?.data.map(({ tag }: { tag: string }) => ({
-              value: tag,
-              label: tag
-            })) || undefined
-          }
+          options={tags.value.map(({ tag }: { tag: string }) => ({
+            value: tag,
+            label: tag
+          }))}
         />
       </div>
       <div>
