@@ -58,23 +58,7 @@
       .classBtn {
         width: 30px;
         height: 30px;
-        text-align: center;
-        line-height: 30px;
-        border-radius: 2px;
         margin-left: 4px;
-        background-color: $themeColor3;
-        color: #fff;
-        cursor: pointer;
-        @extend .trans;
-      }
-      .classBtn:hover {
-        background-color: $themeColor3_light;
-      }
-      .classBtnDanger {
-        background-color: $themeColor4;
-      }
-      .classBtnDanger:hover {
-        background-color: $themeColor4_light;
       }
     }
     .classItem:last-child {

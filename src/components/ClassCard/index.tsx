@@ -1,4 +1,4 @@
-import { Input, Message, Popconfirm } from '@arco-design/web-react';
+import { Button, Input, Message, Popconfirm } from '@arco-design/web-react';
 import { IconDelete, IconEdit, IconLoading } from '@arco-design/web-react/icon';
 import { clearCache, useRequest, useResetState } from 'ahooks';
 import classNames from 'classnames';
@@ -163,6 +163,7 @@ const ClassCard: React.FC = () => {
     navigate(`/admin/article?searchClass=${encodeURIComponent(classText)}`);
   };
 
+  const noClassId = '000xxx000';
   const getNoClass = () => {
     let sum = 0;
     classes.value.forEach((item: any) => {
@@ -170,7 +171,7 @@ const ClassCard: React.FC = () => {
     });
 
     return {
-      _id: '0000',
+      _id: noClassId,
       class: '未分类',
       count: `${articles.count.value - sum}`
     };
@@ -210,19 +211,28 @@ const ClassCard: React.FC = () => {
                       《{classText}》
                     </div>
                   </div>
-                  <div className={s.classBtn} onClick={() => openModal(_id)}>
-                    <IconEdit />
-                  </div>
+                  <Button
+                    type='primary'
+                    className={s.classBtn}
+                    icon={<IconEdit />}
+                    onClick={() => openModal(_id)}
+                    disabled={_id === noClassId}
+                  />
                   <Popconfirm
                     position='br'
                     title={`确定要删除《${classText}》吗？`}
                     onOk={() => deleteClass(_id, classText)}
                     okText='Yes'
                     cancelText='No'
+                    disabled={_id === noClassId}
                   >
-                    <div className={classNames(s.classBtn, s.classBtnDanger)}>
-                      <IconDelete />
-                    </div>
+                    <Button
+                      type='primary'
+                      status='danger'
+                      className={s.classBtn}
+                      icon={<IconDelete />}
+                      disabled={_id === noClassId}
+                    />
                   </Popconfirm>
                 </div>
               )
