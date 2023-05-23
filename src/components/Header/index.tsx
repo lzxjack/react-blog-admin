@@ -1,4 +1,4 @@
-import { Notification, Popconfirm } from '@arco-design/web-react';
+import { Message, Popconfirm } from '@arco-design/web-react';
 import React from 'react';
 import { IoHome, IoLogOut } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
@@ -15,12 +15,7 @@ const Header: React.FC = () => {
 
   const logout = () => {
     localStorage.clear();
-    Notification.success({
-      title: '退出登录',
-      content: '已退出个人博客后台管理系统！',
-      position: 'bottomLeft',
-      duration: 1.5
-    });
+    Message.success('已退出个人博客后台管理系统！');
     navigate('/');
   };
 

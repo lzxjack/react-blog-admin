@@ -11,6 +11,7 @@ import notice from '@/redux/slices/notice';
 import says from '@/redux/slices/says';
 import shows from '@/redux/slices/shows';
 import tags from '@/redux/slices/tags';
+import { nowEnv } from '@/utils/constant';
 
 export default configureStore({
   reducer: {
@@ -26,5 +27,5 @@ export default configureStore({
     drafts,
     shows
   },
-  devTools: process.env.NODE_ENV !== 'production'
+  devTools: nowEnv !== 'prod'
 });

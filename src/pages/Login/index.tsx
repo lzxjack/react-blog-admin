@@ -1,4 +1,4 @@
-import { Button, Input, Notification } from '@arco-design/web-react';
+import { Button, Input, Message } from '@arco-design/web-react';
 import { useTitle } from 'ahooks';
 import React, { useState } from 'react';
 import { BiLockAlt, BiUser } from 'react-icons/bi';
@@ -23,43 +23,19 @@ const Login: React.FC = () => {
       const res = await auth.anonymousAuthProvider().signIn();
       if (res.isAnonymousAuth) {
         navigate('admin');
-        Notification.success({
-          title: '登录成功',
-          content: '欢迎进入个人博客后台管理系统！',
-          position: 'bottomLeft',
-          duration: 1.5
-        });
+        Message.success('登录成功！欢迎进入个人博客后台管理系统！');
       }
       return;
     }
     if (!email || !password) {
-      Notification.warning({
-        title: '登录失败',
-        content: '请输入账号、密码！',
-        position: 'bottomLeft',
-        duration: 1.5
-      });
+      Message.warning('登录失败！请输入账号、密码！');
       return;
     }
     const res = await authLoginAPI(Email, pwd);
     res && navigate('admin');
-    openLoginNoti(res);
-  };
-
-  const openLoginNoti = (state: boolean) => {
-    state
-      ? Notification.success({
-          title: '登录成功',
-          content: '欢迎进入个人博客后台管理系统！',
-          position: 'bottomLeft',
-          duration: 1.5
-        })
-      : Notification.error({
-          title: '登录失败',
-          content: '用户名或密码不正确，请重新登录！',
-          position: 'bottomLeft',
-          duration: 1.5
-        });
+    res
+      ? Message.success('登录成功！欢迎进入个人博客后台管理系统！')
+      : Message.warning('登录失败！用户名或密码不正确，请重新登录！');
   };
 
   return (
