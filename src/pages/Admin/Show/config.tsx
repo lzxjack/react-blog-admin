@@ -13,6 +13,10 @@ interface Props {
 
 export const useColumns = ({ handleEdit, handleDelete, deleteProps }: Props) => [
   {
+    title: '序号',
+    dataIndex: 'order'
+  },
+  {
     title: '封面',
     dataIndex: 'cover',
     render: (url: string) => (

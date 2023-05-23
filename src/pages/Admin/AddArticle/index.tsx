@@ -176,6 +176,8 @@ const AddArticle: React.FC = () => {
       if (type === 'post') {
         // 发布
         classCountChange(classText, 'add', classesRun);
+      } else {
+        classesRun();
       }
     } else {
       // 编辑页面
@@ -187,6 +189,8 @@ const AddArticle: React.FC = () => {
           if (classText !== defaultClassText) {
             classCountChange(classText, 'add', classesRun);
             classCountChange(defaultClassText, 'min', classesRun);
+          } else {
+            classesRun();
           }
         } else {
           // 存草稿
@@ -197,6 +201,8 @@ const AddArticle: React.FC = () => {
         if (type === 'post') {
           // 发布
           classCountChange(classText, 'add', classesRun);
+        } else {
+          classesRun();
         }
       }
     }
