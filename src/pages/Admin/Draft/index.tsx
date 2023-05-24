@@ -1,8 +1,10 @@
 import { useTitle } from 'ahooks';
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import MyTable from '@/components/MyTable';
+import { resetArticleData } from '@/redux/slices/articles';
 import { _ } from '@/utils/cloudBase';
 import { defaultPageSize, siteTitle } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
@@ -27,10 +29,23 @@ const Draft: React.FC = () => {
     where: { post: _.eq(false) }
   });
 
-  useUpdateData(() => {
-    dataRun();
-    totalRun();
-  });
+  const dispatch = useDispatch();
+
+  useUpdateData([
+    {
+      key: 'updated',
+      run: () => {
+        dataRun();
+        totalRun();
+      }
+    },
+    {
+      key: 'clear',
+      run: () => {
+        dispatch(resetArticleData());
+      }
+    }
+  ]);
 
   const handleEdit = (id: string) => {
     navigate(`/admin/addArticle?id=${id}&from=draft`);

@@ -1,6 +1,6 @@
 import { Input, Message, Popconfirm } from '@arco-design/web-react';
 import { IconDelete, IconEdit, IconLoading } from '@arco-design/web-react/icon';
-import { clearCache, useMount, useRequest, useResetState } from 'ahooks';
+import { useMount, useRequest, useResetState } from 'ahooks';
 import classNames from 'classnames';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { selectTag } from '@/redux/selectors';
+import { resetArticleData } from '@/redux/slices/articles';
+import { resetDraftData } from '@/redux/slices/drafts';
 import { setTags } from '@/redux/slices/tags';
 import { addDataAPI } from '@/utils/apis/addData';
 import { deleteDataAPI } from '@/utils/apis/deleteData';
@@ -69,6 +71,8 @@ const TagCard: React.FC = () => {
             Message.warning(visitorText);
           } else if (res.success && res.permission) {
             Message.success(`更新数据库标签成功！`);
+            dispatch(resetArticleData());
+            dispatch(resetDraftData());
           } else {
             Message.warning(failText);
           }
@@ -89,6 +93,8 @@ const TagCard: React.FC = () => {
         Message.warning(visitorText);
       } else if (res.success && res.permission) {
         Message.success(`更新数据库标签成功！`);
+        dispatch(resetArticleData());
+        dispatch(resetDraftData());
       } else {
         Message.warning(failText);
       }
@@ -140,7 +146,7 @@ const TagCard: React.FC = () => {
       } else if (res.success && res.permission) {
         Message.success('修改成功！');
         modalCancel();
-        flushSync(() => clearCache(`${DB.Tag}-data`));
+        // flushSync(() => clearCache(`${DB.Tag}-data`));
         flushSync(() => run());
         updateTagFromDB({
           oldTag,
@@ -171,7 +177,7 @@ const TagCard: React.FC = () => {
       } else if (res.success && res.permission) {
         Message.success('添加成功！');
         resetNewTag();
-        flushSync(() => clearCache(`${DB.Tag}-data`));
+        // flushSync(() => clearCache(`${DB.Tag}-data`));
         flushSync(() => run());
       } else {
         Message.warning(failText);
@@ -189,7 +195,7 @@ const TagCard: React.FC = () => {
         Message.warning(visitorText);
       } else if (res.success && res.permission) {
         Message.success('删除成功！');
-        flushSync(() => clearCache(`${DB.Tag}-data`));
+        // flushSync(() => clearCache(`${DB.Tag}-data`));
         flushSync(() => run());
         deleteTagFromDB(tagWillDeletd);
       } else {

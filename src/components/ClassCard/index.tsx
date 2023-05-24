@@ -1,6 +1,6 @@
 import { Button, Input, Message, Popconfirm } from '@arco-design/web-react';
 import { IconDelete, IconEdit, IconLoading } from '@arco-design/web-react/icon';
-import { clearCache, useRequest, useResetState } from 'ahooks';
+import { useRequest, useResetState } from 'ahooks';
 import classNames from 'classnames';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
@@ -8,7 +8,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import { selectArticle, selectClass } from '@/redux/selectors';
+import { resetArticleData } from '@/redux/slices/articles';
 import { setClasses } from '@/redux/slices/classes';
+import { resetDraftData } from '@/redux/slices/drafts';
 import { addDataAPI } from '@/utils/apis/addData';
 import { deleteDataAPI } from '@/utils/apis/deleteData';
 import { getDataAPI } from '@/utils/apis/getData';
@@ -86,7 +88,6 @@ const ClassCard: React.FC = () => {
       } else if (res.success && res.permission) {
         Message.success('修改成功！');
         modalCancel();
-        flushSync(() => clearCache(`${DB.Class}-data`));
         flushSync(() => run());
         updateClassFromDB(oldClassText, classText);
       } else {
@@ -115,7 +116,6 @@ const ClassCard: React.FC = () => {
         } else if (res.success && res.permission) {
           Message.success('添加成功！');
           resetNewClassText();
-          flushSync(() => clearCache(`${DB.Class}-data`));
           flushSync(() => run());
         } else {
           Message.warning(failText);
@@ -134,6 +134,8 @@ const ClassCard: React.FC = () => {
         Message.warning(visitorText);
       } else if (res.success && res.permission) {
         Message.success(`更新数据库分类成功！`);
+        dispatch(resetArticleData());
+        dispatch(resetDraftData());
       } else {
         Message.warning(failText);
       }
@@ -150,7 +152,6 @@ const ClassCard: React.FC = () => {
         Message.warning(visitorText);
       } else if (res.success && res.permission) {
         Message.success('删除成功！');
-        flushSync(() => clearCache(`${DB.Class}-data`));
         flushSync(() => run());
         updateClassFromDB(classText, '');
       } else {

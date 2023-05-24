@@ -103,7 +103,9 @@ const AddArticle: React.FC = () => {
       } else if (res.success && res.permission) {
         Message.success(type === 'post' ? '发布文章成功！' : '保存草稿成功！');
         navigate(
-          `${type === 'post' ? '/admin/article' : '/admin/draft'}?page=1&updated=1`
+          `${
+            type === 'post' ? '/admin/article' : '/admin/draft'
+          }?page=1&updated=1&clear=1`
         );
       } else {
         Message.warning(failText);
@@ -118,7 +120,9 @@ const AddArticle: React.FC = () => {
       } else if (res.success && res.permission) {
         Message.success(type === 'post' ? '更新文章成功！' : '保存草稿成功！');
         navigate(
-          `${type === 'post' ? '/admin/article' : '/admin/draft'}?page=1&updated=1`
+          `${
+            type === 'post' ? '/admin/article' : '/admin/draft'
+          }?page=1&updated=1&clear=1`
         );
       } else {
         Message.warning(failText);

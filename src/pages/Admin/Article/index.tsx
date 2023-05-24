@@ -12,6 +12,7 @@ import MyTable from '@/components/MyTable';
 import PageHeader from '@/components/PageHeader';
 import { selectClass, selectTag } from '@/redux/selectors';
 import { setClasses } from '@/redux/slices/classes';
+import { resetDraftData } from '@/redux/slices/drafts';
 import { setTags } from '@/redux/slices/tags';
 import { deleteDataAPI } from '@/utils/apis/deleteData';
 import { getDataAPI } from '@/utils/apis/getData';
@@ -97,10 +98,21 @@ const Article: React.FC = () => {
     classesRun
   });
 
-  useUpdateData(() => {
-    dataRun();
-    totalRun();
-  });
+  useUpdateData([
+    {
+      key: 'updated',
+      run: () => {
+        dataRun();
+        totalRun();
+      }
+    },
+    {
+      key: 'clear',
+      run: () => {
+        dispatch(resetDraftData());
+      }
+    }
+  ]);
 
   // TODO: 自己写API
   const { run: searchRun, loading: searchLoading } = useRequest(

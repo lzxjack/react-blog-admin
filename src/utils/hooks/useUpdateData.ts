@@ -1,7 +1,12 @@
 import { useMount } from 'ahooks';
 import { useSearchParams } from 'react-router-dom';
 
-export const useUpdateData = (run: Function) => {
+export const useUpdateData = (
+  keyMaps: {
+    key: string;
+    run: Function;
+  }[]
+) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const handleDeleteParam = (param: string) => {
@@ -11,10 +16,12 @@ export const useUpdateData = (run: Function) => {
   };
 
   useMount(() => {
-    const updated = searchParams.get('updated');
-    if (updated === '1') {
-      run();
-      handleDeleteParam('updated');
-    }
+    keyMaps.forEach(({ key, run }) => {
+      const theKey = searchParams.get(key);
+      if (theKey === '1') {
+        run();
+        handleDeleteParam(key);
+      }
+    });
   });
 };

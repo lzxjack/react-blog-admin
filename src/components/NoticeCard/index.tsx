@@ -1,6 +1,6 @@
 import { Input, Message } from '@arco-design/web-react';
 import { IconLoading } from '@arco-design/web-react/icon';
-import { clearCache, useMount, useRequest, useResetState } from 'ahooks';
+import { useMount, useRequest, useResetState } from 'ahooks';
 import classNames from 'classnames';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
@@ -69,7 +69,6 @@ const NoticeCard: React.FC = () => {
       } else if (res.success && res.permission) {
         Message.success('修改成功！');
         modalCancel();
-        flushSync(() => clearCache(`${DB.Notice}-data`));
         flushSync(() => run());
       } else {
         Message.warning(failText);

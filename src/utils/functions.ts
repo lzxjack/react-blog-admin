@@ -64,7 +64,7 @@ export const classCountChange = (
     if (!res.success && !res.permission) {
       Message.warning(visitorText);
     } else if (res.success && res.permission) {
-      Message.success(`《${classText}》数量${type === 'add' ? 1 : -1}`);
+      Message.success(`《${classText}》数量${type === 'add' ? '+1' : '-1'}`);
       callback?.();
     } else {
       Message.warning(failText);
