@@ -13,6 +13,7 @@ import { setTags } from '@/redux/slices/tags';
 import { addDataAPI } from '@/utils/apis/addData';
 import { getDataAPI } from '@/utils/apis/getData';
 import { getDataByIdAPI } from '@/utils/apis/getDataById';
+import { getWhereDataAPI } from '@/utils/apis/getWhereData';
 import { updateDataAPI } from '@/utils/apis/updateData';
 import { _ } from '@/utils/cloudBase';
 import { failText, siteTitle, visitorText } from '@/utils/constant';
@@ -125,6 +126,14 @@ const AddArticle: React.FC = () => {
     });
   };
 
+  const isArticleUnique = async () => {
+    const res = await getWhereDataAPI(DB.Article, {
+      titleEng: _.eq(titleEng)
+    });
+    const sameEngInArticles = res.data.filter(({ _id }: { _id: string }) => _id !== id);
+    return !sameEngInArticles.length;
+  };
+
   // 新建页面：
   //   发布：
   //     选择了分类：classCount++
@@ -145,7 +154,7 @@ const AddArticle: React.FC = () => {
   //       未选择分类：
   //     存草稿：
 
-  const postArticle = (type: 'post' | 'draft') => {
+  const postArticle = async (type: 'post' | 'draft') => {
     if (!title || !titleEng || !date || !content) {
       Message.info('请至少输入中英文标题、时间、正文！');
       return;
@@ -169,6 +178,11 @@ const AddArticle: React.FC = () => {
       url: `https://lzxjack.top/post?title=${titleEng}`,
       post: type === 'post'
     };
+
+    if (!(await isArticleUnique())) {
+      Message.warning('英文标题已存在！');
+      return;
+    }
 
     if (!id) {
       // 新建页面
