@@ -15,10 +15,17 @@ const classes = createSlice({
         value,
         isDone: true
       };
+    },
+    resetClasses: (state: any) => {
+      return {
+        ...state,
+        value: [],
+        isDone: false
+      };
     }
   }
 });
 
-export const { setClasses } = classes.actions;
+export const { setClasses, resetClasses } = classes.actions;
 
 export default classes.reducer;

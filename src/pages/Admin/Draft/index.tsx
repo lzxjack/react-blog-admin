@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import MyTable from '@/components/MyTable';
-import { resetArticleData } from '@/redux/slices/articles';
+import { resetArticleCount, resetArticleData } from '@/redux/slices/articles';
 import { _ } from '@/utils/cloudBase';
 import { defaultPageSize, siteTitle } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
@@ -40,9 +40,10 @@ const Draft: React.FC = () => {
       }
     },
     {
-      key: 'clear',
+      key: 'clearOther',
       run: () => {
         dispatch(resetArticleData());
+        dispatch(resetArticleCount());
       }
     }
   ]);

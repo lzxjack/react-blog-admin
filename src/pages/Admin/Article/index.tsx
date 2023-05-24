@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import MyTable from '@/components/MyTable';
 import PageHeader from '@/components/PageHeader';
 import { selectClass, selectTag } from '@/redux/selectors';
-import { setClasses } from '@/redux/slices/classes';
+import { resetClasses, setClasses } from '@/redux/slices/classes';
 import { resetDraftData } from '@/redux/slices/drafts';
 import { setTags } from '@/redux/slices/tags';
 import { deleteDataAPI } from '@/utils/apis/deleteData';
@@ -107,7 +107,7 @@ const Article: React.FC = () => {
       }
     },
     {
-      key: 'clear',
+      key: 'clearOther',
       run: () => {
         dispatch(resetDraftData());
       }
@@ -182,7 +182,9 @@ const Article: React.FC = () => {
         const newSearchData = searchData.filter(({ _id }: { _id: string }) => _id !== id);
         const classText = searchData.filter(({ _id }: { _id: string }) => _id === id)[0]
           .classes;
-        classCountChange(classText, 'min', classesRun);
+        classCountChange(classText, 'min', () => {
+          dispatch(resetClasses());
+        });
         flushSync(() => setSearchData(newSearchData));
         flushSync(() => {
           dispatch(reduxMap[DB.Article].dataResetReducer());

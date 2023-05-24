@@ -8,7 +8,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import MarkDown from '@/components/MarkDown';
 import { selectClass, selectTag } from '@/redux/selectors';
-import { setClasses } from '@/redux/slices/classes';
+import { resetClasses, setClasses } from '@/redux/slices/classes';
 import { setTags } from '@/redux/slices/tags';
 import { addDataAPI } from '@/utils/apis/addData';
 import { getDataAPI } from '@/utils/apis/getData';
@@ -105,7 +105,7 @@ const AddArticle: React.FC = () => {
         navigate(
           `${
             type === 'post' ? '/admin/article' : '/admin/draft'
-          }?page=1&updated=1&clear=1`
+          }?page=1&updated=1&clearOther=1`
         );
       } else {
         Message.warning(failText);
@@ -122,7 +122,7 @@ const AddArticle: React.FC = () => {
         navigate(
           `${
             type === 'post' ? '/admin/article' : '/admin/draft'
-          }?page=1&updated=1&clear=1`
+          }?page=1&updated=1&clearOther=1`
         );
       } else {
         Message.warning(failText);
@@ -193,9 +193,11 @@ const AddArticle: React.FC = () => {
       addData(type, data);
       if (type === 'post') {
         // 发布
-        classCountChange(classText, 'add', classesRun);
+        classCountChange(classText, 'add', () => {
+          dispatch(resetClasses());
+        });
       } else {
-        classesRun();
+        dispatch(resetClasses());
       }
     } else {
       // 编辑页面
@@ -205,22 +207,30 @@ const AddArticle: React.FC = () => {
         if (type === 'post') {
           // 发布
           if (classText !== defaultClassText) {
-            classCountChange(classText, 'add', classesRun);
-            classCountChange(defaultClassText, 'min', classesRun);
+            classCountChange(classText, 'add', () => {
+              dispatch(resetClasses());
+            });
+            classCountChange(defaultClassText, 'min', () => {
+              dispatch(resetClasses());
+            });
           } else {
-            classesRun();
+            dispatch(resetClasses());
           }
         } else {
           // 存草稿
-          classCountChange(defaultClassText, 'min', classesRun);
+          classCountChange(defaultClassText, 'min', () => {
+            dispatch(resetClasses());
+          });
         }
       } else {
         // 草稿页进来
         if (type === 'post') {
           // 发布
-          classCountChange(classText, 'add', classesRun);
+          classCountChange(classText, 'add', () => {
+            dispatch(resetClasses());
+          });
         } else {
-          classesRun();
+          dispatch(resetClasses());
         }
       }
     }

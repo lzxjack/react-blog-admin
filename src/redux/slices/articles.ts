@@ -44,10 +44,20 @@ const articles = createSlice({
           done: []
         }
       };
+    },
+    resetArticleCount: (state: any) => {
+      return {
+        ...state,
+        count: {
+          value: 0,
+          isDone: false
+        }
+      };
     }
   }
 });
 
-export const { setArticleCount, setArticleData, resetArticleData } = articles.actions;
+export const { setArticleCount, setArticleData, resetArticleData, resetArticleCount } =
+  articles.actions;
 
 export default articles.reducer;

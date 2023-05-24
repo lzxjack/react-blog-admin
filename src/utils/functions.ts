@@ -53,9 +53,12 @@ export const containsChineseCharacters = (str: string) => {
 export const classCountChange = (
   classText: string,
   type: 'add' | 'min',
-  callback?: () => void
+  callback: Function
 ) => {
-  if (!classText) return;
+  if (!classText) {
+    callback();
+    return;
+  }
   updateWhereDataAPI(
     DB.Class,
     { class: classText },
@@ -65,7 +68,7 @@ export const classCountChange = (
       Message.warning(visitorText);
     } else if (res.success && res.permission) {
       Message.success(`《${classText}》数量${type === 'add' ? '+1' : '-1'}`);
-      callback?.();
+      callback();
     } else {
       Message.warning(failText);
     }

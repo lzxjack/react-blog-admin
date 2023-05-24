@@ -35,7 +35,14 @@ const About: React.FC = () => {
     }
   });
 
-  useUpdateData([{ key: 'updated', run }]);
+  useUpdateData([
+    {
+      key: 'updated',
+      run: () => {
+        run();
+      }
+    }
+  ]);
 
   return (
     <div className={s.aboutBox}>

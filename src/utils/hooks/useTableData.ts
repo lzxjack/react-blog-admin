@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { flushSync } from 'react-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { resetClasses } from '@/redux/slices/classes';
 import { getTotalAPI } from '@/utils/apis/getTotal';
 import { getWhereOrderPageDataAPI } from '@/utils/apis/getWhereOrderPageData';
 import { defaultPageSize, failText, visitorText } from '@/utils/constant';
@@ -56,7 +57,7 @@ export const useTableData = ({
   isAsc = false,
   pageSize = defaultPageSize,
   where = {},
-  classesRun
+  classesRun = () => {}
 }: Props) => {
   const dispatch = useDispatch();
   const reduxData = useSelector(reduxMap[type as keyof typeof reduxMap].selector);
@@ -120,7 +121,9 @@ export const useTableData = ({
           const classText = reduxData.data.value[page].filter(
             ({ _id }: { _id: string }) => _id === id
           )[0].classes;
-          classCountChange(classText, 'min', classesRun);
+          classCountChange(classText, 'min', () => {
+            dispatch(resetClasses());
+          });
         }
         flushSync(() => {
           dispatch(reduxMap[type as keyof typeof reduxMap].dataResetReducer());
