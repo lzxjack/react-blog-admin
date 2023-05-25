@@ -142,7 +142,6 @@ const Article: React.FC = () => {
           }
         );
         setSearchData(result);
-        setPage(1);
         setShowSearchData(true);
         Message.success('搜索成功！');
       }
@@ -165,6 +164,7 @@ const Article: React.FC = () => {
       Message.info('请选择搜索内容！');
       return;
     }
+    setPage(1);
     searchRun();
   };
 
