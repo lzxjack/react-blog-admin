@@ -234,7 +234,10 @@ const Article = ({
         count: _.inc(-1)
       })
       .then(res => {
-        if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') return;
+        if (res.code && res.code === 'DATABASE_PERMISSION_DENIED') {
+          message.warning(visitorText);
+          return;
+        }
         getAllClasses();
       });
   };
