@@ -27,7 +27,7 @@ const Login: React.FC = () => {
       }
       return;
     }
-    if (!email || !password) {
+    if (!Email || !pwd) {
       Message.warning('登录失败！请输入账号、密码！');
       return;
     }
