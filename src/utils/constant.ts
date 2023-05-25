@@ -3,8 +3,7 @@
 export const nowEnv: 'test' | 'prod' = 'prod';
 
 // 旧版链接
-export const oldVersionUrl =
-  'https://react-blog-admin-8fo571wf24c87f9-1304393382.tcloudbaseapp.com';
+export const oldVersionUrl = 'http://124.220.38.92:84';
 
 // 个人基本信息
 export const userAvatar = 'https://img.lzxjack.top:99/202304061855646.webp';
