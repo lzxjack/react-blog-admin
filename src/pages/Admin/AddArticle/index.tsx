@@ -15,7 +15,7 @@ import { getDataAPI } from '@/utils/apis/getData';
 import { getDataByIdAPI } from '@/utils/apis/getDataById';
 import { getWhereDataAPI } from '@/utils/apis/getWhereData';
 import { updateDataAPI } from '@/utils/apis/updateData';
-import { _ } from '@/utils/cloudBase';
+import { _, isAdmin } from '@/utils/cloudBase';
 import { failText, siteTitle, visitorText } from '@/utils/constant';
 import { DB } from '@/utils/dbConfig';
 import {
@@ -169,6 +169,10 @@ const AddArticle: React.FC = () => {
     }
     if (!isValidDateString(date, true)) {
       Message.info('日期字符串不合法！');
+      return;
+    }
+    if (!isAdmin()) {
+      Message.warning(visitorText);
       return;
     }
 
