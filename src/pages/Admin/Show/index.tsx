@@ -2,6 +2,7 @@ import { useResetState, useTitle } from 'ahooks';
 import React, { useState } from 'react';
 
 import CustomModal from '@/components/CustomModal';
+import ImgView from '@/components/ImgView';
 import MyTable from '@/components/MyTable';
 import PageHeader from '@/components/PageHeader';
 import { showPageSize, siteTitle } from '@/utils/constant';
@@ -25,6 +26,9 @@ const Show: React.FC = () => {
   const [descr, setDescr, resetDescr] = useResetState('');
   const [cover, setCover, resetCover] = useResetState('');
   const [link, setLink, resetLink] = useResetState('');
+
+  const [imgUrl, setImgUrl] = useState('');
+  const [isViewShow, setIsViewShow] = useState(false);
 
   const dataFilter = [
     {
@@ -112,6 +116,10 @@ const Show: React.FC = () => {
     deleteProps: {
       page,
       setPage
+    },
+    onClickImg: (url: string) => {
+      setIsViewShow(true);
+      setImgUrl(url);
     }
   });
 
@@ -145,6 +153,11 @@ const Show: React.FC = () => {
         modalOk={handleModalOk}
         modalCancel={modalCancel}
         dataFilter={dataFilter}
+      />
+      <ImgView
+        isViewShow={isViewShow}
+        viewUrl={imgUrl}
+        onClick={() => setIsViewShow(false)}
       />
     </>
   );

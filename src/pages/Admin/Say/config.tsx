@@ -11,9 +11,15 @@ interface Props {
   handleEdit: (id: string) => void;
   handleDelete: (id: string, props: DeleteProps) => void;
   deleteProps: DeleteProps;
+  onClickImg: (url: string) => void;
 }
 
-export const useColumns = ({ handleEdit, handleDelete, deleteProps }: Props) => [
+export const useColumns = ({
+  handleEdit,
+  handleDelete,
+  deleteProps,
+  onClickImg
+}: Props) => [
   {
     title: '发布日期',
     dataIndex: 'date',
@@ -30,7 +36,7 @@ export const useColumns = ({ handleEdit, handleDelete, deleteProps }: Props) => 
           content={
             <div className={s.imgsBox}>
               {imgs?.map((url, index) => (
-                <div key={index} className={s.imgDiv}>
+                <div key={index} className={s.imgDiv} onClick={() => onClickImg(url)}>
                   <img src={url} alt='img' className={s.img} />
                 </div>
               ))}

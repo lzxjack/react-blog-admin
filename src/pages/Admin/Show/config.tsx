@@ -9,9 +9,15 @@ interface Props {
   handleEdit: (id: string) => void;
   handleDelete: (id: string, props: DeleteProps) => void;
   deleteProps: DeleteProps;
+  onClickImg: (url: string) => void;
 }
 
-export const useColumns = ({ handleEdit, handleDelete, deleteProps }: Props) => [
+export const useColumns = ({
+  handleEdit,
+  handleDelete,
+  deleteProps,
+  onClickImg
+}: Props) => [
   {
     title: '序号',
     dataIndex: 'order'
@@ -21,7 +27,12 @@ export const useColumns = ({ handleEdit, handleDelete, deleteProps }: Props) => 
     dataIndex: 'cover',
     render: (url: string) => (
       <div className={s.tableCoverBox}>
-        <img src={url} alt='cover' className={s.tableCover} />
+        <img
+          src={url}
+          alt='cover'
+          className={s.tableCover}
+          onClick={() => onClickImg(url)}
+        />
       </div>
     )
   },

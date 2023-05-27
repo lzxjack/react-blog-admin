@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 
 import CustomModal from '@/components/CustomModal';
 import Emoji from '@/components/Emoji';
+import ImgView from '@/components/ImgView';
 import MyTable from '@/components/MyTable';
 import PageHeader from '@/components/PageHeader';
 import { siteTitle } from '@/utils/constant';
@@ -12,7 +13,6 @@ import { DB } from '@/utils/dbConfig';
 import { usePage } from '@/utils/hooks/usePage';
 import { useTableData } from '@/utils/hooks/useTableData';
 
-import sLog from '../Log/index.scss';
 import { Title } from '../titleConfig';
 import { useColumns } from './config';
 
@@ -29,6 +29,9 @@ const Say: React.FC = () => {
   const [date, setDate, resetDate] = useResetState('');
   const [content, setContent, resetContent] = useResetState('');
   const [imgs, setImgs, resetImgs] = useResetState<string[]>([]);
+
+  const [imgUrl, setImgUrl] = useState('');
+  const [isViewShow, setIsViewShow] = useState(false);
 
   const dataFilter = [
     {
@@ -102,6 +105,10 @@ const Say: React.FC = () => {
     deleteProps: {
       page,
       setPage
+    },
+    onClickImg: (url: string) => {
+      setIsViewShow(true);
+      setImgUrl(url);
     }
   });
 
@@ -162,7 +169,6 @@ const Say: React.FC = () => {
         page={page}
         setPage={setPage}
       />
-
       <CustomModal
         isEdit={isEdit}
         isModalOpen={isModalOpen}
@@ -172,6 +178,11 @@ const Say: React.FC = () => {
         render={render}
         addText='发表'
         updateText='修改'
+      />
+      <ImgView
+        isViewShow={isViewShow}
+        viewUrl={imgUrl}
+        onClick={() => setIsViewShow(false)}
       />
     </>
   );

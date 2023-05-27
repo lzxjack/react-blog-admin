@@ -1,0 +1,33 @@
+@import '../../styles/style.scss';
+
+.view {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  width: 100vw;
+  height: 100vh;
+  z-index: 1001; /* arco design 中 Popover 组件的 z-index 为 1000 */
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @extend .trans;
+
+  .img {
+    width: 100%;
+  }
+}
+
+.show {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+@media screen and (max-width: 1240px) {
+  .view {
+    .img {
+      height: auto;
+      width: 100%;
+    }
+  }
+}
