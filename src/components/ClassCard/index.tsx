@@ -228,6 +228,7 @@ const ClassCard: React.FC = () => {
                     disabled={_id === noClassId}
                   >
                     <Button
+                      style={{ width: 30, height: 30 }}
                       type='primary'
                       status='danger'
                       className={s.classBtn}
