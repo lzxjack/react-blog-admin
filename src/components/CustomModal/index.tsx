@@ -1,4 +1,5 @@
 import { Input, Modal } from '@arco-design/web-react';
+import { useMemoizedFn } from 'ahooks';
 import React from 'react';
 
 import { DB } from '@/utils/dbConfig';
@@ -30,7 +31,7 @@ const CustomModal: React.FC<Props> = ({
   updateText = '更新',
   render
 }) => {
-  const dataFilterRes = () =>
+  const dataFilterRes = useMemoizedFn(() =>
     dataFilter.map(({ text, data, setData }, index) => (
       <Input
         size='large'
@@ -40,7 +41,8 @@ const CustomModal: React.FC<Props> = ({
         onChange={value => setData(value)}
         className={s.modalInput}
       />
-    ));
+    ))
+  );
 
   return (
     <Modal

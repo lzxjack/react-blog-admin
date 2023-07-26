@@ -1,6 +1,6 @@
 import { Button, Input, Message, Popconfirm } from '@arco-design/web-react';
 import { IconDelete, IconEdit, IconLoading } from '@arco-design/web-react/icon';
-import { useRequest, useResetState } from 'ahooks';
+import { useMemoizedFn, useRequest, useResetState } from 'ahooks';
 import classNames from 'classnames';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
@@ -24,6 +24,7 @@ import CustomModal from '../CustomModal';
 import s from './index.scss';
 
 const { Search } = Input;
+const noClassId = '000xxx000';
 
 const ClassCard: React.FC = () => {
   const navigate = useNavigate();
@@ -45,15 +46,17 @@ const ClassCard: React.FC = () => {
     }
   });
 
-  const isExist = (
-    content: string,
-    data: { class?: string; tag?: string }[],
-    type: 'class' | 'tag'
-  ) => {
-    return data.some(item => item[type as keyof typeof item] === content);
-  };
+  const isExist = useMemoizedFn(
+    (
+      content: string,
+      data: { class?: string; tag?: string }[],
+      type: 'class' | 'tag'
+    ) => {
+      return data.some(item => item[type as keyof typeof item] === content);
+    }
+  );
 
-  const openModal = (id: string) => {
+  const openModal = useMemoizedFn((id: string) => {
     setIsModalOpen(true);
     setId(id);
     for (const { _id, class: classText } of classes.value) {
@@ -63,13 +66,13 @@ const ClassCard: React.FC = () => {
         break;
       }
     }
-  };
+  });
 
-  const modalCancel = () => {
+  const modalCancel = useMemoizedFn(() => {
     setIsModalOpen(false);
-  };
+  });
 
-  const modalOk = () => {
+  const modalOk = useMemoizedFn(() => {
     if (!classText) {
       Message.warning('请输入分类名称~');
       return;
@@ -94,9 +97,9 @@ const ClassCard: React.FC = () => {
         Message.warning(failText);
       }
     });
-  };
+  });
 
-  const addNewClass = () => {
+  const addNewClass = useMemoizedFn(() => {
     if (!newClassText) {
       Message.warning('请输入分类名称~');
       return;
@@ -122,27 +125,29 @@ const ClassCard: React.FC = () => {
         }
       }
     );
-  };
+  });
 
-  const updateClassFromDB = (oldClassText: string, newClassText: string) => {
-    updateWhereDataAPI(
-      DB.Article,
-      { classes: _.eq(oldClassText) },
-      { classes: newClassText }
-    ).then(res => {
-      if (!res.success && !res.permission) {
-        Message.warning(visitorText);
-      } else if (res.success && res.permission) {
-        Message.success(`更新数据库分类成功！`);
-        dispatch(resetArticleData());
-        dispatch(resetDraftData());
-      } else {
-        Message.warning(failText);
-      }
-    });
-  };
+  const updateClassFromDB = useMemoizedFn(
+    (oldClassText: string, newClassText: string) => {
+      updateWhereDataAPI(
+        DB.Article,
+        { classes: _.eq(oldClassText) },
+        { classes: newClassText }
+      ).then(res => {
+        if (!res.success && !res.permission) {
+          Message.warning(visitorText);
+        } else if (res.success && res.permission) {
+          Message.success(`更新数据库分类成功！`);
+          dispatch(resetArticleData());
+          dispatch(resetDraftData());
+        } else {
+          Message.warning(failText);
+        }
+      });
+    }
+  );
 
-  const deleteClass = (id: string, classText: string) => {
+  const deleteClass = useMemoizedFn((id: string, classText: string) => {
     if (!isAdmin()) {
       Message.warning(visitorText);
       return;
@@ -158,14 +163,13 @@ const ClassCard: React.FC = () => {
         Message.warning(failText);
       }
     });
-  };
+  });
 
-  const toArticle = (classText: string) => {
+  const toArticle = useMemoizedFn((classText: string) => {
     navigate(`/admin/article?searchClass=${encodeURIComponent(classText)}`);
-  };
+  });
 
-  const noClassId = '000xxx000';
-  const getNoClass = () => {
+  const getNoClass = useMemoizedFn(() => {
     let sum = 0;
     classes.value.forEach((item: any) => {
       sum += item.count;
@@ -176,7 +180,7 @@ const ClassCard: React.FC = () => {
       class: '未分类',
       count: `${articles.count.value - sum}`
     };
-  };
+  });
 
   return (
     <>

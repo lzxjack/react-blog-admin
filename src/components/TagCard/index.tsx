@@ -1,6 +1,6 @@
 import { Input, Message, Popconfirm } from '@arco-design/web-react';
 import { IconDelete, IconEdit, IconLoading } from '@arco-design/web-react/icon';
-import { useMount, useRequest, useResetState } from 'ahooks';
+import { useMemoizedFn, useMount, useRequest, useResetState } from 'ahooks';
 import classNames from 'classnames';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
@@ -51,39 +51,41 @@ const TagCard: React.FC = () => {
     }
   });
 
-  const updateTagFromDB = ({ oldTag, newTag }: { oldTag: string; newTag: string }) => {
-    // 1. 添加新标签
-    updateWhereDataAPI(
-      DB.Article,
-      { tags: _.all([oldTag]) },
-      { tags: _.addToSet(newTag) }
-    ).then(res => {
-      if (!res.success && !res.permission) {
-        Message.warning(visitorText);
-      } else if (res.success && res.permission) {
-        // 2. 删除旧标签
-        updateWhereDataAPI(
-          DB.Article,
-          { tags: _.all([oldTag]) },
-          { tags: _.pull(oldTag) }
-        ).then(res => {
-          if (!res.success && !res.permission) {
-            Message.warning(visitorText);
-          } else if (res.success && res.permission) {
-            Message.success(`更新数据库标签成功！`);
-            dispatch(resetArticleData());
-            dispatch(resetDraftData());
-          } else {
-            Message.warning(failText);
-          }
-        });
-      } else {
-        Message.warning(failText);
-      }
-    });
-  };
+  const updateTagFromDB = useMemoizedFn(
+    ({ oldTag, newTag }: { oldTag: string; newTag: string }) => {
+      // 1. 添加新标签
+      updateWhereDataAPI(
+        DB.Article,
+        { tags: _.all([oldTag]) },
+        { tags: _.addToSet(newTag) }
+      ).then(res => {
+        if (!res.success && !res.permission) {
+          Message.warning(visitorText);
+        } else if (res.success && res.permission) {
+          // 2. 删除旧标签
+          updateWhereDataAPI(
+            DB.Article,
+            { tags: _.all([oldTag]) },
+            { tags: _.pull(oldTag) }
+          ).then(res => {
+            if (!res.success && !res.permission) {
+              Message.warning(visitorText);
+            } else if (res.success && res.permission) {
+              Message.success(`更新数据库标签成功！`);
+              dispatch(resetArticleData());
+              dispatch(resetDraftData());
+            } else {
+              Message.warning(failText);
+            }
+          });
+        } else {
+          Message.warning(failText);
+        }
+      });
+    }
+  );
 
-  const deleteTagFromDB = (tagWillDeletd: string) => {
+  const deleteTagFromDB = useMemoizedFn((tagWillDeletd: string) => {
     updateWhereDataAPI(
       DB.Article,
       { tags: _.all([tagWillDeletd]) },
@@ -99,17 +101,19 @@ const TagCard: React.FC = () => {
         Message.warning(failText);
       }
     });
-  };
+  });
 
-  const isExist = (
-    content: string,
-    data: { class?: string; tag?: string }[],
-    type: 'class' | 'tag'
-  ) => {
-    return data.some(item => item[type as keyof typeof item] === content);
-  };
+  const isExist = useMemoizedFn(
+    (
+      content: string,
+      data: { class?: string; tag?: string }[],
+      type: 'class' | 'tag'
+    ) => {
+      return data.some(item => item[type as keyof typeof item] === content);
+    }
+  );
 
-  const openModal = (id: string) => {
+  const openModal = useMemoizedFn((id: string) => {
     setIsModalOpen(true);
     setId(id);
     for (const { _id, tag } of tags.value) {
@@ -119,15 +123,15 @@ const TagCard: React.FC = () => {
         break;
       }
     }
-  };
+  });
 
-  const modalCancel = () => {
+  const modalCancel = useMemoizedFn(() => {
     setIsModalOpen(false);
-  };
+  });
 
   const { tagColor, colorLen } = useColor();
 
-  const modalOk = () => {
+  const modalOk = useMemoizedFn(() => {
     if (!tag) {
       Message.warning('请输入标签名称~');
       return;
@@ -156,9 +160,9 @@ const TagCard: React.FC = () => {
         Message.warning(failText);
       }
     });
-  };
+  });
 
-  const addNewTag = () => {
+  const addNewTag = useMemoizedFn(() => {
     if (!newTag) {
       Message.warning('请输入标签名称~');
       return;
@@ -183,9 +187,9 @@ const TagCard: React.FC = () => {
         Message.warning(failText);
       }
     });
-  };
+  });
 
-  const deleteTag = (id: string, tagWillDeletd: string) => {
+  const deleteTag = useMemoizedFn((id: string, tagWillDeletd: string) => {
     if (!isAdmin()) {
       Message.warning(visitorText);
       return;
@@ -202,11 +206,11 @@ const TagCard: React.FC = () => {
         Message.warning(failText);
       }
     });
-  };
+  });
 
-  const toArticle = (tag: string) => {
+  const toArticle = useMemoizedFn((tag: string) => {
     navigate(`/admin/article?searchTag=${encodeURIComponent(tag)}`);
-  };
+  });
 
   return (
     <>

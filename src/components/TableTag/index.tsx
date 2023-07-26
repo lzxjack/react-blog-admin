@@ -7,23 +7,23 @@ interface Props {
   tags: string[];
 }
 
-const TableTag: React.FC<Props> = ({ tags }) => {
-  const COLORS = [
-    'red',
-    'orangered',
-    'orange',
-    'gold',
-    'lime',
-    'green',
-    'cyan',
-    'blue',
-    'arcoblue',
-    'purple',
-    'pinkpurple',
-    'magenta',
-    'gray'
-  ];
+const COLORS = [
+  'red',
+  'orangered',
+  'orange',
+  'gold',
+  'lime',
+  'green',
+  'cyan',
+  'blue',
+  'arcoblue',
+  'purple',
+  'pinkpurple',
+  'magenta',
+  'gray'
+];
 
+const TableTag: React.FC<Props> = ({ tags }) => {
   return (
     <div className={s.tableTag}>
       {tags.map((tag, index) => {

@@ -16,26 +16,26 @@ interface Props {
   style?: object;
 }
 
-const Emoji: React.FC<Props> = ({ className, style }) => {
-  const emojiData: EmojiType[] = [
-    {
-      emojis: emojiPeople,
-      show: '😜'
-    },
-    {
-      emojis: emojiNature,
-      show: '✂️'
-    },
-    {
-      emojis: emojiSymbol,
-      show: '🆗'
-    },
-    {
-      emojis: emojiFood,
-      show: '🍎'
-    }
-  ];
+const emojiData: EmojiType[] = [
+  {
+    emojis: emojiPeople,
+    show: '😜'
+  },
+  {
+    emojis: emojiNature,
+    show: '✂️'
+  },
+  {
+    emojis: emojiSymbol,
+    show: '🆗'
+  },
+  {
+    emojis: emojiFood,
+    show: '🍎'
+  }
+];
 
+const Emoji: React.FC<Props> = ({ className, style }) => {
   return (
     <div className={classNames(s.emojiBox, className)} style={style}>
       {emojiData.map((item, index) => (

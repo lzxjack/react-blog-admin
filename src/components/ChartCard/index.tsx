@@ -12,19 +12,19 @@ import { useNavigate } from 'react-router-dom';
 import { useChartData } from './config';
 import s from './index.scss';
 
+echarts.use([
+  TitleComponent,
+  TooltipComponent,
+  LegendComponent,
+  PieChart,
+  CanvasRenderer,
+  LabelLayout
+]);
+
 const ChartCard: React.FC = () => {
   const { option, loading } = useChartData();
 
   const navigate = useNavigate();
-
-  echarts.use([
-    TitleComponent,
-    TooltipComponent,
-    LegendComponent,
-    PieChart,
-    CanvasRenderer,
-    LabelLayout
-  ]);
 
   const onEvents = {
     click: (params: any) => {
