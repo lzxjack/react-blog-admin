@@ -1,4 +1,4 @@
-import { useMount } from 'ahooks';
+import { useMemoizedFn, useMount } from 'ahooks';
 import { useSearchParams } from 'react-router-dom';
 
 export const useUpdateData = (
@@ -9,11 +9,11 @@ export const useUpdateData = (
 ) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const handleDeleteParam = (param: string) => {
+  const handleDeleteParam = useMemoizedFn((param: string) => {
     const params = new URLSearchParams(searchParams);
     params.delete(param);
     setSearchParams(params.toString());
-  };
+  });
 
   useMount(() => {
     keyMaps.forEach(({ key, run }) => {

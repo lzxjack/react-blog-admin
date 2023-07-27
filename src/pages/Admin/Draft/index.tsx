@@ -1,4 +1,4 @@
-import { useTitle } from 'ahooks';
+import { useMemoizedFn, useTitle } from 'ahooks';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -48,9 +48,9 @@ const Draft: React.FC = () => {
     }
   ]);
 
-  const handleEdit = (id: string) => {
+  const handleEdit = useMemoizedFn((id: string) => {
     navigate(`/admin/addArticle?id=${id}&from=draft`);
-  };
+  });
 
   const columns = useColumns({
     handleEdit,

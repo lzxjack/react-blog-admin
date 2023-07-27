@@ -1,4 +1,5 @@
 import useUrlState from '@ahooksjs/use-url-state';
+import { useMemoizedFn } from 'ahooks';
 
 export const useMyParams = () => {
   const [state, setState] = useUrlState<{
@@ -11,31 +12,31 @@ export const useMyParams = () => {
     searchTag: []
   });
 
-  const setSearchTitle = (title: string) => {
+  const setSearchTitle = useMemoizedFn((title: string) => {
     setState({
       searchTitle: title
     });
-  };
+  });
 
-  const setSearchClass = (classText: string) => {
+  const setSearchClass = useMemoizedFn((classText: string) => {
     setState({
       searchClass: classText
     });
-  };
+  });
 
-  const setSearchTag = (tag: string[]) => {
+  const setSearchTag = useMemoizedFn((tag: string[]) => {
     setState({
       searchTag: tag
     });
-  };
+  });
 
-  const clearSearch = () => {
+  const clearSearch = useMemoizedFn(() => {
     setState({
       searchTitle: undefined,
       searchClass: undefined,
       searchTag: []
     });
-  };
+  });
 
   return {
     searchTitle: state.searchTitle,

@@ -1,5 +1,5 @@
 import { Button, Message } from '@arco-design/web-react';
-import { useMount, useTitle } from 'ahooks';
+import { useMemoizedFn, useMount, useTitle } from 'ahooks';
 import classNames from 'classnames';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -39,7 +39,7 @@ const AboutEdit: React.FC = () => {
     setId(id);
   });
 
-  const updateAbout = () => {
+  const updateAbout = useMemoizedFn(() => {
     if (!content) {
       Message.info('请写点什么再更新！');
       return;
@@ -58,16 +58,16 @@ const AboutEdit: React.FC = () => {
         Message.warning(failText);
       }
     });
-  };
+  });
 
-  const render = () => (
+  const render = useMemoizedFn(() => (
     <>
       <div className={s.aboutTitle}>关于{isMe ? '我' : '本站'}</div>
       <Button size='large' type='primary' className={s.aboutUpdate} onClick={updateAbout}>
         更新
       </Button>
     </>
-  );
+  ));
 
   return (
     <>

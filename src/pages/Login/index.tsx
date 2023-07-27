@@ -1,5 +1,5 @@
 import { Button, Input, Message } from '@arco-design/web-react';
-import { useTitle } from 'ahooks';
+import { useMemoizedFn, useTitle } from 'ahooks';
 import React, { useState } from 'react';
 import { BiLockAlt, BiUser } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
@@ -18,7 +18,7 @@ const Login: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const handleLogin = async (Email: string, pwd: string) => {
+  const handleLogin = useMemoizedFn(async (Email: string, pwd: string) => {
     if (nowEnv === 'test') {
       const res = await auth.anonymousAuthProvider().signIn();
       if (res.isAnonymousAuth) {
@@ -36,7 +36,7 @@ const Login: React.FC = () => {
     res
       ? Message.success('登录成功！欢迎进入个人博客后台管理系统！')
       : Message.warning('登录失败！用户名或密码不正确，请重新登录！');
-  };
+  });
 
   return (
     <div className={s.LoginBox}>

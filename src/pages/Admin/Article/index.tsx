@@ -1,7 +1,7 @@
 import './index.custom.scss';
 
 import { Button, Input, Message, Select } from '@arco-design/web-react';
-import { useMount, useRequest, useTitle } from 'ahooks';
+import { useMemoizedFn, useMount, useRequest, useTitle } from 'ahooks';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
 import { BiBrushAlt, BiSearch } from 'react-icons/bi';
@@ -114,7 +114,6 @@ const Article: React.FC = () => {
     }
   ]);
 
-  // TODO: 自己写API
   const { run: searchRun, loading: searchLoading } = useRequest(
     () => getWhereDataAPI(DB.Article, { post: _.eq(true) }),
     {
@@ -155,50 +154,54 @@ const Article: React.FC = () => {
     }
   });
 
-  const handleEdit = (id: string) => {
+  const handleEdit = useMemoizedFn((id: string) => {
     navigate(`/admin/addArticle?id=${id}&from=article`);
-  };
+  });
 
-  const search = () => {
+  const search = useMemoizedFn(() => {
     if (!searchTitle && !searchClass && !searchTag.length) {
       Message.info('请选择搜索内容！');
       return;
     }
     setPage(1);
     searchRun();
-  };
+  });
 
-  const handleDeleteSearch = (id: string, { page, setPage }: DeleteProps) => {
-    if (!isAdmin()) {
-      Message.warning(visitorText);
-      return;
-    }
-
-    deleteDataAPI(DB.Article, id).then(res => {
-      if (!res.success && !res.permission) {
+  const handleDeleteSearch = useMemoizedFn(
+    (id: string, { page, setPage }: DeleteProps) => {
+      if (!isAdmin()) {
         Message.warning(visitorText);
-      } else if (res.success && res.permission) {
-        Message.success('删除成功！');
-        const newSearchData = searchData.filter(({ _id }: { _id: string }) => _id !== id);
-        const classText = searchData.filter(({ _id }: { _id: string }) => _id === id)[0]
-          .classes;
-        classCountChange(classText, 'min', () => {
-          dispatch(resetClasses());
-        });
-        flushSync(() => setSearchData(newSearchData));
-        flushSync(() => {
-          dispatch(reduxMap[DB.Article].dataResetReducer());
-          setPage(getAfterDeletedPage(searchData.length, page, defaultPageSize));
-        });
-        flushSync(() => {
-          dataRun();
-          totalRun();
-        });
-      } else {
-        Message.warning(failText);
+        return;
       }
-    });
-  };
+
+      deleteDataAPI(DB.Article, id).then(res => {
+        if (!res.success && !res.permission) {
+          Message.warning(visitorText);
+        } else if (res.success && res.permission) {
+          Message.success('删除成功！');
+          const newSearchData = searchData.filter(
+            ({ _id }: { _id: string }) => _id !== id
+          );
+          const classText = searchData.filter(({ _id }: { _id: string }) => _id === id)[0]
+            .classes;
+          classCountChange(classText, 'min', () => {
+            dispatch(resetClasses());
+          });
+          flushSync(() => setSearchData(newSearchData));
+          flushSync(() => {
+            dispatch(reduxMap[DB.Article].dataResetReducer());
+            setPage(getAfterDeletedPage(searchData.length, page, defaultPageSize));
+          });
+          flushSync(() => {
+            dataRun();
+            totalRun();
+          });
+        } else {
+          Message.warning(failText);
+        }
+      });
+    }
+  );
 
   const columns = useColumns({
     showSearchData,
@@ -211,7 +214,7 @@ const Article: React.FC = () => {
     }
   });
 
-  const render = () => (
+  const render = useMemoizedFn(() => (
     <div className={s.searchBox}>
       <div className={s.search}>
         <Input
@@ -286,7 +289,7 @@ const Article: React.FC = () => {
         </Button>
       </div>
     </div>
-  );
+  ));
 
   return (
     <>
