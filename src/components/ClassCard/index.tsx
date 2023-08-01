@@ -1,6 +1,6 @@
 import { Button, Input, Message, Popconfirm } from '@arco-design/web-react';
 import { IconDelete, IconEdit, IconLoading } from '@arco-design/web-react/icon';
-import { useMemoizedFn, useRequest, useResetState } from 'ahooks';
+import { useRequest, useResetState } from 'ahooks';
 import classNames from 'classnames';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
@@ -46,17 +46,15 @@ const ClassCard: React.FC = () => {
     }
   });
 
-  const isExist = useMemoizedFn(
-    (
-      content: string,
-      data: { class?: string; tag?: string }[],
-      type: 'class' | 'tag'
-    ) => {
-      return data.some(item => item[type as keyof typeof item] === content);
-    }
-  );
+  const isExist = (
+    content: string,
+    data: { class?: string; tag?: string }[],
+    type: 'class' | 'tag'
+  ) => {
+    return data.some(item => item[type as keyof typeof item] === content);
+  };
 
-  const openModal = useMemoizedFn((id: string) => {
+  const openModal = (id: string) => {
     setIsModalOpen(true);
     setId(id);
     for (const { _id, class: classText } of classes.value) {
@@ -66,13 +64,13 @@ const ClassCard: React.FC = () => {
         break;
       }
     }
-  });
+  };
 
-  const modalCancel = useMemoizedFn(() => {
+  const modalCancel = () => {
     setIsModalOpen(false);
-  });
+  };
 
-  const modalOk = useMemoizedFn(() => {
+  const modalOk = () => {
     if (!classText) {
       Message.warning('请输入分类名称~');
       return;
@@ -97,9 +95,9 @@ const ClassCard: React.FC = () => {
         Message.warning(failText);
       }
     });
-  });
+  };
 
-  const addNewClass = useMemoizedFn(() => {
+  const addNewClass = () => {
     if (!newClassText) {
       Message.warning('请输入分类名称~');
       return;
@@ -125,29 +123,27 @@ const ClassCard: React.FC = () => {
         }
       }
     );
-  });
+  };
 
-  const updateClassFromDB = useMemoizedFn(
-    (oldClassText: string, newClassText: string) => {
-      updateWhereDataAPI(
-        DB.Article,
-        { classes: _.eq(oldClassText) },
-        { classes: newClassText }
-      ).then(res => {
-        if (!res.success && !res.permission) {
-          Message.warning(visitorText);
-        } else if (res.success && res.permission) {
-          Message.success(`更新数据库分类成功！`);
-          dispatch(resetArticleData());
-          dispatch(resetDraftData());
-        } else {
-          Message.warning(failText);
-        }
-      });
-    }
-  );
+  const updateClassFromDB = (oldClassText: string, newClassText: string) => {
+    updateWhereDataAPI(
+      DB.Article,
+      { classes: _.eq(oldClassText) },
+      { classes: newClassText }
+    ).then(res => {
+      if (!res.success && !res.permission) {
+        Message.warning(visitorText);
+      } else if (res.success && res.permission) {
+        Message.success(`更新数据库分类成功！`);
+        dispatch(resetArticleData());
+        dispatch(resetDraftData());
+      } else {
+        Message.warning(failText);
+      }
+    });
+  };
 
-  const deleteClass = useMemoizedFn((id: string, classText: string) => {
+  const deleteClass = (id: string, classText: string) => {
     if (!isAdmin()) {
       Message.warning(visitorText);
       return;
@@ -163,13 +159,13 @@ const ClassCard: React.FC = () => {
         Message.warning(failText);
       }
     });
-  });
+  };
 
-  const toArticle = useMemoizedFn((classText: string) => {
+  const toArticle = (classText: string) => {
     navigate(`/admin/article?searchClass=${encodeURIComponent(classText)}`);
-  });
+  };
 
-  const getNoClass = useMemoizedFn(() => {
+  const getNoClass = () => {
     let sum = 0;
     classes.value.forEach((item: any) => {
       sum += item.count;
@@ -180,7 +176,7 @@ const ClassCard: React.FC = () => {
       class: '未分类',
       count: `${articles.count.value - sum}`
     };
-  });
+  };
 
   return (
     <>

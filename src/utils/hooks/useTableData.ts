@@ -1,5 +1,5 @@
 import { Message } from '@arco-design/web-react';
-import { useMemoizedFn, useMount, useRequest } from 'ahooks';
+import { useMount, useRequest } from 'ahooks';
 import { useEffect } from 'react';
 import { flushSync } from 'react-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -106,7 +106,7 @@ export const useTableData = ({
     }
   }, [page]);
 
-  const handleDelete = useMemoizedFn((id: string, { page, setPage }: DeleteProps) => {
+  const handleDelete = (id: string, { page, setPage }: DeleteProps) => {
     if (!isAdmin()) {
       Message.warning(visitorText);
       return;
@@ -137,9 +137,9 @@ export const useTableData = ({
         Message.warning(failText);
       }
     });
-  });
+  };
 
-  const addData = useMemoizedFn((data: object) => {
+  const addData = (data: object) => {
     addDataAPI(DBName, data).then(res => {
       if (!res.success && !res.permission) {
         Message.warning(visitorText);
@@ -158,66 +158,62 @@ export const useTableData = ({
         Message.warning(failText);
       }
     });
-  });
+  };
 
-  const editData = useMemoizedFn(
-    ({
-      id,
-      data,
-      page,
-      isClearAll
-    }: {
-      id: string;
-      data: object;
-      page: number;
-      isClearAll: boolean;
-    }) => {
-      updateDataAPI(DBName, id, data).then(res => {
-        if (!res.success && !res.permission) {
-          Message.warning(visitorText);
-        } else if (res.success && res.permission) {
-          Message.success('修改成功！');
-          modalCancel?.();
-          flushSync(() => {
-            dataRun();
-          });
-        } else {
-          Message.warning(failText);
-        }
-      });
-    }
-  );
-
-  const modalOk = useMemoizedFn(
-    ({
-      isEdit,
-      id,
-      data,
-      page,
-      isClearAll = false
-    }: {
-      isEdit: boolean;
-      id: string;
-      data: object;
-      page: number;
-      isClearAll?: boolean;
-    }) => {
-      if (
-        dataFilter?.some(
-          ({ data: filterData, require }) =>
-            require && (!filterData || (Array.isArray(filterData) && !filterData.length))
-        )
-      ) {
-        Message.info(`请输入完整${dataMap[DBName as keyof typeof dataMap]}信息！`);
-        return;
-      }
-      if (!isAdmin()) {
+  const editData = ({
+    id,
+    data,
+    page,
+    isClearAll
+  }: {
+    id: string;
+    data: object;
+    page: number;
+    isClearAll: boolean;
+  }) => {
+    updateDataAPI(DBName, id, data).then(res => {
+      if (!res.success && !res.permission) {
         Message.warning(visitorText);
-        return;
+      } else if (res.success && res.permission) {
+        Message.success('修改成功！');
+        modalCancel?.();
+        flushSync(() => {
+          dataRun();
+        });
+      } else {
+        Message.warning(failText);
       }
-      isEdit ? editData({ id, data, page, isClearAll }) : addData(data);
+    });
+  };
+
+  const modalOk = ({
+    isEdit,
+    id,
+    data,
+    page,
+    isClearAll = false
+  }: {
+    isEdit: boolean;
+    id: string;
+    data: object;
+    page: number;
+    isClearAll?: boolean;
+  }) => {
+    if (
+      dataFilter?.some(
+        ({ data: filterData, require }) =>
+          require && (!filterData || (Array.isArray(filterData) && !filterData.length))
+      )
+    ) {
+      Message.info(`请输入完整${dataMap[DBName as keyof typeof dataMap]}信息！`);
+      return;
     }
-  );
+    if (!isAdmin()) {
+      Message.warning(visitorText);
+      return;
+    }
+    isEdit ? editData({ id, data, page, isClearAll }) : addData(data);
+  };
 
   return {
     data: reduxData.data.value[page],

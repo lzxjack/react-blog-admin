@@ -1,4 +1,4 @@
-import { useMemoizedFn, useThrottleFn } from 'ahooks';
+import { useThrottleFn } from 'ahooks';
 import { useRef } from 'react';
 
 export const useScrollSync = () => {
@@ -8,7 +8,7 @@ export const useScrollSync = () => {
   const left = leftRef.current! as any;
   const right = rightRef.current! as any;
 
-  const handleScroll = useMemoizedFn((event: any) => {
+  const handleScroll = (event: any) => {
     const scrollTopRatio =
       event.target.scrollTop / (event.target.scrollHeight - event.target.clientHeight);
     if (event.target === left) {
@@ -16,7 +16,7 @@ export const useScrollSync = () => {
     } else if (event.target === right) {
       left.scrollTop = scrollTopRatio * (left.scrollHeight - left.clientHeight);
     }
-  });
+  };
 
   const { run: handleScrollRun } = useThrottleFn(handleScroll, { wait: 60 });
 

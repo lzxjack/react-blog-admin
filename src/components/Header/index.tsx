@@ -1,5 +1,4 @@
 import { Message, Popconfirm } from '@arco-design/web-react';
-import { useMemoizedFn } from 'ahooks';
 import React from 'react';
 import { IoHome, IoLogOut } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
@@ -14,14 +13,14 @@ const Header: React.FC = () => {
   const navigate = useNavigate();
   const { timeText } = useTime();
 
-  const logout = useMemoizedFn(() => {
+  const logout = () => {
     localStorage.clear();
     Message.success('已退出个人博客后台管理系统！');
     navigate('/');
-  });
+  };
 
-  const getAvatar = useMemoizedFn(() => (isAdmin() ? userAvatar : visitorAvatar));
-  const getName = useMemoizedFn(() => (isAdmin() ? '飞鸟' : '游客'));
+  const getAvatar = () => (isAdmin() ? userAvatar : visitorAvatar);
+  const getName = () => (isAdmin() ? '飞鸟' : '游客');
 
   return (
     <div className={s.headerBox}>

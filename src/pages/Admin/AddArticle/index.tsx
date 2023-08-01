@@ -1,5 +1,5 @@
 import { Button, Input, Message, Select } from '@arco-design/web-react';
-import { useMemoizedFn, useMount, useRequest, useTitle } from 'ahooks';
+import { useMount, useRequest, useTitle } from 'ahooks';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import React, { useState } from 'react';
@@ -96,7 +96,7 @@ const AddArticle: React.FC = () => {
     }
   });
 
-  const addData = useMemoizedFn((type: 'post' | 'draft', data: object) => {
+  const addData = (type: 'post' | 'draft', data: object) => {
     addDataAPI(DB.Article, data).then(res => {
       if (!res.success && !res.permission) {
         Message.warning(visitorText);
@@ -111,9 +111,9 @@ const AddArticle: React.FC = () => {
         Message.warning(failText);
       }
     });
-  });
+  };
 
-  const updateData = useMemoizedFn((type: 'post' | 'draft', id: string, data: object) => {
+  const updateData = (type: 'post' | 'draft', id: string, data: object) => {
     updateDataAPI(DB.Article, id, data).then(res => {
       if (!res.success && !res.permission) {
         Message.warning(visitorText);
@@ -128,15 +128,15 @@ const AddArticle: React.FC = () => {
         Message.warning(failText);
       }
     });
-  });
+  };
 
-  const isArticleUnique = useMemoizedFn(async () => {
+  const isArticleUnique = async () => {
     const res = await getWhereDataAPI(DB.Article, {
       titleEng: _.eq(titleEng)
     });
     const sameEngInArticles = res.data.filter(({ _id }: { _id: string }) => _id !== id);
     return !sameEngInArticles.length;
-  });
+  };
 
   // 新建页面：
   //   发布：
@@ -158,7 +158,7 @@ const AddArticle: React.FC = () => {
   //       未选择分类：
   //     存草稿：
 
-  const postArticle = useMemoizedFn(async (type: 'post' | 'draft') => {
+  const postArticle = async (type: 'post' | 'draft') => {
     if (!title || !titleEng || !date || !content) {
       Message.info('请至少输入中英文标题、时间、正文！');
       return;
@@ -238,7 +238,7 @@ const AddArticle: React.FC = () => {
         }
       }
     }
-  });
+  };
 
   return (
     <>

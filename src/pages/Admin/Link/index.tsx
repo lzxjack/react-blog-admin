@@ -1,4 +1,4 @@
-import { useMemoizedFn, useResetState, useTitle } from 'ahooks';
+import { useResetState, useTitle } from 'ahooks';
 import React, { useState } from 'react';
 
 import CustomModal from '@/components/CustomModal';
@@ -56,18 +56,18 @@ const Link: React.FC = () => {
     }
   ];
 
-  const clearData = useMemoizedFn(() => {
+  const clearData = () => {
     for (const { reSet } of dataFilter) {
       reSet();
     }
     resetId();
-  });
+  };
 
-  const modalCancel = useMemoizedFn(() => {
+  const modalCancel = () => {
     setIsModalOpen(false);
     setIsEdit(false);
     clearData();
-  });
+  };
 
   const { data, total, loading, handleDelete, modalOk } = useTableData({
     type: DB.Link,
@@ -78,7 +78,7 @@ const Link: React.FC = () => {
     modalCancel
   });
 
-  const handleEdit = useMemoizedFn((id: string) => {
+  const handleEdit = (id: string) => {
     setIsModalOpen(true);
     setIsEdit(true);
     setId(id);
@@ -92,7 +92,7 @@ const Link: React.FC = () => {
         break;
       }
     }
-  });
+  };
 
   const columns = useColumns({
     handleEdit,
@@ -103,7 +103,7 @@ const Link: React.FC = () => {
     }
   });
 
-  const handleModalOk = useMemoizedFn(() => {
+  const handleModalOk = () => {
     const data = { name, link, avatar, descr };
     modalOk({
       isEdit,
@@ -111,7 +111,7 @@ const Link: React.FC = () => {
       data: isEdit ? data : { ...data, date: Date.now() },
       page
     });
-  });
+  };
 
   return (
     <>

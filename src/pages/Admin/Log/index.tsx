@@ -1,5 +1,5 @@
 import { Input } from '@arco-design/web-react';
-import { useMemoizedFn, useResetState, useTitle } from 'ahooks';
+import { useResetState, useTitle } from 'ahooks';
 import dayjs from 'dayjs';
 import React, { useState } from 'react';
 
@@ -45,23 +45,23 @@ const Log: React.FC = () => {
     }
   ];
 
-  const openModal = useMemoizedFn(() => {
+  const openModal = () => {
     setDate(dayjs().format('YYYY-MM-DD'));
     setIsModalOpen(true);
-  });
+  };
 
-  const clearData = useMemoizedFn(() => {
+  const clearData = () => {
     for (const { reSet } of dataFilter) {
       reSet();
     }
     resetId();
-  });
+  };
 
-  const modalCancel = useMemoizedFn(() => {
+  const modalCancel = () => {
     setIsModalOpen(false);
     setIsEdit(false);
     clearData();
-  });
+  };
 
   const { data, total, loading, handleDelete, modalOk } = useTableData({
     type: DB.Log,
@@ -73,7 +73,7 @@ const Log: React.FC = () => {
     pageSize: logPageSize
   });
 
-  const handleEdit = useMemoizedFn((id: string) => {
+  const handleEdit = (id: string) => {
     setIsModalOpen(true);
     setIsEdit(true);
     setId(id);
@@ -85,7 +85,7 @@ const Log: React.FC = () => {
         break;
       }
     }
-  });
+  };
 
   const columns = useColumns({
     handleEdit,
@@ -96,7 +96,7 @@ const Log: React.FC = () => {
     }
   });
 
-  const handleModalOk = useMemoizedFn(() => {
+  const handleModalOk = () => {
     const data = { date: new Date(date).getTime(), logContent };
     modalOk({
       isEdit,
@@ -104,9 +104,9 @@ const Log: React.FC = () => {
       data,
       page
     });
-  });
+  };
 
-  const render = useMemoizedFn(() => (
+  const render = () => (
     <>
       <Input
         size='large'
@@ -123,7 +123,7 @@ const Log: React.FC = () => {
       />
       <Emoji />
     </>
-  ));
+  );
 
   return (
     <>

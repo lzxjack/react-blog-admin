@@ -1,5 +1,5 @@
 import useUrlState from '@ahooksjs/use-url-state';
-import { useMemoizedFn, useMount } from 'ahooks';
+import { useMount } from 'ahooks';
 import { useSearchParams } from 'react-router-dom';
 
 export const usePage = () => {
@@ -11,9 +11,9 @@ export const usePage = () => {
     !page && setState({ page: 1 });
   });
 
-  const setPage = useMemoizedFn((page: number) => {
+  const setPage = (page: number) => {
     setState({ page });
-  });
+  };
 
   return {
     page: Number(state.page || 1),

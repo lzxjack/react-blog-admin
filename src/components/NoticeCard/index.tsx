@@ -1,6 +1,6 @@
 import { Input, Message } from '@arco-design/web-react';
 import { IconLoading } from '@arco-design/web-react/icon';
-import { useMemoizedFn, useMount, useRequest, useResetState } from 'ahooks';
+import { useMount, useRequest, useResetState } from 'ahooks';
 import classNames from 'classnames';
 import React, { useState } from 'react';
 import { flushSync } from 'react-dom';
@@ -44,17 +44,17 @@ const NoticeCard: React.FC = () => {
     }
   });
 
-  const openModal = useMemoizedFn(() => {
+  const openModal = () => {
     setIsModalOpen(true);
     setLocalNotice(reduxNotice.value);
-  });
+  };
 
-  const modalCancel = useMemoizedFn(() => {
+  const modalCancel = () => {
     setIsModalOpen(false);
     resetLocalNotice();
-  });
+  };
 
-  const modalOk = useMemoizedFn(() => {
+  const modalOk = () => {
     if (!notice) {
       Message.warning('请输入公告内容~');
       return;
@@ -74,9 +74,9 @@ const NoticeCard: React.FC = () => {
         Message.warning(failText);
       }
     });
-  });
+  };
 
-  const render = useMemoizedFn(() => (
+  const render = () => (
     <>
       <TextArea
         placeholder='请输入公告内容'
@@ -93,7 +93,7 @@ const NoticeCard: React.FC = () => {
       />
       <Emoji style={{ marginTop: 10 }} />
     </>
-  ));
+  );
 
   return (
     <>

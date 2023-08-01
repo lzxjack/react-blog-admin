@@ -1,4 +1,4 @@
-import { useMemoizedFn, useResetState, useTitle } from 'ahooks';
+import { useResetState, useTitle } from 'ahooks';
 import React, { useState } from 'react';
 
 import CustomModal from '@/components/CustomModal';
@@ -68,18 +68,18 @@ const Show: React.FC = () => {
     }
   ];
 
-  const clearData = useMemoizedFn(() => {
+  const clearData = () => {
     for (const { reSet } of dataFilter) {
       reSet();
     }
     resetId();
-  });
+  };
 
-  const modalCancel = useMemoizedFn(() => {
+  const modalCancel = () => {
     setIsModalOpen(false);
     setIsEdit(false);
     clearData();
-  });
+  };
 
   const { data, total, loading, handleDelete, modalOk } = useTableData({
     type: DB.Show,
@@ -93,7 +93,7 @@ const Show: React.FC = () => {
     pageSize: showPageSize
   });
 
-  const handleEdit = useMemoizedFn((id: string) => {
+  const handleEdit = (id: string) => {
     setIsModalOpen(true);
     setIsEdit(true);
     setId(id);
@@ -108,7 +108,7 @@ const Show: React.FC = () => {
         break;
       }
     }
-  });
+  };
 
   const columns = useColumns({
     handleEdit,
@@ -123,7 +123,7 @@ const Show: React.FC = () => {
     }
   });
 
-  const handleModalOk = useMemoizedFn(() => {
+  const handleModalOk = () => {
     const data = { order: Number(order), name, descr, cover, link };
     modalOk({
       isEdit,
@@ -132,7 +132,7 @@ const Show: React.FC = () => {
       page,
       isClearAll: true
     });
-  });
+  };
 
   return (
     <>
