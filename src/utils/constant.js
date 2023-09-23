@@ -1,5 +1,5 @@
 // 博客的云环境ID
-export const env = 'react-blog-admin-8fo571wf24c87f9';
+export const env = 'react-blog-admin-test-1a3424a4e2';
 
 export const newSiteUrl = 'https://admin.lzxjack.top:81';
 
@@ -21,11 +21,11 @@ export const avatarUrl = 'https://img.lzxjack.top:99/20201204121004.jpg';
 export const blogUrl = 'https://lzxjack.top';
 
 // 管理员id
-export const adminUid = 'dbee9976b3c14448a06f2006a4795cf2';
+export const adminUid = '41fcc65978324a8db4048993dfc0a9df';
 
 // 游客帐号信息
 export const visitorEmail = '490878306@qq.com';
-export const visitorPwd = 'asd123456';
+export const visitorPwd = 'test123123';
 export const visitorAvatar = 'https://img.lzxjack.top:99/20210826221910.jpg';
 
 // 游客修改失败后的提示语句
