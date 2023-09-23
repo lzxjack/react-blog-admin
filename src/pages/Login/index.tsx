@@ -70,11 +70,7 @@ const Login: React.FC = () => {
             >
               {nowEnv === 'prod' ? '游客' : '测试'}
             </Button>
-            <Button
-              type='primary'
-              size='large'
-              onClick={() => handleLogin(email, password)}
-            >
+            <Button type='primary' size='large' onClick={() => handleLogin(email, password)}>
               登录
             </Button>
           </div>

@@ -11,7 +11,7 @@ export const avatarUrl = 'https://img.lzxjack.top:99/202203302348298.webp';
 
 // 游客帐号信息
 export const visitorEmail = '490878306@qq.com';
-export const visitorPwd = 'asd123456';
+export const visitorPwd = 'test123123';
 export const visitorAvatar = 'https://img.lzxjack.top:99/202304061850910.webp';
 
 // 站点名称
